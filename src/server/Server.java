@@ -1,9 +1,7 @@
 package server;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Main Server Class
@@ -14,6 +12,8 @@ import java.sql.SQLException;
 public class Server {
 
     private Server server;
+    private static ArrayList<ConnectedClient> clients = new ArrayList<ConnectedClient>();
+    private static ListenThread listenthread;
 
     public static void main(final String[] args) {
         try {
@@ -22,6 +22,11 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        listenthread = new ListenThread(clients, 8372);
+        listenthread.start();
+
+        // some sort of interactive console here?
     }
 
 }
