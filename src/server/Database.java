@@ -37,6 +37,27 @@ public class Database {
         return sb.toString().replaceAll("\\s","");
     }
 
+    /**
+     * Adds new user/study/course to database.
+     * @param obj JSONObject to be added to database.
+     * @param key "users", "studies" or "courses".
+     */
+    public void addObjDB(JSONObject obj, String key){
+        db.append(key, obj);
+    }
+
+    /**
+     * Writes database to specified file in json format.
+     * @param file
+     * @throws IOException
+     */
+    public void writeFile(String file) throws IOException{
+        String dataBase = db.toString(4);
+        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+        bw.write(dataBase);
+        bw.close();
+    }
+
     public String toString() {
         return this.db.toString();
     }
