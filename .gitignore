@@ -3,3 +3,6 @@
 /lib/
 /out/
 *.iml
+*.class
+*.project
+*.classpath
