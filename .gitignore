@@ -1,5 +1,7 @@
 #Untracked files:
 /.idea/
-/lib/
 /out/
 *.iml
+*.project
+*.class
+*.classpath
