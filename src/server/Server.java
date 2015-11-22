@@ -1,5 +1,7 @@
 package server;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,6 +26,8 @@ public class Server {
             db = new Database("src/server/database.json");
             System.out.println(db);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 

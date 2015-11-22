@@ -2,6 +2,6 @@
 /.idea/
 /out/
 *.iml
-*.project
 *.class
+*.project
 *.classpath

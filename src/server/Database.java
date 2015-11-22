@@ -59,7 +59,7 @@ public class Database {
      * @param obj JSONObject to be added to database.
      * @param key "users", "studies" or "courses".
      */
-    public void addObjDB(JSONObject obj, String key){
+    public void addObjDB(JSONObject obj, String key) throws JSONException {
         db.append(key, obj);
     }
 
@@ -68,7 +68,7 @@ public class Database {
      * @param file
      * @throws IOException
      */
-    public void writeFile(String file) throws IOException{
+    public void writeFile(String file) throws IOException, JSONException {
         String dataBase = db.toString(4);
         BufferedWriter bw = new BufferedWriter(new FileWriter(file));
         bw.write(dataBase);
