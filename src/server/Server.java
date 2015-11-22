@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Main Server Class
@@ -10,8 +11,9 @@ import java.io.IOException;
  */
 public class Server {
 
-    private Server server;
     private static Database db;
+    private static ArrayList<ConnectedClient> clients = new ArrayList<ConnectedClient>();
+    private static ListenThread listenthread;
 
     /**
      * 'Starts' the server and reads the database
@@ -24,6 +26,11 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        listenthread = new ListenThread(clients, 8372);
+        listenthread.start();
+
+        // some sort of interactive console here?
     }
 
 }

@@ -3,9 +3,7 @@ package server;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Database class that reads the database file
@@ -54,6 +52,27 @@ public class Database {
             line = br.readLine();
         }
         return sb.toString();
+    }
+
+    /**
+     * Adds new user/study/course to database.
+     * @param obj JSONObject to be added to database.
+     * @param key "users", "studies" or "courses".
+     */
+    public void addObjDB(JSONObject obj, String key){
+        db.append(key, obj);
+    }
+
+    /**
+     * Writes database to specified file in json format.
+     * @param file
+     * @throws IOException
+     */
+    public void writeFile(String file) throws IOException{
+        String dataBase = db.toString(4);
+        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+        bw.write(dataBase);
+        bw.close();
     }
 
     /**
