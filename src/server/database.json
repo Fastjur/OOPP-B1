@@ -1,5 +1,6 @@
 {"users":[
     {
+        "id": 1,
         "email": "sinterklaas@gmail.com",
         "password": "Pepernoten01",
         "firstname": "Sinterklaas",
@@ -27,6 +28,7 @@
         ]
     },
     {
+        "id": 2,
         "email": "john@doe.com",
         "password": "JohnDoe01",
         "firstname": "John",

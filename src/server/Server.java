@@ -1,9 +1,6 @@
 package server;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 /**
  * Main Server Class
@@ -14,10 +11,15 @@ import java.sql.SQLException;
 public class Server {
 
     private Server server;
+    private static Database db;
 
+    /**
+     * 'Starts' the server and reads the database
+     * @param args (Commandline) parameters
+     */
     public static void main(final String[] args) {
         try {
-            Database db = new Database("src/server/database.txt");
+            db = new Database("src/server/database.json");
             System.out.println(db);
         } catch (IOException e) {
             e.printStackTrace();
