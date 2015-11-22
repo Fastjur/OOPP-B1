@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A thread that handles the connection with a client
@@ -56,18 +57,17 @@ public class ClientConnectionThread extends Thread {
     }
 
     private JSONObject decodeMessage(byte[] buf) {
-        JSONObject output = new JSONObject();
-        // TODO: decide on encryption/encoding method
-        return output;
+        return new JSONObject(new String(buf, StandardCharsets.UTF_8));
     }
 
-    private byte[] encodeMessage(JSONObject input) throws java.io.IOException {
-        // TODO
-        return new byte[0];
+    private byte[] encodeMessage(JSONObject input) {
+        return input.toString(0).getBytes(StandardCharsets.UTF_8); // TODO: encryption?
     }
 
     public synchronized void sendMessage(JSONObject message) throws java.io.IOException {
-        outputStream.write(encodeMessage(message));
+        byte[] msg = encodeMessage(message);
+        outputStream.write(ByteBuffer.allocate(4).putInt(msg.length).array());
+        outputStream.write(msg);
     }
 
     private void handleMessage(JSONObject message) {
