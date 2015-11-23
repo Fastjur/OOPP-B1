@@ -20,6 +20,7 @@ public class ListenThread extends Thread {
     public ListenThread(ArrayList<ConnectedClient> clientlist, int port) {
         super("ListenerThread");
         this.clientlist = clientlist;
+        this.port = port;
     }
 
     public void run() {
@@ -50,7 +51,8 @@ public class ListenThread extends Thread {
     public void end() {
         this.shouldstop = true;
         try {
-        ss.close();
+        if (ss != null)
+            ss.close();
         } catch (java.io.IOException ex) {
             System.out.println(ex.getLocalizedMessage() + "\nErr:Could not close the server socket");
             shouldstop = true;

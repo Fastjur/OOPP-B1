@@ -40,12 +40,15 @@ public class ClientConnectionThread extends Thread {
                 byte[] buf = new byte[4];
                 inputStream.read(buf);
                 int messagelength = ByteBuffer.wrap(buf).getInt();
-
-                byte[] buffer = new byte[messagelength];
-                inputStream.read(buffer, 0, messagelength);
-                JSONObject message = decodeMessage(buffer);
-                handleMessage(message);
-
+                if (messagelength > 0 && messagelength < 65536) {
+                    byte[] buffer = new byte[messagelength];
+                    inputStream.read(buffer, 0, messagelength);
+                    JSONObject message = decodeMessage(buffer);
+                    handleMessage(message);
+                } else {
+                    System.out.println("Client sent an invalid request, disconnecting client.");
+                    this.client.closeConnection();
+                }
             } catch (java.io.IOException ex) {
                 System.out.println("Something went wrong while reading a message from the network.\n" + ex.getLocalizedMessage());
             }

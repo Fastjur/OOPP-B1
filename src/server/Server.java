@@ -4,6 +4,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Main Server Class
@@ -33,8 +34,19 @@ public class Server {
 
         listenthread = new ListenThread(clients, 8372);
         listenthread.start();
-
         // some sort of interactive console here?
+        Scanner scanner = new Scanner(System.in);
+        String input = "";
+        System.out.println("Type 'quit' to exit the server.");
+
+        while(!input.equals("quit"))
+        {
+            input = scanner.nextLine();
+            System.out.println("You typed: " + input);
+        }
+
+        System.out.println("Server exiting...");
+        listenthread.end();
     }
 
 }

@@ -19,6 +19,7 @@ public class ConnectedClient {
         this.socket = socket;
         this.connectionThread = new ClientConnectionThread(this);
         this.connectionThread.start();
+        System.out.println(socket.getInetAddress().toString() + " connected.");
     }
 
     public void closeConnection() throws IOException {
