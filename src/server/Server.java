@@ -17,6 +17,7 @@ public class Server {
     private static Database db;
     private static ArrayList<ConnectedClient> clients = new ArrayList<ConnectedClient>();
     private static ListenThread listenthread;
+    private static ArrayList<Session> sessions = new ArrayList<>();
 
     /**
      * 'Starts' the server and reads the database
@@ -47,6 +48,17 @@ public class Server {
 
         System.out.println("Server exiting...");
         listenthread.end();
+    }
+
+    public void logIn(String email, String password){
+        User user = GetUser(email);
+        if(user.getMail().equals(email) && user.getPassword().equals(password)){
+            Session session = new Session(user.getUserID());
+            sessions.add(session);
+        }
+        else{
+            System.out.println("Authentication failed.");
+        }
     }
 
 }
