@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class User {
 	private String name, mail, phonenumber, course, university, gender, nationality, 
-			description, hobbies;
+			description;
 	private Date birthday;
 	private int userID, experienceInYears;
 	private Address address;
@@ -12,7 +12,7 @@ public class User {
 	
 	public User(int userID, String name, Date birthday, String mail,
 			String phonenumber, Address address, String course, String university, int experienceInYears, 
-			String gender, String nationality, String description, String hobbies) {
+			String gender, String nationality, String description) {
 		this.userID = userID;
 		this.name = name;
 		this.birthday = birthday;
@@ -28,7 +28,6 @@ public class User {
 		this.gender = gender;
 		this.nationality = nationality;
 		this.description = description;
-		this.hobbies = hobbies;
 	}
 	
 	
@@ -68,7 +67,7 @@ public class User {
 		text += "\n";
 		
 		text += gender + "\n" + nationality +
-				"\n" + description + "\n" + hobbies;
+				"\n" + description;
 		return text;
 	}
 	//make getters for the private attributes
@@ -166,14 +165,6 @@ public class User {
 	 */
 	public String getDescription() {
 		return description;
-	}
-	
-	/**
-	 * getHobbies: getter for private attribute hobbies
-	 * @return hobbies - String
-	 */
-	public String getHobbies() {
-		return hobbies;
 	}
 	
 	/**
@@ -369,14 +360,6 @@ public class User {
 	}
 	
 	/**
-	 * setHobbies: setter for private attribute hobbies
-	 * @param hobbies - String
-	 */
-	public void setHobbies(String hobbies) {
-		this.hobbies = hobbies;
-	}
-	
-	/**
 	 * equals: checks if current object is the same as the other
 	 */
 	public boolean equals(Object other) {
@@ -393,8 +376,7 @@ public class User {
 					this.experienceInYears == that.getExperienceInYears() &&	
 					this.gender.equals(that.getGender()) &&
 					this.nationality.equals(that.getNationality()) &&
-					this.description.equals(that.getDescription()) &&
-					this.hobbies.equals(that.getHobbies())) {
+					this.description.equals(that.getDescription())) {
 				
 				if (helpOfferedList.size() != that.getHelpOfferedSize()) {
 					return false;
