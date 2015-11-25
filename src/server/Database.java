@@ -1,9 +1,6 @@
 package server;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.*;
+import java.sql.*;
 
 /**
  * Database class that reads the database file
@@ -13,74 +10,75 @@ import java.io.*;
  */
 public class Database {
 
-    private JSONObject db;
+    private final String JDBCUrl = "jdbc:mysql://db4free.net:3306/ooppb1";
+    private final String user = "oopp_usr";
+    private final String password = "oopp_b1_database";
+
+    private static Connection connection;
 
     /**
      * Constructor of Database object
-     * @param file
-     * @throws IOException
-     * @throws JSONException
      */
-    public Database(String file) throws IOException, JSONException {
-        this.db=readDB(file);
-    }
-
-    /**
-     * Sends the filepath to the readFile function and converts the JSON string to a JSON object
-     * @param file Filepath to database
-     * @return JSON object of the database
-     * @throws IOException
-     * @throws JSONException
-     */
-    private JSONObject readDB(String file) throws IOException, JSONException {
-        String jsonData = readFile(file);
-        return new JSONObject(jsonData);
-    }
-
-    /**
-     * Reads the file and returns a string representing the JSON database
-     * @param file Filepath to database
-     * @return String, JSON representation of database
-     * @throws IOException
-     */
-    private String readFile(String file) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        StringBuilder sb = new StringBuilder();
-        String line = br.readLine();
-        while (line != null) {
-            sb.append(line);
-            line = br.readLine();
+    public Database() throws IllegalStateException {
+        System.out.println("Attempting to connect to database");
+        try {
+            connection = DriverManager.getConnection(JDBCUrl, user, password);
+            System.out.println("Successful connection to database!");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot connect to the database!\n" + e.getMessage());
         }
-        return sb.toString();
     }
 
-    /**
-     * Adds new user/study/course to database.
-     * @param obj JSONObject to be added to database.
-     * @param key "users", "studies" or "courses".
-     */
-    public void addObjDB(JSONObject obj, String key) throws JSONException {
-        db.append(key, obj);
-    }
+    public static User getUser(String email) {
+        User user = new User();
+        try {
+            //TODO uncomment statement parts when they have been implemented in User.java
+            PreparedStatement stmt = connection.prepareStatement("SELECT id, nationality_id, studies_id," +
+                    "universities_id, email as dbemail, passwd, firstname, lastname, sex, birthdate, study, bio," +
+                    "studyYear, /*availableDates, */location, phonenumber/*, photo*/ FROM `users` WHERE email = ?");
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                int id = rs.getInt("id"),
+                    nationality_id = rs.getInt("nationality_id"),
+                    studies_id = rs.getInt("studies_id"),
+                    universities_id = rs.getInt("universities_id"),
+                    study = rs.getInt("study"),
+                    studyYear = rs.getInt("studyYear");
+                String dbemail = rs.getString("dbemail"),
+                       password = rs.getString("passwd"),
+                       firstname = rs.getString("firstname"),
+                       lastname = rs.getString("lastname"),
+                       sex = rs.getString("sex"),
+                       bio = rs.getString("bio"),
+                       location = rs.getString("location"),
+                       phonenumber = rs.getString("phonenumber");
+                java.util.Date birthdate = new java.util.Date(rs.getLong("birthdate"));
 
-    /**
-     * Writes database to specified file in json format.
-     * @param file
-     * @throws IOException
-     */
-    public void writeFile(String file) throws IOException, JSONException {
-        String dataBase = db.toString(4);
-        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-        bw.write(dataBase);
-        bw.close();
-    }
+                //TODO create user using above fields.
+                System.out.println("================================================\nData received from database:");
+                System.out.println(id);
+                System.out.println(nationality_id);
+                System.out.println(studies_id);
+                System.out.println(universities_id);
+                System.out.println(study);
+                System.out.println(studyYear);
+                System.out.println(dbemail);
+                System.out.println(password);
+                System.out.println(firstname);
+                System.out.println(lastname);
+                System.out.println(sex);
+                System.out.println(bio);
+                System.out.println(location);
+                System.out.println(phonenumber);
+                System.out.println(birthdate);
+                System.out.println("==================================================");
 
-    /**
-     * Returns the JSON object of the database in a string representation
-     * @return String
-     */
-    public String toString() {
-        return this.db.toString();
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("Could not get user by email:\n" + e.getMessage());
+        }
+        return user;
     }
 
 }
