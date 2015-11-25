@@ -29,8 +29,11 @@ public class User {
 		this.nationality = nationality;
 		this.description = description;
 	}
-	
-	
+
+	public User() {
+	}
+
+
 	public String toString() {
 		String text = new String();
 		text = Integer.toString(userID) + "\n" + name + "\n" + birthday.toString() + "\n" + mail +
