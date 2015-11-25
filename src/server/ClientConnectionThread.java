@@ -21,6 +21,10 @@ public class ClientConnectionThread extends Thread {
     private InputStream inputStream;
     private OutputStream outputStream;
 
+    /**
+     * Constructs a new ClientConnectionThread for communicating with a client
+     * @param client the client to communicate with in this thread
+     */
     public ClientConnectionThread(ConnectedClient client) {
         this.socket = client.getSocket();
         this.client = client;
@@ -55,6 +59,9 @@ public class ClientConnectionThread extends Thread {
         }
     }
 
+    /**
+     * Ends the ClientConnectionThread
+     */
     public void end() {
         shouldStop = true;
     }
@@ -67,6 +74,11 @@ public class ClientConnectionThread extends Thread {
         return input.toString(0).getBytes(StandardCharsets.UTF_8); // TODO: encryption?
     }
 
+    /**
+     * Send a message to the client associated with this thread
+     * @param message The message to send
+     * @throws java.io.IOException when the socket is being written to while trying to write.
+     */
     public synchronized void sendMessage(JSONObject message) throws java.io.IOException {
         byte[] msg = encodeMessage(message);
         outputStream.write(ByteBuffer.allocate(4).putInt(msg.length).array());

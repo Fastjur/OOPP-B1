@@ -17,6 +17,11 @@ public class ListenThread extends Thread {
     private int port;
     private ServerSocket ss;
 
+    /**
+     * Construct a new ListenThread
+     * @param clientlist An empty ArrayList to store the clients in
+     * @param port The port to listen on.
+     */
     public ListenThread(ArrayList<ConnectedClient> clientlist, int port) {
         super("ListenerThread");
         this.clientlist = clientlist;
@@ -48,6 +53,9 @@ public class ListenThread extends Thread {
         closeAllConnections();
     }
 
+    /**
+     * Gracefully closes all client connections and closes the server socket.
+     */
     public void end() {
         this.shouldstop = true;
         try {
@@ -59,6 +67,9 @@ public class ListenThread extends Thread {
         }
     }
 
+    /**
+     * Close all open client connections.
+     */
     public void closeAllConnections() {
         try {
             for (int i = clientlist.size() - 1; i >= 0; i--) {

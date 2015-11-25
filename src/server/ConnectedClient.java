@@ -22,15 +22,27 @@ public class ConnectedClient {
         System.out.println(socket.getInetAddress().toString() + " connected.");
     }
 
+    /**
+     * Closes the connection with this client. Don't forget to remove this client from the clientlist afterwards.
+     * @throws IOException when the socket is being written to while closing
+     */
     public void closeConnection() throws IOException {
         this.connectionThread.end();
         this.socket.close();
     }
 
+    /**
+     * Returns the socket associated with this client
+     * @return the socket associated with this client
+     */
     public Socket getSocket() {
         return this.socket;
     }
 
+    /**
+     * Sends a message to this client
+     * @param message the message to send
+     */
     public void sendMessage(JSONObject message) {
         try {
             connectionThread.sendMessage(message);
