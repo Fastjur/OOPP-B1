@@ -3,7 +3,7 @@ public class Timepoint {
 	private int hour, minute;
 	
 	/**
-	 * Constructor
+	 * Timepoint: constructor for class Timepoint
 	 * @param hour - int
 	 * @param minute - int
 	 */
@@ -12,6 +12,10 @@ public class Timepoint {
 		this.minute = minute;
 	}
 	
+	/**
+	 * toString: gives a textual representation of Timepoint
+	 * @return text - String
+	 */
 	public String toString() {
 		String text = new String();
 		
@@ -48,7 +52,7 @@ public class Timepoint {
 	
 	/**
 	 * setHour: setter for private attribute hour and checks if hour has a valid input
-	 * @param hour int
+	 * @param hour - int
 	 */
 	public void setHour(int hour) {
 		if (hour >= 0 && hour <= 23) {
@@ -107,5 +111,4 @@ public class Timepoint {
 		}
 		return false;
 	}
-
 }
