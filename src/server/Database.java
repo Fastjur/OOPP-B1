@@ -29,56 +29,73 @@ public class Database {
         }
     }
 
-    public static User getUser(String email) {
+    public User getUser(String email) {
         User user = new User();
         try {
             //TODO uncomment statement parts when they have been implemented in User.java
             PreparedStatement stmt = connection.prepareStatement("SELECT id, nationality_id, studies_id," +
                     "universities_id, email as dbemail, passwd, firstname, lastname, sex, birthdate, study, bio," +
-                    "studyYear, /*availableDates, */location, phonenumber/*, photo*/ FROM `users` WHERE email = ?");
+                    "studyYear, /*availableDates, */location, phonenumber/*, photo*/ FROM `users` WHERE email = ? " +
+                    "LIMIT 1");
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
-                int id = rs.getInt("id"),
+            user = processUser(rs);
+        } catch (SQLException e) {
+            throw new IllegalStateException("Could not get user by email:\n" + e.getMessage());
+        }
+        return user;
+    }
+
+    public User getUser(int id) {
+        User user;
+        try {
+            //TODO uncomment statement parts when they have been implemented in User.java
+            PreparedStatement stmt = connection.prepareStatement("SELECT id, nationality_id, studies_id," +
+                    "universities_id, email as dbemail, passwd, firstname, lastname, sex, birthdate, study, bio," +
+                    "studyYear, /*availableDates, */location, phonenumber/*, photo*/ FROM `users` WHERE email = ? " +
+                    "LIMIT 1");
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            user = processUser(rs);
+        } catch (SQLException e) {
+            throw new IllegalStateException("Could not get user by email:\n" + e.getMessage());
+        }
+        return user;
+    }
+
+    private User processUser(ResultSet rs) throws SQLException {
+        User usr = new User();
+        while(rs.next()) {
+            int id = rs.getInt("id"),
                     nationality_id = rs.getInt("nationality_id"),
                     studies_id = rs.getInt("studies_id"),
                     universities_id = rs.getInt("universities_id"),
                     study = rs.getInt("study"),
                     studyYear = rs.getInt("studyYear");
-                String dbemail = rs.getString("dbemail"),
-                       password = rs.getString("passwd"),
-                       firstname = rs.getString("firstname"),
-                       lastname = rs.getString("lastname"),
-                       sex = rs.getString("sex"),
-                       bio = rs.getString("bio"),
-                       location = rs.getString("location"),
-                       phonenumber = rs.getString("phonenumber");
-                java.util.Date birthdate = new java.util.Date(rs.getLong("birthdate"));
+            String dbemail = rs.getString("dbemail"),
+                    password = rs.getString("passwd"),
+                    firstname = rs.getString("firstname"),
+                    lastname = rs.getString("lastname"),
+                    sex = rs.getString("sex"),
+                    bio = rs.getString("bio"),
+                    location = rs.getString("location"),
+                    phonenumber = rs.getString("phonenumber");
+            Date birthdate = new Date(rs.getString("birthdate"));
 
-                //TODO create user using above fields.
-                System.out.println("================================================\nData received from database:");
-                System.out.println(id);
-                System.out.println(nationality_id);
-                System.out.println(studies_id);
-                System.out.println(universities_id);
-                System.out.println(study);
-                System.out.println(studyYear);
-                System.out.println(dbemail);
-                System.out.println(password);
-                System.out.println(firstname);
-                System.out.println(lastname);
-                System.out.println(sex);
-                System.out.println(bio);
-                System.out.println(location);
-                System.out.println(phonenumber);
-                System.out.println(birthdate);
-                System.out.println("==================================================");
-
+            PreparedStatement stmt = connection.prepareStatement("SELECT name FROM `nationalities` " +
+                    "WHERE id = ? LIMIT 1");
+            stmt.setInt(1, nationality_id);
+            ResultSet rs2 = stmt.executeQuery();
+            String nationality = "{NATIONALITY}";
+            while(rs2.next()) {
+                nationality = rs2.getString("name");
             }
-        } catch (SQLException e) {
-            throw new IllegalStateException("Could not get user by email:\n" + e.getMessage());
+
+            usr = new User(id, firstname + " " + lastname, birthdate, dbemail, phonenumber,
+                    new Address("A", "B", "C","D"), "{COURSES}", "{UNIVERSITY}", 0, sex, nationality, bio);
+            System.out.println(usr);
         }
-        return user;
+        return usr;
     }
 
 }

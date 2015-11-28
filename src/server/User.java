@@ -2,45 +2,77 @@ package server;
 import java.util.ArrayList;
 
 public class User {
-	private String name, mail, phonenumber, course, university, gender, nationality, 
-			description;
-	private Date birthday;
-	private int userID, experienceInYears;
+	private String password, firstname, lastname, mail, phonenumber, course, university, gender, nationality, 
+			description, location, picture;
+	private Birthday birthday;
+	private int userID, studyYear;
 	private Address address;
-	private ArrayList<String> helpOfferedList, helpWantedList;
+	private ArrayList<String> coursesTeachingList, coursesLearningList, buddyList, languageList;
 	private ArrayList<AvailableDate> availableList;
 	
-	public User(int userID, String name, Date birthday, String mail,
-			String phonenumber, Address address, String course, String university, int experienceInYears, 
-			String gender, String nationality, String description) {
+	/**
+	 * User: constructor for class User
+	 * @param userID - int
+	 * @param password - String
+	 * @param firstname - String
+	 * @param lastname - String
+	 * @param birthday - Birthday
+	 * @param mail - String
+	 * @param phonenumber - String
+	 * @param address - Address
+	 * @param course - String
+	 * @param university - String
+	 * @param studyYear - int
+	 * @param gender - String
+	 * @param nationality - String
+	 * @param description - String
+	 * @param location - String
+	 * @param picture - String
+	 */
+	public User(int userID, String password, String firstname, String lastname, Birthday birthday, String mail,
+			String phonenumber, Address address, String course, String university, int studyYear, 
+			String gender, String nationality, String description, String location, String picture) {
 		this.userID = userID;
-		this.name = name;
+		this.password = password;
+		this.firstname = firstname;
+		this.lastname = lastname;
 		this.birthday = birthday;
 		this.mail = mail;
 		this.phonenumber = phonenumber;
 		this.address = address;
 		this.course = course;
 		this.university = university;
-		this.experienceInYears = experienceInYears;
+		this.studyYear = studyYear;
 		availableList = new ArrayList<AvailableDate>();
-		helpOfferedList = new ArrayList<String>();
-		helpWantedList = new ArrayList<String>();
+		coursesTeachingList = new ArrayList<String>();
+		coursesLearningList = new ArrayList<String>();
+		buddyList = new ArrayList<String>();
 		this.gender = gender;
 		this.nationality = nationality;
+		languageList = new ArrayList<String>();
 		this.description = description;
+		this.location = location;
+		this.picture = picture;
 	}
 
+    /**
+     * Empty constructor for user
+     */
 	public User() {
 	}
 
+	/**
+	 * toString: gives a textual representation of User
+	 * @return text - String
+	 */
 
 	public String toString() {
 		String text = new String();
-		text = Integer.toString(userID) + "\n" + name + "\n" + birthday.toString() + "\n" + mail +
-				"\n" + phonenumber + "\n" + address.toString() + course + "\n" + university +
-				"\n" + Integer.toString(experienceInYears) + "\n";
+		text = Integer.toString(userID) + "\n" + password + "\n" + firstname + " " + lastname + "\n" 
+				+ birthday + "\n" + mail + "\n" + phonenumber + "\n" + address.toString() + course 
+				+ "\n" + university + "\n" + Integer.toString(studyYear) + "\n" ; 
 		// availableList
-		text += "available:";
+		text += "available: ";
 		for (int i = 0; i < availableList.size(); i++) {
 			text += availableList.get(i);
 			if (i < availableList.size()-1) {
@@ -49,30 +81,50 @@ public class User {
 		}
 		text += "\n";
 		
-		// helpOfferedList
-		text += "helpOffered:";
-		for (int i = 0; i < helpOfferedList.size(); i++) {
-			text += helpOfferedList.get(i);
-			if (i < helpOfferedList.size()-1) {
+		// coursesTeachingList
+		text += "Courses teaching: ";
+		for (int i = 0; i < coursesTeachingList.size(); i++) {
+			text += coursesTeachingList.get(i);
+			if (i < coursesTeachingList.size()-1) {
 				text += ";";
 			}
 		}
 		text += "\n";
 				
-		// helpWantedList
-		text += "helpWanted:";
-		for (int i = 0; i < helpWantedList.size(); i++) {
-			text += helpWantedList.get(i);
-			if (i < helpWantedList.size()-1) {
+		// coursesLearningList
+		text += "Courses learning: ";
+		for (int i = 0; i < coursesLearningList.size(); i++) {
+			text += coursesLearningList.get(i);
+			if (i < coursesLearningList.size()-1) {
 				text += ";";
 			}
 		}
 		text += "\n";
 		
-		text += gender + "\n" + nationality +
-				"\n" + description;
+		// buddieList
+		text += "Courses searching Buddy: ";
+		for (int i = 0; i < buddyList.size(); i++) {
+			text += buddyList.get(i);
+			if (i < buddyList.size()-1) {
+				text += ";";
+			}
+		}
+		
+		text += "\n" + gender + "\n" + nationality + "\n";
+		
+		// languageList
+		text += "languages: ";
+		for (int i = 0; i < languageList.size(); i++) {
+			text += languageList.get(i);
+			if (i < languageList.size()-1) {
+				text += ";";
+			}
+		}
+		
+		text += "\n" + description + "\n" + location + "\n" + picture;
 		return text;
 	}
+	
 	//make getters for the private attributes
 	/**
 	 * getUserID: getter for private attribute userID
@@ -83,18 +135,34 @@ public class User {
 	}
 	
 	/**
-	 * getName: getter for private attribute name 
+	 * getPasword: getter for private attribute password
+	 * @return password - String
+	 */
+	public String getPassword() {
+		return password;
+	}
+	
+	/**
+	 * getFirstname: getter for private attribute firstname 
 	 * @return name - String
 	 */
-	public String getName() {
-		return name;
+	public String getFirstname() {
+		return firstname;
+	}
+	
+	/**
+	 * getLastname: getter for private attribute lastname 
+	 * @return name - String
+	 */
+	public String getLastname() {
+		return lastname;
 	}
 	
 	/**
 	 * getBirthday: getter for private attribute birthday
-	 * @return birthday - Date
+	 * @return birthday - Birthday
 	 */
-	public Date getBirthday() {
+	public Birthday getBirthday() {
 		return birthday;
 	}
 	
@@ -116,17 +184,17 @@ public class User {
 	
 	/**
 	 * getAddress: getter for private attribute address
-	 * @return address - String
+	 * @return address - Address
 	 */
 	public Address getAddress() {
 		return address;
 	}
 	
 	/**
-	 * getCourse: getter for private attribute course
+	 * getStudy: getter for private attribute course
 	 * @return course - String
 	 */
-	public String getCourse() {
+	public String getStudy() {
 		return course;
 	}
 	
@@ -139,11 +207,11 @@ public class User {
 	}
 	
 	/**
-	 * getExperienceInYears: getter for private attribute experienceInYears
-	 * @return experienceInYears - String
+	 * getStudyYear: getter for private attribute studyYear
+	 * @return studyYear - String
 	 */
-	public int getExperienceInYears() {
-		return experienceInYears;
+	public int getStudyYear() {
+		return studyYear;
 	}
 	
 	/**
@@ -171,23 +239,47 @@ public class User {
 	}
 	
 	/**
-	 * getHelpOfferedSize: getter for the size of the arrayList helpOfferedList
-	 * @return helpOfferdList.size() - int
+	 * getLocation: getter for private attribute location
+	 * @return location - String
 	 */
-	public int getHelpOfferedSize() {
-		 return helpOfferedList.size();
+	public String getLocation() {
+		return location;
+	}
+	
+	/**
+	 * getPicture: getter for private attribute picture
+	 * @return picture - String
+	 */
+	public String getPicture() {
+		return picture;
+	}
+	
+	/**
+	 * getStudysTeachingSize: getter for the size of the arrayList coursesTeachingList
+	 * @return coursesTeachingList.size() - int
+	 */
+	public int getStudysTeachingSize() {
+		 return coursesTeachingList.size();
 	 }
 	
 	/**
-	 * getHelpWantedSize: getter for the size of the arrayList helpWantedList
-	 * @return helpWantedList.size() - int
+	 * getStudysLearningSize: getter for the size of the arrayList coursesLearningList
+	 * @return coursesLearningList.size() - int
 	 */
-	public int getHelpWantedSize() {
-		 return helpWantedList.size();
+	public int getStudysLearningSize() {
+		 return coursesLearningList.size();
 	 }
 	
 	/**
-	 * getAvailableListSize: getter for the size of the arrayList timeList
+	 * getBuddySize: getter for the size of the arrayList buddyList
+	 * @return buddyList.size() - int
+	 */
+	public int getBuddySize() {
+		return buddyList.size();
+	}
+	
+	/**
+	 * getAvailableListSize: getter for the size of the arrayList availableList
 	 * @return availableList.size() - int
 	 */
 	public int getAvailableSize() {
@@ -195,13 +287,21 @@ public class User {
 	}
 	
 	/**
-	 * containsHelpOffered: checks if helpOffered is already in the arrayList 
-	 * @param helpOffered - String
+	 * getLanguageSize: getter for the size of the arrayList languageList
+	 * @return languageList.size() - int
+	 */
+	public int getLanguageSize() {
+		return languageList.size();
+	}
+	
+	/**
+	 * containsCoursesTeaching: checks if coursesTeaching is already in the arrayList 
+	 * @param coursesTeaching - String
 	 * @return boolean
 	 */
-	public boolean containsHelpOffered(String helpOffered) {
-		for (int i = 0; i < helpOfferedList.size(); i++) {
-			if (helpOfferedList.get(i).equals(helpOffered)) {
+	public boolean containsCoursesTeaching(String coursesTeaching) {
+		for (int i = 0; i < coursesTeachingList.size(); i++) {
+			if (coursesTeachingList.get(i).equals(coursesTeaching)) {
 				return true;
 			}
 		}
@@ -209,13 +309,13 @@ public class User {
 	}
 	
 	/**
-	 * containsHelpWanted: checks if helpWanted is already in the arrayList 
-	 * @param helpWanted - String
+	 * containsCoursesLearning: checks if coursesLearning is already in the arrayList 
+	 * @param coursesLearning - String
 	 * @return boolean
 	 */
-	public boolean containsHelpWanted(String helpWanted) {
-		for (int i = 0; i < helpWantedList.size(); i++) {
-			if (helpWantedList.get(i).equals(helpWanted)) {
+	public boolean containsCoursesLearning(String coursesLearning) {
+		for (int i = 0; i < coursesLearningList.size(); i++) {
+			if (coursesLearningList.get(i).equals(coursesLearning)) {
 				return true;
 			}
 		}
@@ -223,7 +323,21 @@ public class User {
 	}
 	
 	/**
-	 * containsAvailable: checks if available is alreadu in the arrayList
+	 * containsBuddy: checks if buddy is already in the arrayList
+	 * @param buddy - String
+	 * @return boolean
+	 */
+	public boolean containsBuddy(String buddy) {
+		for (int i = 0; i < buddyList.size(); i++) {
+			if (buddyList.get(i).equals(buddy)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * containsAvailable: checks if available is already in the arrayList
 	 * @param available - AvailableDate
 	 * @return boolean
 	 */
@@ -237,32 +351,66 @@ public class User {
 	}
 	
 	/**
-	 * addHelpOffered: adds helpOffered in the arrayList if it isn't already in it
-	 * @param helpOffered - String
+	 * containsLanguage: checks if language is already in the arrayList
+	 * @param language - String
+	 * @return boolean
 	 */
-	public void addHelpOffered(String helpOffered) {
-		if(!this.containsHelpOffered(helpOffered)) {
-			helpOfferedList.add(helpOffered);
+	public boolean containsLanguage(String language) {
+		for (int i = 0; i < languageList.size(); i++) {
+			if (languageList.get(i).equals(language)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * addCoursesTeaching: adds coursesTeaching in the arrayList if it isn't already in it
+	 * @param coursesTeaching - String
+	 */
+	public void addCoursesTeaching(String coursesTeaching) {
+		if(!this.containsCoursesTeaching(coursesTeaching)) {
+			coursesTeachingList.add(coursesTeaching);
 		}
 	}
 	
 	/**
-	 * addHelpWanted: adds helpWanted in the arrayList if it isn't already in it
-	 * @param helpWanted - String
+	 * addCoursesLearning: adds coursesLearning in the arrayList if it isn't already in it
+	 * @param coursesLearning - String
 	 */
-	public void addHelpWanted(String helpWanted) {
-		if (!this.containsHelpWanted(helpWanted)) {
-			helpWantedList.add(helpWanted);
+	public void addCoursesLearning(String coursesLearning) {
+		if (!this.containsCoursesLearning(coursesLearning)) {
+			coursesLearningList.add(coursesLearning);
+		}
+	}
+	
+	/**
+	 * addBuddy: adds buddy in the arrayList if it isn't already in it
+	 * @param buddy - String
+	 */
+	public void addBuddy(String buddy) {
+		if (!this.containsBuddy(buddy)) {
+			buddyList.add(buddy);
 		}
 	}
 	
 	/**
 	 * addAvailable: adds available in the arrayList if it isn't already in it
-	 * @param available
+	 * @param available - AvailableDate
 	 */
 	public void addAvailable(AvailableDate available) {
 		if (!this.containsAvailable(available)) {
 			availableList.add(available);
+		}
+	}
+	
+	/**
+	 * addLanguage: adds available in the arrayList if it isn't already in it
+	 * @param language - String
+	 */
+	public void addLanguage(String language) {
+		if (!this.containsLanguage(language)) {
+			languageList.add(language);
 		}
 	}
 	
@@ -275,18 +423,34 @@ public class User {
 	}
 	
 	/**
-	 * setName: setter for private attribute name
-	 * @param name - String
+	 * setPassword: setter for private attribute password
+	 * @param password - String
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	/**
+	 * setFirstname: setter for private attribute firstname
+	 * @param firstname - String
+	 */
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+	
+	/**
+	 * setLastName: setter for private attribute lastname
+	 * @param lastname - String
+	 */
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 	
 	/**
 	 * setBirthday: setter for private attribute birthday
-	 * @param birthday - Date
+	 * @param birthday - Birthday
 	 */
-	public void setBirthday(Date birthday) {
+	public void setBirthday(Birthday birthday) {
 		this.birthday = birthday;
 	}
 	
@@ -315,10 +479,10 @@ public class User {
 	}
 	
 	/**
-	 * setCourse: setter for private attribute course
+	 * setStudy: setter for private attribute course
 	 * @param course - String
 	 */
-	public void setCourse(String course) {
+	public void setStudy(String course) {
 		this.course = course;
 	}
 	
@@ -331,11 +495,11 @@ public class User {
 	}
 	
 	/**
-	 * setExperienceInYears: setter for private attribute experienceInYears
-	 * @param experienceInYears - int
+	 * setStudyYear: setter for private attribute studyYear
+	 * @param studyYear - int
 	 */
-	public void setExperienceInYears(int experienceInYears) {
-		this.experienceInYears = experienceInYears;
+	public void setStudyYear(int studyYear) {
+		this.studyYear = studyYear;
 	}
 	
 	/**
@@ -363,37 +527,68 @@ public class User {
 	}
 	
 	/**
+	 * setLocation: setter for private attribute location
+	 * @param location - String
+	 */
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	
+	/**
+	 * setPicture: setter for private attribute picture
+	 * @param picture - String
+	 */
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+	
+	/**
 	 * equals: checks if current object is the same as the other
+	 * @param other - Object
+	 * @return boolean
 	 */
 	public boolean equals(Object other) {
 		if (other instanceof User) {
 			User that = (User) other;
 			if (this.userID == that.getUserID() &&
-					this.name.equals(that.getName()) &&
+					this.password.equals(that.getPassword()) &&
+					this.firstname.equals(that.getFirstname()) &&
+					this.lastname.equals(that.getLastname()) &&
 					this.birthday.equals(that.getBirthday()) &&
 					this.mail.equals(that.getMail()) &&
 					this.phonenumber.equals(that.getPhonenumber()) &&
 					this.address.equals(that.getAddress()) &&
-					this.course.equals(that.getCourse()) &&
+					this.course.equals(that.getStudy()) &&
 					this.university.equals(that.getUniversity()) &&
-					this.experienceInYears == that.getExperienceInYears() &&	
+					this.studyYear == that.getStudyYear() &&	
 					this.gender.equals(that.getGender()) &&
 					this.nationality.equals(that.getNationality()) &&
-					this.description.equals(that.getDescription())) {
+					this.description.equals(that.getDescription()) &&
+					this.location.equals(that.getLocation()) &&
+					this.picture.equals(that.getPicture())) {
 				
-				if (helpOfferedList.size() != that.getHelpOfferedSize()) {
+				if (coursesTeachingList.size() != that.getStudysTeachingSize()) {
 					return false;
 				}
-				for (int i = 0; i < helpOfferedList.size(); i++) {
-					if (!that.containsHelpOffered(helpOfferedList.get(i))) {
+				for (int i = 0; i < coursesTeachingList.size(); i++) {
+					if (!that.containsCoursesTeaching(coursesTeachingList.get(i))) {
 						return false;
 					}
 				} 
-				if (helpWantedList.size() != that.getHelpWantedSize()) {
+				if (coursesLearningList.size() != that.getStudysLearningSize()) {
 					return false;
 				}
-				for (int i = 0; i < helpWantedList.size(); i++) {
-					if (!that.containsHelpWanted(helpWantedList.get(i)))
+				for (int i = 0; i < coursesLearningList.size(); i++) {
+					if (!that.containsCoursesLearning(coursesLearningList.get(i)))
+					{
+						return false;
+					}
+				} 
+				if (buddyList.size() != that.getBuddySize()) {
+					return false;
+				}
+				for (int i = 0; i < buddyList.size(); i++) {
+					if (!that.containsBuddy(buddyList.get(i)))
 					{
 						return false;
 					}
@@ -405,6 +600,15 @@ public class User {
 					if (!that.containsAvailable(availableList.get(i))) {
 						return false;
 					}
+				}
+				if (languageList.size() != that.getLanguageSize()) {
+					return false;
+				}
+				for (int i = 0; i < languageList.size(); i++) {
+					if (!that.containsLanguage(languageList.get(i)))
+					{
+						return false;
+					}
 				} 
 				return true;
 			}
@@ -412,6 +616,4 @@ public class User {
 		}
 		return false;
 	}
-	
-	
 }

@@ -3,6 +3,11 @@ package server;
 public class TimePeriod {
 	private Timepoint beginTime, endTime;
 	
+	/**
+	 * TimePeriod: constructor for class TimePeriod
+	 * @param beginTime - Timepoint
+	 * @param endTime - Timepoint
+	 */
 	public TimePeriod(Timepoint beginTime, Timepoint endTime) {
 		// check if TimePeriod is valid, i.e. endTime not earlier than beginTime
 		if (!endTime.earlierThan(beginTime)) {
@@ -14,6 +19,10 @@ public class TimePeriod {
 		}
 	}
 	
+	/**
+	 * toString: gives a textual representation of TimePeriod
+	 * @return String
+	 */
 	public String toString() {
 		return this.beginTime.toString() + " - " + this.endTime.toString();
 	}
@@ -119,6 +128,5 @@ public class TimePeriod {
 			}
 		}
 		return false;
-	}
-	
+	}	
 }
