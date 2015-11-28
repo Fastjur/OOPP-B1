@@ -3,12 +3,14 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.util.Date;
+
 
 public class UserTest {
 	//Test: constructor
 	@Test
 	public void testUser() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		assertTrue(user instanceof User);
@@ -17,7 +19,7 @@ public class UserTest {
 	//Test: toString1
 	@Test
 	public void testToString1() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("4457773\nP@ssW0rd\nLaura Folkerts\n13-01-1997\n"
@@ -30,7 +32,7 @@ public class UserTest {
 	//Test: toString2
 	@Test
 	public void testToString2() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");		
 		
@@ -44,10 +46,10 @@ public class UserTest {
 		String language = new String("Dutch");
 		user.addLanguage(language);	
 		
-		String expected = new String("4457773\nP@ssW0rd\nLaura Folkerts\n13-01-1997\n"
+		String expected = "4457773\nP@ssW0rd\nLaura Folkerts\n13-01-1997\n"
 				+ "laura@mail.com\n0612345678\nM. Rutgersweg 1, 2331NT Leiden\nComputer Sciences\n"
 				+ "TU Delft\n1\navailable: Friday\nCourses teaching: Calculus\nCourses learning: OOP\n"
-				+ "Courses searching Buddy: Web&Database\nwoman\nDutch\nlanguages: Dutch\nHello\nGPS\nIMG");
+				+ "Courses searching Buddy: Web&Database\nwoman\nDutch\nlanguages: Dutch\nHello\nGPS\nIMG";
 		
 		assertTrue(expected.equals(user.toString()));
 	}
@@ -55,7 +57,7 @@ public class UserTest {
 	//Test: toString3
 	@Test
 	public void testToString3() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");		
 		
@@ -90,7 +92,7 @@ public class UserTest {
 	//Test: getUserID
 	@Test
 	public void testGetUserID() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		assertTrue(4457773 == user.getUserID());
@@ -99,7 +101,7 @@ public class UserTest {
 	//Test: getPassword
 	@Test
 	public void testGetPassword() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("P@ssW0rd");
@@ -109,7 +111,7 @@ public class UserTest {
 	//Test: getFirstname
 	@Test
 	public void testGetFirstname() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("Laura");
@@ -119,7 +121,7 @@ public class UserTest {
 	//Test: getLastname
 	@Test
 	public void testGetLastname() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("Folkerts");
@@ -129,7 +131,7 @@ public class UserTest {
 	//Test: getBirthday
 	@Test
 	public void testGetBirthday() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("13-01-1997");
@@ -139,7 +141,7 @@ public class UserTest {
 	//Test: getMail
 	@Test
 	public void testGetMail() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("laura@mail.com");
@@ -149,7 +151,7 @@ public class UserTest {
 	//Test: getPhonenumber
 	@Test
 	public void testGetPhonenumber() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("0612345678");
@@ -159,7 +161,7 @@ public class UserTest {
 	//Test: getAddress
 	@Test
 	public void testGetAddress() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("M. Rutgersweg 1, 2331NT Leiden\n");
@@ -169,7 +171,7 @@ public class UserTest {
 	//Test: getStudy
 	@Test
 	public void testGetStudy() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("Computer Sciences");
@@ -179,7 +181,7 @@ public class UserTest {
 	//Test: getUniversity
 	@Test
 	public void testGetUniversity() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("TU Delft");
@@ -189,7 +191,7 @@ public class UserTest {
 	//Test: getStudyYear
 	@Test
 	public void testGetStudyYear() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		assertTrue(user.getStudyYear() == 1);
@@ -198,7 +200,7 @@ public class UserTest {
 	//Test: getGender
 	@Test
 	public void testGetGender() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("woman");
@@ -208,7 +210,7 @@ public class UserTest {
 	//Test: getUniversity
 	@Test
 	public void testGetNationality() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("Dutch");
@@ -218,7 +220,7 @@ public class UserTest {
 	//Test: getDescription
 	@Test
 	public void testGetDescription() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("Hello");
@@ -228,7 +230,7 @@ public class UserTest {
 	//Test: getLocation
 	@Test
 	public void testGetLocation() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("GPS");
@@ -238,7 +240,7 @@ public class UserTest {
 	//Test: getPicture
 	@Test
 	public void testGetPicture() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String expected = new String("IMG");
@@ -248,7 +250,7 @@ public class UserTest {
 	//Test: getStudysTeachingSize1 (empty)
 	@Test
 	public void testgetStudysTeachingSize1() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		assertTrue(user.getStudysTeachingSize() == 0);
@@ -257,7 +259,7 @@ public class UserTest {
 	//Test: getStudysTeachingSize2 
 	@Test
 	public void testgetStudysTeachingSize2() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -270,7 +272,7 @@ public class UserTest {
 	//Test: getStudysLearningSize1 (empty)
 	@Test
 	public void testgetStudysLearningSize1() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		assertTrue(user.getStudysLearningSize() == 0);
@@ -279,7 +281,7 @@ public class UserTest {
 	//Test: getStudysLearningSize2
 	@Test
 	public void testgetStudysLearningSize2() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpWanted = new String("Calculus");
@@ -292,7 +294,7 @@ public class UserTest {
 	//Test: getBuddySize1 (empty)
 	@Test
 	public void testContainsBuddy1() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		assertTrue(user.getBuddySize() == 0);
@@ -301,7 +303,7 @@ public class UserTest {
 	//Test: getBuddySize2
 	@Test
 	public void testContains2() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.addBuddy("OOP");
@@ -312,7 +314,7 @@ public class UserTest {
 	//Test: getAvailableSize1 (empty)
 	@Test
 	public void testGetAvailableSize1() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		assertTrue(user.getAvailableSize() == 0);
@@ -321,7 +323,7 @@ public class UserTest {
 	//Test: getAvailableSize2
 	@Test
 	public void testGetAvailableSize2() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		AvailableDate available = new  AvailableDate(new Weekdays("Monday"));
@@ -334,7 +336,7 @@ public class UserTest {
 	//Test: getLanguageSize1 (empty)
 	@Test
 	public void testGetLanguageSize1() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		assertTrue(user.getLanguageSize() == 0);
@@ -343,7 +345,7 @@ public class UserTest {
 	//Test: getLanguageSize2
 	@Test
 	public void testGetLanguageSize2() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.addLanguage("Dutch");
@@ -354,7 +356,7 @@ public class UserTest {
 	//Test: containsCoursesTeaching
 	@Test
 	public void testContainsCoursesTeaching() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -368,7 +370,7 @@ public class UserTest {
 	//Test: containsCoursesLearning
 	@Test
 	public void testContainsCoursesLearning() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpWanted = new String("Calculus");
@@ -381,7 +383,7 @@ public class UserTest {
 	//Test: containsBuddy
 	@Test
 	public void testContainsBuddy() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String buddy1 = new String("Calculus");
@@ -394,7 +396,7 @@ public class UserTest {
 	//Test: containsAvailable
 	@Test
 	public void testContainsAvailable() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		AvailableDate available = new AvailableDate(new Weekdays("Monday"));
@@ -407,7 +409,7 @@ public class UserTest {
 	//Test: containsLanguage
 	@Test
 	public void testContainsLanguage() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String language1 = new String("Dutch");
@@ -420,7 +422,7 @@ public class UserTest {
 	//Test: addCoursesTeaching
 	@Test
 	public void testAddCoursesTeaching() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.addCoursesTeaching("Calculus");
@@ -431,7 +433,7 @@ public class UserTest {
 	//Test: addCoursesLearning
 	@Test
 	public void testAddCoursesLearning() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.addCoursesLearning("Calculus");
@@ -442,7 +444,7 @@ public class UserTest {
 	//Test: addBuddy
 	@Test
 	public void testAddBuddy() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.addBuddy("Calculus");
@@ -453,7 +455,7 @@ public class UserTest {
 	//Test: addAvailable
 	@Test
 	public void testAddAvailable() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");	
 		user.addAvailable(new AvailableDate(new Weekdays("Monday")));
@@ -464,7 +466,7 @@ public class UserTest {
 	//Test: addLanguage
 	@Test
 	public void testAddLanguage() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");	
 		user.addLanguage("Dutch");
@@ -475,7 +477,7 @@ public class UserTest {
 	//Test: setUserId
 	@Test
 	public void testSetUserID() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.setUserID(123456);
@@ -485,7 +487,7 @@ public class UserTest {
 	//Test: setPassword
 	@Test
 	public void testSetPassword() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");	
 		user.setPassword("U$er");
@@ -496,7 +498,7 @@ public class UserTest {
 	//Test: setFirstname
 	@Test
 	public void testSetFirstname() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");	
 		user.setFirstname("Emile");
@@ -507,7 +509,7 @@ public class UserTest {
 	//Test: setLastname
 	@Test
 	public void testLastname() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");	
 		user.setLastname("Lobo");
@@ -518,10 +520,10 @@ public class UserTest {
 	//Test: setBirthday
 	@Test
 	public void testSetBirthday() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
-		user.setBirthday(new Birthday(7,7,1999));
+		user.setBirthday(new Date(931305600));
 		String expected = new String("07-07-1999");
 		assertTrue(expected.equals(user.getBirthday().toString()));
 	}
@@ -529,7 +531,7 @@ public class UserTest {
 	//Test: setMail
 	@Test
 	public void testSetMail() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.setMail("ron@mail.com");
@@ -540,7 +542,7 @@ public class UserTest {
 	//Test: setPhonenumber
 	@Test
 	public void testSetPhonenumber() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.setPhonenumber("0698765432");
@@ -551,7 +553,7 @@ public class UserTest {
 	//Test: setAddress
 	@Test
 	public void testSetAddress() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.setAddress(new Address("Street", "5", "1234AB", "Delft"));
@@ -562,7 +564,7 @@ public class UserTest {
 	//Test: setStudy
 	@Test
 	public void testsetStudy() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.setStudy("LST");
@@ -573,7 +575,7 @@ public class UserTest {
 	//Test: setUniversity
 	@Test
 	public void testSetUniversity() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.setUniversity("Leiden University");
@@ -584,7 +586,7 @@ public class UserTest {
 	//Test: setStudyYear
 	@Test
 	public void testSetStudyYear() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.setStudyYear(3);
@@ -594,7 +596,7 @@ public class UserTest {
 	//Test: setGender
 	@Test
 	public void testSetGender() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.setGender("man");
@@ -605,7 +607,7 @@ public class UserTest {
 	//Test: setNationality
 	@Test
 	public void testSetNationality() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.setNationality("Brazilian");
@@ -616,7 +618,7 @@ public class UserTest {
 	//Test: setDescription
 	@Test
 	public void testSetDescription() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.setDescriptionID("Bye");
@@ -627,7 +629,7 @@ public class UserTest {
 	//Test: setLocation
 	@Test
 	public void testSetLocation() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.setLocation("GPS-location");
@@ -638,7 +640,7 @@ public class UserTest {
 	//Test: setPicture
 	@Test
 	public void testSetPicture() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user.setPicture("PNG");
@@ -649,7 +651,7 @@ public class UserTest {
 	//Test: equals1, compare to itself
 	@Test
 	public void testEquals1() {
-		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -668,7 +670,7 @@ public class UserTest {
 	//Test: equals2, compare to another user which has the same values
 	@Test
 	public void testEquals2() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -681,7 +683,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -696,7 +698,7 @@ public class UserTest {
 	//Test: equals3, compare to another user which differs by userID
 	@Test
 	public void testEquals3() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -709,7 +711,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457772, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457772, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -724,7 +726,7 @@ public class UserTest {
 	//Test: equals 4, compare to another user which differs by password
 	@Test
 	public void testEquals4() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -737,7 +739,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "PassW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "PassW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -752,7 +754,7 @@ public class UserTest {
 	//Test: equals5, compare to another user which differs by firstname
 	@Test
 	public void testEquals5() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -765,7 +767,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Karen", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Karen", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -780,7 +782,7 @@ public class UserTest {
 	//Test: equals6, compare to another user which differs by lastname
 	@Test
 	public void testEquals6() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -793,7 +795,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Lobo", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Lobo", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -806,7 +808,7 @@ public class UserTest {
 	//Test: equals7, compare to another user which differs by birthday
 	@Test
 	public void testEquals7() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -819,7 +821,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(14, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853200000),
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -834,7 +836,7 @@ public class UserTest {
 	//Test: equals8, compare to another user which differs by mail
 	@Test
 	public void testEquals8() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -847,7 +849,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.nl", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -862,7 +864,7 @@ public class UserTest {
 	//Test: equals9, compare to another user which differs by phonenumber
 	@Test
 	public void testEquals9() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -875,7 +877,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345679", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -890,7 +892,7 @@ public class UserTest {
 	//Test: equals10, compare to another user which differs by address
 	@Test
 	public void testEquals10() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -903,7 +905,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "3", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -918,7 +920,7 @@ public class UserTest {
 	//Test: equals11, compare to another user which differs by course
 	@Test
 	public void testEquals11() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -931,7 +933,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"LST", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -946,7 +948,7 @@ public class UserTest {
 	//Test: equals12, compare to another user which differs by university
 	@Test
 	public void testEquals12() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -959,7 +961,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "Leiden University", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -974,7 +976,7 @@ public class UserTest {
 	//Test: equals13, compare to another user which differs by studyYear
 	@Test
 	public void testEquals13() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -987,7 +989,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 2, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -1002,7 +1004,7 @@ public class UserTest {
 	//Test: equals14, compare to another user which differs by gender
 	@Test
 	public void testEquals14() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -1015,7 +1017,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "man", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -1030,7 +1032,7 @@ public class UserTest {
 	//Test: equals15, compare to another user which differs by nationality
 	@Test
 	public void testEquals15() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -1043,7 +1045,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Brazilian", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -1058,7 +1060,7 @@ public class UserTest {
 	//Test: equals16, compare to another user which differs by description
 	@Test
 	public void testEquals16() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -1071,7 +1073,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Bye", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -1086,7 +1088,7 @@ public class UserTest {
 	//Test: equals17, compare to another user which differs by location
 	@Test
 	public void testEquals17() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -1099,7 +1101,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS-location", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -1114,7 +1116,7 @@ public class UserTest {
 	//Test: equals18, compare to another user which differs by picture
 	@Test
 	public void testEquals18() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -1127,7 +1129,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "PNG");
 		user2.addCoursesTeaching(helpOffered);
@@ -1142,7 +1144,7 @@ public class UserTest {
 	//Test: equals19, compare to another user which differs by coursesTeaching
 	@Test
 	public void testEquals19() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -1155,7 +1157,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered2 = new String("Assembly");
@@ -1171,7 +1173,7 @@ public class UserTest {
 	//Test: equals20, compare to another user which differs by CoursesLearning
 	@Test
 	public void testEquals20() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -1184,7 +1186,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -1200,7 +1202,7 @@ public class UserTest {
 	//Test: equals21, compare to another user which differs by buddy
 	@Test
 	public void testEquals21() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -1213,7 +1215,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -1229,7 +1231,7 @@ public class UserTest {
 	//Test: equals22, compare to another user which differs by availableDate
 	@Test
 	public void testEquals22() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -1242,7 +1244,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);
@@ -1257,7 +1259,7 @@ public class UserTest {
 	//Test: equals23, compare to another user which differs by language
 	@Test
 	public void testEquals23() {
-		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		String helpOffered = new String("Calculus");
@@ -1270,7 +1272,7 @@ public class UserTest {
 		String language = new String("Dutch");
 		user1.addLanguage(language);
 		
-		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Birthday(13, 1, 1997), 
+		User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600), 
 				"laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"), 
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		user2.addCoursesTeaching(helpOffered);

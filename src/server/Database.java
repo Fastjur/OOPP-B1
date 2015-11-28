@@ -33,10 +33,7 @@ public class Database {
         User user = new User();
         try {
             //TODO uncomment statement parts when they have been implemented in User.java
-            PreparedStatement stmt = connection.prepareStatement("SELECT id, nationality_id, studies_id," +
-                    "universities_id, email as dbemail, passwd, firstname, lastname, sex, birthdate, study, bio," +
-                    "studyYear, /*availableDates, */location, phonenumber/*, photo*/ FROM `users` WHERE email = ? " +
-                    "LIMIT 1");
+            PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name as nationality, studies.name as study, universities.name as university,   email as dbemail, passwd, firstname, lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber, photo FROM `users` LEFT JOIN nationalities on users.nationality_id = nationalities.id LEFT JOIN studies ON users.study = studies.id LEFT JOIN universities ON users.universities_id = universities.id WHERE email = ? LIMIT 1");
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
             user = processUser(rs);
@@ -52,7 +49,7 @@ public class Database {
             //TODO uncomment statement parts when they have been implemented in User.java
             PreparedStatement stmt = connection.prepareStatement("SELECT id, nationality_id, studies_id," +
                     "universities_id, email as dbemail, passwd, firstname, lastname, sex, birthdate, study, bio," +
-                    "studyYear, /*availableDates, */location, phonenumber/*, photo*/ FROM `users` WHERE email = ? " +
+                    "studyYear, /*availableDates, */location, phonenumber, photo FROM `users` WHERE id = ? " +
                     "LIMIT 1");
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -67,32 +64,24 @@ public class Database {
         User usr = new User();
         while(rs.next()) {
             int id = rs.getInt("id"),
-                    nationality_id = rs.getInt("nationality_id"),
-                    studies_id = rs.getInt("studies_id"),
-                    universities_id = rs.getInt("universities_id"),
-                    study = rs.getInt("study"),
                     studyYear = rs.getInt("studyYear");
             String dbemail = rs.getString("dbemail"),
                     password = rs.getString("passwd"),
                     firstname = rs.getString("firstname"),
                     lastname = rs.getString("lastname"),
+                    nationality = rs.getString("nationality"),
+                    university = rs.getString("university"),
+                    study = rs.getString("study"),
                     sex = rs.getString("sex"),
                     bio = rs.getString("bio"),
                     location = rs.getString("location"),
-                    phonenumber = rs.getString("phonenumber");
-            Date birthdate = new Date(rs.getString("birthdate"));
+                    phonenumber = rs.getString("phonenumber"),
+                    photo = rs.getString("photo");
 
-            PreparedStatement stmt = connection.prepareStatement("SELECT name FROM `nationalities` " +
-                    "WHERE id = ? LIMIT 1");
-            stmt.setInt(1, nationality_id);
-            ResultSet rs2 = stmt.executeQuery();
-            String nationality = "{NATIONALITY}";
-            while(rs2.next()) {
-                nationality = rs2.getString("name");
-            }
+            Date birthdate = new Date(rs.getLong("birthdate"));
 
-            usr = new User(id, firstname + " " + lastname, birthdate, dbemail, phonenumber,
-                    new Address("A", "B", "C","D"), "{COURSES}", "{UNIVERSITY}", 0, sex, nationality, bio);
+            usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber,
+                    new Address("A", "B", "C","D"), study, university, studyYear, sex, nationality, bio, location, photo);
             System.out.println(usr);
         }
         return usr;

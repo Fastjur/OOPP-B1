@@ -1,10 +1,11 @@
 package server;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class User {
-	private String password, firstname, lastname, mail, phonenumber, course, university, gender, nationality, 
+	private String password, firstname, lastname, mail, phonenumber, study, university, gender, nationality,
 			description, location, picture;
-	private Birthday birthday;
+	private Date birthday;
 	private int userID, studyYear;
 	private Address address;
 	private ArrayList<String> coursesTeachingList, coursesLearningList, buddyList, languageList;
@@ -20,7 +21,7 @@ public class User {
 	 * @param mail - String
 	 * @param phonenumber - String
 	 * @param address - Address
-	 * @param course - String
+	 * @param study - String
 	 * @param university - String
 	 * @param studyYear - int
 	 * @param gender - String
@@ -29,9 +30,9 @@ public class User {
 	 * @param location - String
 	 * @param picture - String
 	 */
-	public User(int userID, String password, String firstname, String lastname, Birthday birthday, String mail,
-			String phonenumber, Address address, String course, String university, int studyYear, 
-			String gender, String nationality, String description, String location, String picture) {
+	public User(int userID, String password, String firstname, String lastname, Date birthday, String mail,
+                String phonenumber, Address address, String study, String university, int studyYear,
+                String gender, String nationality, String description, String location, String picture) {
 		this.userID = userID;
 		this.password = password;
 		this.firstname = firstname;
@@ -40,7 +41,7 @@ public class User {
 		this.mail = mail;
 		this.phonenumber = phonenumber;
 		this.address = address;
-		this.course = course;
+		this.study = study;
 		this.university = university;
 		this.studyYear = studyYear;
 		availableList = new ArrayList<AvailableDate>();
@@ -69,7 +70,7 @@ public class User {
 	public String toString() {
 		String text = new String();
 		text = Integer.toString(userID) + "\n" + password + "\n" + firstname + " " + lastname + "\n" 
-				+ birthday + "\n" + mail + "\n" + phonenumber + "\n" + address.toString() + course 
+				+ birthday + "\n" + mail + "\n" + phonenumber + "\n" + address.toString() + study
 				+ "\n" + university + "\n" + Integer.toString(studyYear) + "\n" ; 
 		// availableList
 		text += "available: ";
@@ -162,7 +163,7 @@ public class User {
 	 * getBirthday: getter for private attribute birthday
 	 * @return birthday - Birthday
 	 */
-	public Birthday getBirthday() {
+	public Date getBirthday() {
 		return birthday;
 	}
 	
@@ -191,11 +192,11 @@ public class User {
 	}
 	
 	/**
-	 * getStudy: getter for private attribute course
-	 * @return course - String
+	 * getStudy: getter for private attribute study
+	 * @return study - String
 	 */
 	public String getStudy() {
-		return course;
+		return study;
 	}
 	
 	/**
@@ -450,7 +451,7 @@ public class User {
 	 * setBirthday: setter for private attribute birthday
 	 * @param birthday - Birthday
 	 */
-	public void setBirthday(Birthday birthday) {
+	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
 	
@@ -479,11 +480,11 @@ public class User {
 	}
 	
 	/**
-	 * setStudy: setter for private attribute course
-	 * @param course - String
+	 * setStudy: setter for private attribute study
+	 * @param study - String
 	 */
-	public void setStudy(String course) {
-		this.course = course;
+	public void setStudy(String study) {
+		this.study = study;
 	}
 	
 	/**
@@ -558,7 +559,7 @@ public class User {
 					this.mail.equals(that.getMail()) &&
 					this.phonenumber.equals(that.getPhonenumber()) &&
 					this.address.equals(that.getAddress()) &&
-					this.course.equals(that.getStudy()) &&
+					this.study.equals(that.getStudy()) &&
 					this.university.equals(that.getUniversity()) &&
 					this.studyYear == that.getStudyYear() &&	
 					this.gender.equals(that.getGender()) &&
