@@ -1,7 +1,6 @@
 package server;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.Random;
 
 /**
  * Created by Zoë van Steijn on 25-11-2015.

@@ -51,7 +51,7 @@ public class Server {
     }
 
     public void logIn(String email, String password){
-        User user = GetUser(email);
+        User user = getUser(email);
         if(user.getMail().equals(email) && user.getPassword().equals(password)){
             Session session = new Session(user.getUserID());
             sessions.add(session);
