@@ -4,7 +4,7 @@ public class Address {
 	private String street, housenumber, zipcode, city;
 	
 	/**
-	 * constructor: constructor for class Address
+	 * Address: constructor for class Address
 	 * @param street - String
 	 * @param housenumber - String
 	 * @param zipcode - String
