@@ -1,7 +1,11 @@
 package server;
 import static org.junit.Assert.*;
 
+import oracle.jrockit.jfr.StringConstantPool;
 import org.junit.Test;
+import java.util.ArrayList;
+
+import java.io.File;
 
 
 public class UserTest {
@@ -13,7 +17,24 @@ public class UserTest {
 				"Computer Sciences", "TU Delft", 1, "woman", "Dutch", "Hello", "GPS", "IMG");
 		assertTrue(user instanceof User);
 	}
-	
+
+	//Test: empty constructor(User())
+	@Test
+	public void testUser2() {
+		User user = new User();
+		assertTrue(user instanceof User);
+		assertTrue(user.equals(new User(-1,"","","",new Birthday(-1,-1,-1),"","",new Address("","","",""),"","",-1,"","","Test User","","")));
+	}
+
+	//Test: jsonToUser
+	@Test
+	public void testJsonToUser() {
+        User usr = new User();
+        usr.jsonToUser(new File("database.json"));
+        assertFalse(usr.equals(new User()));
+        System.out.println(usr.toString());
+    }
+
 	//Test: toString1
 	@Test
 	public void testToString1() {
