@@ -1,4 +1,8 @@
 package server;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class User {
@@ -54,7 +58,50 @@ public class User {
 		this.location = location;
 		this.picture = picture;
 	}
-	
+
+    /**Empty constructor to make JUnit test code faster to write
+     * and easier on the eyes
+     * Author: Sebastiaan Hester
+     */
+    public User(){
+        this.userID = -1;
+        this.password = "";
+        this.firstname = "";
+        this.lastname = "";
+        this.birthday = new Birthday(-1,-1,-1);
+        this.mail = "";
+        this.phonenumber = "";
+        this.address = new Address("","","","");
+        this.course = "";
+        this.university = "";
+        this.studyYear = -1;
+        availableList = new ArrayList<AvailableDate>();
+        coursesTeachingList = new ArrayList<String>();
+        coursesLearningList = new ArrayList<String>();
+        buddyList = new ArrayList<String>();
+        this.gender = "";
+        this.nationality = "";
+        languageList = new ArrayList<String>();
+        this.description = "Test User";
+        this.location = "";
+        this.picture = "";
+    }
+
+    /**jsonToUser: Reads JSON data from a given filepath and returns a new User Object using the jackson library
+	 * Note: needs testing
+     * Author: Sebastiaan Hester
+	 */
+    public User jsonToUser(File file){
+        ObjectMapper mapper = new ObjectMapper();
+        User usr = new User();
+        try {
+            usr = mapper.readValue(file, User.class);
+        }
+        catch(IOException io){
+            io.printStackTrace();
+        }
+        return usr;
+    }
 	/**
 	 * toString: gives a textual representation of User
 	 * @return text - String
