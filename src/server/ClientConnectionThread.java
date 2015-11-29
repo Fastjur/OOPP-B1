@@ -53,8 +53,10 @@ public class ClientConnectionThread extends Thread {
                     System.out.println("Client sent an invalid request, disconnecting client.");
                     this.client.closeConnection();
                 }
-            } catch (java.io.IOException ex) {
-                System.out.println("Something went wrong while reading a message from the network.\n" + ex.getLocalizedMessage());
+            } catch (java.net.SocketException SEx) {
+                // Socket closed.
+            } catch (java.io.IOException IOEx) {
+                System.out.println("Something went wrong while reading a message from the network.\n" + IOEx.getLocalizedMessage());
             }
         }
     }
