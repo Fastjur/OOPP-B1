@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -38,8 +37,9 @@ public class ConnectedClientTest {
 
         Thread.sleep(1000);
 
-        assertFalse(socket.isConnected());
-        assertEquals(0, clients.size());
+        assertEquals(-1, socket.getInputStream().read());
+
+        thread.end();
     }
 
     @Test
@@ -69,5 +69,7 @@ public class ConnectedClientTest {
         message.equals(object);
 
         assertEquals(object.toString(), message.toString());
+
+        thread.end();
     }
 }

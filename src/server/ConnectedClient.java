@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * A connected client
@@ -13,10 +14,12 @@ import java.net.Socket;
  */
 public class ConnectedClient {
     private Socket socket;
+    private ArrayList<ConnectedClient> clientList;
     private ClientConnectionThread connectionThread;
 
-    public ConnectedClient(Socket socket) {
+    public ConnectedClient(Socket socket, ArrayList<ConnectedClient> clientList) {
         this.socket = socket;
+        this.clientList = clientList;
         this.connectionThread = new ClientConnectionThread(this);
         this.connectionThread.start();
         System.out.println(socket.getInetAddress().toString() + " connected.");
@@ -28,7 +31,9 @@ public class ConnectedClient {
      */
     public void closeConnection() throws IOException {
         this.connectionThread.end();
+        this.socket.shutdownInput();
         this.socket.close();
+        clientList.remove(this); // I guess this checks for memory address equality, but that's what we want.
     }
 
     /**

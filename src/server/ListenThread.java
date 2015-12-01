@@ -41,7 +41,7 @@ public class ListenThread extends Thread {
         while (!shouldstop) {
             try {
                 Socket newsocket = ss.accept();
-                clientlist.add(new ConnectedClient(newsocket));
+                clientlist.add(new ConnectedClient(newsocket, clientlist));
             } catch (SocketException Sex) {
                 System.out.println("Server socket closed.");
             } catch (java.io.IOException IOex) {
@@ -49,7 +49,6 @@ public class ListenThread extends Thread {
                 shouldstop = true;
             }
         }
-        System.out.println("Closing all client connections...");
         closeAllConnections();
     }
 
@@ -71,10 +70,10 @@ public class ListenThread extends Thread {
      * Close all open client connections.
      */
     public void closeAllConnections() {
+        System.out.println("Closing all client connections...");
         try {
             for (int i = clientlist.size() - 1; i >= 0; i--) {
                 clientlist.get(i).closeConnection();
-                clientlist.remove(i);
             }
         } catch (java.io.IOException ex) {
             System.out.println("Err: could not close all connections\n" + ex.getLocalizedMessage());

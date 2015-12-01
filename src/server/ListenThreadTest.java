@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -26,17 +25,19 @@ public class ListenThreadTest {
         Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
         Thread.sleep(1000);
 
-        assertTrue(socket.isConnected());
-        assertTrue(clients.get(0).getSocket().isConnected());
+        assertTrue(socket.isConnected() && !socket.isClosed());
+        assertTrue(clients.get(0).getSocket().isConnected() && !clients.get(0).getSocket().isClosed());
 
 
         thread.closeAllConnections();
 
         Thread.sleep(1000);
 
-        assertFalse(socket.isConnected());
+        //assertTrue(!socket.isConnected() && socket.isClosed()); // I hate java.
+        assertEquals(-1, socket.getInputStream().read());
         assertEquals(0, clients.size());
 
+        thread.end();
     }
 
     @Test
@@ -54,5 +55,7 @@ public class ListenThreadTest {
 
         assertTrue(socket.isConnected());
         assertEquals(1, clients.size());
+
+        thread.end();
     }
 }
