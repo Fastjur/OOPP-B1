@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -27,10 +28,18 @@ public class Server {
         try {
             db = new Database();
             db.getUser("john@doe.com");
-            db.getUser(1);
-            db.getUser("ayykek");//Shouldn't return anything
+            User temp = db.getUser(1);
+            temp.setUserID(-1);
+            db.addUser(temp);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("[ERROR] SQLException:\n    " + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("[ERROR] IOException:\n    " + e.getMessage());
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            System.out.println("[ERROR] MySQL query failed:\n    " + e.getMessage());
+            e.printStackTrace();
         }
 
         listenthread = new ListenThread(clients, 8372);

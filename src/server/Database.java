@@ -1,5 +1,10 @@
 package server;
 
+import jdk.nashorn.internal.ir.debug.JSONWriter;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
+
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -39,7 +44,7 @@ public class Database {
                     "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber " +
                     "FROM `users` LEFT JOIN nationalities on users.nationality_id = nationalities.id " +
                     "LEFT JOIN studies ON users.study = studies.id " +
-                    "LEFT JOIN universities ON users.universities_id = universities.id WHERE users.email = ? LIMIT 1");
+                    "LEFT JOIN universities ON users.university_id = universities.id WHERE users.email = ? LIMIT 1");
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
             user = processGetUser(rs);
@@ -57,7 +62,7 @@ public class Database {
                 "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber " +
                 "FROM `users` LEFT JOIN nationalities on users.nationality_id = nationalities.id " +
                 "LEFT JOIN studies ON users.study = studies.id " +
-                "LEFT JOIN universities ON users.universities_id = universities.id WHERE users.id = ? LIMIT 1");
+                "LEFT JOIN universities ON users.university_id = universities.id WHERE users.id = ? LIMIT 1");
         stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
         user = processGetUser(rs);
@@ -65,7 +70,7 @@ public class Database {
         return user;
     }
 
-    public void addUser(User user) throws SQLException {
+    public void addUser(User user) throws SQLException, IOException, IllegalArgumentException {
         if(user == null) {
             throw new IllegalArgumentException("User object was null, cannot add to database");
         }
@@ -116,9 +121,79 @@ public class Database {
             throw new IllegalArgumentException("User location was null or empty, aborting add to database");
         }
 
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO `users`(id, nationality_id, studies_id," +
-                "universities_id, email, passwd, firstname, lastname, sex, birthdate, study, bio, studyYear," +
-                "availableDates, location, phonenumber) VALUES ()");
+        PreparedStatement stmt;
+        ResultSet rs;
+
+        /**
+         * Get the nationality id, throw IllegalArgumentException on fail
+         */
+        int nationality_id;
+        stmt = connection.prepareStatement("SELECT id FROM `nationalities` WHERE name = ? LIMIT 1");
+        stmt.setString(1, user.getNationality());
+        rs = stmt.executeQuery();
+        if(rs.next()) {
+            nationality_id = rs.getInt("id");
+        } else {
+            throw new IllegalArgumentException("Couldn't get nationality id, aborting add to database\n" +
+                    "    Arguments: " + user.getNationality());
+        }
+        stmt.close();
+
+        /**
+         * Get the university id, throw IllegalArgumentException on fail
+         */
+        int university_id;
+        stmt = connection.prepareStatement("SELECT id FROM `universities` WHERE name = ? LIMIT 1");
+        stmt.setString(1, user.getUniversity());
+        rs = stmt.executeQuery();
+        if(rs.next()) {
+            university_id = rs.getInt("id");
+        } else {
+            throw new IllegalArgumentException("Couldn't get university id, aborting add to database");
+        }
+        stmt.close();
+
+        /**
+         * Get the study id, throw IllegalArgumentException on fail
+         */
+        int study_id;
+        stmt = connection.prepareStatement("SELECT id FROM `studies` WHERE name = ? LIMIT 1");
+        stmt.setString(1, user.getStudy());
+        rs = stmt.executeQuery();
+        if(rs.next()) {
+            study_id = rs.getInt("id");
+        }else{
+            throw new IllegalArgumentException("Couldn't get study id, aborting add to database");
+        }
+        stmt.close();
+
+        /**
+         * Convert availableDates arrayList to JSONified string
+         */
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+        String availableDates = mapper.writeValueAsString(user.getAvailableList());
+        System.out.println("Available dates JSONified: " + availableDates);
+
+        /**
+         * Insert user into database
+         */
+        stmt = connection.prepareStatement("INSERT INTO `users`(id, nationality_id, university_id, email, passwd," +
+                "firstname, lastname, sex, birthdate, study, bio, studyYear, availableDates, location, phonenumber) " +
+                "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        stmt.setInt(1, nationality_id);
+        stmt.setInt(2, university_id);
+        stmt.setString(3, user.getMail());
+        stmt.setString(4, user.getPassword());
+        stmt.setString(5, user.getFirstname());
+        stmt.setString(6, user.getLastname());
+        stmt.setString(7, user.getGender());
+        stmt.setLong(8, user.getBirthday().getTime());
+        stmt.setInt(9, study_id);
+        stmt.setString(10, user.getDescription());
+        stmt.setInt(11, user.getStudyYear());
+        stmt.setString(12, availableDates);
+        stmt.close();
     }
 
     private User processGetUser(ResultSet rs) throws SQLException {
@@ -175,7 +250,6 @@ public class Database {
             usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber,
                     new Address("A", "B", "C","D"), study, university, studyYear, new ArrayList(), coursesTeaching,
                     coursesLearning, coursesSearchingBuddy, sex, nationality, bio, location);
-            System.out.println(usr);
         }
         return usr;
     }
