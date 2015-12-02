@@ -1,5 +1,6 @@
 package server;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,10 +26,10 @@ public class Server {
     public static void main(final String[] args) {
         try {
             db = new Database();
-            db.getUser("sinterklaas@sintmail.nl");
             db.getUser("john@doe.com");
-            db.getUser("ayykek");//Should return empty
-        } catch (IllegalStateException e) {
+            db.getUser(1);
+            db.getUser("ayykek");//Shouldn't return anything
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 

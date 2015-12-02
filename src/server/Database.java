@@ -43,34 +43,82 @@ public class Database {
                     "LEFT JOIN universities ON users.universities_id = universities.id WHERE users.email = ? LIMIT 1");
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
-            user = processUser(rs);
+            user = processCourses(rs);
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new IllegalStateException("Could not get user by email:\n" + e.getMessage());
         }
         return user;
     }
 
-    public User getUser(int id) {
+    public User getUser(int id) throws SQLException {
         User user;
-        try {
-            //TODO uncomment statement parts when they have been implemented in User.java
-            PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name as nationality," +
-                    "studies.name as study, universities.name as university, email as dbemail, passwd, firstname," +
-                    "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber, photo " +
-                    "FROM `users` LEFT JOIN nationalities on users.nationality_id = nationalities.id " +
-                    "LEFT JOIN studies ON users.study = studies.id " +
-                    "LEFT JOIN universities ON users.universities_id = universities.id WHERE users.id = ? LIMIT 1");
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            user = processUser(rs);
-            stmt.close();
-        } catch (SQLException e) {
-            throw new IllegalStateException("Could not get user by email:\n" + e.getMessage());
-        }
+        PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name as nationality," +
+                "studies.name as study, universities.name as university, email as dbemail, passwd, firstname," +
+                "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber, photo " +
+                "FROM `users` LEFT JOIN nationalities on users.nationality_id = nationalities.id " +
+                "LEFT JOIN studies ON users.study = studies.id " +
+                "LEFT JOIN universities ON users.universities_id = universities.id WHERE users.id = ? LIMIT 1");
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        user = processCourses(rs);
+        stmt.close();
         return user;
     }
 
-    private User processUser(ResultSet rs) throws SQLException {
+    public void addUser(User user) {
+        if(user == null) {
+            throw new IllegalArgumentException("User object was null, cannot add to database");
+        }
+        if(user.getUserID() != -1) {
+            throw new IllegalArgumentException("User id was not -1, aborting add to database");
+        }
+        if(user.getPassword() == null || user.getPassword().equals("")) {
+            throw new IllegalArgumentException("User password was null or empty, aborting add to database");
+        }
+        if(user.getFirstname() == null || user.getFirstname().equals("")) {
+            throw new IllegalArgumentException("User firstname was null or empty, aborting add to database");
+        }
+        if(user.getLastname() == null || user.getLastname().equals("")) {
+            throw new IllegalArgumentException("User lastname was null or empty, aborting add to database");
+        }
+        if(user.getBirthday() == null || user.getBirthday().equals(new Date(0))) {
+            throw new IllegalArgumentException("User birthday was null or 0, aborting add to database");
+        }
+        if(user.getMail() == null || user.getMail().equals("")) {
+            throw new IllegalArgumentException("User mail was null or empty, aborting add to database");
+        }
+        if(user.getPhonenumber() == null || user.getPhonenumber().equals("")) {
+            throw new IllegalArgumentException("User phonenumber was null or empty, aborting add to database");
+        }
+        if(user.getAddress() == null || user.getAddress().Contains("")) {
+            throw new IllegalStateException("User address was null or one of its properties was empty," +
+                    " aborting add to database");
+        }
+        if(user.getStudy() == null || user.getStudy().equals("")) {
+            throw new IllegalArgumentException("User study was null or empty, aborting add to database");
+        }
+        if(user.getUniversity() == null || user.getUniversity().equals("")) {
+            throw new IllegalArgumentException("User university was null or empty, aborting add to database");
+        }
+        if(user.getStudyYear() == 0) {
+            throw new IllegalArgumentException("User studyYear was 0, aborting add to database");
+        }
+        if(user.getGender() == null || user.getGender().equals("")) {
+            throw new IllegalArgumentException("User gender was null or empty, aborting add to database");
+        }
+        if(user.getNationality() == null || user.getNationality().equals("")) {
+            throw new IllegalArgumentException("User nationality was null or empty, aborting add to database");
+        }
+        if(user.getDescription() == null || user.getDescription().equals("")) {
+            throw new IllegalArgumentException("User description was null or empty, aborting add to database");
+        }
+        if(user.getLocation() == null || user.getLocation().equals("")) {
+            throw new IllegalArgumentException("User location was null or empty, aborting add to database");
+        }
+    }
+
+    private User processCourses(ResultSet rs) throws SQLException {
         User usr = new User();
         if(rs.next()) {
             int id = rs.getInt("id"),
@@ -90,8 +138,8 @@ public class Database {
             Date birthdate = new Date(rs.getLong("birthdate"));
 
             PreparedStatement stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
-                    "LEFT JOIN coursessearchingbuddy ON courses_id = courses.id " +
-                    "WHERE coursessearchingbuddy.users_id = ?");
+                    "LEFT JOIN coursesSearchingBuddy ON courses_id = courses.id " +
+                    "WHERE coursesSearchingBuddy.users_id = ?");
             stmt.setInt(1, id);
             ResultSet rs2 = stmt.executeQuery();
             ArrayList<String> coursesSearchingBuddy = new ArrayList<String>();
@@ -101,8 +149,8 @@ public class Database {
             stmt.close();
 
             stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
-                    "LEFT JOIN coursesteaching ON courses_id = courses.id " +
-                    "WHERE coursesteaching.users_id = ?");
+                    "LEFT JOIN coursesTeaching ON courses_id = courses.id " +
+                    "WHERE coursesTeaching.users_id = ?");
             stmt.setInt(1, id);
             rs2 = stmt.executeQuery();
             ArrayList<String> coursesTeaching = new ArrayList<String>();
@@ -112,8 +160,8 @@ public class Database {
             stmt.close();
 
             stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
-                    "LEFT JOIN courseslearning ON courses_id = courses.id " +
-                    "WHERE courseslearning.users_id = ?");
+                    "LEFT JOIN coursesLearning ON courses_id = courses.id " +
+                    "WHERE coursesLearning.users_id = ?");
             stmt.setInt(1, id);
             rs2 = stmt.executeQuery();
             ArrayList<String> coursesLearning = new ArrayList<String>();
