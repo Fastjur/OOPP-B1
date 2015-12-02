@@ -1,5 +1,6 @@
 package server;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -91,11 +92,11 @@ public class User {
 	 * Note: needs testing
      * Author: Sebastiaan Hester
 	 */
-    public User jsonToUser(File file){
+    public User jsonToUser(JSONObject json){
         ObjectMapper mapper = new ObjectMapper();
         User usr = new User();
         try {
-            usr = mapper.readValue(file, User.class);
+            usr = mapper.readValue(json, User.class);
         }
         catch(IOException io){
             io.printStackTrace();
