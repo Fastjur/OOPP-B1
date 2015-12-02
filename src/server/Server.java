@@ -9,6 +9,7 @@ import java.util.Scanner;
 /**
  * Main Server Class
  * This file will most likely contain the main method for starting up the server
+ *
  * @author Jurriaan Den Toonder
  * @version 0.1
  */
@@ -21,6 +22,7 @@ public class Server {
 
     /**
      * 'Starts' the server and reads the database
+     *
      * @param args (Commandline) parameters
      */
     public static void main(final String[] args) {
@@ -40,8 +42,7 @@ public class Server {
         String input = "";
         System.out.println("Type 'quit' to exit the server.");
 
-        while(!input.equals("quit"))
-        {
+        while (!input.equals("quit")) {
             input = scanner.nextLine();
             System.out.println("You typed: " + input);
         }

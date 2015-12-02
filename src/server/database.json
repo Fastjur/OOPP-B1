@@ -1,92 +1,94 @@
-{"users":[
+{
+  "users": [
     {
-        "id": 1,
-        "email": "sinterklaas@gmail.com",
-        "password": "Pepernoten01",
-        "firstname": "Sinterklaas",
-        "lastname": "Poeperd",
-        "sex": "male",
-        "birthdate": "19-11-1695",
-        "study": 1,
-        "experience": "3 years",
-        "coursesTeaching":[
-            1,
-            2
-        ],
-        "coursesLearning":[
-            3
-        ],
-        "coursesSearchingBuddy":[
-            4,
-            5
-        ],
-        "ethnicity": "White",
-        "bio": "Very boring story about himself here!",
-        "interests":[
-            "Chocolate",
-            "Poo"
-        ]
+      "id": 1,
+      "email": "sinterklaas@gmail.com",
+      "password": "Pepernoten01",
+      "firstname": "Sinterklaas",
+      "lastname": "Poeperd",
+      "sex": "male",
+      "birthdate": "19-11-1695",
+      "study": 1,
+      "experience": "3 years",
+      "coursesTeaching": [
+        1,
+        2
+      ],
+      "coursesLearning": [
+        3
+      ],
+      "coursesSearchingBuddy": [
+        4,
+        5
+      ],
+      "ethnicity": "White",
+      "bio": "Very boring story about himself here!",
+      "interests": [
+        "Chocolate",
+        "Poo"
+      ]
     },
     {
-        "id": 2,
-        "email": "john@doe.com",
-        "password": "JohnDoe01",
-        "firstname": "John",
-        "lastname": "Doe",
-        "sex": "male",
-        "birthdate": "19-11-1997",
-        "study": 2,
-        "experience": "3 years",
-        "coursesTeaching":[
-            3
-        ],
-        "coursesLearning":[
-            1,
-            2
-        ],
-        "coursesSearchingBuddy":[
-            5
-        ],
-        "ethnicity": "Black",
-        "bio": "John Does miserable life description here",
-        "interests":[
-            "Poo"
-        ]
+      "id": 2,
+      "email": "john@doe.com",
+      "password": "JohnDoe01",
+      "firstname": "John",
+      "lastname": "Doe",
+      "sex": "male",
+      "birthdate": "19-11-1997",
+      "study": 2,
+      "experience": "3 years",
+      "coursesTeaching": [
+        3
+      ],
+      "coursesLearning": [
+        1,
+        2
+      ],
+      "coursesSearchingBuddy": [
+        5
+      ],
+      "ethnicity": "Black",
+      "bio": "John Does miserable life description here",
+      "interests": [
+        "Poo"
+      ]
     }
-],
-"studies":[
+  ],
+  "studies": [
     {
-        "id": 1,
-        "name": "Pepernoten Bakken",
-        "type": "Bachelor",
-        "year": 1
+      "id": 1,
+      "name": "Pepernoten Bakken",
+      "type": "Bachelor",
+      "year": 1
     },
     {
-        "id": 2,
-        "name": "Wanking",
-        "type": "Master",
-        "year": 3
+      "id": 2,
+      "name": "Wanking",
+      "type": "Master",
+      "year": 3
     }
-],
-"courses":[
+  ],
+  "courses": [
     {
-        "id": 1,
-        "name": "Calculus"
+      "id": 1,
+      "name": "Calculus"
     },
     {
-        "id": 2,
-        "name": "Poepen"
+      "id": 2,
+      "name": "Poepen"
     },
     {
-        "id": 3,
-        "name": "Plassen"
+      "id": 3,
+      "name": "Plassen"
     },
     {
-        "id": 4,
-        "name": "Rukken"
+      "id": 4,
+      "name": "Rukken"
     },
     {
-        "id": 5,
-        "name": "Eten"
+      "id": 5,
+      "name": "Eten"
     }
-]}
+  ]
+}

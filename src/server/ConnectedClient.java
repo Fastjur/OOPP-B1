@@ -27,6 +27,7 @@ public class ConnectedClient {
 
     /**
      * Closes the connection with this client. Don't forget to remove this client from the clientlist afterwards.
+     *
      * @throws IOException when the socket is being written to while closing
      */
     public void closeConnection() throws IOException {
@@ -38,6 +39,7 @@ public class ConnectedClient {
 
     /**
      * Returns the socket associated with this client
+     *
      * @return the socket associated with this client
      */
     public Socket getSocket() {
@@ -46,12 +48,13 @@ public class ConnectedClient {
 
     /**
      * Sends a message to this client
+     *
      * @param message the message to send
      */
     public void sendMessage(JSONObject message) {
         try {
             connectionThread.sendMessage(message);
-        } catch(java.io.IOException ex) {
+        } catch (java.io.IOException ex) {
             System.out.println("Err: could not send the message\n" + ex.getLocalizedMessage());
         }
     }
