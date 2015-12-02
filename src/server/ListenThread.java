@@ -17,6 +17,12 @@ public class ListenThread extends Thread {
     private int port;
     private ServerSocket ss;
 
+    /**
+     * Construct a new ListenThread
+     *
+     * @param clientlist An empty ArrayList to store the clients in
+     * @param port       The port to listen on.
+     */
     public ListenThread(ArrayList<ConnectedClient> clientlist, int port) {
         super("ListenerThread");
         this.clientlist = clientlist;
@@ -36,7 +42,7 @@ public class ListenThread extends Thread {
         while (!shouldstop) {
             try {
                 Socket newsocket = ss.accept();
-                clientlist.add(new ConnectedClient(newsocket));
+                clientlist.add(new ConnectedClient(newsocket, clientlist));
             } catch (SocketException Sex) {
                 System.out.println("Server socket closed.");
             } catch (java.io.IOException IOex) {
@@ -44,26 +50,31 @@ public class ListenThread extends Thread {
                 shouldstop = true;
             }
         }
-        System.out.println("Closing all client connections...");
         closeAllConnections();
     }
 
+    /**
+     * Gracefully closes all client connections and closes the server socket.
+     */
     public void end() {
         this.shouldstop = true;
         try {
-        if (ss != null)
-            ss.close();
+            if (ss != null)
+                ss.close();
         } catch (java.io.IOException ex) {
             System.out.println(ex.getLocalizedMessage() + "\nErr:Could not close the server socket");
             shouldstop = true;
         }
     }
 
+    /**
+     * Close all open client connections.
+     */
     public void closeAllConnections() {
+        System.out.println("Closing all client connections...");
         try {
             for (int i = clientlist.size() - 1; i >= 0; i--) {
                 clientlist.get(i).closeConnection();
-                clientlist.remove(i);
             }
         } catch (java.io.IOException ex) {
             System.out.println("Err: could not close all connections\n" + ex.getLocalizedMessage());
