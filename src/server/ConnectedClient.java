@@ -14,6 +14,7 @@ public class ConnectedClient {
     private Socket socket;
     private ArrayList<ConnectedClient> clientList;
     private ClientConnectionThread connectionThread;
+    public int userId;
 
     public ConnectedClient(Socket socket, ArrayList<ConnectedClient> clientList) {
         this.socket = socket;
