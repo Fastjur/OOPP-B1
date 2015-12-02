@@ -314,18 +314,12 @@ public class UserTest {
 
     @Test
     public void testGetAvailableListInitial() {
-        ArrayList<AvailableDate> expected = new ArrayList<AvailableDate>();
-        assertEquals(expected, getterSetterTest.getAvailableList());
+        fail("Need to rewrite availability");
     }
 
     @Test
     public void testGetAvailableListEdited() {
-        ArrayList<AvailableDate> expected = new ArrayList<AvailableDate>();
-        AvailableDate date = new AvailableDate(new Weekdays("Maandag"));
-        date.addAvailableTimes(new TimePeriod(new Timepoint(18,30), new Timepoint(20,00)));
-        expected.add(date);
-        getterSetterTest.getAvailableList().add(date);
-        assertEquals(expected, getterSetterTest.getAvailableList());
+        fail("Need to rewrite availability");
     }
 
     //Test: setUserId
