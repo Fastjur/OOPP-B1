@@ -11,19 +11,18 @@ import java.util.ArrayList;
  */
 public class Database {
 
-    private final String JDBCUrl = "jdbc:mysql://db4free.net:3306/ooppb1";
-//    private final String JDBCUrl = "jdbc:mysql://localhost:3306/ooppb1";
-    private final String user = "oopp_usr";
-    private final String password = "oopp_b1_database";
-
     private static Connection connection;
 
     /**
      * Constructor of Database object
+     * Also contains the host, username and password for the database connection
      */
     public Database() throws IllegalStateException {
         System.out.println("Attempting to connect to database");
         try {
+            String JDBCUrl = "jdbc:mysql://db4free.net:3306/ooppb1";
+            String user = "oopp_usr";
+            String password = "oopp_b1_database";
             connection = DriverManager.getConnection(JDBCUrl, user, password);
             System.out.println("Successful connection to database!");
         } catch (SQLException e) {
@@ -37,13 +36,13 @@ public class Database {
             //TODO uncomment statement parts when they have been implemented in User.java
             PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name as nationality," +
                     "studies.name as study, universities.name as university, email as dbemail, passwd, firstname," +
-                    "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber, photo " +
+                    "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber " +
                     "FROM `users` LEFT JOIN nationalities on users.nationality_id = nationalities.id " +
                     "LEFT JOIN studies ON users.study = studies.id " +
                     "LEFT JOIN universities ON users.universities_id = universities.id WHERE users.email = ? LIMIT 1");
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
-            user = processCourses(rs);
+            user = processGetUser(rs);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new IllegalStateException("Could not get user by email:\n" + e.getMessage());
@@ -55,18 +54,18 @@ public class Database {
         User user;
         PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name as nationality," +
                 "studies.name as study, universities.name as university, email as dbemail, passwd, firstname," +
-                "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber, photo " +
+                "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber " +
                 "FROM `users` LEFT JOIN nationalities on users.nationality_id = nationalities.id " +
                 "LEFT JOIN studies ON users.study = studies.id " +
                 "LEFT JOIN universities ON users.universities_id = universities.id WHERE users.id = ? LIMIT 1");
         stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
-        user = processCourses(rs);
+        user = processGetUser(rs);
         stmt.close();
         return user;
     }
 
-    public void addUser(User user) {
+    public void addUser(User user) throws SQLException {
         if(user == null) {
             throw new IllegalArgumentException("User object was null, cannot add to database");
         }
@@ -116,9 +115,13 @@ public class Database {
         if(user.getLocation() == null || user.getLocation().equals("")) {
             throw new IllegalArgumentException("User location was null or empty, aborting add to database");
         }
+
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO `users`(id, nationality_id, studies_id," +
+                "universities_id, email, passwd, firstname, lastname, sex, birthdate, study, bio, studyYear," +
+                "availableDates, location, phonenumber) VALUES ()");
     }
 
-    private User processCourses(ResultSet rs) throws SQLException {
+    private User processGetUser(ResultSet rs) throws SQLException {
         User usr = new User();
         if(rs.next()) {
             int id = rs.getInt("id"),
@@ -133,8 +136,7 @@ public class Database {
                     sex = rs.getString("sex"),
                     bio = rs.getString("bio"),
                     location = rs.getString("location"),
-                    phonenumber = rs.getString("phonenumber"),
-                    photo = rs.getString("photo");
+                    phonenumber = rs.getString("phonenumber");
             Date birthdate = new Date(rs.getLong("birthdate"));
 
             PreparedStatement stmt = connection.prepareStatement("SELECT courses.name FROM courses " +

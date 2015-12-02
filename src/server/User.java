@@ -60,7 +60,7 @@ public class User {
         this.buddyList = buddys;
         this.gender = gender;
         this.nationality = nationality;
-        this.languageList = new ArrayList<String>();
+        this.languageList = new ArrayList<>();
         this.description = description;
         this.location = location;
     }
@@ -82,13 +82,13 @@ public class User {
         this.study = "";
         this.university = "";
         this.studyYear = -1;
-        this.availableList = new ArrayList<AvailableDate>();
-        this.coursesTeachingList = new ArrayList<String>();
-        this.coursesLearningList = new ArrayList<String>();
-        this.buddyList = new ArrayList<String>();
+        this.availableList = new ArrayList<>();
+        this.coursesTeachingList = new ArrayList<>();
+        this.coursesLearningList = new ArrayList<>();
+        this.buddyList = new ArrayList<>();
         this.gender = "";
         this.nationality = "";
-        this.languageList = new ArrayList<String>();
+        this.languageList = new ArrayList<>();
         this.description = "Test User";
         this.location = "";
     }
@@ -115,7 +115,7 @@ public class User {
      * @return text - String
      */
     public String toString() {
-        String text = new String();
+        String text;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         text = Integer.toString(userID) + "\n" + password + "\n" + firstname + " " + lastname + "\n"
                 + df.format(birthday) + "\n" + mail + "\n" + phonenumber + "\n" + address.toString() + study
