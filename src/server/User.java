@@ -92,11 +92,11 @@ public class User {
 	 * Note: needs testing
      * Author: Sebastiaan Hester
 	 */
-    public User jsonToUser(JSONObject json){
+    public User jsonToUser(File file){
         ObjectMapper mapper = new ObjectMapper();
         User usr = new User();
         try {
-            usr = mapper.readValue(json, User.class);
+            usr = mapper.readValue(file, User.class);
         }
         catch(IOException io){
             io.printStackTrace();
