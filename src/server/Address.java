@@ -18,6 +18,19 @@ public class Address {
         this.city = city;
     }
 
+    public boolean Contains(String s) {
+        if(this.street.equals(s)) {
+            return true;
+        } else if (this.housenumber.equals(s)) {
+            return true;
+        } else if (this.zipcode.equals(s)) {
+            return true;
+        } else if (this.city.equals(s)) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * toString: gives a textual representation of Address
      *
