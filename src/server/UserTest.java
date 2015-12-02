@@ -1,5 +1,6 @@
 package server;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.text.DateFormat;
@@ -13,13 +14,19 @@ import static org.junit.Assert.*;
 public class UserTest {
     //Test: constructor
 
-    User getterSetterTest = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
-            "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-            "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(),
-            new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+    User getterSetterTest;
+    @Before
+    public void before() {
+         getterSetterTest = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
+                "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(),
+                new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+    }
+
     @Test
-    public void testUser() {
-        assertTrue(getterSetterTest instanceof User);
+    public void testNotEqualsObject() {
+        Object o = new Object();
+        assertNotEquals(getterSetterTest, o);
     }
 
     //Test: toString1
@@ -28,27 +35,41 @@ public class UserTest {
         String expected = "4457773\nP@ssW0rd\nLaura Folkerts\n1970-01-10\n"
                 + "laura@mail.com\n0612345678\nM. Rutgersweg 1, 2331NT Leiden\nComputer Sciences\n"
                 + "TU Delft\n1\navailable: \nCourses teaching: \nCourses learning: \nCourses searching Buddy: "
-                + "\nwoman\nDutch\nlanguages: \nHello\nGPS\nIMG";
+                + "\nwoman\nDutch\nlanguages: \nHello\nGPS";
         assertEquals(expected, getterSetterTest.toString());
+    }
+
+    @Test
+    public void testjsonToUser() throws Exception {
+        String json = "{\"password\":\"P@ssW0rd\",\"firstname\":\"Laura\",\"lastname\":"
+                + "\"Folkerts\",\"mail\":\"laura@mail.com\",\"phonenumber\":\"0612345678\","
+                + "\"study\":\"Computer Sciences\",\"university\":\"TU Delft\",\"gender\":"
+                + "\"woman\",\"nationality\":\"Dutch\",\"description\":\"Hello\",\"location\":"
+                + "\"GPS\",\"birthday\":853113600,\"userID\":4457773,\"studyYear\":1,\"address\":"
+                + "{\"street\":\"M. Rutgersweg\",\"housenumber\":\"1\",\"zipcode\":\"2331NT\","
+                + "\"city\":\"Leiden\"},\"coursesTeachingList\":[],\"coursesLearningList\":[],"
+                + "\"buddyList\":[],\"languageList\":[],\"availableList\":[]}";
+        User usr = User.jsonToUser(json);
+        assertEquals(usr, getterSetterTest);
     }
 
     //Test: toString2
     @Test
     public void testToString2() {
         String helpOffered = "Calculus";
-        getterSetterTest.addCoursesTeaching(helpOffered);
+        getterSetterTest.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        getterSetterTest.addCoursesLearning(helpWanted);
+        getterSetterTest.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        getterSetterTest.addBuddy(buddy);
-        getterSetterTest.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        getterSetterTest.getBuddyList().add(buddy);
+        getterSetterTest.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        getterSetterTest.addLanguage(language);
+        getterSetterTest.getLanguageList().add(language);
 
         String expected = "4457773\nP@ssW0rd\nLaura Folkerts\n1970-01-10\n"
                 + "laura@mail.com\n0612345678\nM. Rutgersweg 1, 2331NT Leiden\nComputer Sciences\n"
                 + "TU Delft\n1\navailable: Friday\nCourses teaching: Calculus\nCourses learning: OOP\n"
-                + "Courses searching Buddy: Web&Database\nwoman\nDutch\nlanguages: Dutch\nHello\nGPS\nIMG";
+                + "Courses searching Buddy: Web&Database\nwoman\nDutch\nlanguages: Dutch\nHello\nGPS";
 
         assertEquals(expected, getterSetterTest.toString());
     }
@@ -59,28 +80,28 @@ public class UserTest {
 
         String helpOffered1 = "Calculus";
         String helpOffered2 = "Biology";
-        getterSetterTest.addCoursesTeaching(helpOffered1);
-        getterSetterTest.addCoursesTeaching(helpOffered2);
+        getterSetterTest.getCoursesTeachingList().add(helpOffered1);
+        getterSetterTest.getCoursesTeachingList().add(helpOffered2);
         String helpWanted1 = "OOP";
         String helpWanted2 = "Chemistry";
-        getterSetterTest.addCoursesLearning(helpWanted1);
-        getterSetterTest.addCoursesLearning(helpWanted2);
+        getterSetterTest.getCoursesLearningList().add(helpWanted1);
+        getterSetterTest.getCoursesLearningList().add(helpWanted2);
         String buddy1 = "Web&Database";
         String buddy2 = "JavaScript";
-        getterSetterTest.addBuddy(buddy1);
-        getterSetterTest.addBuddy(buddy2);
-        getterSetterTest.addAvailable(new AvailableDate(new Weekdays("Monday")));
-        getterSetterTest.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        getterSetterTest.getBuddyList().add(buddy1);
+        getterSetterTest.getBuddyList().add(buddy2);
+        getterSetterTest.getAvailableList().add(new AvailableDate(new Weekdays("Monday")));
+        getterSetterTest.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language1 = "Dutch";
         String language2 = "German";
-        getterSetterTest.addLanguage(language1);
-        getterSetterTest.addLanguage(language2);
+        getterSetterTest.getLanguageList().add(language1);
+        getterSetterTest.getLanguageList().add(language2);
 
         String expected = "4457773\nP@ssW0rd\nLaura Folkerts\n1970-01-10\n"
                 + "laura@mail.com\n0612345678\nM. Rutgersweg 1, 2331NT Leiden\nComputer Sciences\n"
                 + "TU Delft\n1\navailable: Monday;Friday\nCourses teaching: Calculus;Biology\n"
                 + "Courses learning: OOP;Chemistry\nCourses searching Buddy: Web&Database;JavaScript\n"
-                + "woman\nDutch\nlanguages: Dutch;German\nHello\nGPS\nIMG";
+                + "woman\nDutch\nlanguages: Dutch;German\nHello\nGPS";
 
         assertEquals(expected, getterSetterTest.toString());
     }
@@ -203,199 +224,108 @@ public class UserTest {
         assertTrue(expected.equals(getterSetterTest.getLocation().toString()));
     }
 
-    //Test: getPicture
     @Test
-    public void testGetPicture() {
-
-        String expected = "IMG";
-        assertTrue(expected.equals(getterSetterTest.getPicture().toString()));
+    public void testGetCoursesLearningListInitial() {
+        ArrayList<String> expected = new ArrayList<String>();
+        assertEquals(expected, getterSetterTest.getCoursesLearningList());
     }
 
-    //Test: getStudysTeachingSize1 (empty)
     @Test
-    public void testgetStudysTeachingSize1() {
-
-        assertTrue(getterSetterTest.getStudysTeachingSize() == 0);
+    public void testGetCoursesLearningListEditedEqual() {
+        ArrayList<String> expected = new ArrayList<String>();
+        expected.add("Koken");
+        getterSetterTest.getCoursesLearningList().add("Koken");
+        assertEquals(expected, getterSetterTest.getCoursesLearningList());
     }
 
-    //Test: getStudysTeachingSize2
     @Test
-    public void testgetStudysTeachingSize2() {
-
-        String helpOffered = "Calculus";
-        String helpOffered2 = "Calculus";
-        getterSetterTest.addCoursesTeaching(helpOffered);
-        getterSetterTest.addCoursesTeaching(helpOffered2);
-        assertTrue(getterSetterTest.getStudysTeachingSize() == 1);
+    public void testGetCoursesLearningListEditedNotEqual() {
+        ArrayList<String> expected = new ArrayList<String>();
+        expected.add("Fietsen");
+        getterSetterTest.getCoursesLearningList().add("Koken");
+        assertNotEquals(expected, getterSetterTest.getCoursesLearningList());
     }
 
-    //Test: getStudysLearningSize1 (empty)
     @Test
-    public void testgetStudysLearningSize1() {
-
-        assertTrue(getterSetterTest.getStudysLearningSize() == 0);
+    public void testGetCoursesTeachingListInitial() {
+        ArrayList<String> expected = new ArrayList<String>();
+        assertEquals(expected, getterSetterTest.getCoursesTeachingList());
     }
 
-    //Test: getStudysLearningSize2
     @Test
-    public void testgetStudysLearningSize2() {
-
-        String helpWanted = "Calculus";
-        String helpWanted2 = "Calculus";
-        getterSetterTest.addCoursesLearning(helpWanted);
-        getterSetterTest.addCoursesLearning(helpWanted2);
-        assertTrue(getterSetterTest.getStudysLearningSize() == 1);
+    public void testGetCoursesTeachingListEditedEqual() {
+        ArrayList<String> expected = new ArrayList<String>();
+        expected.add("Koken");
+        getterSetterTest.getCoursesTeachingList().add("Koken");
+        assertEquals(expected, getterSetterTest.getCoursesTeachingList());
     }
 
-    //Test: getBuddySize1 (empty)
     @Test
-    public void testContainsBuddy1() {
-
-        assertTrue(getterSetterTest.getBuddySize() == 0);
+    public void testGetCoursesTeachingListEditedNotEqual() {
+        ArrayList<String> expected = new ArrayList<String>();
+        expected.add("Fietsen");
+        getterSetterTest.getCoursesTeachingList().add("Koken");
+        assertNotEquals(expected, getterSetterTest.getCoursesTeachingList());
     }
 
-    //Test: getBuddySize2
     @Test
-    public void testContains2() {
-
-        getterSetterTest.addBuddy("OOP");
-        getterSetterTest.addBuddy("OOP");
-        assertTrue(getterSetterTest.getBuddySize() == 1);
+    public void testGetBuddyListInitial() {
+        ArrayList<String> expected = new ArrayList<String>();
+        assertEquals(expected, getterSetterTest.getBuddyList());
     }
 
-    //Test: getAvailableSize1 (empty)
     @Test
-    public void testGetAvailableSize1() {
-
-        assertTrue(getterSetterTest.getAvailableSize() == 0);
+    public void testGetBuddyListEditedEqual() {
+        ArrayList<String> expected = new ArrayList<String>();
+        expected.add("Koken");
+        getterSetterTest.getBuddyList().add("Koken");
+        assertEquals(expected, getterSetterTest.getBuddyList());
     }
 
-    //Test: getAvailableSize2
     @Test
-    public void testGetAvailableSize2() {
-
-        AvailableDate available = new  AvailableDate(new Weekdays("Monday"));
-        AvailableDate available2 = new  AvailableDate(new Weekdays("Monday"));
-        getterSetterTest.addAvailable(available);
-        getterSetterTest.addAvailable(available2);
-        assertTrue(getterSetterTest.getAvailableSize() == 1);
+    public void testGetBuddyListEditedNotEqual() {
+        ArrayList<String> expected = new ArrayList<String>();
+        expected.add("Fietsen");
+        getterSetterTest.getBuddyList().add("Koken");
+        assertNotEquals(expected, getterSetterTest.getBuddyList());
     }
 
-    //Test: getLanguageSize1 (empty)
     @Test
-    public void testGetLanguageSize1() {
-
-        assertTrue(getterSetterTest.getLanguageSize() == 0);
+    public void testGetLanguageListInitial() {
+        ArrayList<String> expected = new ArrayList<String>();
+        assertEquals(expected, getterSetterTest.getLanguageList());
     }
 
-    //Test: getLanguageSize2
     @Test
-    public void testGetLanguageSize2() {
-
-        getterSetterTest.addLanguage("Dutch");
-        getterSetterTest.addLanguage("Dutch");
-        assertTrue(getterSetterTest.getLanguageSize() == 1);
+    public void testGetLanguageListEditedEqual() {
+        ArrayList<String> expected = new ArrayList<String>();
+        expected.add("Polish");
+        getterSetterTest.getLanguageList().add("Polish");
+        assertEquals(expected, getterSetterTest.getLanguageList());
     }
 
-    //Test: containsCoursesTeaching
     @Test
-    public void testContainsCoursesTeaching() {
-
-        String helpOffered = "Calculus";
-        String helpOffered2 = "OOP";
-        getterSetterTest.addCoursesTeaching(helpOffered);
-        getterSetterTest.addCoursesTeaching(helpOffered2);
-        assertTrue(getterSetterTest.containsCoursesTeaching(helpOffered2));
+    public void testGetLanguageEditedNotEqual() {
+        ArrayList<String> expected = new ArrayList<String>();
+        expected.add("Russian");
+        getterSetterTest.getLanguageList().add("Polish");
+        assertNotEquals(expected, getterSetterTest.getLanguageList());
     }
 
-
-    //Test: containsCoursesLearning
     @Test
-    public void testContainsCoursesLearning() {
-
-        String helpWanted = "Calculus";
-        String helpWanted2 = "OOP";
-        getterSetterTest.addCoursesLearning(helpWanted);
-        getterSetterTest.addCoursesLearning(helpWanted2);
-        assertTrue(getterSetterTest.containsCoursesLearning(helpWanted2));
+    public void testGetAvailableListInitial() {
+        ArrayList<AvailableDate> expected = new ArrayList<AvailableDate>();
+        assertEquals(expected, getterSetterTest.getAvailableList());
     }
 
-    //Test: containsBuddy
     @Test
-    public void testContainsBuddy() {
-
-        String buddy1 = "Calculus";
-        String buddy2 = "OOP";
-        getterSetterTest.addBuddy(buddy1);
-        getterSetterTest.addBuddy(buddy2);
-        assertTrue(getterSetterTest.containsBuddy(buddy2));
-    }
-
-    //Test: containsAvailable
-    @Test
-    public void testContainsAvailable() {
-
-        AvailableDate available = new AvailableDate(new Weekdays("Monday"));
-        AvailableDate available2 = new AvailableDate(new Weekdays("Friday"));
-        getterSetterTest.addAvailable(available);
-        getterSetterTest.addAvailable(available2);
-        assertTrue(getterSetterTest.containsAvailable(available2));
-    }
-
-    //Test: containsLanguage
-    @Test
-    public void testContainsLanguage() {
-
-        String language1 = "Dutch";
-        String language2 = "English";
-        getterSetterTest.addLanguage(language1);
-        getterSetterTest.addLanguage(language2);
-        assertTrue(getterSetterTest.containsLanguage(language2));
-    }
-
-    //Test: addCoursesTeaching
-    @Test
-    public void testAddCoursesTeaching() {
-
-        getterSetterTest.addCoursesTeaching("Calculus");
-        getterSetterTest.addCoursesTeaching("Calculus");
-        assertTrue(getterSetterTest.getStudysTeachingSize() == 1);
-    }
-
-    //Test: addCoursesLearning
-    @Test
-    public void testAddCoursesLearning() {
-
-        getterSetterTest.addCoursesLearning("Calculus");
-        getterSetterTest.addCoursesLearning("Calculus");
-        assertTrue(getterSetterTest.getStudysLearningSize() == 1);
-    }
-
-    //Test: addBuddy
-    @Test
-    public void testAddBuddy() {
-
-        getterSetterTest.addBuddy("Calculus");
-        getterSetterTest.addBuddy("Calculus");
-        assertTrue(getterSetterTest.getBuddySize() == 1);
-    }
-
-    //Test: addAvailable
-    @Test
-    public void testAddAvailable() {
-
-        getterSetterTest.addAvailable(new AvailableDate(new Weekdays("Monday")));
-        getterSetterTest.addAvailable(new AvailableDate(new Weekdays("Monday")));
-        assertTrue(getterSetterTest.getAvailableSize() == 1);
-    }
-
-    //Test: addLanguage
-    @Test
-    public void testAddLanguage() {
-
-        getterSetterTest.addLanguage("Dutch");
-        getterSetterTest.addLanguage("Dutch");
-        assertTrue(getterSetterTest.getLanguageSize() == 1);
+    public void testGetAvailableListEdited() {
+        ArrayList<AvailableDate> expected = new ArrayList<AvailableDate>();
+        AvailableDate date = new AvailableDate(new Weekdays("Maandag"));
+        date.addAvailableTimes(new TimePeriod(new Timepoint(18,30), new Timepoint(20,00)));
+        expected.add(date);
+        getterSetterTest.getAvailableList().add(date);
+        assertEquals(expected, getterSetterTest.getAvailableList());
     }
 
     //Test: setUserId
@@ -530,30 +460,21 @@ public class UserTest {
         assertTrue(expected.equals(getterSetterTest.getLocation().toString()));
     }
 
-    //Test: setPicture
-    @Test
-    public void testSetPicture() {
-
-        getterSetterTest.setPicture("PNG");
-        String expected = "PNG";
-        assertTrue(expected.equals(getterSetterTest.getPicture().toString()));
-    }
-
     //Test: equals1, compare to itself
     @Test
     public void testEquals1() {
 
         String helpOffered = "Calculus";
-        getterSetterTest.addCoursesTeaching(helpOffered);
+        getterSetterTest.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        getterSetterTest.addCoursesLearning(helpWanted);
+        getterSetterTest.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        getterSetterTest.addBuddy(buddy);
-        getterSetterTest.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        getterSetterTest.getBuddyList().add(buddy);
+        getterSetterTest.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        getterSetterTest.addLanguage(language);
+        getterSetterTest.getLanguageList().add(language);
 
-        assertTrue(getterSetterTest.equals(getterSetterTest));
+        assertEquals(getterSetterTest, getterSetterTest);
     }
 
     //Test: equals2, compare to another user which has the same values
@@ -561,25 +482,25 @@ public class UserTest {
     public void testEquals2() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertTrue(user1.equals(user2));
     }
@@ -589,25 +510,25 @@ public class UserTest {
     public void testEquals3() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457772, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -617,25 +538,25 @@ public class UserTest {
     public void testEquals4() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "PassW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -645,25 +566,25 @@ public class UserTest {
     public void testEquals5() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Karen", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -673,25 +594,25 @@ public class UserTest {
     public void testEquals6() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Lobo", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
     }
 
     //Test: equals7, compare to another user which differs by birthday
@@ -699,25 +620,25 @@ public class UserTest {
     public void testEquals7() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853200000),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -727,25 +648,25 @@ public class UserTest {
     public void testEquals8() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.nl", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -755,25 +676,25 @@ public class UserTest {
     public void testEquals9() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345679", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -783,25 +704,25 @@ public class UserTest {
     public void testEquals10() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "3", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -811,25 +732,25 @@ public class UserTest {
     public void testEquals11() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "LST", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "LST", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -839,25 +760,25 @@ public class UserTest {
     public void testEquals12() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "Leiden University", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "Leiden University", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -867,25 +788,25 @@ public class UserTest {
     public void testEquals13() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 2, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 2, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -895,25 +816,25 @@ public class UserTest {
     public void testEquals14() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "man", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "man", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -923,25 +844,25 @@ public class UserTest {
     public void testEquals15() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Brazilian", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Brazilian", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -951,25 +872,25 @@ public class UserTest {
     public void testEquals16() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Bye", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Bye", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -979,53 +900,25 @@ public class UserTest {
     public void testEquals17() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS-location", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
-
-        assertFalse(user1.equals(user2));
-    }
-
-    //Test: equals18, compare to another user which differs by picture
-    @Test
-    public void testEquals18() {
-        User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
-                "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
-        String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
-        String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        String language = "Dutch";
-        user1.addLanguage(language);
-
-        User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
-                "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "PNG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS-location");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -1035,26 +928,26 @@ public class UserTest {
     public void testEquals19() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered2 = "Assembly";
-        user2.addCoursesTeaching(helpOffered2);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+        user2.getCoursesTeachingList().add(helpOffered2);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -1064,26 +957,26 @@ public class UserTest {
     public void testEquals20() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
         String helpWanted2 = "Assembly";
-        user2.addCoursesLearning(helpWanted2);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+        user2.getCoursesLearningList().add(helpWanted2);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -1093,26 +986,26 @@ public class UserTest {
     public void testEquals21() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
         String buddy2 = "Assembly";
-        user2.addBuddy(buddy2);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        user2.addLanguage(language);
+        user2.getBuddyList().add(buddy2);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -1122,25 +1015,25 @@ public class UserTest {
     public void testEquals22() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
         String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
+        user1.getCoursesTeachingList().add(helpOffered);
         String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
+        user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
+        user1.getBuddyList().add(buddy);
+        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
-        user1.addLanguage(language);
+        user1.getLanguageList().add(language);
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Monday")));
-        user2.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getCoursesTeachingList().add(helpOffered);
+        user2.getCoursesLearningList().add(helpWanted);
+        user2.getBuddyList().add(buddy);
+        user2.getAvailableList().add(new AvailableDate(new Weekdays("Monday")));
+        user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
     }
@@ -1150,27 +1043,14 @@ public class UserTest {
     public void testEquals23() {
         User user1 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        String helpOffered = "Calculus";
-        user1.addCoursesTeaching(helpOffered);
-        String helpWanted = "OOP";
-        user1.addCoursesLearning(helpWanted);
-        String buddy = "Web&Database";
-        user1.addBuddy(buddy);
-        user1.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        String language = "Dutch";
-        user1.addLanguage(language);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user1.getLanguageList().add("Dutch");
 
         User user2 = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS", "IMG");
-        user2.addCoursesTeaching(helpOffered);
-        user2.addCoursesLearning(helpWanted);
-        user2.addBuddy(buddy);
-        user2.addAvailable(new AvailableDate(new Weekdays("Friday")));
-        String language2 = "English";
-        user2.addLanguage(language2);
+                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
+        user2.getLanguageList().add("English");
 
-        assertFalse(user1.equals(user2));
+        assertNotEquals(user1, user2);
     }
 }

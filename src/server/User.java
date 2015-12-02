@@ -2,7 +2,6 @@ package server;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,7 +10,7 @@ import java.util.Date;
 
 public class User {
     private String password, firstname, lastname, mail, phonenumber, study, university, gender, nationality,
-            description, location, picture;
+            description, location;
     private Date birthday;
     private int userID, studyYear;
     private Address address;
@@ -39,12 +38,11 @@ public class User {
      * @param nationality - String
      * @param description - String
      * @param location    - String
-     * @param picture     - String
      */
     public User(int userID, String password, String firstname, String lastname, Date birthday, String mail,
                 String phonenumber, Address address, String study, String university, int studyYear,
                 ArrayList<AvailableDate> available, ArrayList<String> teaching, ArrayList<String> learning, ArrayList<String> buddys, String gender,
-                String nationality, String description, String location, String picture) {
+                String nationality, String description, String location) {
         this.userID = userID;
         this.password = password;
         this.firstname = firstname;
@@ -65,7 +63,6 @@ public class User {
         this.languageList = new ArrayList<String>();
         this.description = description;
         this.location = location;
-        this.picture = picture;
     }
 
     /**
@@ -94,7 +91,6 @@ public class User {
         this.languageList = new ArrayList<String>();
         this.description = "Test User";
         this.location = "";
-        this.picture = "";
     }
 
     /**
@@ -102,11 +98,11 @@ public class User {
      * Note: needs testing
      * Author: Sebastiaan Hester
      */
-    public User jsonToUser(File file) {
+    public static User jsonToUser(String jsonstring) {
         ObjectMapper mapper = new ObjectMapper();
         User usr = new User();
         try {
-            usr = mapper.readValue(file, User.class);
+            usr = mapper.readValue(jsonstring, User.class);
         } catch (IOException io) {
             io.printStackTrace();
         }
@@ -174,7 +170,7 @@ public class User {
             }
         }
 
-        text += "\n" + description + "\n" + location + "\n" + picture;
+        text += "\n" + description + "\n" + location;
         return text;
     }
 
@@ -316,187 +312,43 @@ public class User {
     }
 
     /**
-     * getPicture: getter for private attribute picture
-     *
-     * @return picture - String
+     * getCoursesTeachingList: getter for private arraylist coursesteaching
+     * @return CoursesTeaching - ArrayList<String>
      */
-    public String getPicture() {
-        return picture;
+    public ArrayList<String> getCoursesTeachingList() {
+        return this.coursesTeachingList;
     }
 
     /**
-     * getStudysTeachingSize: getter for the size of the arrayList coursesTeachingList
-     *
-     * @return coursesTeachingList.size() - int
+     * getCoursesLearningList: getter for private arraylist courseslearning
+     * @return CoursesLearning - ArrayList<String>
      */
-    public int getStudysTeachingSize() {
-        return coursesTeachingList.size();
+    public ArrayList<String> getCoursesLearningList() {
+        return this.coursesLearningList;
     }
 
     /**
-     * getStudysLearningSize: getter for the size of the arrayList coursesLearningList
-     *
-     * @return coursesLearningList.size() - int
+     * getBuddyList: getter for private arraylist buddylist
+     * @return BuddyList - ArrayList<String>
      */
-    public int getStudysLearningSize() {
-        return coursesLearningList.size();
+    public ArrayList<String> getBuddyList() {
+        return this.buddyList;
     }
 
     /**
-     * getBuddySize: getter for the size of the arrayList buddyList
-     *
-     * @return buddyList.size() - int
+     * getLanguageList: getter for private arraylist languagelist
+     * @return LanguageList - ArrayList<String>
      */
-    public int getBuddySize() {
-        return buddyList.size();
+    public ArrayList<String> getLanguageList() {
+        return this.languageList;
     }
 
     /**
-     * getAvailableListSize: getter for the size of the arrayList availableList
-     *
-     * @return availableList.size() - int
+     * getAvailableList: getter for private arraylist availablelist
+     * @return AvailableList - ArrayList<AvaliableDate>
      */
-    public int getAvailableSize() {
-        return availableList.size();
-    }
-
-    /**
-     * getLanguageSize: getter for the size of the arrayList languageList
-     *
-     * @return languageList.size() - int
-     */
-    public int getLanguageSize() {
-        return languageList.size();
-    }
-
-    /**
-     * containsCoursesTeaching: checks if coursesTeaching is already in the arrayList
-     *
-     * @param coursesTeaching - String
-     * @return boolean
-     */
-    public boolean containsCoursesTeaching(String coursesTeaching) {
-        for (int i = 0; i < coursesTeachingList.size(); i++) {
-            if (coursesTeachingList.get(i).equals(coursesTeaching)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * containsCoursesLearning: checks if coursesLearning is already in the arrayList
-     *
-     * @param coursesLearning - String
-     * @return boolean
-     */
-    public boolean containsCoursesLearning(String coursesLearning) {
-        for (int i = 0; i < coursesLearningList.size(); i++) {
-            if (coursesLearningList.get(i).equals(coursesLearning)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * containsBuddy: checks if buddy is already in the arrayList
-     *
-     * @param buddy - String
-     * @return boolean
-     */
-    public boolean containsBuddy(String buddy) {
-        for (int i = 0; i < buddyList.size(); i++) {
-            if (buddyList.get(i).equals(buddy)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * containsAvailable: checks if available is already in the arrayList
-     *
-     * @param available - AvailableDate
-     * @return boolean
-     */
-    public boolean containsAvailable(AvailableDate available) {
-        for (int i = 0; i < availableList.size(); i++) {
-            if (availableList.get(i).equals(available)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * containsLanguage: checks if language is already in the arrayList
-     *
-     * @param language - String
-     * @return boolean
-     */
-    public boolean containsLanguage(String language) {
-        for (int i = 0; i < languageList.size(); i++) {
-            if (languageList.get(i).equals(language)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * addCoursesTeaching: adds coursesTeaching in the arrayList if it isn't already in it
-     *
-     * @param coursesTeaching - String
-     */
-    public void addCoursesTeaching(String coursesTeaching) {
-        if (!this.containsCoursesTeaching(coursesTeaching)) {
-            coursesTeachingList.add(coursesTeaching);
-        }
-    }
-
-    /**
-     * addCoursesLearning: adds coursesLearning in the arrayList if it isn't already in it
-     *
-     * @param coursesLearning - String
-     */
-    public void addCoursesLearning(String coursesLearning) {
-        if (!this.containsCoursesLearning(coursesLearning)) {
-            coursesLearningList.add(coursesLearning);
-        }
-    }
-
-    /**
-     * addBuddy: adds buddy in the arrayList if it isn't already in it
-     *
-     * @param buddy - String
-     */
-    public void addBuddy(String buddy) {
-        if (!this.containsBuddy(buddy)) {
-            buddyList.add(buddy);
-        }
-    }
-
-    /**
-     * addAvailable: adds available in the arrayList if it isn't already in it
-     *
-     * @param available - AvailableDate
-     */
-    public void addAvailable(AvailableDate available) {
-        if (!this.containsAvailable(available)) {
-            availableList.add(available);
-        }
-    }
-
-    /**
-     * addLanguage: adds available in the arrayList if it isn't already in it
-     *
-     * @param language - String
-     */
-    public void addLanguage(String language) {
-        if (!this.containsLanguage(language)) {
-            languageList.add(language);
-        }
+    public ArrayList<AvailableDate> getAvailableList() {
+        return this.availableList;
     }
 
     /**
@@ -635,15 +487,6 @@ public class User {
     }
 
     /**
-     * setPicture: setter for private attribute picture
-     *
-     * @param picture - String
-     */
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    /**
      * equals: checks if current object is the same as the other
      *
      * @param other - Object
@@ -652,7 +495,7 @@ public class User {
     public boolean equals(Object other) {
         if (other instanceof User) {
             User that = (User) other;
-            if (this.userID == that.getUserID() &&
+            return this.userID == that.getUserID() &&
                     this.password.equals(that.getPassword()) &&
                     this.firstname.equals(that.getFirstname()) &&
                     this.lastname.equals(that.getLastname()) &&
@@ -667,51 +510,11 @@ public class User {
                     this.nationality.equals(that.getNationality()) &&
                     this.description.equals(that.getDescription()) &&
                     this.location.equals(that.getLocation()) &&
-                    this.picture.equals(that.getPicture())) {
-
-                if (coursesTeachingList.size() != that.getStudysTeachingSize()) {
-                    return false;
-                }
-                for (int i = 0; i < coursesTeachingList.size(); i++) {
-                    if (!that.containsCoursesTeaching(coursesTeachingList.get(i))) {
-                        return false;
-                    }
-                }
-                if (coursesLearningList.size() != that.getStudysLearningSize()) {
-                    return false;
-                }
-                for (int i = 0; i < coursesLearningList.size(); i++) {
-                    if (!that.containsCoursesLearning(coursesLearningList.get(i))) {
-                        return false;
-                    }
-                }
-                if (buddyList.size() != that.getBuddySize()) {
-                    return false;
-                }
-                for (int i = 0; i < buddyList.size(); i++) {
-                    if (!that.containsBuddy(buddyList.get(i))) {
-                        return false;
-                    }
-                }
-                if (availableList.size() != that.getAvailableSize()) {
-                    return false;
-                }
-                for (int i = 0; i < availableList.size(); i++) {
-                    if (!that.containsAvailable(availableList.get(i))) {
-                        return false;
-                    }
-                }
-                if (languageList.size() != that.getLanguageSize()) {
-                    return false;
-                }
-                for (int i = 0; i < languageList.size(); i++) {
-                    if (!that.containsLanguage(languageList.get(i))) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            return false;
+                    this.coursesLearningList.equals(that.getCoursesLearningList()) &&
+                    this.coursesTeachingList.equals(that.getCoursesTeachingList()) &&
+                    this.buddyList.equals(that.getBuddyList()) &&
+                    this.languageList.equals(that.getLanguageList()) &&
+                    this.availableList.equals(that.getAvailableList());
         }
         return false;
     }

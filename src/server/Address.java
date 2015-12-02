@@ -1,5 +1,7 @@
 package server;
 
+import org.codehaus.jackson.annotate.JsonCreator;
+
 public class Address {
     private String street, housenumber, zipcode, city;
 
@@ -17,6 +19,9 @@ public class Address {
         this.zipcode = zipcode;
         this.city = city;
     }
+
+    @JsonCreator
+    public Address() { }
 
     /**
      * toString: gives a textual representation of Address

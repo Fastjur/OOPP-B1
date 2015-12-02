@@ -124,7 +124,7 @@ public class Database {
 
             usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber,
                     new Address("A", "B", "C","D"), study, university, studyYear, new ArrayList(), coursesTeaching,
-                    coursesLearning, coursesSearchingBuddy, sex, nationality, bio, location, photo);
+                    coursesLearning, coursesSearchingBuddy, sex, nationality, bio, location);
             System.out.println(usr);
         }
         return usr;
