@@ -4,6 +4,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -118,8 +120,9 @@ public class User {
      */
     public String toString() {
         String text = new String();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         text = Integer.toString(userID) + "\n" + password + "\n" + firstname + " " + lastname + "\n"
-                + birthday + "\n" + mail + "\n" + phonenumber + "\n" + address.toString() + study
+                + df.format(birthday) + "\n" + mail + "\n" + phonenumber + "\n" + address.toString() + study
                 + "\n" + university + "\n" + Integer.toString(studyYear) + "\n";
         // availableList
         text += "available: ";

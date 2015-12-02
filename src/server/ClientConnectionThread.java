@@ -46,7 +46,7 @@ public class ClientConnectionThread extends Thread {
                 if (messagelength > 0 && messagelength < 65536) {
                     byte[] buffer = new byte[messagelength];
                     inputStream.read(buffer, 0, messagelength);
-                    JSONObject message = decodeMessage(buffer);
+                    String message = decodeMessage(buffer);
                     handleMessage(message);
                 } else {
                     System.out.println("Client sent an invalid request, disconnecting client.");
@@ -67,12 +67,12 @@ public class ClientConnectionThread extends Thread {
         shouldStop = true;
     }
 
-    private JSONObject decodeMessage(byte[] buf) {
-        return new JSONObject(new String(buf, StandardCharsets.UTF_8));
+    private String decodeMessage(byte[] buf) {
+        return new String(buf, StandardCharsets.UTF_8);
     }
 
-    private byte[] encodeMessage(JSONObject input) {
-        return input.toString(0).getBytes(StandardCharsets.UTF_8); // TODO: encryption?
+    private byte[] encodeMessage(String input) {
+        return input.getBytes(StandardCharsets.UTF_8); // TODO: encryption?
     }
 
     /**
@@ -81,13 +81,13 @@ public class ClientConnectionThread extends Thread {
      * @param message The message to send
      * @throws java.io.IOException when the socket is being written to while trying to write.
      */
-    public synchronized void sendMessage(JSONObject message) throws java.io.IOException {
+    public synchronized void sendMessage(String message) throws java.io.IOException {
         byte[] msg = encodeMessage(message);
         outputStream.write(ByteBuffer.allocate(4).putInt(msg.length).array());
         outputStream.write(msg);
     }
 
-    private void handleMessage(JSONObject message) {
+    private void handleMessage(String message) {
         // big function inbound
     }
 }

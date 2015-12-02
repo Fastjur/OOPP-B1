@@ -1,6 +1,5 @@
 package server;
 
-import org.json.JSONObject;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -55,20 +54,19 @@ public class ConnectedClientTest {
 
         InputStream stream = socket.getInputStream();
 
-        JSONObject object = new JSONObject();
-        object.put("action", "test");
+        String json = "{ \"action\", \"test\" }";
 
-        clients.get(0).sendMessage(object);
+        clients.get(0).sendMessage(json);
         byte[] buffer = new byte[4];
         stream.read(buffer);
         int messagelength = ByteBuffer.wrap(buffer).getInt();
         byte[] messagebuffer = new byte[messagelength];
         stream.read(messagebuffer);
 
-        JSONObject message = new JSONObject(new String(messagebuffer, StandardCharsets.UTF_8));
-        message.equals(object);
+        String message = new String(messagebuffer, StandardCharsets.UTF_8);
+        message.equals(json);
 
-        assertEquals(object.toString(), message.toString());
+        assertEquals(json, message);
 
         thread.end();
     }

@@ -49,7 +49,7 @@ public class ConnectedClient {
      *
      * @param message the message to send
      */
-    public void sendMessage(JSONObject message) {
+    public void sendMessage(String message) {
         try {
             connectionThread.sendMessage(message);
         } catch (java.io.IOException ex) {

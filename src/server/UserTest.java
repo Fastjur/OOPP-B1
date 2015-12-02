@@ -1,10 +1,13 @@
 package server;
-import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import static org.junit.Assert.*;
 
 
 public class UserTest {
@@ -22,11 +25,11 @@ public class UserTest {
     //Test: toString1
     @Test
     public void testToString1() {
-        String expected = "4457773\nP@ssW0rd\nLaura Folkerts\n13-01-1997\n"
+        String expected = "4457773\nP@ssW0rd\nLaura Folkerts\n1970-01-10\n"
                 + "laura@mail.com\n0612345678\nM. Rutgersweg 1, 2331NT Leiden\nComputer Sciences\n"
                 + "TU Delft\n1\navailable: \nCourses teaching: \nCourses learning: \nCourses searching Buddy: "
                 + "\nwoman\nDutch\nlanguages: \nHello\nGPS\nIMG";
-        assertTrue(expected.equals(getterSetterTest.toString()));
+        assertEquals(expected, getterSetterTest.toString());
     }
 
     //Test: toString2
@@ -42,12 +45,12 @@ public class UserTest {
         String language = "Dutch";
         getterSetterTest.addLanguage(language);
 
-        String expected = "4457773\nP@ssW0rd\nLaura Folkerts\n13-01-1997\n"
+        String expected = "4457773\nP@ssW0rd\nLaura Folkerts\n1970-01-10\n"
                 + "laura@mail.com\n0612345678\nM. Rutgersweg 1, 2331NT Leiden\nComputer Sciences\n"
                 + "TU Delft\n1\navailable: Friday\nCourses teaching: Calculus\nCourses learning: OOP\n"
                 + "Courses searching Buddy: Web&Database\nwoman\nDutch\nlanguages: Dutch\nHello\nGPS\nIMG";
 
-        assertTrue(expected.equals(getterSetterTest.toString()));
+        assertEquals(expected, getterSetterTest.toString());
     }
 
     //Test: toString3
@@ -73,13 +76,13 @@ public class UserTest {
         getterSetterTest.addLanguage(language1);
         getterSetterTest.addLanguage(language2);
 
-        String expected = "4457773\nP@ssW0rd\nLaura Folkerts\n13-01-1997\n"
+        String expected = "4457773\nP@ssW0rd\nLaura Folkerts\n1970-01-10\n"
                 + "laura@mail.com\n0612345678\nM. Rutgersweg 1, 2331NT Leiden\nComputer Sciences\n"
                 + "TU Delft\n1\navailable: Monday;Friday\nCourses teaching: Calculus;Biology\n"
                 + "Courses learning: OOP;Chemistry\nCourses searching Buddy: Web&Database;JavaScript\n"
                 + "woman\nDutch\nlanguages: Dutch;German\nHello\nGPS\nIMG";
 
-        assertTrue(expected.equals(getterSetterTest.toString()));
+        assertEquals(expected, getterSetterTest.toString());
     }
 
     //Test: getUserID
@@ -116,9 +119,9 @@ public class UserTest {
     //Test: getBirthday
     @Test
     public void testGetBirthday() {
-
-        String expected = "13-01-1997";
-        assertTrue(expected.equals(getterSetterTest.getBirthday().toString()));
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String expected = "1970-01-10";
+        assertEquals(expected, df.format(getterSetterTest.getBirthday()));
     }
 
     //Test: getMail
@@ -433,10 +436,9 @@ public class UserTest {
     //Test: setBirthday
     @Test
     public void testSetBirthday() {
-
-        getterSetterTest.setBirthday(new Date(931305600));
-        String expected = "07-07-1999";
-        assertTrue(expected.equals(getterSetterTest.getBirthday().toString()));
+        Date expected = new Date(931305600);
+        getterSetterTest.setBirthday(expected);
+        assertEquals(expected, getterSetterTest.getBirthday());
     }
 
     //Test: setMail
