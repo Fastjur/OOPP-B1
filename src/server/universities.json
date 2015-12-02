@@ -1,874 +1,1256 @@
-{"universities": [
-	{
-		"id": 1,
-		"name": "Erasmus Universiteit Rotterdam",
-		"bachelors": [
-			8, 18, 20, 39, 45, 47, 61, 62, 65, 67, 70, 82, 84, 94, 104, 128, 140, 146, 147, 158, 180, 181
-		]
-	},
-	{
-		"id": 2,
-		"name": "Technische Universiteit Delft",
-		"bachelors": [
-			30, 33, 50, 76, 94, 107, 111, 112, 126, 128, 164, 166, 167, 169, 171, 179
-		]
-	},
-	{
-		"id": 3,
-		"name": "Maastricht University",
-		"bachelors": [
-			26, 41, 45, 47, 53, 55, 56, 61, 62, 65, 70, 83, 92, 104, 146, 147   
-		]
-	},
-	{
-		"id": 4, 
-		"name": "Open Universiteit",
-		"bachelors": [
-			8, 18, 77, 79, 120, 146, 147
-		]
-	},
-	{
-		"id": 5,
-		"name": "Radboud Universiteit Nijmegen",
-		"bachelors": [
-			8, 18, 20, 24, 26, 34, 35, 40, 44, 47, 51, 53, 65, 66, 67, 72, 77, 98, 99, 125, 129, 133, 135, 140, 143, 146, 147, 148, 
-			149, 152, 154, 158, 162, 163, 174, 180
-		]
-	},
-	{
-		"id": 6,
-		"name": "Rijksuniversiteit Groningen",
-		"bachelors": [
-			10, 12, 18, 22, 24, 34, 45, 47, 52, 57, 59, 65, 67, 72, 77, 79, 80, 83, 86, 97, 98, 99, 104, 107, 113, 118, 124, 130, 133, 
-			140, 146, 147, 148, 152, 153, 157, 158, 160, 162, 163, 165, 169, 170, 171, 174, 180, 181, 182
-		]
-	},
-	{
-		"id": 7,
-		"name": "Technische Universiteit Eindhoven",
-		"bachelors": [
-			25, 30, 50, 75, 153, 165, 167, 168, 169, 171, 179
-		]
-	},
-	{
-		"id": 8,
-		"name": "Tilburg University",
-		"bachelors":[
-			8, 16, 20, 34, 45, 46, 47, 61, 62, 71, 84, 104, 137, 141, 146, 147, 158, 174, 180
-		]
-	},
-	{
-		"id": 9,
-		"name": "Universiteit Leiden",
-		"bachelors":[
-			6, 12, 23, 24, 26, 32, 39, 40, 44, 51, 60, 61, 63, 65, 67, 72, 77, 89, 90, 94, 95, 98, 101, 107, 118, 126, 130, 132, 133, 
-			135, 138, 140, 143, 146, 147, 148, 150, 160, 162, 180, 182, 183
-		]
-	},
-	{
-		"id": 10,
-		"name": "Universiteit van Amsterdam",
-		"bachelors":[
-			4, 8, 9, 11, 13, 24, 26, 35, 40, 44, 45, 48, 51, 56, 61, 62, 63, 64, 65, 67, 72, 73, 77, 79, 89, 98, 99, 102, 105, 110, 113,
-			114, 116, 127, 129, 133, 134, 136, 140, 143, 144, 145, 146, 147, 148, 151, 152, 156, 157, 158, 159, 162, 163, 173, 180, 182
-		]
-	},
-	{
-		"id": 11,
-		"name": "Vrije Universiteit Amsterdam",
-		"bachelors":[
-			1, 2, 12, 18, 19, 22, 24, 26, 31, 34, 35, 37, 39, 40, 45, 47, 58, 65, 67, 68, 70, 72, 78, 84, 105, 108, 109, 115, 117, 129,
-			135, 139, 140, 143, 146, 147, 148, 152, 155, 158, 163, 175, 180, 182
-		]
-	},
-	{
-		"id": 12,
-		"name": "Universiteit Twente",
-		"bachelors":[
-			5, 17, 25, 33, 35, 38, 50, 54, 70, 76, 84, 93, 146, 153, 165, 167, 169, 171, 172, 179
-		]
-	},
-	{
-		"id": 13,
-		"name": "Universiteit Utrecht",
-		"bachelors":[
-			2, 9, 19, 24, 26, 34, 40, 42, 44, 47, 51, 59, 63, 65, 67, 77, 79, 88, 89, 91, 98, 99, 104, 110, 113, 119, 120, 127, 129, 131, 
-			133, 136, 140, 146, 147, 148, 152, 157, 158, 159, 161, 162, 180, 182
-		]
-	},
-	{
-		"id": 14,
-		"name": "Faculteit Militaire Wetenschappen",
-		"bachelors":[
-			96, 122, 123
-		]
-	},
-	{
-		"id": 15,
-		"name": "Nyenrode Business Universiteit",
-		"bachelors": 3
-	},
-	{
-		"id": 16,
-		"name": "Protestantse Theologische Universiteit",
-		"bachelors": 175
-	},
-	{
-		"id": 17,
-		"name": "Theologische Universiteit Apeldoorn",
-		"bachelors": 174
-	},
-	{
-		"id": 18,
-		"name": "Theologische Universiteit Kampen",
-		"bachelors": 174
-	},
-	{
-		"id": 19,
-		"name": "Universiteit voor Humanistiek",
-		"bachelors": 74
-	},
-	{
-		"id": 20,
-		"name": "Wageningen University",
-		"bachelors":[
-			7, 15, 24, 27, 28, 29, 36, 43, 49, 69, 81, 87, 100, 103, 121, 125, 142, 176, 177
-		]
-	}
-],
-
-"bachelors": [
-	{
-		"name": "Aarde en Economie",
-		"id": 1
-	},
-	{
-		"name": "Aardwetenschappen",
-		"id": 2
-	},
-	{
-		"name": "Accountancy",
-		"id": 3
-	},
-	{
-		"name": "Actuariële Wetenschappen",
-		"id": 4
-	},
-	{
-		"name": "Advanced Technology",
-		"id": 5
-	},
-	{
-		"name": "Afrikaanse talen en culturen",
-		"id": 6
-	},
-	{
-		"name": "Agrotechnologie",
-		"id": 7
-	},
-	{
-		"name": "Algemene Cultuurwetenschappen",
-		"id": 8
-	},
-	{
-		"name": "Algemene Sociale Wetenschappen",
-		"id": 9
-	},
-	{
-		"name": "American Studies",
-		"id": 10
-	},
-	{
-		"name": "Arabische Taal en Cultuur",
-		"id": 11
-	},
-	{
-		"name": "Archeologie",
-		"id": 12
-	},
-	{
-		"name": "Archeologie en Prehistorie",
-		"id": 13
-	},
-	{
-		"name": "Bachelor of Science in Physiotherapy",
-		"id": 14
-	},
-	{
-		"name": "Bedrijfs- en Consumentenwetenschappen",
-		"id": 15
-	},
-	{
-		"name": "Bedrijfseconomie",
-		"id": 16
-	},
-	{
-		"name": "Bedrijfsinformatie-technologie",
-		"id": 17
-	},
-	{
-		"name": "Bedrijfskunde",
-		"id": 18
-	},
-	{
-		"name": "Bestuurs- en Organisatiewetenschap",
-		"id": 19
-	},
-	{
-		"name": "Bestuurskunde",
-		"id": 20
-	},
-	{
-		"name": "Bèta-gamma",
-		"id": 21
-	},
-	{
-		"name": "Bewegingswetenschappen",
-		"id": 22
-	},
-	{
-		"name": "Bio-Farmaceutische Wetenschappen",
-		"id": 23
-	},
-	{
-		"name": "Biologie",
-		"id": 24
-	},
-	{
-		"name": "Biomedische Technologie",
-		"id": 25
-	},
-	{
-		"name": "Biomedische Wetenschappen",
-		"id": 26
-	},
-	{
-		"name": "Biotechnologie",
-		"id": 27
-	},
-	{
-		"name": "Bodem, Water, Atmosfeer",
-		"id": 28
-	},
-	{
-		"name": "Bos- en Natuurbeheer",
-		"id": 29
-	},
-	{
-		"name": "Bouwkunde",
-		"id": 30
-	},
-	{
-		"name": "Business Analytics",
-		"id": 31
-	},
-	{
-		"name": "Chinastudies",
-		"id": 32
-	},
-	{
-		"name": "Civiele Techniek",
-		"id": 33
-	},
-	{
-		"name": "Communicatie- en Informatiewetenschappen",
-		"id": 34
-	},
-	{
-		"name": "Communicatiewetenschap",
-		"id": 35
-	},
-	{
-		"name": "Communicatiewetenschappen",
-		"id": 36
-	},
-	{
-		"name": "Computer Science",
-		"id": 37
-	},
-	{
-		"name": "Creative Technology",
-		"id": 38
-	},
-	{
-		"name": "Criminologie",
-		"id": 39
-	},
-	{
-		"name": "Culturele Antropologie en Ontwikkelingssociologie",
-		"id": 40
-	},
-	{
-		"name": "Cultuurwetenschappen",
-		"id": 41
-	},
-	{
-		"name": "Diergeneeskunde",
-		"id": 42
-	},
-	{
-		"name": "Dierwetenschappen",
-		"id": 43
-	},
-	{
-		"name": "Duitse Taal en Cultuur",
-		"id": 44
-	},
-	{
-		"name": "Econometrie en Operationele Research",
-		"id": 45
-	},
-	{
-		"name": "Economie",
-		"id": 46
-	},
-	{
-		"name": "Economie en Bedrijfseconomie",
-		"id": 47
-	},
-	{
-		"name": "Economie en Bedrijfskunde",
-		"id": 48
-	},
-	{
-		"name": "Economie en Beleid",
-		"id": 49
-	},
-	{
-		"name": "Electrical Engineering",
-		"id": 50
-	},
-	{
-		"name": "Engelse Taal en Cultuur",
-		"id": 51
-	},
-	{
-		"name": "English Language and Culture",
-		"id": 52
-	},
-	{
-		"name": "European Law School",
-		"id": 53
-	},
-	{
-		"name": "European Public Administration",
-		"id": 54
-	},
-	{
-		"name": "European Public Health",
-		"id": 55
-	},
-	{
-		"name": "Europese Studies",
-		"id": 56
-	},
-	{
-		"name": "Europese Talen en Culturen",
-		"id": 57
-	},
-	{
-		"name": "Farmaceutische Wetenschappen",
-		"id": 58
-	},
-	{
-		"name": "Farmacie",
-		"id": 59
-	},
-	{
-		"name": "Film- en Literatuurwetenschap",
-		"id": 60
-	},
-	{
-		"name": "Fiscaal Recht",
-		"id": 61
-	},
-	{
-		"name": "Fiscale Economie",
-		"id": 62
-	},
-	{
-		"name": "Franse Taal en Cultuur",
-		"id": 63
-	},
-	{
-		"name": "Future Planet Studies",
-		"id": 64
-	},
-	{
-		"name": "Geneeskunde",
-		"id": 65
-	},
-	{
-		"name": "Geografie, Planologie en Milieu",
-		"id": 66
-	},
-	{
-		"name": "Geschiedenis",
-		"id": 67
-	},
-	{
-		"name": "Gezondheid en Leven",
-		"id": 68
-	},
-	{
-		"name": "Gezondheid en Maatschappij",
-		"id": 69
-	},
-	{
-		"name": "Gezondheidswetenschappen",
-		"id": 70
-	},
-	{
-		"name": "Global Law",
-		"id": 71
-	},
-	{
-		"name": "Griekse en Latijnse Taal en Cultuur",
-		"id": 72
-	},
-	{
-		"name": "Hebreeuwse Taal en Cultuur",
-		"id": 73
-	},
-	{
-		"name": "Humanistiek",
-		"id": 74
-	},
-	{
-		"name": "Industrial Design",
-		"id": 75
-	},
-	{
-		"name": "Industrieel Ontwerpen",
-		"id": 76
-	},
-	{
-		"name": "Informatica",
-		"id": 77
-	},
-	{
-		"name": "Informatie, Multimedia en Management",
-		"id": 78
-	},
-	{
-		"name": "Informatiekunde",
-		"id": 79
-	},
-	{
-		"name": "Internationaal en Europees Recht",
-		"id": 80
-	},
-	{
-		"name": "Internationaal Land- en Waterbeheer",
-		"id": 81
-	},
-	{
-		"name": "International Bachelor's Programme in Communication and [...]",
-		"id": 82
-	},
-	{
-		"name": "International Business",
-		"id": 83
-	},
-	{
-		"name": "International Business Administration",
-		"id": 84
-	},
-	{
-		"name": "International Studies",
-		"id": 85
-	},
-	{
-		"name": "Internationale Betrekkingen en Internationale Organisatie",
-		"id": 86
-	},
-	{
-		"name": "Internationale Ontwikkelingsstudies",
-		"id": 87
-	},
-	{
-		"name": "Islam en Arabisch",
-		"id": 88
-	},
-	{
-		"name": "Italiaanse Taal en Cultuur",
-		"id": 89
-	},
-	{
-		"name": "Japanstudies",
-		"id": 90
-	},
-	{
-		"name": "Keltische Talen en Cultuur",
-		"id": 91
-	},
-	{
-		"name": "Kennistechnologie",
-		"id": 92
-	},
-	{
-		"name": "Klinische Technologie",
-		"id": 93
-	},
-	{
-		"name": "Klinische Technologie (joint degree)",
-		"id": 94
-	},
-	{
-		"name": "Koreastudies",
-		"id": 95
-	},
-	{
-		"name": "Krijgswetenschappen",
-		"id": 96
-	},
-	{
-		"name": "Kunsten, Cultuur en Media",
-		"id": 97
-	},
-	{
-		"name": "Kunstgeschiedenis",
-		"id": 98
-	},
-	{
-		"name": "Kunstmatige Intelligentie",
-		"id": 99
-	},
-	{
-		"name": "Landschapsarchitectuur en ruimtelijke planning",
-		"id": 100
-	},
-	{
-		"name": "Latijns-Amerikastudies",
-		"id": 101
-	},
-	{
-		"name": "Latijnse Taal en Cultuur",
-		"id": 102
-	},
-	{
-		"name": "Levensmiddelentechnologie",
-		"id": 103
-	},
-	{
-		"name": "Liberal Arts and Sciences",
-		"id": 104
-	},
-	{
-		"name": "Liberal Arts and Sciences (joint degree)",
-		"id": 105
-	},
-	{
-		"name": "Liberal Arts and Sciences: Global Challenges",
-		"id": 106
-	},
-	{
-		"name": "Life Science and Technology",
-		"id": 107
-	},
-	{
-		"name": "Lifestyle Informatics",
-		"id": 108
-	},
-	{
-		"name": "Literatuur en Samenleving",
-		"id": 109
-	},
-	{
-		"name": "Literatuurwetenschap",
-		"id": 110
-	},
-	{
-		"name": "Luchtvaart- en Ruimtevaarttechniek",
-		"id": 111
-	},
-	{
-		"name": "Maritieme Techniek",
-		"id": 112
-	},
-	{
-		"name": "Media en Cultuur",
-		"id": 113
-	},
-	{
-		"name": "Media en informatie",
-		"id": 114
-	},
-	{
-		"name": "Media, Kunst, Design en Architectuur",
-		"id": 115
-	},
-	{
-		"name": "Medische Informatiekunde",
-		"id": 116
-	},
-	{
-		"name": "Medische Natuurwetenschappen",
-		"id": 117
-	},
-	{
-		"name": "Midden-Oostenstudies",
-		"id": 118
-	},
-	{
-		"name": "Milieu-maatschappijwetenschappen",
-		"id": 119
-	},
-	{
-		"name": "Milieu-natuurwetenschappen",
-		"id": 120
-	},
-	{
-		"name": "Milieuwetenschappen",
-		"id": 121
-	},
-	{
-		"name": "Militaire Bedrijfswetenschappen",
-		"id": 122
-	},
-	{
-		"name": "Militaire Systemen & Technologie",
-		"id": 123
-	},
-	{
-		"name": "Minorities & Multilingualism",
-		"id": 124
-	},
-	{
-		"name": "Moleculaire Levenswetenschappen",
-		"id": 125
-	},
-	{
-		"name": "Molecular Science and Technology",
-		"id": 126
-	},
-	{
-		"name": "Muziekwetenschap",
-		"id": 127
-	},
-	{
-		"name": "Nanobiologie (joint degree)",
-		"id": 128
-	},
-	{
-		"name": "Natuur- en Sterrenkunde",
-		"id": 129
-	},
-	{
-		"name": "Natuurkunde",
-		"id": 130
-	},
-	{
-		"name": "Natuurwetenschap en Innovatiemanagement",
-		"id": 131
-	},
-	{
-		"name": "Nederlandkunde/Dutch Studies",
-		"id": 132
-	},
-	{
-		"name": "Nederlandse Taal en Cultuur",
-		"id": 133
-	},
-	{
-		"name": "Nieuwgriekse Taal en Cultuur",
-		"id": 134
-	},
-	{
-		"name": "Notarieel Recht",
-		"id": 135
-	},
-	{
-		"name": "Onderwijskunde",
-		"id": 136
-	},
-	{
-		"name": "Organisatiewetenschappen",
-		"id": 137
-	},
-	{
-		"name": "Oude Culturen van de Mediterrane Wereld",
-		"id": 138
-	},
-	{
-		"name": "Oudheidkunde",
-		"id": 139
-	},
-	{
-		"name": "Pedagogische Wetenschappen",
-		"id": 140
-	},
-	{
-		"name": "Personeelwetenschappen",
-		"id": 141
-	},
-	{
-		"name": "Plantenwetenschappen",
-		"id": 142
-	},
-	{
-		"name": "Politicologie",
-		"id": 143
-	},
-	{
-		"name": "Politics, Psychology, Law and Economics",
-		"id": 144
-	},
-	{
-		"name": "Psychobiologie",
-		"id": 145
-	},
-	{
-		"name": "Psychologie",
-		"id": 146
-	},
-	{
-		"name": "Rechtsgeleerdheid",
-		"id": 147
-	},
-	{
-		"name": "Religiewetenschappen",
-		"id": 148
-	},
-	{
-		"name": "Romaanse Talen en Culturen",
-		"id": 149
-	},
-	{
-		"name": "Russische Studies",
-		"id": 150
-	},
-	{
-		"name": "Scandinavische Talen en Culturen",
-		"id": 151
-	},
-	{
-		"name": "Scheikunde",
-		"id": 152
-	},
-	{
-		"name": "Scheikundige Technologie",
-		"id": 153
-	},
-	{
-		"name": "Science",
-		"id": 154
-	},
-	{
-		"name": "Science, Business & Innovation",
-		"id": 155
-	},
-	{
-		"name": "Slavische Talen en Culturen",
-		"id": 156
-	},
-	{
-		"name": "Sociale Geografie en Planologie",
-		"id": 157
-	},
-	{
-		"name": "Sociologie",
-		"id": 158
-	},
-	{
-		"name": "Spaanse Taal en Cultuur",
-		"id": 159
-	},
-	{
-		"name": "Sterrenkunde",
-		"id": 160
-	},
-	{
-		"name": "Taal- en Cultuurstudies",
-		"id": 161
-	},
-	{
-		"name": "Taalwetenschap",
-		"id": 162
-	},
-	{
-		"name": "Tandheelkunde",
-		"id": 163
-	},
-	{
-		"name": "Technische Aardwetenschappen",
-		"id": 164
-	},
-	{
-		"name": "Technische Bedrijfskunde",
-		"id": 165
-	},
-	{
-		"name": "Technische Bestuurskunde",
-		"id": 166
-	},
-	{
-		"name": "Technische Informatica",
-		"id": 167
-	},
-	{
-		"name": "Technische Innovatiewetenschappen",
-		"id": 168
-	},
-	{
-		"name": "Technische Natuurkunde",
-		"id": 169
-	},
-	{
-		"name": "Technische Planologie",
-		"id": 170
-	},
-	{
-		"name": "Technische Wiskunde",
-		"id": 171
-	},
-	{
-		"name": "Technology and Liberal Arts & Sciences",
-		"id": 172
-	},
-	{
-		"name": "Theaterwetenschap",
-		"id": 173
-	},
-	{
-		"name": "Theologie",
-		"id": 174
-	},
-	{
-		"name": "Theologie (joint degree)",
-		"id": 175
-	},
-	{
-		"name": "Tourism (joint degree)",
-		"id": 176
-	},
-	{
-		"name": "Voeding en Gezondheid",
-		"id": 177
-	},
-	{
-		"name": "Vrijetijdwetenschappen",
-		"id": 178
-	},
-	{
-		"name": "Werktuigbouwkunde",
-		"id": 179
-	},
-	{
-		"name": "Wijsbegeerte",
-		"id": 180
-	},
-	{
-		"name": "Wijsbegeerte van een Bepaald Wetenschapsgebied",
-		"id": 181
-	},
-	{
-		"name": "Wiskunde",
-		"id": 182
-	},
-	{
-		"name": "Zuid- en Zuidoost-Aziëstudies",
-		"id": 183
-	}
-]
+{
+  "universities": [
+    {
+      "id": 1,
+      "name": "Erasmus Universiteit Rotterdam",
+      "bachelors": [
+        8,
+        18,
+        20,
+        39,
+        45,
+        47,
+        61,
+        62,
+        65,
+        67,
+        70,
+        82,
+        84,
+        94,
+        104,
+        128,
+        140,
+        146,
+        147,
+        158,
+        180,
+        181
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Technische Universiteit Delft",
+      "bachelors": [
+        30,
+        33,
+        50,
+        76,
+        94,
+        107,
+        111,
+        112,
+        126,
+        128,
+        164,
+        166,
+        167,
+        169,
+        171,
+        179
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Maastricht University",
+      "bachelors": [
+        26,
+        41,
+        45,
+        47,
+        53,
+        55,
+        56,
+        61,
+        62,
+        65,
+        70,
+        83,
+        92,
+        104,
+        146,
+        147
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Open Universiteit",
+      "bachelors": [
+        8,
+        18,
+        77,
+        79,
+        120,
+        146,
+        147
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Radboud Universiteit Nijmegen",
+      "bachelors": [
+        8,
+        18,
+        20,
+        24,
+        26,
+        34,
+        35,
+        40,
+        44,
+        47,
+        51,
+        53,
+        65,
+        66,
+        67,
+        72,
+        77,
+        98,
+        99,
+        125,
+        129,
+        133,
+        135,
+        140,
+        143,
+        146,
+        147,
+        148,
+        149,
+        152,
+        154,
+        158,
+        162,
+        163,
+        174,
+        180
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Rijksuniversiteit Groningen",
+      "bachelors": [
+        10,
+        12,
+        18,
+        22,
+        24,
+        34,
+        45,
+        47,
+        52,
+        57,
+        59,
+        65,
+        67,
+        72,
+        77,
+        79,
+        80,
+        83,
+        86,
+        97,
+        98,
+        99,
+        104,
+        107,
+        113,
+        118,
+        124,
+        130,
+        133,
+        140,
+        146,
+        147,
+        148,
+        152,
+        153,
+        157,
+        158,
+        160,
+        162,
+        163,
+        165,
+        169,
+        170,
+        171,
+        174,
+        180,
+        181,
+        182
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Technische Universiteit Eindhoven",
+      "bachelors": [
+        25,
+        30,
+        50,
+        75,
+        153,
+        165,
+        167,
+        168,
+        169,
+        171,
+        179
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Tilburg University",
+      "bachelors": [
+        8,
+        16,
+        20,
+        34,
+        45,
+        46,
+        47,
+        61,
+        62,
+        71,
+        84,
+        104,
+        137,
+        141,
+        146,
+        147,
+        158,
+        174,
+        180
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Universiteit Leiden",
+      "bachelors": [
+        6,
+        12,
+        23,
+        24,
+        26,
+        32,
+        39,
+        40,
+        44,
+        51,
+        60,
+        61,
+        63,
+        65,
+        67,
+        72,
+        77,
+        89,
+        90,
+        94,
+        95,
+        98,
+        101,
+        107,
+        118,
+        126,
+        130,
+        132,
+        133,
+        135,
+        138,
+        140,
+        143,
+        146,
+        147,
+        148,
+        150,
+        160,
+        162,
+        180,
+        182,
+        183
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Universiteit van Amsterdam",
+      "bachelors": [
+        4,
+        8,
+        9,
+        11,
+        13,
+        24,
+        26,
+        35,
+        40,
+        44,
+        45,
+        48,
+        51,
+        56,
+        61,
+        62,
+        63,
+        64,
+        65,
+        67,
+        72,
+        73,
+        77,
+        79,
+        89,
+        98,
+        99,
+        102,
+        105,
+        110,
+        113,
+        114,
+        116,
+        127,
+        129,
+        133,
+        134,
+        136,
+        140,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        151,
+        152,
+        156,
+        157,
+        158,
+        159,
+        162,
+        163,
+        173,
+        180,
+        182
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Vrije Universiteit Amsterdam",
+      "bachelors": [
+        1,
+        2,
+        12,
+        18,
+        19,
+        22,
+        24,
+        26,
+        31,
+        34,
+        35,
+        37,
+        39,
+        40,
+        45,
+        47,
+        58,
+        65,
+        67,
+        68,
+        70,
+        72,
+        78,
+        84,
+        105,
+        108,
+        109,
+        115,
+        117,
+        129,
+        135,
+        139,
+        140,
+        143,
+        146,
+        147,
+        148,
+        152,
+        155,
+        158,
+        163,
+        175,
+        180,
+        182
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Universiteit Twente",
+      "bachelors": [
+        5,
+        17,
+        25,
+        33,
+        35,
+        38,
+        50,
+        54,
+        70,
+        76,
+        84,
+        93,
+        146,
+        153,
+        165,
+        167,
+        169,
+        171,
+        172,
+        179
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Universiteit Utrecht",
+      "bachelors": [
+        2,
+        9,
+        19,
+        24,
+        26,
+        34,
+        40,
+        42,
+        44,
+        47,
+        51,
+        59,
+        63,
+        65,
+        67,
+        77,
+        79,
+        88,
+        89,
+        91,
+        98,
+        99,
+        104,
+        110,
+        113,
+        119,
+        120,
+        127,
+        129,
+        131,
+        133,
+        136,
+        140,
+        146,
+        147,
+        148,
+        152,
+        157,
+        158,
+        159,
+        161,
+        162,
+        180,
+        182
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Faculteit Militaire Wetenschappen",
+      "bachelors": [
+        96,
+        122,
+        123
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Nyenrode Business Universiteit",
+      "bachelors": 3
+    },
+    {
+      "id": 16,
+      "name": "Protestantse Theologische Universiteit",
+      "bachelors": 175
+    },
+    {
+      "id": 17,
+      "name": "Theologische Universiteit Apeldoorn",
+      "bachelors": 174
+    },
+    {
+      "id": 18,
+      "name": "Theologische Universiteit Kampen",
+      "bachelors": 174
+    },
+    {
+      "id": 19,
+      "name": "Universiteit voor Humanistiek",
+      "bachelors": 74
+    },
+    {
+      "id": 20,
+      "name": "Wageningen University",
+      "bachelors": [
+        7,
+        15,
+        24,
+        27,
+        28,
+        29,
+        36,
+        43,
+        49,
+        69,
+        81,
+        87,
+        100,
+        103,
+        121,
+        125,
+        142,
+        176,
+        177
+      ]
+    }
+  ],
+  "bachelors": [
+    {
+      "name": "Aarde en Economie",
+      "id": 1
+    },
+    {
+      "name": "Aardwetenschappen",
+      "id": 2
+    },
+    {
+      "name": "Accountancy",
+      "id": 3
+    },
+    {
+      "name": "Actuariële Wetenschappen",
+      "id": 4
+    },
+    {
+      "name": "Advanced Technology",
+      "id": 5
+    },
+    {
+      "name": "Afrikaanse talen en culturen",
+      "id": 6
+    },
+    {
+      "name": "Agrotechnologie",
+      "id": 7
+    },
+    {
+      "name": "Algemene Cultuurwetenschappen",
+      "id": 8
+    },
+    {
+      "name": "Algemene Sociale Wetenschappen",
+      "id": 9
+    },
+    {
+      "name": "American Studies",
+      "id": 10
+    },
+    {
+      "name": "Arabische Taal en Cultuur",
+      "id": 11
+    },
+    {
+      "name": "Archeologie",
+      "id": 12
+    },
+    {
+      "name": "Archeologie en Prehistorie",
+      "id": 13
+    },
+    {
+      "name": "Bachelor of Science in Physiotherapy",
+      "id": 14
+    },
+    {
+      "name": "Bedrijfs- en Consumentenwetenschappen",
+      "id": 15
+    },
+    {
+      "name": "Bedrijfseconomie",
+      "id": 16
+    },
+    {
+      "name": "Bedrijfsinformatie-technologie",
+      "id": 17
+    },
+    {
+      "name": "Bedrijfskunde",
+      "id": 18
+    },
+    {
+      "name": "Bestuurs- en Organisatiewetenschap",
+      "id": 19
+    },
+    {
+      "name": "Bestuurskunde",
+      "id": 20
+    },
+    {
+      "name": "Bèta-gamma",
+      "id": 21
+    },
+    {
+      "name": "Bewegingswetenschappen",
+      "id": 22
+    },
+    {
+      "name": "Bio-Farmaceutische Wetenschappen",
+      "id": 23
+    },
+    {
+      "name": "Biologie",
+      "id": 24
+    },
+    {
+      "name": "Biomedische Technologie",
+      "id": 25
+    },
+    {
+      "name": "Biomedische Wetenschappen",
+      "id": 26
+    },
+    {
+      "name": "Biotechnologie",
+      "id": 27
+    },
+    {
+      "name": "Bodem, Water, Atmosfeer",
+      "id": 28
+    },
+    {
+      "name": "Bos- en Natuurbeheer",
+      "id": 29
+    },
+    {
+      "name": "Bouwkunde",
+      "id": 30
+    },
+    {
+      "name": "Business Analytics",
+      "id": 31
+    },
+    {
+      "name": "Chinastudies",
+      "id": 32
+    },
+    {
+      "name": "Civiele Techniek",
+      "id": 33
+    },
+    {
+      "name": "Communicatie- en Informatiewetenschappen",
+      "id": 34
+    },
+    {
+      "name": "Communicatiewetenschap",
+      "id": 35
+    },
+    {
+      "name": "Communicatiewetenschappen",
+      "id": 36
+    },
+    {
+      "name": "Computer Science",
+      "id": 37
+    },
+    {
+      "name": "Creative Technology",
+      "id": 38
+    },
+    {
+      "name": "Criminologie",
+      "id": 39
+    },
+    {
+      "name": "Culturele Antropologie en Ontwikkelingssociologie",
+      "id": 40
+    },
+    {
+      "name": "Cultuurwetenschappen",
+      "id": 41
+    },
+    {
+      "name": "Diergeneeskunde",
+      "id": 42
+    },
+    {
+      "name": "Dierwetenschappen",
+      "id": 43
+    },
+    {
+      "name": "Duitse Taal en Cultuur",
+      "id": 44
+    },
+    {
+      "name": "Econometrie en Operationele Research",
+      "id": 45
+    },
+    {
+      "name": "Economie",
+      "id": 46
+    },
+    {
+      "name": "Economie en Bedrijfseconomie",
+      "id": 47
+    },
+    {
+      "name": "Economie en Bedrijfskunde",
+      "id": 48
+    },
+    {
+      "name": "Economie en Beleid",
+      "id": 49
+    },
+    {
+      "name": "Electrical Engineering",
+      "id": 50
+    },
+    {
+      "name": "Engelse Taal en Cultuur",
+      "id": 51
+    },
+    {
+      "name": "English Language and Culture",
+      "id": 52
+    },
+    {
+      "name": "European Law School",
+      "id": 53
+    },
+    {
+      "name": "European Public Administration",
+      "id": 54
+    },
+    {
+      "name": "European Public Health",
+      "id": 55
+    },
+    {
+      "name": "Europese Studies",
+      "id": 56
+    },
+    {
+      "name": "Europese Talen en Culturen",
+      "id": 57
+    },
+    {
+      "name": "Farmaceutische Wetenschappen",
+      "id": 58
+    },
+    {
+      "name": "Farmacie",
+      "id": 59
+    },
+    {
+      "name": "Film- en Literatuurwetenschap",
+      "id": 60
+    },
+    {
+      "name": "Fiscaal Recht",
+      "id": 61
+    },
+    {
+      "name": "Fiscale Economie",
+      "id": 62
+    },
+    {
+      "name": "Franse Taal en Cultuur",
+      "id": 63
+    },
+    {
+      "name": "Future Planet Studies",
+      "id": 64
+    },
+    {
+      "name": "Geneeskunde",
+      "id": 65
+    },
+    {
+      "name": "Geografie, Planologie en Milieu",
+      "id": 66
+    },
+    {
+      "name": "Geschiedenis",
+      "id": 67
+    },
+    {
+      "name": "Gezondheid en Leven",
+      "id": 68
+    },
+    {
+      "name": "Gezondheid en Maatschappij",
+      "id": 69
+    },
+    {
+      "name": "Gezondheidswetenschappen",
+      "id": 70
+    },
+    {
+      "name": "Global Law",
+      "id": 71
+    },
+    {
+      "name": "Griekse en Latijnse Taal en Cultuur",
+      "id": 72
+    },
+    {
+      "name": "Hebreeuwse Taal en Cultuur",
+      "id": 73
+    },
+    {
+      "name": "Humanistiek",
+      "id": 74
+    },
+    {
+      "name": "Industrial Design",
+      "id": 75
+    },
+    {
+      "name": "Industrieel Ontwerpen",
+      "id": 76
+    },
+    {
+      "name": "Informatica",
+      "id": 77
+    },
+    {
+      "name": "Informatie, Multimedia en Management",
+      "id": 78
+    },
+    {
+      "name": "Informatiekunde",
+      "id": 79
+    },
+    {
+      "name": "Internationaal en Europees Recht",
+      "id": 80
+    },
+    {
+      "name": "Internationaal Land- en Waterbeheer",
+      "id": 81
+    },
+    {
+      "name": "International Bachelor's Programme in Communication and [...]",
+      "id": 82
+    },
+    {
+      "name": "International Business",
+      "id": 83
+    },
+    {
+      "name": "International Business Administration",
+      "id": 84
+    },
+    {
+      "name": "International Studies",
+      "id": 85
+    },
+    {
+      "name": "Internationale Betrekkingen en Internationale Organisatie",
+      "id": 86
+    },
+    {
+      "name": "Internationale Ontwikkelingsstudies",
+      "id": 87
+    },
+    {
+      "name": "Islam en Arabisch",
+      "id": 88
+    },
+    {
+      "name": "Italiaanse Taal en Cultuur",
+      "id": 89
+    },
+    {
+      "name": "Japanstudies",
+      "id": 90
+    },
+    {
+      "name": "Keltische Talen en Cultuur",
+      "id": 91
+    },
+    {
+      "name": "Kennistechnologie",
+      "id": 92
+    },
+    {
+      "name": "Klinische Technologie",
+      "id": 93
+    },
+    {
+      "name": "Klinische Technologie (joint degree)",
+      "id": 94
+    },
+    {
+      "name": "Koreastudies",
+      "id": 95
+    },
+    {
+      "name": "Krijgswetenschappen",
+      "id": 96
+    },
+    {
+      "name": "Kunsten, Cultuur en Media",
+      "id": 97
+    },
+    {
+      "name": "Kunstgeschiedenis",
+      "id": 98
+    },
+    {
+      "name": "Kunstmatige Intelligentie",
+      "id": 99
+    },
+    {
+      "name": "Landschapsarchitectuur en ruimtelijke planning",
+      "id": 100
+    },
+    {
+      "name": "Latijns-Amerikastudies",
+      "id": 101
+    },
+    {
+      "name": "Latijnse Taal en Cultuur",
+      "id": 102
+    },
+    {
+      "name": "Levensmiddelentechnologie",
+      "id": 103
+    },
+    {
+      "name": "Liberal Arts and Sciences",
+      "id": 104
+    },
+    {
+      "name": "Liberal Arts and Sciences (joint degree)",
+      "id": 105
+    },
+    {
+      "name": "Liberal Arts and Sciences: Global Challenges",
+      "id": 106
+    },
+    {
+      "name": "Life Science and Technology",
+      "id": 107
+    },
+    {
+      "name": "Lifestyle Informatics",
+      "id": 108
+    },
+    {
+      "name": "Literatuur en Samenleving",
+      "id": 109
+    },
+    {
+      "name": "Literatuurwetenschap",
+      "id": 110
+    },
+    {
+      "name": "Luchtvaart- en Ruimtevaarttechniek",
+      "id": 111
+    },
+    {
+      "name": "Maritieme Techniek",
+      "id": 112
+    },
+    {
+      "name": "Media en Cultuur",
+      "id": 113
+    },
+    {
+      "name": "Media en informatie",
+      "id": 114
+    },
+    {
+      "name": "Media, Kunst, Design en Architectuur",
+      "id": 115
+    },
+    {
+      "name": "Medische Informatiekunde",
+      "id": 116
+    },
+    {
+      "name": "Medische Natuurwetenschappen",
+      "id": 117
+    },
+    {
+      "name": "Midden-Oostenstudies",
+      "id": 118
+    },
+    {
+      "name": "Milieu-maatschappijwetenschappen",
+      "id": 119
+    },
+    {
+      "name": "Milieu-natuurwetenschappen",
+      "id": 120
+    },
+    {
+      "name": "Milieuwetenschappen",
+      "id": 121
+    },
+    {
+      "name": "Militaire Bedrijfswetenschappen",
+      "id": 122
+    },
+    {
+      "name": "Militaire Systemen & Technologie",
+      "id": 123
+    },
+    {
+      "name": "Minorities & Multilingualism",
+      "id": 124
+    },
+    {
+      "name": "Moleculaire Levenswetenschappen",
+      "id": 125
+    },
+    {
+      "name": "Molecular Science and Technology",
+      "id": 126
+    },
+    {
+      "name": "Muziekwetenschap",
+      "id": 127
+    },
+    {
+      "name": "Nanobiologie (joint degree)",
+      "id": 128
+    },
+    {
+      "name": "Natuur- en Sterrenkunde",
+      "id": 129
+    },
+    {
+      "name": "Natuurkunde",
+      "id": 130
+    },
+    {
+      "name": "Natuurwetenschap en Innovatiemanagement",
+      "id": 131
+    },
+    {
+      "name": "Nederlandkunde/Dutch Studies",
+      "id": 132
+    },
+    {
+      "name": "Nederlandse Taal en Cultuur",
+      "id": 133
+    },
+    {
+      "name": "Nieuwgriekse Taal en Cultuur",
+      "id": 134
+    },
+    {
+      "name": "Notarieel Recht",
+      "id": 135
+    },
+    {
+      "name": "Onderwijskunde",
+      "id": 136
+    },
+    {
+      "name": "Organisatiewetenschappen",
+      "id": 137
+    },
+    {
+      "name": "Oude Culturen van de Mediterrane Wereld",
+      "id": 138
+    },
+    {
+      "name": "Oudheidkunde",
+      "id": 139
+    },
+    {
+      "name": "Pedagogische Wetenschappen",
+      "id": 140
+    },
+    {
+      "name": "Personeelwetenschappen",
+      "id": 141
+    },
+    {
+      "name": "Plantenwetenschappen",
+      "id": 142
+    },
+    {
+      "name": "Politicologie",
+      "id": 143
+    },
+    {
+      "name": "Politics, Psychology, Law and Economics",
+      "id": 144
+    },
+    {
+      "name": "Psychobiologie",
+      "id": 145
+    },
+    {
+      "name": "Psychologie",
+      "id": 146
+    },
+    {
+      "name": "Rechtsgeleerdheid",
+      "id": 147
+    },
+    {
+      "name": "Religiewetenschappen",
+      "id": 148
+    },
+    {
+      "name": "Romaanse Talen en Culturen",
+      "id": 149
+    },
+    {
+      "name": "Russische Studies",
+      "id": 150
+    },
+    {
+      "name": "Scandinavische Talen en Culturen",
+      "id": 151
+    },
+    {
+      "name": "Scheikunde",
+      "id": 152
+    },
+    {
+      "name": "Scheikundige Technologie",
+      "id": 153
+    },
+    {
+      "name": "Science",
+      "id": 154
+    },
+    {
+      "name": "Science, Business & Innovation",
+      "id": 155
+    },
+    {
+      "name": "Slavische Talen en Culturen",
+      "id": 156
+    },
+    {
+      "name": "Sociale Geografie en Planologie",
+      "id": 157
+    },
+    {
+      "name": "Sociologie",
+      "id": 158
+    },
+    {
+      "name": "Spaanse Taal en Cultuur",
+      "id": 159
+    },
+    {
+      "name": "Sterrenkunde",
+      "id": 160
+    },
+    {
+      "name": "Taal- en Cultuurstudies",
+      "id": 161
+    },
+    {
+      "name": "Taalwetenschap",
+      "id": 162
+    },
+    {
+      "name": "Tandheelkunde",
+      "id": 163
+    },
+    {
+      "name": "Technische Aardwetenschappen",
+      "id": 164
+    },
+    {
+      "name": "Technische Bedrijfskunde",
+      "id": 165
+    },
+    {
+      "name": "Technische Bestuurskunde",
+      "id": 166
+    },
+    {
+      "name": "Technische Informatica",
+      "id": 167
+    },
+    {
+      "name": "Technische Innovatiewetenschappen",
+      "id": 168
+    },
+    {
+      "name": "Technische Natuurkunde",
+      "id": 169
+    },
+    {
+      "name": "Technische Planologie",
+      "id": 170
+    },
+    {
+      "name": "Technische Wiskunde",
+      "id": 171
+    },
+    {
+      "name": "Technology and Liberal Arts & Sciences",
+      "id": 172
+    },
+    {
+      "name": "Theaterwetenschap",
+      "id": 173
+    },
+    {
+      "name": "Theologie",
+      "id": 174
+    },
+    {
+      "name": "Theologie (joint degree)",
+      "id": 175
+    },
+    {
+      "name": "Tourism (joint degree)",
+      "id": 176
+    },
+    {
+      "name": "Voeding en Gezondheid",
+      "id": 177
+    },
+    {
+      "name": "Vrijetijdwetenschappen",
+      "id": 178
+    },
+    {
+      "name": "Werktuigbouwkunde",
+      "id": 179
+    },
+    {
+      "name": "Wijsbegeerte",
+      "id": 180
+    },
+    {
+      "name": "Wijsbegeerte van een Bepaald Wetenschapsgebied",
+      "id": 181
+    },
+    {
+      "name": "Wiskunde",
+      "id": 182
+    },
+    {
+      "name": "Zuid- en Zuidoost-Aziëstudies",
+      "id": 183
+    }
+  ]
 }

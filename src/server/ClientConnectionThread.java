@@ -23,6 +23,7 @@ public class ClientConnectionThread extends Thread {
 
     /**
      * Constructs a new ClientConnectionThread for communicating with a client
+     *
      * @param client the client to communicate with in this thread
      */
     public ClientConnectionThread(ConnectedClient client) {
@@ -76,6 +77,7 @@ public class ClientConnectionThread extends Thread {
 
     /**
      * Send a message to the client associated with this thread
+     *
      * @param message The message to send
      * @throws java.io.IOException when the socket is being written to while trying to write.
      */

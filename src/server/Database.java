@@ -17,16 +17,18 @@ public class Database {
 
     /**
      * Constructor of Database object
+     *
      * @param file
      * @throws IOException
      * @throws JSONException
      */
     public Database(String file) throws IOException, JSONException {
-        this.db=readDB(file);
+        this.db = readDB(file);
     }
 
     /**
      * Sends the filepath to the readFile function and converts the JSON string to a JSON object
+     *
      * @param file Filepath to database
      * @return JSON object of the database
      * @throws IOException
@@ -39,6 +41,7 @@ public class Database {
 
     /**
      * Reads the file and returns a string representing the JSON database
+     *
      * @param file Filepath to database
      * @return String, JSON representation of database
      * @throws IOException
@@ -56,6 +59,7 @@ public class Database {
 
     /**
      * Adds new user/study/course to database.
+     *
      * @param obj JSONObject to be added to database.
      * @param key "users", "studies" or "courses".
      */
@@ -65,6 +69,7 @@ public class Database {
 
     /**
      * Writes database to specified file in json format.
+     *
      * @param file
      * @throws IOException
      */
@@ -77,6 +82,7 @@ public class Database {
 
     /**
      * Returns the JSON object of the database in a string representation
+     *
      * @return String
      */
     public String toString() {
