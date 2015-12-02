@@ -1,9 +1,7 @@
 package server;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.*;
+import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Database class that reads the database file
@@ -13,74 +11,123 @@ import java.io.*;
  */
 public class Database {
 
-    private JSONObject db;
+    private final String JDBCUrl = "jdbc:mysql://db4free.net:3306/ooppb1";
+//    private final String JDBCUrl = "jdbc:mysql://localhost:3306/ooppb1";
+    private final String user = "oopp_usr";
+    private final String password = "oopp_b1_database";
+
+    private static Connection connection;
 
     /**
      * Constructor of Database object
-     * @param file
-     * @throws IOException
-     * @throws JSONException
      */
-    public Database(String file) throws IOException, JSONException {
-        this.db=readDB(file);
-    }
-
-    /**
-     * Sends the filepath to the readFile function and converts the JSON string to a JSON object
-     * @param file Filepath to database
-     * @return JSON object of the database
-     * @throws IOException
-     * @throws JSONException
-     */
-    private JSONObject readDB(String file) throws IOException, JSONException {
-        String jsonData = readFile(file);
-        return new JSONObject(jsonData);
-    }
-
-    /**
-     * Reads the file and returns a string representing the JSON database
-     * @param file Filepath to database
-     * @return String, JSON representation of database
-     * @throws IOException
-     */
-    private String readFile(String file) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        StringBuilder sb = new StringBuilder();
-        String line = br.readLine();
-        while (line != null) {
-            sb.append(line);
-            line = br.readLine();
+    public Database() throws IllegalStateException {
+        System.out.println("Attempting to connect to database");
+        try {
+            connection = DriverManager.getConnection(JDBCUrl, user, password);
+            System.out.println("Successful connection to database!");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot connect to the database!\n" + e.getMessage());
         }
-        return sb.toString();
     }
 
-    /**
-     * Adds new user/study/course to database.
-     * @param obj JSONObject to be added to database.
-     * @param key "users", "studies" or "courses".
-     */
-    public void addObjDB(JSONObject obj, String key) throws JSONException {
-        db.append(key, obj);
+    public User getUser(String email) {
+        User user;
+        try {
+            //TODO uncomment statement parts when they have been implemented in User.java
+            PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name as nationality," +
+                    "studies.name as study, universities.name as university, email as dbemail, passwd, firstname," +
+                    "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber, photo " +
+                    "FROM `users` LEFT JOIN nationalities on users.nationality_id = nationalities.id " +
+                    "LEFT JOIN studies ON users.study = studies.id " +
+                    "LEFT JOIN universities ON users.universities_id = universities.id WHERE users.email = ? LIMIT 1");
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            user = processUser(rs);
+        } catch (SQLException e) {
+            throw new IllegalStateException("Could not get user by email:\n" + e.getMessage());
+        }
+        return user;
     }
 
-    /**
-     * Writes database to specified file in json format.
-     * @param file
-     * @throws IOException
-     */
-    public void writeFile(String file) throws IOException, JSONException {
-        String dataBase = db.toString(4);
-        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-        bw.write(dataBase);
-        bw.close();
+    public User getUser(int id) {
+        User user;
+        try {
+            //TODO uncomment statement parts when they have been implemented in User.java
+            PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name as nationality," +
+                    "studies.name as study, universities.name as university, email as dbemail, passwd, firstname," +
+                    "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber, photo " +
+                    "FROM `users` LEFT JOIN nationalities on users.nationality_id = nationalities.id " +
+                    "LEFT JOIN studies ON users.study = studies.id " +
+                    "LEFT JOIN universities ON users.universities_id = universities.id WHERE users.id = ? LIMIT 1");
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            user = processUser(rs);
+            stmt.close();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Could not get user by email:\n" + e.getMessage());
+        }
+        return user;
     }
 
-    /**
-     * Returns the JSON object of the database in a string representation
-     * @return String
-     */
-    public String toString() {
-        return this.db.toString();
+    private User processUser(ResultSet rs) throws SQLException {
+        User usr = new User();
+        if(rs.next()) {
+            int id = rs.getInt("id"),
+                    studyYear = rs.getInt("studyYear");
+            String dbemail = rs.getString("dbemail"),
+                    password = rs.getString("passwd"),
+                    firstname = rs.getString("firstname"),
+                    lastname = rs.getString("lastname"),
+                    nationality = rs.getString("nationality"),
+                    university = rs.getString("university"),
+                    study = rs.getString("study"),
+                    sex = rs.getString("sex"),
+                    bio = rs.getString("bio"),
+                    location = rs.getString("location"),
+                    phonenumber = rs.getString("phonenumber"),
+                    photo = rs.getString("photo");
+            Date birthdate = new Date(rs.getLong("birthdate"));
+
+            PreparedStatement stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
+                    "LEFT JOIN coursessearchingbuddy ON courses_id = courses.id " +
+                    "WHERE coursessearchingbuddy.users_id = ?");
+            stmt.setInt(1, id);
+            ResultSet rs2 = stmt.executeQuery();
+            ArrayList<String> coursesSearchingBuddy = new ArrayList<String>();
+            while(rs2.next()) {
+                coursesSearchingBuddy.add(rs2.getString("name"));
+            }
+            stmt.close();
+
+            stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
+                    "LEFT JOIN coursesteaching ON courses_id = courses.id " +
+                    "WHERE coursesteaching.users_id = ?");
+            stmt.setInt(1, id);
+            rs2 = stmt.executeQuery();
+            ArrayList<String> coursesTeaching = new ArrayList<String>();
+            while(rs2.next()) {
+                coursesTeaching.add(rs2.getString("name"));
+            }
+            stmt.close();
+
+            stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
+                    "LEFT JOIN courseslearning ON courses_id = courses.id " +
+                    "WHERE courseslearning.users_id = ?");
+            stmt.setInt(1, id);
+            rs2 = stmt.executeQuery();
+            ArrayList<String> coursesLearning = new ArrayList<String>();
+            while(rs2.next()) {
+                coursesLearning.add(rs2.getString("name"));
+            }
+            stmt.close();
+
+            usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber,
+                    new Address("A", "B", "C","D"), study, university, studyYear, new ArrayList(), coursesTeaching,
+                    coursesLearning, coursesSearchingBuddy, sex, nationality, bio, location, photo);
+            System.out.println(usr);
+        }
+        return usr;
     }
 
 }

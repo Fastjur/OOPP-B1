@@ -24,12 +24,12 @@ public class Server {
      */
     public static void main(final String[] args) {
         try {
-            db = new Database("src/server/database.json");
-            System.out.println(db);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+            db = new Database();
+            db.getUser("sinterklaas@sintmail.nl");
+            db.getUser("john@doe.com");
+            db.getUser("ayykek");//Should return empty
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
         }
 
         listenthread = new ListenThread(clients, 8372);

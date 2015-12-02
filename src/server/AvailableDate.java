@@ -2,43 +2,49 @@ package server;
 import java.util.ArrayList;
 
 public class AvailableDate {
-	private Date date;
+	private Weekdays day;
 	private ArrayList<TimePeriod> availableTimesList;
 	
-	public AvailableDate(Date date) {
-		this.date = date;
+	/**
+	 * AvailableDate: constructor for class AvailableDate
+	 * @param day - Weekdays
+	 */
+	public AvailableDate(Weekdays day) {
+		this.day = day;
 		availableTimesList = new ArrayList<TimePeriod>();
 	}
 	
 	/**
-	 * toString: gives a textual representation of date
+	 * toString: gives a textual representation of day
+	 * @return text - String
 	 */
 	public String toString() {
 		String text = new String();
 		
-		text += date.toString() + "\n";
+		text += day.toString();
 		for (int i = 0; i < availableTimesList.size(); i++) {
-			text += availableTimesList.get(i).toString();
+			text += " " + availableTimesList.get(i).toString();
 			if (i < availableTimesList.size() - 1) {
-				text += "\n";
+				text += ";";
 			}
 		}
 		return text;
 	}
 	
 	/**
-	 * getDate: getter for private attribute date
-	 * @return date - Date
+	 * getDate: getter for private attribute day
+	 * @return day - Weekdays
 	 */
-	public Date getDate() {
-		return date;
+	public Weekdays getDate() {
+		return day;
 	}
+	
 	/**
-	 * setDate: setter for private attribute date
-	 * @param date - Date
+	 * setDate: setter for private attribute day
+	 * @param day - Weekdays
 	 */
-	public void setDate(Date date) {
-		this.date.setDate(date.toString());
+	public void setDate(Weekdays day) {
+			this.day = day;
 	}
 	
 	/**
@@ -73,10 +79,15 @@ public class AvailableDate {
 		}
 	}
 	
+	/**
+	 * equals: checks if current object is the same as the other object
+	 * @param other - Object
+	 * @return boolean
+	 */
 	public boolean equals(Object other) {
 		if (other instanceof AvailableDate) {
 			AvailableDate that = (AvailableDate) other;
-			if (this.date.equals(that.getDate())) {
+			if (this.day.equals(that.getDate())) {
 				if (availableTimesList.size() != that.getAvailableTimesSize()) {
 					return false;
 				}
@@ -90,5 +101,4 @@ public class AvailableDate {
 		}
 		return false;
 	}
-	
 }
