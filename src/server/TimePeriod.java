@@ -32,9 +32,7 @@ public class TimePeriod {
         this.end = end;
     }
 
-    private int getStart() {
-        return this.start;
-    }
+    private int getStart() { return this.start; }
 
     private int getEnd() {
         return this.end;
