@@ -89,9 +89,11 @@ public class Database {
                     phonenumber = rs.getString("phonenumber"),
                     availabilityString = rs.getString("availableDates");
             Date birthdate = new Date(rs.getLong("birthdate"));
-
             AvailableTimes availability = AvailableTimes.fromJson(availabilityString);
 
+            /**
+             * Get buddy courses names
+             */
             PreparedStatement stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
                     "LEFT JOIN coursesSearchingBuddy ON courses_id = courses.id " +
                     "WHERE coursesSearchingBuddy.users_id = ?");
@@ -103,6 +105,9 @@ public class Database {
             }
             stmt.close();
 
+            /**
+             * Get teaching courses names
+             */
             stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
                     "LEFT JOIN coursesTeaching ON courses_id = courses.id " +
                     "WHERE coursesTeaching.users_id = ?");
@@ -114,6 +119,9 @@ public class Database {
             }
             stmt.close();
 
+            /**
+             * Get learning courses names
+             */
             stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
                     "LEFT JOIN coursesLearning ON courses_id = courses.id " +
                     "WHERE coursesLearning.users_id = ?");
@@ -125,12 +133,23 @@ public class Database {
             }
             stmt.close();
 
+            /**
+             * Get spoken languages names
+             */
             stmt = connection.prepareStatement("SELECT languages.name FROM languages " +
-                    "LEFT JOIN users_has_languages ON languages.id = users_has_languages.languages_id")
+                    "LEFT JOIN users_has_languages ON languages.id = users_has_languages.languages_id " +
+                    "WHERE users_has_languages.users_id = ?");
+            stmt.setInt(1, id);
+            rs2 = stmt.executeQuery();
+            ArrayList<String> languages = new ArrayList<>();
+            while(rs2.next()) {
+                languages.add(rs2.getString("name"));
+            }
+            stmt.close();
 
             usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber,
                     new Address("A", "B", "C","D"), study, university, studyYear, availability, coursesTeaching,
-                    coursesLearning, coursesSearchingBuddy, sex, nationality, bio, location);
+                    coursesLearning, coursesSearchingBuddy, sex, nationality, languages, bio, location);
         }
         return usr;
     }
@@ -233,7 +252,7 @@ public class Database {
         stmt.close();
 
         /**
-         * Insert user into database
+         * Insert user into database, finally
          */
         stmt = connection.prepareStatement("INSERT INTO `users`(id, nationality_id, university_id, email, passwd," +
                 "firstname, lastname, sex, birthdate, study, bio, studyYear, availableDates, location, phonenumber) " +
@@ -253,6 +272,40 @@ public class Database {
         stmt.setString(13, user.getLocation());
         stmt.setString(14, user.getPhonenumber());
         stmt.close();
+
+        /**
+         * Insert appropriate id's to users_has_languages
+         */
+        if (user.getLanguageList().size() > 0) {
+            ArrayList<Integer> languageIds = new ArrayList<>();
+            stmt = connection.prepareStatement("SELECT languages.id FROM languages WHERE name = ?");
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                languageIds.add(rs.getInt("id"));
+            }
+            stmt.close();
+
+            stmt = connection.prepareStatement("SELECT users.id FROM users WHERE email = ?");
+            stmt.setString(1, user.getMail());
+            rs = stmt.executeQuery();
+            int userID = 0;
+            if(rs.next()) {
+                userID = rs.getInt("id");
+            }
+            stmt.close();
+            if (userID == 0) {
+                throw new IllegalArgumentException("Couldn't retrieve newly added users ID. Presume database invalid");
+            }
+
+            stmt = connection.prepareStatement("INSERT INTO `users_has_languages`(users_id, languages_id) " +
+                    "VALUES(?,?)");
+            stmt.setInt(1, userID);
+            for (int lang : languageIds) {
+                stmt.setInt(2, lang);
+                stmt.executeQuery();
+            }
+            stmt.close();
+        }
     }
 
     public void updateUser(User user) throws IllegalArgumentException, SQLException, IOException {
@@ -348,6 +401,9 @@ public class Database {
                     "Argument: (name:\"" + user.getStudy() + "\")");
         }
 
+        /**
+         * Finally fucking update the user
+         */
         stmt = connection.prepareStatement("UPDATE `users` SET nationality_id=?, university_id=?, " +
                 "email=?, passwd=?, firstname=?, lastname=?, sex=?, birthdate=?, study=?, bio=?, studyYear=?, " +
                 "availableDates=?, location=?, phonenumber=? " +
@@ -367,6 +423,8 @@ public class Database {
         stmt.setString(13, user.getPhonenumber());
 
         stmt.execute();
+
+        //TODO update the languages
     }
 
     public void close() {
@@ -376,5 +434,4 @@ public class Database {
             e.printStackTrace();
         }
     }
-
 }

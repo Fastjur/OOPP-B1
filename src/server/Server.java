@@ -44,9 +44,9 @@ public class Server {
         aTimes.addTimePeriod(5, new TimePeriod("07:30", "15:00"));
         aTimes.addTimePeriod(5, new TimePeriod("16:30", "18:00"));
         aTimes.addTimePeriod(7, new TimePeriod("09:30", "15:00"));
-        User user = new User(-1, "Passwordz", "Mark", "Johnsson", new Date(1609802), "mark@johnsson.com",
+        /*User user = new User(-1, "Passwordz", "Mark", "Johnsson", new Date(1609802), "mark@johnsson.com",
                 "06-123456789", new Address("Poeplaan", "69", "2156AB", "Pissing City"), "Technische Plassen",
-                "University of Plassen", 3, aTimes, );
+                "University of Plassen", 3, aTimes, )*/;
 
         listenthread = new ListenThread(clients, 8372);
         listenthread.start();
