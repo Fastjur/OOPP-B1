@@ -1,10 +1,16 @@
 package server;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * Created by Fastjur on 2-12-2015.
- * Available times per weekday. 1 is monday, 7 is sunday
+ * AvailableTimes holds the TimePeriods of a User object on a weekday basis
+ * @see TimePeriod
+ * @author Jurriaan Den Toonder
+ * @version 0.5
  */
 public class AvailableTimes {
     private ArrayList<TimePeriod> monday = new ArrayList<>(),
@@ -15,20 +21,54 @@ public class AvailableTimes {
                                   saturday = new ArrayList<>(),
                                   sunday = new ArrayList<>();
 
+    /**
+     * Empty constructor
+     */
     public AvailableTimes() {}
 
+    /**
+     * Returns this object in a String in JSON format
+     * @return String, this object formatted in JSON
+     * @throws IOException
+     */
+    public String toJson() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(this);
+    }
+
+    /**
+     * Creates an AvailableTimes object from a JSON string
+     * @param json JSON formatted string to create user from
+     * @return AvailableTimes object with properties given in JSON string
+     * @throws IOException
+     */
+    public static AvailableTimes fromJson(String json) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(json, AvailableTimes.class);
+    }
+
+    /**
+     * Add a TimePeriod to this AvailableTimes object
+     * @param day int, day of week. 1 = monday, 7 = sunday
+     * @param p TimePeriod, the TimePeriod to add to this AvailableTimes object
+     */
     public void addTimePeriod(int day, TimePeriod p) {
         switch(day){
-            case 1: this.monday.add(p);
-            case 2: this.tuesday.add(p);
-            case 3: this.wednesday.add(p);
-            case 4: this.thursday.add(p);
-            case 5: this.friday.add(p);
-            case 6: this.saturday.add(p);
-            case 7: this.sunday.add(p);
+            case 1: this.monday.add(p); break;
+            case 2: this.tuesday.add(p); break;
+            case 3: this.wednesday.add(p); break;
+            case 4: this.thursday.add(p); break;
+            case 5: this.friday.add(p); break;
+            case 6: this.saturday.add(p); break;
+            case 7: this.sunday.add(p); break;
         }
     }
 
+    /**
+     * Get all the TimePeriods of a day
+     * @param day int, day of week to get the TimePeriods from, 1 = monday, 7 = sunday
+     * @return ArrayList containing all the TimePeriods of a given day
+     */
     public ArrayList<TimePeriod> getTimesOfDay(int day) {
         switch(day) {
             case 1: return this.monday;
@@ -42,6 +82,12 @@ public class AvailableTimes {
         return null;
     }
 
+    /**
+     * Get a single TimePeriod from a given day using the TimePeriod's index
+     * @param day int, day of week, 1 = monday, 7 = sunday
+     * @param index int, index of the TimePeriod
+     * @return TimePeriod
+     */
     public TimePeriod getPeriod(int day, int index) {
         switch(day) {
             case 1: return this.monday.get(index);
@@ -55,18 +101,27 @@ public class AvailableTimes {
         return null;
     }
 
+    /**
+     * Remove a TimePeriod from a given day using the TimePeriod's index
+     * @param day int, day of week, 1 = monday, 7 = sunday
+     * @param index int, index of TimePeriod
+     */
     public void removeTime(int day, int index) {
         switch(day) {
-            case 1: this.monday.remove(index);
-            case 2: this.tuesday.remove(index);
-            case 3: this.wednesday.remove(index);
-            case 4: this.thursday.remove(index);
-            case 5: this.friday.remove(index);
-            case 6: this.saturday.remove(index);
-            case 7: this.sunday.remove(index);
+            case 1: this.monday.remove(index); break;
+            case 2: this.tuesday.remove(index); break;
+            case 3: this.wednesday.remove(index); break;
+            case 4: this.thursday.remove(index); break;
+            case 5: this.friday.remove(index); break;
+            case 6: this.saturday.remove(index); break;
+            case 7: this.sunday.remove(index); break;
         }
     }
 
+    /**
+     * Return this AvailableTimes object in a String representation
+     * @return String
+     */
     public String toString() {
         String res = "Maandag(";
         for (TimePeriod p : this.monday) {
@@ -112,5 +167,65 @@ public class AvailableTimes {
                     this.sunday.equals(that.sunday);
         }
         return false;
+    }
+
+    /*
+     * Start of Getters and Setters block
+     */
+
+    public ArrayList<TimePeriod> getMonday() {
+        return monday;
+    }
+
+    public void setMonday(ArrayList<TimePeriod> monday) {
+        this.monday = monday;
+    }
+
+    public ArrayList<TimePeriod> getTuesday() {
+        return tuesday;
+    }
+
+    public void setTuesday(ArrayList<TimePeriod> tuesday) {
+        this.tuesday = tuesday;
+    }
+
+    public ArrayList<TimePeriod> getWednesday() {
+        return wednesday;
+    }
+
+    public void setWednesday(ArrayList<TimePeriod> wednesday) {
+        this.wednesday = wednesday;
+    }
+
+    public ArrayList<TimePeriod> getThursday() {
+        return thursday;
+    }
+
+    public void setThursday(ArrayList<TimePeriod> thursday) {
+        this.thursday = thursday;
+    }
+
+    public ArrayList<TimePeriod> getFriday() {
+        return friday;
+    }
+
+    public void setFriday(ArrayList<TimePeriod> friday) {
+        this.friday = friday;
+    }
+
+    public ArrayList<TimePeriod> getSaturday() {
+        return saturday;
+    }
+
+    public void setSaturday(ArrayList<TimePeriod> saturday) {
+        this.saturday = saturday;
+    }
+
+    public ArrayList<TimePeriod> getSunday() {
+        return sunday;
+    }
+
+    public void setSunday(ArrayList<TimePeriod> sunday) {
+        this.sunday = sunday;
     }
 }

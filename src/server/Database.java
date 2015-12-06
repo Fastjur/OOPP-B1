@@ -34,10 +34,10 @@ public class Database {
         }
     }
 
-    public User getUser(String email) {
+    public User getUser(String email) throws SQLException, IOException {
         User user;
         try {
-            //TODO uncomment statement parts when they have been implemented in User.java
+            //TODO: Check for null values returned by database and generate appropriate exceptions
             PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name as nationality," +
                     "studies.name as study, universities.name as university, email as dbemail, passwd, firstname," +
                     "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber " +
@@ -54,7 +54,7 @@ public class Database {
         return user;
     }
 
-    public User getUser(int id) throws SQLException {
+    public User getUser(int id) throws SQLException, IOException {
         User user;
         PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name as nationality," +
                 "studies.name as study, universities.name as university, email as dbemail, passwd, firstname," +
@@ -67,6 +67,68 @@ public class Database {
         user = processGetUser(rs);
         stmt.close();
         return user;
+    }
+
+    private User processGetUser(ResultSet rs) throws SQLException, IOException {
+        //fixme: NullPointerExceptions on empty result from Database
+        User usr = new User();
+        if(rs.next()) {
+            int id = rs.getInt("id"),
+                    studyYear = rs.getInt("studyYear");
+            String dbemail = rs.getString("dbemail"),
+                    password = rs.getString("passwd"),
+                    firstname = rs.getString("firstname"),
+                    lastname = rs.getString("lastname"),
+                    nationality = rs.getString("nationality"),
+                    university = rs.getString("university"),
+                    study = rs.getString("study"),
+                    sex = rs.getString("sex"),
+                    bio = rs.getString("bio"),
+                    location = rs.getString("location"),
+                    phonenumber = rs.getString("phonenumber"),
+                    availability = rs.getString("availableDates");
+            Date birthdate = new Date(rs.getLong("birthdate"));
+
+            PreparedStatement stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
+                    "LEFT JOIN coursesSearchingBuddy ON courses_id = courses.id " +
+                    "WHERE coursesSearchingBuddy.users_id = ?");
+            stmt.setInt(1, id);
+            ResultSet rs2 = stmt.executeQuery();
+            ArrayList<String> coursesSearchingBuddy = new ArrayList<>();
+            while(rs2.next()) {
+                coursesSearchingBuddy.add(rs2.getString("name"));
+            }
+            stmt.close();
+
+            stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
+                    "LEFT JOIN coursesTeaching ON courses_id = courses.id " +
+                    "WHERE coursesTeaching.users_id = ?");
+            stmt.setInt(1, id);
+            rs2 = stmt.executeQuery();
+            ArrayList<String> coursesTeaching = new ArrayList<>();
+            while(rs2.next()) {
+                coursesTeaching.add(rs2.getString("name"));
+            }
+            stmt.close();
+
+            stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
+                    "LEFT JOIN coursesLearning ON courses_id = courses.id " +
+                    "WHERE coursesLearning.users_id = ?");
+            stmt.setInt(1, id);
+            rs2 = stmt.executeQuery();
+            ArrayList<String> coursesLearning = new ArrayList<>();
+            while(rs2.next()) {
+                coursesLearning.add(rs2.getString("name"));
+            }
+            stmt.close();
+
+            AvailableTimes aTimes = AvailableTimes.fromJson(availability);
+
+            usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber,
+                    new Address("A", "B", "C","D"), study, university, studyYear, aTimes, coursesTeaching,
+                    coursesLearning, coursesSearchingBuddy, sex, nationality, bio, location);
+        }
+        return usr;
     }
 
     public void addUser(User user) throws SQLException, IOException, IllegalArgumentException {
@@ -193,64 +255,6 @@ public class Database {
         stmt.setInt(11, user.getStudyYear());
         stmt.setString(12, availableDates);
         stmt.close();
-    }
-
-    private User processGetUser(ResultSet rs) throws SQLException {
-        User usr = new User();
-        if(rs.next()) {
-            int id = rs.getInt("id"),
-                    studyYear = rs.getInt("studyYear");
-            String dbemail = rs.getString("dbemail"),
-                    password = rs.getString("passwd"),
-                    firstname = rs.getString("firstname"),
-                    lastname = rs.getString("lastname"),
-                    nationality = rs.getString("nationality"),
-                    university = rs.getString("university"),
-                    study = rs.getString("study"),
-                    sex = rs.getString("sex"),
-                    bio = rs.getString("bio"),
-                    location = rs.getString("location"),
-                    phonenumber = rs.getString("phonenumber");
-            Date birthdate = new Date(rs.getLong("birthdate"));
-
-            PreparedStatement stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
-                    "LEFT JOIN coursesSearchingBuddy ON courses_id = courses.id " +
-                    "WHERE coursesSearchingBuddy.users_id = ?");
-            stmt.setInt(1, id);
-            ResultSet rs2 = stmt.executeQuery();
-            ArrayList<String> coursesSearchingBuddy = new ArrayList<String>();
-            while(rs2.next()) {
-                coursesSearchingBuddy.add(rs2.getString("name"));
-            }
-            stmt.close();
-
-            stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
-                    "LEFT JOIN coursesTeaching ON courses_id = courses.id " +
-                    "WHERE coursesTeaching.users_id = ?");
-            stmt.setInt(1, id);
-            rs2 = stmt.executeQuery();
-            ArrayList<String> coursesTeaching = new ArrayList<String>();
-            while(rs2.next()) {
-                coursesTeaching.add(rs2.getString("name"));
-            }
-            stmt.close();
-
-            stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
-                    "LEFT JOIN coursesLearning ON courses_id = courses.id " +
-                    "WHERE coursesLearning.users_id = ?");
-            stmt.setInt(1, id);
-            rs2 = stmt.executeQuery();
-            ArrayList<String> coursesLearning = new ArrayList<String>();
-            while(rs2.next()) {
-                coursesLearning.add(rs2.getString("name"));
-            }
-            stmt.close();
-
-            usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber,
-                    new Address("A", "B", "C","D"), study, university, studyYear, new AvailableTimes(), coursesTeaching,
-                    coursesLearning, coursesSearchingBuddy, sex, nationality, bio, location);
-        }
-        return usr;
     }
 
 }

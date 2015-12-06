@@ -8,6 +8,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Main user class that will hold a users info in memory
+ * @author Emma Jimmink
+ * @author Jurriaan Den Toonder
+ * @version 0.5
+ */
 public class User {
     private String password, firstname, lastname, mail, phonenumber, study, university, gender, nationality,
             description, location;
@@ -94,19 +100,23 @@ public class User {
     }
 
     /**
-     * jsonToUser: Reads JSON data from a given filepath and returns a new User Object using the jackson library
-     * Note: needs testing
-     * Author: Sebastiaan Hester
+     * Reads JSON string and returns a user object
+     * Author: Jurriaan Den Toonder
      */
-    public static User jsonToUser(String jsonstring) {
+    public static User fromJson(String json) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        User usr = new User();
-        try {
-            usr = mapper.readValue(jsonstring, User.class);
-        } catch (IOException io) {
-            io.printStackTrace();
-        }
-        return usr;
+        return mapper.readValue(json, User.class);
+    }
+
+    /**
+     * Returns this object represented as a JSON string
+     * Author: Jurriaan Den Toonder
+     * @return String, JSON notation of this object
+     * @throws IOException
+     */
+    public String toJson() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(this);
     }
 
     /**

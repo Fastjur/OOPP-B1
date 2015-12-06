@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -10,12 +11,13 @@ import java.util.Scanner;
  * This file will most likely contain the main method for starting up the server
  *
  * @author Jurriaan Den Toonder
- * @version 0.1
+ * @author Govert de Gans
+ * @version 0.2
  */
 public class Server {
 
     private static Database db;
-    private static ArrayList<ConnectedClient> clients = new ArrayList<ConnectedClient>();
+    private static ArrayList<ConnectedClient> clients = new ArrayList<>();
     private static ListenThread listenthread;
     private static ArrayList<Session> sessions = new ArrayList<>();
 
@@ -25,6 +27,7 @@ public class Server {
      * @param args (Commandline) parameters
      */
     public static void main(final String[] args) {
+
         try {
             db = new Database();
             db.getUser("john@doe.com");
@@ -44,7 +47,7 @@ public class Server {
 
         listenthread = new ListenThread(clients, 8372);
         listenthread.start();
-        // some sort of interactive console here?
+        //todo: some sort of interactive console here?
         Scanner scanner = new Scanner(System.in);
         String input = "";
         System.out.println("Type 'quit' to exit the server.");
@@ -59,13 +62,18 @@ public class Server {
     }
 
     public void logIn(String email, String password){
-        User user = db.getUser(email);
-        if(user.getMail().equals(email) && user.getPassword().equals(password)){
-            Session session = new Session(user.getUserID());
-            sessions.add(session);
-        }
-        else{
-            System.out.println("Authentication failed.");
+        User user;
+        try {
+            user = db.getUser(email);
+            if(user.getMail().equals(email) && user.getPassword().equals(password)){
+                Session session = new Session(user.getUserID());
+                sessions.add(session);
+            }
+            else{
+                System.out.println("Authentication failed.");
+            }
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
         }
     }
 
