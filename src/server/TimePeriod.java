@@ -1,5 +1,6 @@
 package server;
 
+import java.sql.Time;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,5 +45,20 @@ public class TimePeriod {
         minutes += Integer.parseInt(split[0]) * 60;
         minutes += Integer.parseInt(split[1]);
         return minutes;
+    }
+
+    public String toString() {
+        return "<TimePeriod(" + this.start + "-" + this.end + ")";
+    }
+
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+        if (!(other instanceof TimePeriod))
+            return false;
+
+        TimePeriod that = (TimePeriod) other;
+        return this.start == that.start &&
+                this.end == that.end;
     }
 }

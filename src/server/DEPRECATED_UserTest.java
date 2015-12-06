@@ -10,7 +10,7 @@ import java.util.Date;
 
 import static org.junit.Assert.*;
 
-
+@Deprecated
 public class DEPRECATED_UserTest {
     //Test: constructor
 
@@ -64,7 +64,7 @@ public class DEPRECATED_UserTest {
         getterSetterTest.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         getterSetterTest.getBuddyList().add(buddy);
-        getterSetterTest.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        getterSetterTest.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         getterSetterTest.getLanguageList().add(language);
 
@@ -92,8 +92,8 @@ public class DEPRECATED_UserTest {
         String buddy2 = "JavaScript";
         getterSetterTest.getBuddyList().add(buddy1);
         getterSetterTest.getBuddyList().add(buddy2);
-        getterSetterTest.getAvailableList().add(new AvailableDate(new Weekdays("Monday")));
-        getterSetterTest.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        getterSetterTest.getAvailability().add(new AvailableDate(new Weekdays("Monday")));
+        getterSetterTest.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language1 = "Dutch";
         String language2 = "German";
         getterSetterTest.getLanguageList().add(language1);
@@ -466,7 +466,7 @@ public class DEPRECATED_UserTest {
         getterSetterTest.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         getterSetterTest.getBuddyList().add(buddy);
-        getterSetterTest.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        getterSetterTest.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         getterSetterTest.getLanguageList().add(language);
 
@@ -485,7 +485,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -495,7 +495,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertTrue(user1.equals(user2));
@@ -513,7 +513,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -523,7 +523,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -541,7 +541,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -551,7 +551,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -569,7 +569,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -579,7 +579,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -597,7 +597,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -607,7 +607,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
     }
 
@@ -623,7 +623,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -633,7 +633,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -651,7 +651,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -661,7 +661,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -679,7 +679,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -689,7 +689,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -707,7 +707,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -717,7 +717,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -735,7 +735,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -745,7 +745,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -763,7 +763,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -773,7 +773,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -791,7 +791,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -801,7 +801,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -819,7 +819,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -829,7 +829,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -847,7 +847,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -857,7 +857,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -875,7 +875,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -885,7 +885,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -903,7 +903,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -913,7 +913,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -931,7 +931,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -942,7 +942,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered2);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -960,7 +960,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -971,7 +971,7 @@ public class DEPRECATED_UserTest {
         String helpWanted2 = "Assembly";
         user2.getCoursesLearningList().add(helpWanted2);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -989,7 +989,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -1000,7 +1000,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesLearningList().add(helpWanted);
         String buddy2 = "Assembly";
         user2.getBuddyList().add(buddy2);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));
@@ -1018,7 +1018,7 @@ public class DEPRECATED_UserTest {
         user1.getCoursesLearningList().add(helpWanted);
         String buddy = "Web&Database";
         user1.getBuddyList().add(buddy);
-        user1.getAvailableList().add(new AvailableDate(new Weekdays("Friday")));
+        user1.getAvailability().add(new AvailableDate(new Weekdays("Friday")));
         String language = "Dutch";
         user1.getLanguageList().add(language);
 
@@ -1028,7 +1028,7 @@ public class DEPRECATED_UserTest {
         user2.getCoursesTeachingList().add(helpOffered);
         user2.getCoursesLearningList().add(helpWanted);
         user2.getBuddyList().add(buddy);
-        user2.getAvailableList().add(new AvailableDate(new Weekdays("Monday")));
+        user2.getAvailability().add(new AvailableDate(new Weekdays("Monday")));
         user2.getLanguageList().add(language);
 
         assertFalse(user1.equals(user2));

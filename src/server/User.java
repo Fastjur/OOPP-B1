@@ -18,7 +18,7 @@ public class User {
     private ArrayList<String> coursesLearningList;
     private ArrayList<String> buddyList;
     private ArrayList<String> languageList;
-    private ArrayList<AvailableDate> availableList;
+    private AvailableTimes availability;
 
     /**
      * User: constructor for class User
@@ -41,7 +41,7 @@ public class User {
      */
     public User(int userID, String password, String firstname, String lastname, Date birthday, String mail,
                 String phonenumber, Address address, String study, String university, int studyYear,
-                ArrayList<AvailableDate> available, ArrayList<String> teaching, ArrayList<String> learning, ArrayList<String> buddys, String gender,
+                AvailableTimes available, ArrayList<String> teaching, ArrayList<String> learning, ArrayList<String> buddys, String gender,
                 String nationality, String description, String location) {
         this.userID = userID;
         this.password = password;
@@ -54,7 +54,7 @@ public class User {
         this.study = study;
         this.university = university;
         this.studyYear = studyYear;
-        this.availableList = available;
+        this.availability = available;
         this.coursesTeachingList = teaching;
         this.coursesLearningList = learning;
         this.buddyList = buddys;
@@ -82,7 +82,7 @@ public class User {
         this.study = "";
         this.university = "";
         this.studyYear = -1;
-        this.availableList = new ArrayList<>();
+        this.availability = new AvailableTimes();
         this.coursesTeachingList = new ArrayList<>();
         this.coursesLearningList = new ArrayList<>();
         this.buddyList = new ArrayList<>();
@@ -120,15 +120,9 @@ public class User {
         text = Integer.toString(userID) + "\n" + password + "\n" + firstname + " " + lastname + "\n"
                 + df.format(birthday) + "\n" + mail + "\n" + phonenumber + "\n" + address.toString() + study
                 + "\n" + university + "\n" + Integer.toString(studyYear) + "\n";
-        // availableList
-        text += "available: ";
-        for (int i = 0; i < availableList.size(); i++) {
-            text += availableList.get(i);
-            if (i < availableList.size() - 1) {
-                text += ";";
-            }
-        }
-        text += "\n";
+
+        // availability
+        text += "available: " + this.availability.toString() + "\n";
 
         // coursesTeachingList
         text += "Courses teaching: ";
@@ -344,11 +338,11 @@ public class User {
     }
 
     /**
-     * getAvailableList: getter for private arraylist availablelist
+     * getAvailability: getter for private arraylist availablelist
      * @return AvailableList - ArrayList<AvaliableDate>
      */
-    public ArrayList<AvailableDate> getAvailableList() {
-        return this.availableList;
+    public AvailableTimes getAvailability() {
+        return this.availability;
     }
 
     /**
@@ -514,7 +508,7 @@ public class User {
                     this.coursesTeachingList.equals(that.getCoursesTeachingList()) &&
                     this.buddyList.equals(that.getBuddyList()) &&
                     this.languageList.equals(that.getLanguageList()) &&
-                    this.availableList.equals(that.getAvailableList());
+                    this.availability.equals(that.getAvailability());
         }
         return false;
     }

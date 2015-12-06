@@ -42,6 +42,19 @@ public class AvailableTimes {
         return null;
     }
 
+    public TimePeriod getPeriod(int day, int index) {
+        switch(day) {
+            case 1: return this.monday.get(index);
+            case 2: return this.tuesday.get(index);
+            case 3: return this.wednesday.get(index);
+            case 4: return this.thursday.get(index);
+            case 5: return this.friday.get(index);
+            case 6: return this.saturday.get(index);
+            case 7: return this.sunday.get(index);
+        }
+        return null;
+    }
+
     public void removeTime(int day, int index) {
         switch(day) {
             case 1: this.monday.remove(index);
@@ -52,5 +65,52 @@ public class AvailableTimes {
             case 6: this.saturday.remove(index);
             case 7: this.sunday.remove(index);
         }
+    }
+
+    public String toString() {
+        String res = "Maandag(";
+        for (TimePeriod p : this.monday) {
+            res += p.toString();
+        }
+        res += ") Dinsdag(";
+        for (TimePeriod p : this.tuesday) {
+            res += p.toString();
+        }
+        res += ") Woensdag(";
+        for (TimePeriod p : this.wednesday) {
+            res += p.toString();
+        }
+        res += ") Donderdag(";
+        for (TimePeriod p : this.thursday) {
+            res += p.toString();
+        }
+        res += ") Vrijdag(";
+        for (TimePeriod p : this.friday) {
+            res += p.toString();
+        }
+        res += ") Zaterdag(";
+        for (TimePeriod p : this.saturday) {
+            res += p.toString();
+        }
+        res += ") Zondag(";
+        for (TimePeriod p : this.sunday) {
+            res += p.toString();
+        }
+        res += ")";
+        return res;
+    }
+
+    public boolean equals(Object other) {
+        if (other instanceof AvailableTimes) {
+            AvailableTimes that = (AvailableTimes) other;
+            return this.monday.equals(that.monday) &&
+                    this.tuesday.equals(that.tuesday) &&
+                    this.wednesday.equals(that.wednesday) &&
+                    this.thursday.equals(that.thursday) &&
+                    this.friday.equals(that.friday) &&
+                    this.saturday.equals(that.saturday) &&
+                    this.sunday.equals(that.sunday);
+        }
+        return false;
     }
 }

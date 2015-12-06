@@ -1,6 +1,5 @@
 package server;
 
-import jdk.nashorn.internal.ir.debug.JSONWriter;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 
@@ -172,7 +171,7 @@ public class Database {
          */
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
-        String availableDates = mapper.writeValueAsString(user.getAvailableList());
+        String availableDates = mapper.writeValueAsString(user.getAvailability());
         System.out.println("Available dates JSONified: " + availableDates);
 
         /**
@@ -248,7 +247,7 @@ public class Database {
             stmt.close();
 
             usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber,
-                    new Address("A", "B", "C","D"), study, university, studyYear, new ArrayList(), coursesTeaching,
+                    new Address("A", "B", "C","D"), study, university, studyYear, new AvailableTimes(), coursesTeaching,
                     coursesLearning, coursesSearchingBuddy, sex, nationality, bio, location);
         }
         return usr;
