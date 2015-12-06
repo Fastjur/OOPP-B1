@@ -11,15 +11,17 @@ import java.util.Date;
 import static org.junit.Assert.*;
 
 
-public class UserTest {
+public class DEPRECATED_UserTest {
     //Test: constructor
 
     User getterSetterTest;
     @Before
     public void before() {
+        AvailableTimes aTimes = new AvailableTimes();
+        aTimes.addTimePeriod(1, new TimePeriod("17:00", "21:00"));
          getterSetterTest = new User(4457773, "P@ssW0rd", "Laura", "Folkerts", new Date(853113600),
                 "laura@mail.com", "0612345678", new Address("M. Rutgersweg", "1", "2331NT", "Leiden"),
-                "Computer Sciences", "TU Delft", 1, new ArrayList<AvailableDate>(), new ArrayList<String>(),
+                "Computer Sciences", "TU Delft", 1, aTimes, new ArrayList<String>(),
                 new ArrayList<String>(), new ArrayList<String>(), "woman", "Dutch", "Hello", "GPS");
     }
 
