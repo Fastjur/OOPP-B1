@@ -27,23 +27,26 @@ public class Server {
      * @param args (Commandline) parameters
      */
     public static void main(final String[] args) {
-
         try {
             db = new Database();
-            db.getUser("john@doe.com");
-            User temp = db.getUser(1);
-            temp.setUserID(-1);
-            db.addUser(temp);
-        } catch (SQLException e) {
-            System.out.println("[ERROR] SQLException:\n    " + e.getMessage());
+        } catch (IllegalStateException e) {
+            System.out.println("[ERROR] Could not create database connection\n");
             e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("[ERROR] IOException:\n    " + e.getMessage());
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            System.out.println("[ERROR] MySQL query failed:\n    " + e.getMessage());
-            e.printStackTrace();
+        } finally {
+            db.close();
         }
+
+        AvailableTimes aTimes = new AvailableTimes();
+        aTimes.addTimePeriod(1, new TimePeriod("07:30", "15:00"));
+        aTimes.addTimePeriod(1, new TimePeriod("18:30", "21:00"));
+        aTimes.addTimePeriod(3, new TimePeriod("10:30", "12:00"));
+        aTimes.addTimePeriod(4, new TimePeriod("07:30", "15:00"));
+        aTimes.addTimePeriod(5, new TimePeriod("07:30", "15:00"));
+        aTimes.addTimePeriod(5, new TimePeriod("16:30", "18:00"));
+        aTimes.addTimePeriod(7, new TimePeriod("09:30", "15:00"));
+        User user = new User(-1, "Passwordz", "Mark", "Johnsson", new Date(1609802), "mark@johnsson.com",
+                "06-123456789", new Address("Poeplaan", "69", "2156AB", "Pissing City"), "Technische Plassen",
+                "University of Plassen", 3, aTimes, );
 
         listenthread = new ListenThread(clients, 8372);
         listenthread.start();

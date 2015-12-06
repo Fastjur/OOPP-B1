@@ -25,6 +25,7 @@ public class Database {
         System.out.println("Attempting to connect to database");
         try {
             String JDBCUrl = "jdbc:mysql://db4free.net:3306/ooppb1";
+//            String JDBCUrl = "jdbc:mysql://localhost:3306/ooppb1";
             String user = "oopp_usr";
             String password = "oopp_b1_database";
             connection = DriverManager.getConnection(JDBCUrl, user, password);
@@ -86,8 +87,10 @@ public class Database {
                     bio = rs.getString("bio"),
                     location = rs.getString("location"),
                     phonenumber = rs.getString("phonenumber"),
-                    availability = rs.getString("availableDates");
+                    availabilityString = rs.getString("availableDates");
             Date birthdate = new Date(rs.getLong("birthdate"));
+
+            AvailableTimes availability = AvailableTimes.fromJson(availabilityString);
 
             PreparedStatement stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
                     "LEFT JOIN coursesSearchingBuddy ON courses_id = courses.id " +
@@ -122,10 +125,11 @@ public class Database {
             }
             stmt.close();
 
-            AvailableTimes aTimes = AvailableTimes.fromJson(availability);
+            stmt = connection.prepareStatement("SELECT languages.name FROM languages " +
+                    "LEFT JOIN users_has_languages ON languages.id = users_has_languages.languages_id")
 
             usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber,
-                    new Address("A", "B", "C","D"), study, university, studyYear, aTimes, coursesTeaching,
+                    new Address("A", "B", "C","D"), study, university, studyYear, availability, coursesTeaching,
                     coursesLearning, coursesSearchingBuddy, sex, nationality, bio, location);
         }
         return usr;
@@ -156,7 +160,7 @@ public class Database {
         if(user.getPhonenumber() == null || user.getPhonenumber().equals("")) {
             throw new IllegalArgumentException("User phonenumber was null or empty, aborting add to database");
         }
-        if(user.getAddress() == null || user.getAddress().Contains("")) {
+        if(user.getAddress() == null || user.getAddress().contains("")) {
             throw new IllegalStateException("User address was null or one of its properties was empty," +
                     " aborting add to database");
         }
@@ -229,14 +233,6 @@ public class Database {
         stmt.close();
 
         /**
-         * Convert availableDates arrayList to JSONified string
-         */
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
-        String availableDates = mapper.writeValueAsString(user.getAvailability());
-        System.out.println("Available dates JSONified: " + availableDates);
-
-        /**
          * Insert user into database
          */
         stmt = connection.prepareStatement("INSERT INTO `users`(id, nationality_id, university_id, email, passwd," +
@@ -253,8 +249,132 @@ public class Database {
         stmt.setInt(9, study_id);
         stmt.setString(10, user.getDescription());
         stmt.setInt(11, user.getStudyYear());
-        stmt.setString(12, availableDates);
+        stmt.setString(12, user.getAvailability().toJson());
+        stmt.setString(13, user.getLocation());
+        stmt.setString(14, user.getPhonenumber());
         stmt.close();
+    }
+
+    public void updateUser(User user) throws IllegalArgumentException, SQLException, IOException {
+        if(user == null) {
+            throw new IllegalArgumentException("User object was null, cannot add to database");
+        }
+        if(user.getPassword() == null || user.getPassword().equals("")) {
+            throw new IllegalArgumentException("User password was null or empty, aborting add to database");
+        }
+        if(user.getFirstname() == null || user.getFirstname().equals("")) {
+            throw new IllegalArgumentException("User firstname was null or empty, aborting add to database");
+        }
+        if(user.getLastname() == null || user.getLastname().equals("")) {
+            throw new IllegalArgumentException("User lastname was null or empty, aborting add to database");
+        }
+        if(user.getBirthday() == null || user.getBirthday().equals(new Date(0))) {
+            throw new IllegalArgumentException("User birthday was null or 0, aborting add to database");
+        }
+        if(user.getMail() == null || user.getMail().equals("")) {
+            throw new IllegalArgumentException("User mail was null or empty, aborting add to database");
+        }
+        if(user.getPhonenumber() == null || user.getPhonenumber().equals("")) {
+            throw new IllegalArgumentException("User phonenumber was null or empty, aborting add to database");
+        }
+        if(user.getAddress() == null || user.getAddress().contains("")) {
+            throw new IllegalStateException("User address was null or one of its properties was empty," +
+                    " aborting add to database");
+        }
+        if(user.getStudy() == null || user.getStudy().equals("")) {
+            throw new IllegalArgumentException("User study was null or empty, aborting add to database");
+        }
+        if(user.getUniversity() == null || user.getUniversity().equals("")) {
+            throw new IllegalArgumentException("User university was null or empty, aborting add to database");
+        }
+        if(user.getStudyYear() == 0) {
+            throw new IllegalArgumentException("User studyYear was 0, aborting add to database");
+        }
+        if(user.getGender() == null || user.getGender().equals("")) {
+            throw new IllegalArgumentException("User gender was null or empty, aborting add to database");
+        }
+        if(user.getNationality() == null || user.getNationality().equals("")) {
+            throw new IllegalArgumentException("User nationality was null or empty, aborting add to database");
+        }
+        if(user.getDescription() == null || user.getDescription().equals("")) {
+            throw new IllegalArgumentException("User description was null or empty, aborting add to database");
+        }
+        if(user.getLocation() == null || user.getLocation().equals("")) {
+            throw new IllegalArgumentException("User location was null or empty, aborting add to database");
+        }
+
+        PreparedStatement stmt;
+        ResultSet rs;
+
+        /**
+         * Get nationality id
+         */
+        stmt = connection.prepareStatement("SELECT id FROM nationalities WHERE name = ? LIMIT 1");
+        stmt.setString(1, user.getNationality());
+        rs = stmt.executeQuery();
+        int nationality_id;
+        if (rs.next()) {
+            nationality_id = rs.getInt("id");
+        } else {
+            throw new IllegalArgumentException("Could not get nationality id, aborting update to database\n    " +
+                    "Argument: (name:\"" + user.getNationality() + "\")");
+        }
+
+        /**
+         * Get university id
+         */
+        stmt = connection.prepareStatement("SELECT id FROM universities WHERE name = ? LIMIT 1");
+        stmt.setString(1, user.getUniversity());
+        rs = stmt.executeQuery();
+        int university_id = 0;
+        if (rs.next()) {
+            university_id = rs.getInt("id");
+        } else {
+            throw new IllegalArgumentException("Could not get university id, aborting update to database\n    " +
+                    "Argument: (name:\"" + user.getUniversity() + "\")");
+        }
+
+        /**
+         * Get study id
+         */
+        stmt = connection.prepareStatement("SELECT id FROM studies WHERE name = ? LIMIT 1");
+        stmt.setString(1, user.getStudy());
+        rs = stmt.executeQuery();
+        int study_id = 0;
+        if (rs.next()) {
+            study_id = rs.getInt("id");
+        } else {
+            throw new IllegalArgumentException("Could not get study id, aborting update to database\n    " +
+                    "Argument: (name:\"" + user.getStudy() + "\")");
+        }
+
+        stmt = connection.prepareStatement("UPDATE `users` SET nationality_id=?, university_id=?, " +
+                "email=?, passwd=?, firstname=?, lastname=?, sex=?, birthdate=?, study=?, bio=?, studyYear=?, " +
+                "availableDates=?, location=?, phonenumber=? " +
+                "WHERE id = ?");
+        stmt.setInt(1, nationality_id);
+        stmt.setInt(2, university_id);
+        stmt.setString(3, user.getMail());
+        stmt.setString(4, user.getPassword());
+        stmt.setString(5, user.getFirstname());
+        stmt.setString(6, user.getLastname());
+        stmt.setString(7, user.getGender());
+        stmt.setLong(8, user.getBirthday().getTime());
+        stmt.setString(9, user.getDescription());
+        stmt.setInt(10, user.getStudyYear());
+        stmt.setString(11, user.getAvailability().toJson());
+        stmt.setString(12, user.getLocation());
+        stmt.setString(13, user.getPhonenumber());
+
+        stmt.execute();
+    }
+
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

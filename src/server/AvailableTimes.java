@@ -13,16 +13,12 @@ import java.util.ArrayList;
  * @version 0.5
  */
 public class AvailableTimes {
-    private ArrayList<TimePeriod> monday = new ArrayList<>(),
-                                  tuesday = new ArrayList<>(),
-                                  wednesday = new ArrayList<>(),
-                                  thursday = new ArrayList<>(),
-                                  friday = new ArrayList<>(),
-                                  saturday = new ArrayList<>(),
-                                  sunday = new ArrayList<>();
+    private ArrayList<TimePeriod> monday = new ArrayList<>(), tuesday = new ArrayList<>(),
+                                  wednesday = new ArrayList<>(), thursday = new ArrayList<>(),
+                                  friday = new ArrayList<>(), saturday = new ArrayList<>(), sunday = new ArrayList<>();
 
     /**
-     * Empty constructor
+     * Empty constructor for JSON
      */
     public AvailableTimes() {}
 
@@ -43,6 +39,8 @@ public class AvailableTimes {
      * @throws IOException
      */
     public static AvailableTimes fromJson(String json) throws IOException {
+        if (json == null)
+            return null;
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(json, AvailableTimes.class);
     }
