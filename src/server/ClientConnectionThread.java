@@ -1,10 +1,14 @@
 package server;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 
 /**
  * A thread that handles the connection with a client
@@ -88,6 +92,50 @@ public class ClientConnectionThread extends Thread {
     }
 
     private void handleMessage(String message) {
-        // big function inbound
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode messageObj;
+        try {
+            messageObj = mapper.readTree(message);
+            String action = messageObj.get("action").asText();
+            Response response;
+
+            switch (action) {
+                case "register":
+                    response = new Response("register");
+                    User newuser = mapper.treeToValue(messageObj.get("newUser"), User.class);
+                    newuser.setUserID(-1);
+                    try {
+                        Server.getDb().getUser(newuser.getMail());
+                    } catch (SQLException e) {
+                        response.errorCode = 2;
+                        response.errorMessage = "User already exists";
+                        break;
+                    }
+                    try {
+                        Server.getDb().addUser(newuser);
+                    } catch (SQLException e) {
+                        response.errorCode = 1;
+                        response.errorMessage = "Generic error.";
+                        break;
+                    }
+                    response.errorCode = 0;
+                    response.errorMessage = "Registration successful";
+                    break;
+
+                case "login":
+                    response = new Response("login");
+                    break;
+
+                default:
+                    response = new Response(action);
+                    response.errorMessage = "Unknown command";
+                    response.errorCode = 1;
+            }
+
+            client.sendMessage(mapper.writeValueAsString(response));
+
+        } catch (java.io.IOException ex) {
+            System.out.println("Something went wrong while reading a message from the network.\n" + ex.getLocalizedMessage());
+        }
     }
 }

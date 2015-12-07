@@ -3,7 +3,6 @@ package server;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -59,6 +58,10 @@ public class Server {
 
         System.out.println("Server exiting...");
         listenthread.end();
+    }
+
+    public static Database getDb() {
+        return db;
     }
 
     public void logIn(String email, String password){
