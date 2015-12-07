@@ -108,7 +108,7 @@ public class ClientConnectionThread extends Thread {
                         Server.getDb().getUser(newuser.getMail());
                     } catch (SQLException e) {
                         response.errorCode = 2;
-                        response.errorMessage = "User already exists";
+                        response.errorMessage = "That user already exists.";
                         break;
                     }
                     try {
@@ -119,16 +119,37 @@ public class ClientConnectionThread extends Thread {
                         break;
                     }
                     response.errorCode = 0;
-                    response.errorMessage = "Registration successful";
+                    response.errorMessage = "Registration successful.";
                     break;
 
                 case "login":
                     response = new Response("login");
+                    if (client.userId != -1) {
+                        response.errorCode = 2;
+                        response.errorMessage = "You are already logged in.";
+                    } else {
+                        String email = messageObj.get("requestData").get("email").getTextValue();
+                        String pass = messageObj.get("requestData").get("pass").getTextValue();
+                        try {
+                            User user = Server.getDb().getUser(email);
+                            if (user.getPassword().equals(pass)) {
+                                this.client.userId = user.getUserID();
+
+                                response.errorCode = 0;
+                                response.errorMessage = "Login successful.";
+                                break;
+                            }
+                        } catch(SQLException e) {
+                            // user not found
+                        }
+                        response.errorCode = 3;
+                        response.errorMessage = "Invalid email/password.";
+                    }
                     break;
 
                 default:
                     response = new Response(action);
-                    response.errorMessage = "Unknown command";
+                    response.errorMessage = "Unknown command.";
                     response.errorCode = 1;
             }
 
