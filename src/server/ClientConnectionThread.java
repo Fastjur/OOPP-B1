@@ -102,7 +102,7 @@ public class ClientConnectionThread extends Thread {
             switch (action) {
                 case "register":
                     response = new Response("register");
-                    User newuser = mapper.treeToValue(messageObj.get("newUser"), User.class);
+                    User newuser = mapper.treeToValue(messageObj.get("requestData").get("newUser"), User.class);
                     newuser.setUserID(-1);
                     try {
                         Server.getDb().getUser(newuser.getMail());
