@@ -147,6 +147,18 @@ public class ClientConnectionThread extends Thread {
                     }
                     break;
 
+                case "logout":
+                    response = new Response("logout");
+                    if (this.client.userId == -1) {
+                        response.errorCode = 2;
+                        response.errorMessage = "You are not logged in.";
+                    } else {
+                        this.client.userId = -1;
+                        response.errorCode = 0;
+                        response.errorMessage = "Logout successful.";
+                    }
+                    break;
+
                 default:
                     response = new Response(action);
                     response.errorMessage = "Unknown command.";
