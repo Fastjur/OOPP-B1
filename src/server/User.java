@@ -40,15 +40,20 @@ public class User {
      * @param study       - String
      * @param university  - String
      * @param studyYear   - int
+     * @param available   - ArrayList
+     * @param teaching   - ArrayList
+     * @param learning   - ArrayList
+     * @param buddys   - ArrayList
      * @param gender      - String
      * @param nationality - String
+     * @param languages - ArrayList
      * @param description - String
      * @param location    - String
      */
     public User(int userID, String password, String firstname, String lastname, Date birthday, String mail,
                 String phonenumber, Address address, String study, String university, int studyYear,
                 AvailableTimes available, ArrayList<String> teaching, ArrayList<String> learning, ArrayList<String> buddys, String gender,
-                String nationality, String description, String location) {
+                String nationality, ArrayList<String> languages, String description, String location) {
         this.userID = userID;
         this.password = password;
         this.firstname = firstname;
@@ -66,7 +71,7 @@ public class User {
         this.buddyList = buddys;
         this.gender = gender;
         this.nationality = nationality;
-        this.languageList = new ArrayList<>();
+        this.languageList = languages;
         this.description = description;
         this.location = location;
     }

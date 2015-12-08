@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.Scanner;
  *
  * @author Jurriaan Den Toonder
  * @author Govert de Gans
- * @version 0.2
+ * @version 1.0
  */
 public class Server {
 
@@ -27,24 +28,23 @@ public class Server {
      * @param args (Commandline) parameters
      */
     public static void main(final String[] args) {
-
         try {
             db = new Database();
-            db.getUser("john@doe.com");
-            User temp = db.getUser(1);
-            temp.setUserID(-1);
-            db.addUser(temp);
+            start();
+        } catch (IllegalStateException e) {
+            System.out.println("[ERROR] Could not create database connection");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("[ERROR] Could not find database driver");
+            e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("[ERROR] SQLException:\n    " + e.getMessage());
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("[ERROR] IOException:\n    " + e.getMessage());
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            System.out.println("[ERROR] MySQL query failed:\n    " + e.getMessage());
+            System.out.println("[ERROR] SQLException occurred");
             e.printStackTrace();
         }
 
+    }
+
+    private static void start() {
         listenthread = new ListenThread(clients, 8372);
         listenthread.start();
         //todo: some sort of interactive console here?
@@ -57,8 +57,18 @@ public class Server {
             System.out.println("You typed: " + input);
         }
 
+        //Will only continue to here once the user types quit
+        close();
+    }
+
+    private static void close() {
         System.out.println("Server exiting...");
         listenthread.end();
+        db.close();
+    }
+
+    public static Database getDb() {
+        return db;
     }
 
     public void logIn(String email, String password){
