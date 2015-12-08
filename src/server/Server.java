@@ -20,6 +20,10 @@ public class Server {
     private static ListenThread listenthread;
     private static ArrayList<Session> sessions = new ArrayList<>();
 
+    public static void SetupDudDatabaseForTesting() {
+        db = new DudDatabase();
+    }
+
     /**
      * 'Starts' the server and reads the database
      *

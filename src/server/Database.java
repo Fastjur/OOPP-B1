@@ -34,6 +34,8 @@ public class Database {
         }
     }
 
+    protected Database(boolean IFUCKINGHATEJAVA) {}
+
     public User getUser(String email) throws SQLException, IOException {
         User user;
         try {

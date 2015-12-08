@@ -1,5 +1,7 @@
 package server;
 
+import org.codehaus.jackson.annotate.JsonCreator;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,9 @@ public class Response {
         this.errorMessage = "";
         this.responseData = new HashMap<>();
     }
+
+    @JsonCreator
+    public Response() { }
 
     public void putData(String key, Object value) {
         this.responseData.put(key, value);
