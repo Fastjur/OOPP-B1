@@ -17,6 +17,7 @@ public class ConnectedClient {
     public int userId;
 
     public ConnectedClient(Socket socket, ArrayList<ConnectedClient> clientList) {
+        this.userId = -1;
         this.socket = socket;
         this.clientList = clientList;
         this.connectionThread = new ClientConnectionThread(this);
