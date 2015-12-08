@@ -1,17 +1,15 @@
 package server;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * Database class that reads the database file
+ * Main database class that defines the database functions
+ * This class attempts to connect to the database and supplies functions to add, edit and delete users
  *
  * @author Jurriaan Den Toonder
- * @version 0.1
+ * @version 1.0
  */
 public class Database {
 
@@ -19,48 +17,29 @@ public class Database {
 
     /**
      * Constructor of Database object
-     * Also contains the host, username and password for the database connection
+     * Gets the database connection from ConnectionManager
+     *
+     * @see ConnectionManager
      */
-    public Database() throws IllegalStateException {
-        System.out.println("Attempting to connect to database");
-        try {
-            String JDBCUrl = "jdbc:mysql://db4free.net:3306/ooppb1";
-//            String JDBCUrl = "jdbc:mysql://localhost:3306/ooppb1";
-            String user = "oopp_usr";
-            String password = "oopp_b1_database";
-            connection = DriverManager.getConnection(JDBCUrl, user, password);
-            System.out.println("Successful connection to database!");
-        } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect to the database!\n" + e.getMessage());
-        }
+    public Database() throws IllegalStateException, SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
     }
 
-    public User getUser(String email) throws SQLException, IOException {
-        User user;
-        try {
-            //TODO: Check for null values returned by database and generate appropriate exceptions
-            PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name as nationality," +
-                    "studies.name as study, universities.name as university, email as dbemail, passwd, firstname," +
-                    "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber " +
-                    "FROM `users` LEFT JOIN nationalities on users.nationality_id = nationalities.id " +
-                    "LEFT JOIN studies ON users.study = studies.id " +
-                    "LEFT JOIN universities ON users.university_id = universities.id WHERE users.email = ? LIMIT 1");
-            stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
-            user = processGetUser(rs);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not get user by email:\n" + e.getMessage());
-        }
-        return user;
-    }
-
+    /**
+     * Gets user from database by id
+     *
+     * @param id int, id from user
+     * @return User object if found, otherwise null
+     * @throws SQLException
+     * @throws IOException
+     */
     public User getUser(int id) throws SQLException, IOException {
+        //TODO: Check for null values returned by database and generate appropriate exceptions
         User user;
-        PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name as nationality," +
-                "studies.name as study, universities.name as university, email as dbemail, passwd, firstname," +
+        PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name AS nationality," +
+                "studies.name AS study, universities.name AS university, email AS dbemail, passwd, firstname," +
                 "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber " +
-                "FROM `users` LEFT JOIN nationalities on users.nationality_id = nationalities.id " +
+                "FROM `users` LEFT JOIN nationalities ON users.nationality_id = nationalities.id " +
                 "LEFT JOIN studies ON users.study = studies.id " +
                 "LEFT JOIN universities ON users.university_id = universities.id WHERE users.id = ? LIMIT 1");
         stmt.setInt(1, id);
@@ -70,10 +49,33 @@ public class Database {
         return user;
     }
 
+    /**
+     * Gets user from database by email
+     *
+     * @param email String, email from user
+     * @return User object if found, otherwise null
+     * @throws SQLException
+     * @throws IOException
+     */
+    public User getUser(String email) throws SQLException, IOException {
+        PreparedStatement stmt = connection.prepareStatement("SELECT users.id FROM `users` " +
+                "WHERE users.email = ? LIMIT 1");
+        stmt.setString(1, email);
+        ResultSet rs = stmt.executeQuery();
+        int id = -1;
+        while (rs.next()) {
+            id = rs.getInt("id");
+        }
+        if (id == -1) {
+            throw new IllegalArgumentException("Couldn't find user id by email in database");
+        }
+        return getUser(id);
+    }
+
     private User processGetUser(ResultSet rs) throws SQLException, IOException {
         //fixme: NullPointerExceptions on empty result from Database
         User usr = new User();
-        if(rs.next()) {
+        if (rs.next()) {
             int id = rs.getInt("id"),
                     studyYear = rs.getInt("studyYear");
             String dbemail = rs.getString("dbemail"),
@@ -100,7 +102,7 @@ public class Database {
             stmt.setInt(1, id);
             ResultSet rs2 = stmt.executeQuery();
             ArrayList<String> coursesSearchingBuddy = new ArrayList<>();
-            while(rs2.next()) {
+            while (rs2.next()) {
                 coursesSearchingBuddy.add(rs2.getString("name"));
             }
             stmt.close();
@@ -114,7 +116,7 @@ public class Database {
             stmt.setInt(1, id);
             rs2 = stmt.executeQuery();
             ArrayList<String> coursesTeaching = new ArrayList<>();
-            while(rs2.next()) {
+            while (rs2.next()) {
                 coursesTeaching.add(rs2.getString("name"));
             }
             stmt.close();
@@ -128,7 +130,7 @@ public class Database {
             stmt.setInt(1, id);
             rs2 = stmt.executeQuery();
             ArrayList<String> coursesLearning = new ArrayList<>();
-            while(rs2.next()) {
+            while (rs2.next()) {
                 coursesLearning.add(rs2.getString("name"));
             }
             stmt.close();
@@ -142,121 +144,134 @@ public class Database {
             stmt.setInt(1, id);
             rs2 = stmt.executeQuery();
             ArrayList<String> languages = new ArrayList<>();
-            while(rs2.next()) {
+            while (rs2.next()) {
                 languages.add(rs2.getString("name"));
             }
             stmt.close();
 
             usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber,
-                    new Address("A", "B", "C","D"), study, university, studyYear, availability, coursesTeaching,
+                    new Address("A", "B", "C", "D"), study, university, studyYear, availability, coursesTeaching,
                     coursesLearning, coursesSearchingBuddy, sex, nationality, languages, bio, location);
         }
         return usr;
     }
 
+    /**
+     * Adds a user to the database
+     * This method checks the incoming user object and returns an IllegalArgumentException if one of its attributes is out of range or null
+     *
+     * @param user User object
+     * @throws SQLException
+     * @throws IOException
+     * @throws IllegalArgumentException
+     * @see User
+     */
     public void addUser(User user) throws SQLException, IOException, IllegalArgumentException {
-        if(user == null) {
-            throw new IllegalArgumentException("User object was null, cannot add to database");
+        if (user == null) {
+            throw new IllegalArgumentException("[ERROR] User object was null, cannot add to database");
         }
-        if(user.getUserID() != -1) {
-            throw new IllegalArgumentException("User id was not -1, aborting add to database");
+        if (user.getUserID() != -1) {
+            throw new IllegalArgumentException("[ERROR] User id was not -1, aborting add to database");
         }
-        if(user.getPassword() == null || user.getPassword().equals("")) {
-            throw new IllegalArgumentException("User password was null or empty, aborting add to database");
+        if (user.getPassword() == null || user.getPassword().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User password was null or empty, aborting add to database");
         }
-        if(user.getFirstname() == null || user.getFirstname().equals("")) {
-            throw new IllegalArgumentException("User firstname was null or empty, aborting add to database");
+        if (user.getFirstname() == null || user.getFirstname().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User firstname was null or empty, aborting add to database");
         }
-        if(user.getLastname() == null || user.getLastname().equals("")) {
-            throw new IllegalArgumentException("User lastname was null or empty, aborting add to database");
+        if (user.getLastname() == null || user.getLastname().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User lastname was null or empty, aborting add to database");
         }
-        if(user.getBirthday() == null || user.getBirthday().equals(new Date(0))) {
-            throw new IllegalArgumentException("User birthday was null or 0, aborting add to database");
+        if (user.getBirthday() == null || user.getBirthday().equals(new Date(0))) {
+            throw new IllegalArgumentException("[ERROR] User birthday was null or 0, aborting add to database");
         }
-        if(user.getMail() == null || user.getMail().equals("")) {
-            throw new IllegalArgumentException("User mail was null or empty, aborting add to database");
+        if (user.getMail() == null || user.getMail().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User mail was null or empty, aborting add to database");
         }
-        if(user.getPhonenumber() == null || user.getPhonenumber().equals("")) {
-            throw new IllegalArgumentException("User phonenumber was null or empty, aborting add to database");
+        if (user.getPhonenumber() == null || user.getPhonenumber().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User phonenumber was null or empty, aborting add to database");
         }
-        if(user.getAddress() == null || user.getAddress().contains("")) {
+        if (user.getAddress() == null || user.getAddress().contains("")) {
             throw new IllegalStateException("User address was null or one of its properties was empty," +
                     " aborting add to database");
         }
-        if(user.getStudy() == null || user.getStudy().equals("")) {
-            throw new IllegalArgumentException("User study was null or empty, aborting add to database");
+        if (user.getStudy() == null || user.getStudy().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User study was null or empty, aborting add to database");
         }
-        if(user.getUniversity() == null || user.getUniversity().equals("")) {
-            throw new IllegalArgumentException("User university was null or empty, aborting add to database");
+        if (user.getUniversity() == null || user.getUniversity().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User university was null or empty, aborting add to database");
         }
-        if(user.getStudyYear() == 0) {
-            throw new IllegalArgumentException("User studyYear was 0, aborting add to database");
+        if (user.getStudyYear() == 0) {
+            throw new IllegalArgumentException("[ERROR] User studyYear was 0, aborting add to database");
         }
-        if(user.getGender() == null || user.getGender().equals("")) {
-            throw new IllegalArgumentException("User gender was null or empty, aborting add to database");
+        if (user.getGender() == null || user.getGender().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User gender was null or empty, aborting add to database");
         }
-        if(user.getNationality() == null || user.getNationality().equals("")) {
-            throw new IllegalArgumentException("User nationality was null or empty, aborting add to database");
+        if (user.getNationality() == null || user.getNationality().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User nationality was null or empty, aborting add to database");
         }
-        if(user.getDescription() == null || user.getDescription().equals("")) {
-            throw new IllegalArgumentException("User description was null or empty, aborting add to database");
+        if (user.getDescription() == null || user.getDescription().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User description was null or empty, aborting add to database");
         }
-        if(user.getLocation() == null || user.getLocation().equals("")) {
-            throw new IllegalArgumentException("User location was null or empty, aborting add to database");
+        if (user.getLocation() == null || user.getLocation().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User location was null or empty, aborting add to database");
         }
 
         PreparedStatement stmt;
         ResultSet rs;
-
         /**
          * Get the nationality id, throw IllegalArgumentException on fail
          */
-        int nationality_id;
         stmt = connection.prepareStatement("SELECT id FROM `nationalities` WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getNationality());
         rs = stmt.executeQuery();
-        if(rs.next()) {
+        int nationality_id = -1;
+        while (rs.next()) {
             nationality_id = rs.getInt("id");
-        } else {
-            throw new IllegalArgumentException("Couldn't get nationality id, aborting add to database\n" +
-                    "    Arguments: " + user.getNationality());
         }
         stmt.close();
+        if (nationality_id == -1) {
+            throw new IllegalArgumentException("[ERROR] Couldn't get or find nationality id, aborting add to database\n" +
+                    "    Arguments: " + user.getNationality());
+        }
 
         /**
          * Get the university id, throw IllegalArgumentException on fail
          */
-        int university_id;
         stmt = connection.prepareStatement("SELECT id FROM `universities` WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getUniversity());
         rs = stmt.executeQuery();
-        if(rs.next()) {
+        int university_id = -1;
+        while (rs.next()) {
             university_id = rs.getInt("id");
-        } else {
-            throw new IllegalArgumentException("Couldn't get university id, aborting add to database");
         }
         stmt.close();
+        if (university_id == -1) {
+            throw new IllegalArgumentException("[ERROR] Couldn't get or find university id, aborting add to database\n" +
+                    "    Argument: " + user.getUniversity());
+        }
 
         /**
          * Get the study id, throw IllegalArgumentException on fail
          */
-        int study_id;
         stmt = connection.prepareStatement("SELECT id FROM `studies` WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getStudy());
         rs = stmt.executeQuery();
-        if(rs.next()) {
+        int study_id = -1;
+        while (rs.next()) {
             study_id = rs.getInt("id");
-        }else{
-            throw new IllegalArgumentException("Couldn't get study id, aborting add to database");
         }
         stmt.close();
+        if (study_id == -1) {
+            throw new IllegalArgumentException("[ERROR] Couldn't get or find study id, aborting add to database");
+        }
 
         /**
          * Insert user into database, finally
          */
         stmt = connection.prepareStatement("INSERT INTO `users`(id, nationality_id, university_id, email, passwd," +
                 "firstname, lastname, sex, birthdate, study, bio, studyYear, availableDates, location, phonenumber) " +
-                "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
         stmt.setInt(1, nationality_id);
         stmt.setInt(2, university_id);
         stmt.setString(3, user.getMail());
@@ -271,89 +286,78 @@ public class Database {
         stmt.setString(12, user.getAvailability().toJson());
         stmt.setString(13, user.getLocation());
         stmt.setString(14, user.getPhonenumber());
+
+        stmt.executeUpdate();
+        rs = stmt.getGeneratedKeys();
+        if (rs.next()) {
+            user.setUserID(rs.getInt(1));
+        } else {
+            throw new IllegalArgumentException("[ERROR] Couldn't retrieve newly added users ID.\n" +
+                    "    Presume database invalid");
+        }
         stmt.close();
 
         /**
-         * Insert appropriate id's to users_has_languages
+         * Insert languages and courses
          */
-        if (user.getLanguageList().size() > 0) {
-            ArrayList<Integer> languageIds = new ArrayList<>();
-            stmt = connection.prepareStatement("SELECT languages.id FROM languages WHERE name = ?");
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                languageIds.add(rs.getInt("id"));
-            }
-            stmt.close();
-
-            stmt = connection.prepareStatement("SELECT users.id FROM users WHERE email = ?");
-            stmt.setString(1, user.getMail());
-            rs = stmt.executeQuery();
-            int userID = 0;
-            if(rs.next()) {
-                userID = rs.getInt("id");
-            }
-            stmt.close();
-            if (userID == 0) {
-                throw new IllegalArgumentException("Couldn't retrieve newly added users ID. Presume database invalid");
-            }
-
-            stmt = connection.prepareStatement("INSERT INTO `users_has_languages`(users_id, languages_id) " +
-                    "VALUES(?,?)");
-            stmt.setInt(1, userID);
-            for (int lang : languageIds) {
-                stmt.setInt(2, lang);
-                stmt.executeQuery();
-            }
-            stmt.close();
-        }
+        updateDbLanguages(user);
+        updateDbCourses(user);
     }
 
+    /**
+     * Update a user in the database. According to the ID in the given user object
+     *
+     * @param user User object
+     * @throws IllegalArgumentException
+     * @throws SQLException
+     * @throws IOException
+     */
     public void updateUser(User user) throws IllegalArgumentException, SQLException, IOException {
-        if(user == null) {
-            throw new IllegalArgumentException("User object was null, cannot add to database");
+        if (user == null) {
+            throw new IllegalArgumentException("[ERROR] User object was null, cannot add to database");
         }
-        if(user.getPassword() == null || user.getPassword().equals("")) {
-            throw new IllegalArgumentException("User password was null or empty, aborting add to database");
+        if (user.getPassword() == null || user.getPassword().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User password was null or empty, aborting add to database");
         }
-        if(user.getFirstname() == null || user.getFirstname().equals("")) {
-            throw new IllegalArgumentException("User firstname was null or empty, aborting add to database");
+        if (user.getFirstname() == null || user.getFirstname().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User firstname was null or empty, aborting add to database");
         }
-        if(user.getLastname() == null || user.getLastname().equals("")) {
-            throw new IllegalArgumentException("User lastname was null or empty, aborting add to database");
+        if (user.getLastname() == null || user.getLastname().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User lastname was null or empty, aborting add to database");
         }
-        if(user.getBirthday() == null || user.getBirthday().equals(new Date(0))) {
-            throw new IllegalArgumentException("User birthday was null or 0, aborting add to database");
+        if (user.getBirthday() == null || user.getBirthday().equals(new Date(0))) {
+            throw new IllegalArgumentException("[ERROR] User birthday was null or 0, aborting add to database");
         }
-        if(user.getMail() == null || user.getMail().equals("")) {
-            throw new IllegalArgumentException("User mail was null or empty, aborting add to database");
+        if (user.getMail() == null || user.getMail().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User mail was null or empty, aborting add to database");
         }
-        if(user.getPhonenumber() == null || user.getPhonenumber().equals("")) {
-            throw new IllegalArgumentException("User phonenumber was null or empty, aborting add to database");
+        if (user.getPhonenumber() == null || user.getPhonenumber().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User phonenumber was null or empty, aborting add to database");
         }
-        if(user.getAddress() == null || user.getAddress().contains("")) {
+        if (user.getAddress() == null || user.getAddress().contains("")) {
             throw new IllegalStateException("User address was null or one of its properties was empty," +
                     " aborting add to database");
         }
-        if(user.getStudy() == null || user.getStudy().equals("")) {
-            throw new IllegalArgumentException("User study was null or empty, aborting add to database");
+        if (user.getStudy() == null || user.getStudy().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User study was null or empty, aborting add to database");
         }
-        if(user.getUniversity() == null || user.getUniversity().equals("")) {
-            throw new IllegalArgumentException("User university was null or empty, aborting add to database");
+        if (user.getUniversity() == null || user.getUniversity().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User university was null or empty, aborting add to database");
         }
-        if(user.getStudyYear() == 0) {
-            throw new IllegalArgumentException("User studyYear was 0, aborting add to database");
+        if (user.getStudyYear() == 0) {
+            throw new IllegalArgumentException("[ERROR] User studyYear was 0, aborting add to database");
         }
-        if(user.getGender() == null || user.getGender().equals("")) {
-            throw new IllegalArgumentException("User gender was null or empty, aborting add to database");
+        if (user.getGender() == null || user.getGender().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User gender was null or empty, aborting add to database");
         }
-        if(user.getNationality() == null || user.getNationality().equals("")) {
-            throw new IllegalArgumentException("User nationality was null or empty, aborting add to database");
+        if (user.getNationality() == null || user.getNationality().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User nationality was null or empty, aborting add to database");
         }
-        if(user.getDescription() == null || user.getDescription().equals("")) {
-            throw new IllegalArgumentException("User description was null or empty, aborting add to database");
+        if (user.getDescription() == null || user.getDescription().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User description was null or empty, aborting add to database");
         }
-        if(user.getLocation() == null || user.getLocation().equals("")) {
-            throw new IllegalArgumentException("User location was null or empty, aborting add to database");
+        if (user.getLocation() == null || user.getLocation().equals("")) {
+            throw new IllegalArgumentException("[ERROR] User location was null or empty, aborting add to database");
         }
 
         PreparedStatement stmt;
@@ -365,11 +369,13 @@ public class Database {
         stmt = connection.prepareStatement("SELECT id FROM nationalities WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getNationality());
         rs = stmt.executeQuery();
-        int nationality_id;
-        if (rs.next()) {
+        int nationality_id = -1;
+        while (rs.next()) {
             nationality_id = rs.getInt("id");
-        } else {
-            throw new IllegalArgumentException("Could not get nationality id, aborting update to database\n    " +
+        }
+        stmt.close();
+        if (nationality_id == -1) {
+            throw new IllegalArgumentException("[ERROR] Could not get nationality id, aborting update to database\n    " +
                     "Argument: (name:\"" + user.getNationality() + "\")");
         }
 
@@ -379,11 +385,13 @@ public class Database {
         stmt = connection.prepareStatement("SELECT id FROM universities WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getUniversity());
         rs = stmt.executeQuery();
-        int university_id = 0;
-        if (rs.next()) {
+        int university_id = -1;
+        while (rs.next()) {
             university_id = rs.getInt("id");
-        } else {
-            throw new IllegalArgumentException("Could not get university id, aborting update to database\n    " +
+        }
+        stmt.close();
+        if (university_id == -1) {
+            throw new IllegalArgumentException("[ERROR] Could not get university id, aborting update to database\n    " +
                     "Argument: (name:\"" + user.getUniversity() + "\")");
         }
 
@@ -393,11 +401,13 @@ public class Database {
         stmt = connection.prepareStatement("SELECT id FROM studies WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getStudy());
         rs = stmt.executeQuery();
-        int study_id = 0;
-        if (rs.next()) {
+        int study_id = -1;
+        while (rs.next()) {
             study_id = rs.getInt("id");
-        } else {
-            throw new IllegalArgumentException("Could not get study id, aborting update to database\n    " +
+        }
+        stmt.close();
+        if (study_id == -1) {
+            throw new IllegalArgumentException("[ERROR] Could not get study id, aborting update to database\n    " +
                     "Argument: (name:\"" + user.getStudy() + "\")");
         }
 
@@ -416,17 +426,205 @@ public class Database {
         stmt.setString(6, user.getLastname());
         stmt.setString(7, user.getGender());
         stmt.setLong(8, user.getBirthday().getTime());
-        stmt.setString(9, user.getDescription());
-        stmt.setInt(10, user.getStudyYear());
-        stmt.setString(11, user.getAvailability().toJson());
-        stmt.setString(12, user.getLocation());
-        stmt.setString(13, user.getPhonenumber());
+        stmt.setInt(9, study_id);
+        stmt.setString(10, user.getDescription());
+        stmt.setInt(11, user.getStudyYear());
+        stmt.setString(12, user.getAvailability().toJson());
+        stmt.setString(13, user.getLocation());
+        stmt.setString(14, user.getPhonenumber());
+        stmt.setInt(15, user.getUserID());
 
-        stmt.execute();
+        stmt.executeUpdate();
+        stmt.close();
 
-        //TODO update the languages
+        /**
+         * Update languages and courses
+         */
+        updateDbLanguages(user);
+        updateDbCourses(user);
+
     }
 
+    private void updateDbLanguages(User user) throws SQLException {
+        PreparedStatement stmt;
+        ResultSet rs;
+
+        stmt = connection.prepareStatement("DELETE FROM `users_has_languages` WHERE users_id = ?");
+        stmt.setInt(1, user.getUserID());
+        stmt.executeUpdate();
+        stmt.close();
+
+        if (user.getLanguageList().size() > 0) {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < user.getLanguageList().size(); i++) {
+                builder.append("name = ? OR ");
+            }
+            builder.setLength(builder.length() - 4);
+            String query = "SELECT languages.id FROM languages WHERE " + builder.toString();
+            stmt = connection.prepareStatement(query);
+            int index = 1;
+            for (String lang : user.getLanguageList()) {
+                stmt.setString(index, lang);
+                index++;
+            }
+            rs = stmt.executeQuery();
+            ArrayList<Integer> languageIds = new ArrayList<>();
+            while (rs.next()) {
+                languageIds.add(rs.getInt("id"));
+            }
+            stmt.close();
+
+            stmt = connection.prepareStatement("INSERT INTO `users_has_languages`(users_id, languages_id) " +
+                    "VALUES(?,?)");
+            stmt.setInt(1, user.getUserID());
+            for (int lang : languageIds) {
+                stmt.setInt(2, lang);
+                stmt.executeUpdate();
+            }
+            stmt.close();
+        }
+    }
+
+    private void updateDbCourses(User user) throws SQLException {
+        PreparedStatement stmt;
+        ResultSet rs;
+        StringBuilder builder;
+        String query;
+
+        /**
+         * Delete all residual course entries
+         */
+        stmt = connection.prepareStatement("DELETE FROM `coursesLearning` WHERE users_id = ?;");
+        stmt.setInt(1, user.getUserID());
+        stmt.executeUpdate();
+        stmt.close();
+        stmt = connection.prepareStatement("DELETE FROM `coursesTeaching` WHERE users_id = ?;");
+        stmt.setInt(1, user.getUserID());
+        stmt.executeUpdate();
+        stmt.close();
+        stmt = connection.prepareStatement("DELETE FROM `coursesSearchingBuddy` WHERE users_id = ?;");
+        stmt.setInt(1, user.getUserID());
+        stmt.executeUpdate();
+        stmt.close();
+
+        /**
+         * Get the course id's the user is learning and add them to the database
+         */
+        builder = new StringBuilder();
+        for (int i = 0; i < user.getCoursesLearningList().size(); i++) {
+            builder.append("name = ? OR ");
+        }
+        builder.setLength(builder.length() - 4);
+        query = "SELECT id FROM courses WHERE " + builder.toString();
+        stmt = connection.prepareStatement(query);
+        int index = 1;
+        for (String learning : user.getCoursesLearningList()) {
+            stmt.setString(index, learning);
+            index++;
+        }
+        rs = stmt.executeQuery();
+        ArrayList<Integer> learningIds = new ArrayList<>();
+        while (rs.next()) {
+            learningIds.add(rs.getInt("id"));
+        }
+        stmt.close();
+        stmt = connection.prepareStatement("INSERT INTO `coursesLearning`(users_id, courses_id) VALUES(?,?)");
+        stmt.setInt(1, user.getUserID());
+        for (int id : learningIds) {
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+        }
+        stmt.close();
+
+        /**
+         * Get the course id's the user is teaching and add them to the database
+         */
+        builder = new StringBuilder();
+        for (int i = 0; i < user.getCoursesTeachingList().size(); i++) {
+            builder.append("name = ? OR ");
+        }
+        builder.setLength(builder.length() - 4);
+        query = "SELECT id FROM courses WHERE " + builder.toString();
+        stmt = connection.prepareStatement(query);
+        index = 1;
+        for (String teaching : user.getCoursesTeachingList()) {
+            stmt.setString(index, teaching);
+            index++;
+        }
+        rs = stmt.executeQuery();
+        ArrayList<Integer> teachingIds = new ArrayList<>();
+        while (rs.next()) {
+            teachingIds.add(rs.getInt("id"));
+        }
+        stmt.close();
+        stmt = connection.prepareStatement("INSERT INTO `coursesTeaching`(users_id, courses_id) VALUES(?,?)");
+        stmt.setInt(1, user.getUserID());
+        for (int id : teachingIds) {
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+        }
+        stmt.close();
+
+        /**
+         * Get the course id's the user is searching a buddy for and add them to the database
+         */
+        builder = new StringBuilder();
+        for (int i = 0; i < user.getBuddyList().size(); i++) {
+            builder.append("name = ? OR ");
+        }
+        builder.setLength(builder.length() - 4);
+        query = "SELECT id FROM courses WHERE " + builder.toString();
+        stmt = connection.prepareStatement(query);
+        index = 1;
+        for (String buddy : user.getBuddyList()) {
+            stmt.setString(index, buddy);
+            index++;
+        }
+        rs = stmt.executeQuery();
+        ArrayList<Integer> buddyIds = new ArrayList<>();
+        while (rs.next()) {
+            buddyIds.add(rs.getInt("id"));
+        }
+        stmt.close();
+        stmt = connection.prepareStatement("INSERT INTO `coursesSearchingBuddy`(users_id, courses_id) VALUES(?,?)");
+        stmt.setInt(1, user.getUserID());
+        for (int id : buddyIds) {
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+        }
+        stmt.close();
+    }
+
+    /**
+     * Remove a user from the database using given id
+     *
+     * @param id int, remove user with this id
+     * @throws SQLException
+     */
+    public void removeUser(int id) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM `users` WHERE id = ?");
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+        stmt.close();
+    }
+
+    /**
+     * Remove a user from the database using the given User object id
+     *
+     * @param user remove user that has the id in this given object
+     * @throws SQLException
+     */
+    public void removeUser(User user) throws SQLException {
+        if (user == null) {
+            throw new IllegalArgumentException("User object was null, cannot delete from database");
+        }
+        int id = user.getUserID();
+        removeUser(id);
+    }
+
+    /**
+     * Attempt to close the database connection
+     */
     public void close() {
         try {
             connection.close();

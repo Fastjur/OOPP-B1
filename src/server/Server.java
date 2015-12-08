@@ -1,8 +1,10 @@
 package server;
 
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -11,7 +13,7 @@ import java.util.Scanner;
  *
  * @author Jurriaan Den Toonder
  * @author Govert de Gans
- * @version 0.2
+ * @version 1.0
  */
 public class Server {
 
@@ -28,25 +30,21 @@ public class Server {
     public static void main(final String[] args) {
         try {
             db = new Database();
+            start();
         } catch (IllegalStateException e) {
-            System.out.println("[ERROR] Could not create database connection\n");
+            System.out.println("[ERROR] Could not create database connection");
             e.printStackTrace();
-        } finally {
-            db.close();
+        } catch (ClassNotFoundException e) {
+            System.out.println("[ERROR] Could not find database driver");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println("[ERROR] SQLException occurred");
+            e.printStackTrace();
         }
 
-        AvailableTimes aTimes = new AvailableTimes();
-        aTimes.addTimePeriod(1, new TimePeriod("07:30", "15:00"));
-        aTimes.addTimePeriod(1, new TimePeriod("18:30", "21:00"));
-        aTimes.addTimePeriod(3, new TimePeriod("10:30", "12:00"));
-        aTimes.addTimePeriod(4, new TimePeriod("07:30", "15:00"));
-        aTimes.addTimePeriod(5, new TimePeriod("07:30", "15:00"));
-        aTimes.addTimePeriod(5, new TimePeriod("16:30", "18:00"));
-        aTimes.addTimePeriod(7, new TimePeriod("09:30", "15:00"));
-        /*User user = new User(-1, "Passwordz", "Mark", "Johnsson", new Date(1609802), "mark@johnsson.com",
-                "06-123456789", new Address("Poeplaan", "69", "2156AB", "Pissing City"), "Technische Plassen",
-                "University of Plassen", 3, aTimes, )*/;
+    }
 
+    private static void start() {
         listenthread = new ListenThread(clients, 8372);
         listenthread.start();
         //todo: some sort of interactive console here?
@@ -59,8 +57,14 @@ public class Server {
             System.out.println("You typed: " + input);
         }
 
+        //Will only continue to here once the user types quit
+        close();
+    }
+
+    private static void close() {
         System.out.println("Server exiting...");
         listenthread.end();
+        db.close();
     }
 
     public static Database getDb() {
