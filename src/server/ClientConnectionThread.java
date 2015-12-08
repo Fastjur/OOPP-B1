@@ -132,7 +132,7 @@ public class ClientConnectionThread extends Thread {
                         String pass = messageObj.get("requestData").get("pass").getTextValue();
                         try {
                             User user = Server.getDb().getUser(email);
-                            if (user.getPassword().equals(pass)) {
+                            if (user != null && user.getPassword().equals(pass)) {
                                 this.client.userId = user.getUserID();
 
                                 response.errorCode = 0;
