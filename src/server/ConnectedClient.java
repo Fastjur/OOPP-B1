@@ -14,6 +14,7 @@ public class ConnectedClient {
     private Socket socket;
     private ArrayList<ConnectedClient> clientList;
     private ClientConnectionThread connectionThread;
+    public int userId;
 
     public ConnectedClient(Socket socket, ArrayList<ConnectedClient> clientList) {
         this.socket = socket;
@@ -49,7 +50,7 @@ public class ConnectedClient {
      *
      * @param message the message to send
      */
-    public void sendMessage(JSONObject message) {
+    public void sendMessage(String message) {
         try {
             connectionThread.sendMessage(message);
         } catch (java.io.IOException ex) {

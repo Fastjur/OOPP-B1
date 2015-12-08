@@ -2,14 +2,21 @@ package server;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Main user class that will hold a users info in memory
+ * @author Emma Jimmink
+ * @author Jurriaan Den Toonder
+ * @version 0.5
+ */
 public class User {
     private String password, firstname, lastname, mail, phonenumber, study, university, gender, nationality,
-            description, location, picture;
+            description, location;
     private Date birthday;
     private int userID, studyYear;
     private Address address;
@@ -17,7 +24,7 @@ public class User {
     private ArrayList<String> coursesLearningList;
     private ArrayList<String> buddyList;
     private ArrayList<String> languageList;
-    private ArrayList<AvailableDate> availableList;
+    private AvailableTimes availability;
 
     /**
      * User: constructor for class User
@@ -33,16 +40,20 @@ public class User {
      * @param study       - String
      * @param university  - String
      * @param studyYear   - int
+     * @param available   - ArrayList
+     * @param teaching   - ArrayList
+     * @param learning   - ArrayList
+     * @param buddys   - ArrayList
      * @param gender      - String
      * @param nationality - String
+     * @param languages - ArrayList
      * @param description - String
      * @param location    - String
-     * @param picture     - String
      */
     public User(int userID, String password, String firstname, String lastname, Date birthday, String mail,
                 String phonenumber, Address address, String study, String university, int studyYear,
-                ArrayList<AvailableDate> available, ArrayList<String> teaching, ArrayList<String> learning, ArrayList<String> buddys, String gender,
-                String nationality, String description, String location, String picture) {
+                AvailableTimes available, ArrayList<String> teaching, ArrayList<String> learning, ArrayList<String> buddys, String gender,
+                String nationality, ArrayList<String> languages, String description, String location) {
         this.userID = userID;
         this.password = password;
         this.firstname = firstname;
@@ -54,16 +65,15 @@ public class User {
         this.study = study;
         this.university = university;
         this.studyYear = studyYear;
-        this.availableList = available;
+        this.availability = available;
         this.coursesTeachingList = teaching;
         this.coursesLearningList = learning;
         this.buddyList = buddys;
         this.gender = gender;
         this.nationality = nationality;
-        this.languageList = new ArrayList<String>();
+        this.languageList = languages;
         this.description = description;
         this.location = location;
-        this.picture = picture;
     }
 
     /**
@@ -83,32 +93,35 @@ public class User {
         this.study = "";
         this.university = "";
         this.studyYear = -1;
-        this.availableList = new ArrayList<AvailableDate>();
-        this.coursesTeachingList = new ArrayList<String>();
-        this.coursesLearningList = new ArrayList<String>();
-        this.buddyList = new ArrayList<String>();
+        this.availability = new AvailableTimes();
+        this.coursesTeachingList = new ArrayList<>();
+        this.coursesLearningList = new ArrayList<>();
+        this.buddyList = new ArrayList<>();
         this.gender = "";
         this.nationality = "";
-        this.languageList = new ArrayList<String>();
+        this.languageList = new ArrayList<>();
         this.description = "Test User";
         this.location = "";
-        this.picture = "";
     }
 
     /**
-     * jsonToUser: Reads JSON data from a given filepath and returns a new User Object using the jackson library
-     * Note: needs testing
-     * Author: Sebastiaan Hester
+     * Reads JSON string and returns a user object
+     * Author: Jurriaan Den Toonder
      */
-    public User jsonToUser(File file) {
+    public static User fromJson(String json) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        User usr = new User();
-        try {
-            usr = mapper.readValue(file, User.class);
-        } catch (IOException io) {
-            io.printStackTrace();
-        }
-        return usr;
+        return mapper.readValue(json, User.class);
+    }
+
+    /**
+     * Returns this object represented as a JSON string
+     * Author: Jurriaan Den Toonder
+     * @return String, JSON notation of this object
+     * @throws IOException
+     */
+    public String toJson() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(this);
     }
 
     /**
@@ -117,19 +130,14 @@ public class User {
      * @return text - String
      */
     public String toString() {
-        String text = new String();
+        String text;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         text = Integer.toString(userID) + "\n" + password + "\n" + firstname + " " + lastname + "\n"
-                + birthday + "\n" + mail + "\n" + phonenumber + "\n" + address.toString() + study
+                + df.format(birthday) + "\n" + mail + "\n" + phonenumber + "\n" + address.toString() + study
                 + "\n" + university + "\n" + Integer.toString(studyYear) + "\n";
-        // availableList
-        text += "available: ";
-        for (int i = 0; i < availableList.size(); i++) {
-            text += availableList.get(i);
-            if (i < availableList.size() - 1) {
-                text += ";";
-            }
-        }
-        text += "\n";
+
+        // availability
+        text += "available: " + this.availability.toString() + "\n";
 
         // coursesTeachingList
         text += "Courses teaching: ";
@@ -171,7 +179,7 @@ public class User {
             }
         }
 
-        text += "\n" + description + "\n" + location + "\n" + picture;
+        text += "\n" + description + "\n" + location;
         return text;
     }
 
@@ -313,187 +321,43 @@ public class User {
     }
 
     /**
-     * getPicture: getter for private attribute picture
-     *
-     * @return picture - String
+     * getCoursesTeachingList: getter for private arraylist coursesteaching
+     * @return CoursesTeaching - ArrayList<String>
      */
-    public String getPicture() {
-        return picture;
+    public ArrayList<String> getCoursesTeachingList() {
+        return this.coursesTeachingList;
     }
 
     /**
-     * getStudysTeachingSize: getter for the size of the arrayList coursesTeachingList
-     *
-     * @return coursesTeachingList.size() - int
+     * getCoursesLearningList: getter for private arraylist courseslearning
+     * @return CoursesLearning - ArrayList<String>
      */
-    public int getStudysTeachingSize() {
-        return coursesTeachingList.size();
+    public ArrayList<String> getCoursesLearningList() {
+        return this.coursesLearningList;
     }
 
     /**
-     * getStudysLearningSize: getter for the size of the arrayList coursesLearningList
-     *
-     * @return coursesLearningList.size() - int
+     * getBuddyList: getter for private arraylist buddylist
+     * @return BuddyList - ArrayList<String>
      */
-    public int getStudysLearningSize() {
-        return coursesLearningList.size();
+    public ArrayList<String> getBuddyList() {
+        return this.buddyList;
     }
 
     /**
-     * getBuddySize: getter for the size of the arrayList buddyList
-     *
-     * @return buddyList.size() - int
+     * getLanguageList: getter for private arraylist languagelist
+     * @return LanguageList - ArrayList<String>
      */
-    public int getBuddySize() {
-        return buddyList.size();
+    public ArrayList<String> getLanguageList() {
+        return this.languageList;
     }
 
     /**
-     * getAvailableListSize: getter for the size of the arrayList availableList
-     *
-     * @return availableList.size() - int
+     * getAvailability: getter for private arraylist availablelist
+     * @return AvailableList - ArrayList<AvaliableDate>
      */
-    public int getAvailableSize() {
-        return availableList.size();
-    }
-
-    /**
-     * getLanguageSize: getter for the size of the arrayList languageList
-     *
-     * @return languageList.size() - int
-     */
-    public int getLanguageSize() {
-        return languageList.size();
-    }
-
-    /**
-     * containsCoursesTeaching: checks if coursesTeaching is already in the arrayList
-     *
-     * @param coursesTeaching - String
-     * @return boolean
-     */
-    public boolean containsCoursesTeaching(String coursesTeaching) {
-        for (int i = 0; i < coursesTeachingList.size(); i++) {
-            if (coursesTeachingList.get(i).equals(coursesTeaching)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * containsCoursesLearning: checks if coursesLearning is already in the arrayList
-     *
-     * @param coursesLearning - String
-     * @return boolean
-     */
-    public boolean containsCoursesLearning(String coursesLearning) {
-        for (int i = 0; i < coursesLearningList.size(); i++) {
-            if (coursesLearningList.get(i).equals(coursesLearning)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * containsBuddy: checks if buddy is already in the arrayList
-     *
-     * @param buddy - String
-     * @return boolean
-     */
-    public boolean containsBuddy(String buddy) {
-        for (int i = 0; i < buddyList.size(); i++) {
-            if (buddyList.get(i).equals(buddy)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * containsAvailable: checks if available is already in the arrayList
-     *
-     * @param available - AvailableDate
-     * @return boolean
-     */
-    public boolean containsAvailable(AvailableDate available) {
-        for (int i = 0; i < availableList.size(); i++) {
-            if (availableList.get(i).equals(available)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * containsLanguage: checks if language is already in the arrayList
-     *
-     * @param language - String
-     * @return boolean
-     */
-    public boolean containsLanguage(String language) {
-        for (int i = 0; i < languageList.size(); i++) {
-            if (languageList.get(i).equals(language)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * addCoursesTeaching: adds coursesTeaching in the arrayList if it isn't already in it
-     *
-     * @param coursesTeaching - String
-     */
-    public void addCoursesTeaching(String coursesTeaching) {
-        if (!this.containsCoursesTeaching(coursesTeaching)) {
-            coursesTeachingList.add(coursesTeaching);
-        }
-    }
-
-    /**
-     * addCoursesLearning: adds coursesLearning in the arrayList if it isn't already in it
-     *
-     * @param coursesLearning - String
-     */
-    public void addCoursesLearning(String coursesLearning) {
-        if (!this.containsCoursesLearning(coursesLearning)) {
-            coursesLearningList.add(coursesLearning);
-        }
-    }
-
-    /**
-     * addBuddy: adds buddy in the arrayList if it isn't already in it
-     *
-     * @param buddy - String
-     */
-    public void addBuddy(String buddy) {
-        if (!this.containsBuddy(buddy)) {
-            buddyList.add(buddy);
-        }
-    }
-
-    /**
-     * addAvailable: adds available in the arrayList if it isn't already in it
-     *
-     * @param available - AvailableDate
-     */
-    public void addAvailable(AvailableDate available) {
-        if (!this.containsAvailable(available)) {
-            availableList.add(available);
-        }
-    }
-
-    /**
-     * addLanguage: adds available in the arrayList if it isn't already in it
-     *
-     * @param language - String
-     */
-    public void addLanguage(String language) {
-        if (!this.containsLanguage(language)) {
-            languageList.add(language);
-        }
+    public AvailableTimes getAvailability() {
+        return this.availability;
     }
 
     /**
@@ -632,15 +496,6 @@ public class User {
     }
 
     /**
-     * setPicture: setter for private attribute picture
-     *
-     * @param picture - String
-     */
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    /**
      * equals: checks if current object is the same as the other
      *
      * @param other - Object
@@ -649,7 +504,7 @@ public class User {
     public boolean equals(Object other) {
         if (other instanceof User) {
             User that = (User) other;
-            if (this.userID == that.getUserID() &&
+            return this.userID == that.getUserID() &&
                     this.password.equals(that.getPassword()) &&
                     this.firstname.equals(that.getFirstname()) &&
                     this.lastname.equals(that.getLastname()) &&
@@ -664,51 +519,11 @@ public class User {
                     this.nationality.equals(that.getNationality()) &&
                     this.description.equals(that.getDescription()) &&
                     this.location.equals(that.getLocation()) &&
-                    this.picture.equals(that.getPicture())) {
-
-                if (coursesTeachingList.size() != that.getStudysTeachingSize()) {
-                    return false;
-                }
-                for (int i = 0; i < coursesTeachingList.size(); i++) {
-                    if (!that.containsCoursesTeaching(coursesTeachingList.get(i))) {
-                        return false;
-                    }
-                }
-                if (coursesLearningList.size() != that.getStudysLearningSize()) {
-                    return false;
-                }
-                for (int i = 0; i < coursesLearningList.size(); i++) {
-                    if (!that.containsCoursesLearning(coursesLearningList.get(i))) {
-                        return false;
-                    }
-                }
-                if (buddyList.size() != that.getBuddySize()) {
-                    return false;
-                }
-                for (int i = 0; i < buddyList.size(); i++) {
-                    if (!that.containsBuddy(buddyList.get(i))) {
-                        return false;
-                    }
-                }
-                if (availableList.size() != that.getAvailableSize()) {
-                    return false;
-                }
-                for (int i = 0; i < availableList.size(); i++) {
-                    if (!that.containsAvailable(availableList.get(i))) {
-                        return false;
-                    }
-                }
-                if (languageList.size() != that.getLanguageSize()) {
-                    return false;
-                }
-                for (int i = 0; i < languageList.size(); i++) {
-                    if (!that.containsLanguage(languageList.get(i))) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            return false;
+                    this.coursesLearningList.equals(that.getCoursesLearningList()) &&
+                    this.coursesTeachingList.equals(that.getCoursesTeachingList()) &&
+                    this.buddyList.equals(that.getBuddyList()) &&
+                    this.languageList.equals(that.getLanguageList()) &&
+                    this.availability.equals(that.getAvailability());
         }
         return false;
     }
