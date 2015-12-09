@@ -40,7 +40,7 @@ public class Database {
         User user;
         PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name AS nationality," +
                 "studies.name AS study, universities.name AS university, email AS dbemail, passwd, firstname," +
-                "lastname, sex, birthdate, bio, studyYear, availableDates, location, phonenumber " +
+                "lastname, sex, birthdate, bio, studyYear, availableDates, phonenumber, latitude, longitude " +
                 "FROM `users` LEFT JOIN nationalities ON users.nationality_id = nationalities.id " +
                 "LEFT JOIN studies ON users.study = studies.id " +
                 "LEFT JOIN universities ON users.university_id = universities.id WHERE users.id = ? LIMIT 1");
@@ -80,6 +80,8 @@ public class Database {
         if (rs.next()) {
             int id = rs.getInt("id"),
                     studyYear = rs.getInt("studyYear");
+            double latitude = rs.getDouble("latitude"),
+                    longitude = rs.getDouble("longitude");
             String dbemail = rs.getString("dbemail"),
                     password = rs.getString("passwd"),
                     firstname = rs.getString("firstname"),
@@ -89,7 +91,6 @@ public class Database {
                     study = rs.getString("study"),
                     sex = rs.getString("sex"),
                     bio = rs.getString("bio"),
-                    location = rs.getString("location"),
                     phonenumber = rs.getString("phonenumber"),
                     availabilityString = rs.getString("availableDates");
             Date birthdate = new Date(rs.getLong("birthdate"));
@@ -151,9 +152,9 @@ public class Database {
             }
             stmt.close();
 
-            usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber,
-                    new Address("A", "B", "C", "D"), study, university, studyYear, availability, coursesTeaching,
-                    coursesLearning, coursesSearchingBuddy, sex, nationality, languages, bio, location);
+            usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber, study, university,
+                    studyYear, availability, coursesTeaching, coursesLearning, coursesSearchingBuddy, sex, nationality,
+                    languages, bio, latitude, longitude);
         }
         return usr;
     }
@@ -193,10 +194,6 @@ public class Database {
         if (user.getPhonenumber() == null || user.getPhonenumber().equals("")) {
             throw new IllegalArgumentException("[ERROR] User phonenumber was null or empty, aborting add to database");
         }
-        if (user.getAddress() == null || user.getAddress().contains("")) {
-            throw new IllegalStateException("User address was null or one of its properties was empty," +
-                    " aborting add to database");
-        }
         if (user.getStudy() == null || user.getStudy().equals("")) {
             throw new IllegalArgumentException("[ERROR] User study was null or empty, aborting add to database");
         }
@@ -215,8 +212,11 @@ public class Database {
         if (user.getDescription() == null || user.getDescription().equals("")) {
             throw new IllegalArgumentException("[ERROR] User description was null or empty, aborting add to database");
         }
-        if (user.getLocation() == null || user.getLocation().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User location was null or empty, aborting add to database");
+        if (user.getLatitude() == 0) {
+            throw new IllegalArgumentException("[ERROR] User latitude was 0, aborting add to database");
+        }
+        if (user.getLongitude() == 0) {
+            throw new IllegalArgumentException("[ERROR] User longitude was 0, aborting add to database");
         }
 
         PreparedStatement stmt;
@@ -272,8 +272,8 @@ public class Database {
          * Insert user into database, finally
          */
         stmt = connection.prepareStatement("INSERT INTO `users`(id, nationality_id, university_id, email, passwd," +
-                "firstname, lastname, sex, birthdate, study, bio, studyYear, availableDates, location, phonenumber) " +
-                "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+                "firstname, lastname, sex, birthdate, study, bio, studyYear, availableDates, phonenumber, latitude, " +
+                "longitude) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
         stmt.setInt(1, nationality_id);
         stmt.setInt(2, university_id);
         stmt.setString(3, user.getMail());
@@ -286,13 +286,14 @@ public class Database {
         stmt.setString(10, user.getDescription());
         stmt.setInt(11, user.getStudyYear());
         stmt.setString(12, user.getAvailability().toJson());
-        stmt.setString(13, user.getLocation());
-        stmt.setString(14, user.getPhonenumber());
+        stmt.setString(13, user.getPhonenumber());
+        stmt.setDouble(14, user.getLatitude());
+        stmt.setDouble(15, user.getLongitude());
 
         stmt.executeUpdate();
         rs = stmt.getGeneratedKeys();
         if (rs.next()) {
-            user.setUserID(rs.getInt(1));
+            user.setUserID(rs.getInt("id"));
         } else {
             throw new IllegalArgumentException("[ERROR] Couldn't retrieve newly added users ID.\n" +
                     "    Presume database invalid");
@@ -336,10 +337,6 @@ public class Database {
         if (user.getPhonenumber() == null || user.getPhonenumber().equals("")) {
             throw new IllegalArgumentException("[ERROR] User phonenumber was null or empty, aborting add to database");
         }
-        if (user.getAddress() == null || user.getAddress().contains("")) {
-            throw new IllegalStateException("User address was null or one of its properties was empty," +
-                    " aborting add to database");
-        }
         if (user.getStudy() == null || user.getStudy().equals("")) {
             throw new IllegalArgumentException("[ERROR] User study was null or empty, aborting add to database");
         }
@@ -358,8 +355,11 @@ public class Database {
         if (user.getDescription() == null || user.getDescription().equals("")) {
             throw new IllegalArgumentException("[ERROR] User description was null or empty, aborting add to database");
         }
-        if (user.getLocation() == null || user.getLocation().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User location was null or empty, aborting add to database");
+        if (user.getLatitude() == 0) {
+            throw new IllegalArgumentException("[ERROR] User latitude was 0, aborting add to database");
+        }
+        if (user.getLongitude() == 0) {
+            throw new IllegalArgumentException("[ERROR] User longitude was 0, aborting add to database");
         }
 
         PreparedStatement stmt;
@@ -418,7 +418,7 @@ public class Database {
          */
         stmt = connection.prepareStatement("UPDATE `users` SET nationality_id=?, university_id=?, " +
                 "email=?, passwd=?, firstname=?, lastname=?, sex=?, birthdate=?, study=?, bio=?, studyYear=?, " +
-                "availableDates=?, location=?, phonenumber=? " +
+                "availableDates=?, phonenumber=?, latitude=?, longitude=? " +
                 "WHERE id = ?");
         stmt.setInt(1, nationality_id);
         stmt.setInt(2, university_id);
@@ -432,9 +432,10 @@ public class Database {
         stmt.setString(10, user.getDescription());
         stmt.setInt(11, user.getStudyYear());
         stmt.setString(12, user.getAvailability().toJson());
-        stmt.setString(13, user.getLocation());
-        stmt.setString(14, user.getPhonenumber());
-        stmt.setInt(15, user.getUserID());
+        stmt.setString(13, user.getPhonenumber());
+        stmt.setDouble(14, user.getLatitude());
+        stmt.setDouble(15, user.getLongitude());
+        stmt.setInt(16, user.getUserID());
 
         stmt.executeUpdate();
         stmt.close();

@@ -16,10 +16,10 @@ import java.util.Date;
  */
 public class User {
     private String password, firstname, lastname, mail, phonenumber, study, university, gender, nationality,
-            description, location;
+            description;
     private Date birthday;
     private int userID, studyYear;
-    private Address address;
+    private double latitude, longitude;
     private ArrayList<String> coursesTeachingList;
     private ArrayList<String> coursesLearningList;
     private ArrayList<String> buddyList;
@@ -36,7 +36,6 @@ public class User {
      * @param birthday    - Date
      * @param mail        - String
      * @param phonenumber - String
-     * @param address     - Address
      * @param study       - String
      * @param university  - String
      * @param studyYear   - int
@@ -48,12 +47,13 @@ public class User {
      * @param nationality - String
      * @param languages - ArrayList
      * @param description - String
-     * @param location    - String
+     * @param latitude    - Latitude of users location
+     * @param longitude   - Longitude of users location
      */
     public User(int userID, String password, String firstname, String lastname, Date birthday, String mail,
-                String phonenumber, Address address, String study, String university, int studyYear,
+                String phonenumber, String study, String university, int studyYear,
                 AvailableTimes available, ArrayList<String> teaching, ArrayList<String> learning, ArrayList<String> buddys, String gender,
-                String nationality, ArrayList<String> languages, String description, String location) {
+                String nationality, ArrayList<String> languages, String description, double latitude, double longitude) {
         this.userID = userID;
         this.password = password;
         this.firstname = firstname;
@@ -61,7 +61,6 @@ public class User {
         this.birthday = birthday;
         this.mail = mail;
         this.phonenumber = phonenumber;
-        this.address = address;
         this.study = study;
         this.university = university;
         this.studyYear = studyYear;
@@ -73,35 +72,15 @@ public class User {
         this.nationality = nationality;
         this.languageList = languages;
         this.description = description;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     /**
-     * Empty constructor to make JUnit test code faster to write
-     * and easier on the eyes
+     * Empty constructor
      * Author: Sebastiaan Hester
      */
     public User() {
-        this.userID = -1;
-        this.password = "";
-        this.firstname = "";
-        this.lastname = "";
-        this.birthday = new Date(0);
-        this.mail = "";
-        this.phonenumber = "";
-        this.address = new Address("", "", "", "");
-        this.study = "";
-        this.university = "";
-        this.studyYear = -1;
-        this.availability = new AvailableTimes();
-        this.coursesTeachingList = new ArrayList<>();
-        this.coursesLearningList = new ArrayList<>();
-        this.buddyList = new ArrayList<>();
-        this.gender = "";
-        this.nationality = "";
-        this.languageList = new ArrayList<>();
-        this.description = "Test User";
-        this.location = "";
     }
 
     /**
@@ -133,8 +112,8 @@ public class User {
         String text;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         text = Integer.toString(userID) + "\n" + password + "\n" + firstname + " " + lastname + "\n"
-                + df.format(birthday) + "\n" + mail + "\n" + phonenumber + "\n" + address.toString() + study
-                + "\n" + university + "\n" + Integer.toString(studyYear) + "\n";
+                + df.format(birthday) + "\n" + mail + "\n" + phonenumber + "\n" + study
+                + "\n" + university + "\n" + Integer.toString(studyYear) + "\n" + latitude + "\n" + longitude;
 
         // availability
         text += "available: " + this.availability.toString() + "\n";
@@ -179,7 +158,7 @@ public class User {
             }
         }
 
-        text += "\n" + description + "\n" + location;
+        text += "\n" + description;
         return text;
     }
 
@@ -249,15 +228,6 @@ public class User {
     }
 
     /**
-     * getAddress: getter for private attribute address
-     *
-     * @return address - Address
-     */
-    public Address getAddress() {
-        return address;
-    }
-
-    /**
      * getStudy: getter for private attribute study
      *
      * @return study - String
@@ -309,15 +279,6 @@ public class User {
      */
     public String getDescription() {
         return description;
-    }
-
-    /**
-     * getLocation: getter for private attribute location
-     *
-     * @return location - String
-     */
-    public String getLocation() {
-        return location;
     }
 
     /**
@@ -424,15 +385,6 @@ public class User {
     }
 
     /**
-     * setAddress: setter for private attribute address
-     *
-     * @param address - Address
-     */
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    /**
      * setStudy: setter for private attribute study
      *
      * @param study - String
@@ -486,13 +438,20 @@ public class User {
         this.description = description;
     }
 
-    /**
-     * setLocation: setter for private attribute location
-     *
-     * @param location - String
-     */
-    public void setLocation(String location) {
-        this.location = location;
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     /**
@@ -501,6 +460,8 @@ public class User {
      * @param other - Object
      * @return boolean
      */
+
+
     public boolean equals(Object other) {
         if (other instanceof User) {
             User that = (User) other;
@@ -511,19 +472,19 @@ public class User {
                     this.birthday.equals(that.getBirthday()) &&
                     this.mail.equals(that.getMail()) &&
                     this.phonenumber.equals(that.getPhonenumber()) &&
-                    this.address.equals(that.getAddress()) &&
                     this.study.equals(that.getStudy()) &&
                     this.university.equals(that.getUniversity()) &&
                     this.studyYear == that.getStudyYear() &&
                     this.gender.equals(that.getGender()) &&
                     this.nationality.equals(that.getNationality()) &&
                     this.description.equals(that.getDescription()) &&
-                    this.location.equals(that.getLocation()) &&
                     this.coursesLearningList.equals(that.getCoursesLearningList()) &&
                     this.coursesTeachingList.equals(that.getCoursesTeachingList()) &&
                     this.buddyList.equals(that.getBuddyList()) &&
                     this.languageList.equals(that.getLanguageList()) &&
-                    this.availability.equals(that.getAvailability());
+                    this.availability.equals(that.getAvailability()) &&
+                    this.latitude == that.latitude &&
+                    this.longitude == that.longitude;
         }
         return false;
     }

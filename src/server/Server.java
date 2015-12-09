@@ -22,7 +22,7 @@ public class Server {
     private static ArrayList<Session> sessions = new ArrayList<>();
 
     public static void SetupDudDatabaseForTesting() {
-        db = new DudDatabase();
+        //db = new DudDatabase();
     }
 
     /**
