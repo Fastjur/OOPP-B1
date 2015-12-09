@@ -31,4 +31,12 @@ public class Response {
     public Map<String, Object> getResponseData() {
         return this.responseData;
     }
+
+    public String toString() {
+        return "{ \"responseTo\" : \"" + this.responseTo
+                + "\" \"errorCode\" : \"" + errorCode
+                + "\" \"errorMessage\" : \"" + errorMessage
+                + "\" \"responseData\" : " + responseData.toString()
+                + " }";
+    }
 }
