@@ -2,10 +2,8 @@ package server;
 
 
 import java.io.IOException;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -22,6 +20,10 @@ public class Server {
     private static ArrayList<ConnectedClient> clients = new ArrayList<>();
     private static ListenThread listenthread;
     private static ArrayList<Session> sessions = new ArrayList<>();
+
+    public static void SetupDudDatabaseForTesting() {
+        db = new DudDatabase();
+    }
 
     /**
      * 'Starts' the server and reads the database

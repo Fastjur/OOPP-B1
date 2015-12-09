@@ -1,5 +1,7 @@
 package server;
 
+import org.codehaus.jackson.annotate.JsonCreator;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,11 +21,22 @@ public class Response {
         this.responseData = new HashMap<>();
     }
 
+    @JsonCreator
+    public Response() { }
+
     public void putData(String key, Object value) {
         this.responseData.put(key, value);
     }
 
     public Map<String, Object> getResponseData() {
         return this.responseData;
+    }
+
+    public String toString() {
+        return "{ \"responseTo\" : \"" + this.responseTo
+                + "\" \"errorCode\" : \"" + errorCode
+                + "\" \"errorMessage\" : \"" + errorMessage
+                + "\" \"responseData\" : " + responseData.toString()
+                + " }";
     }
 }

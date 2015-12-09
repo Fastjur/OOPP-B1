@@ -104,13 +104,18 @@ public class ClientConnectionThread extends Thread {
                     response = new Response("register");
                     User newuser = mapper.treeToValue(messageObj.get("requestData").get("newUser"), User.class);
                     newuser.setUserID(-1);
+                    boolean exists = false;
                     try {
-                        Server.getDb().getUser(newuser.getMail());
-                    } catch (SQLException e) {
+                        User u = Server.getDb().getUser(newuser.getMail());
+                        exists = u != null;
+                    } catch (SQLException e) { }
+
+                    if (exists) {
                         response.errorCode = 2;
                         response.errorMessage = "That user already exists.";
                         break;
                     }
+
                     try {
                         Server.getDb().addUser(newuser);
                     } catch (SQLException e) {
@@ -132,7 +137,7 @@ public class ClientConnectionThread extends Thread {
                         String pass = messageObj.get("requestData").get("pass").getTextValue();
                         try {
                             User user = Server.getDb().getUser(email);
-                            if (user.getPassword().equals(pass)) {
+                            if (user != null && user.getPassword().equals(pass)) {
                                 this.client.userId = user.getUserID();
 
                                 response.errorCode = 0;
@@ -144,6 +149,18 @@ public class ClientConnectionThread extends Thread {
                         }
                         response.errorCode = 3;
                         response.errorMessage = "Invalid email/password.";
+                    }
+                    break;
+
+                case "logout":
+                    response = new Response("logout");
+                    if (this.client.userId == -1) {
+                        response.errorCode = 2;
+                        response.errorMessage = "You are not logged in.";
+                    } else {
+                        this.client.userId = -1;
+                        response.errorCode = 0;
+                        response.errorMessage = "Logout successful.";
                     }
                     break;
 

@@ -25,6 +25,8 @@ public class Database {
         connection = ConnectionManager.getConnection();
     }
 
+    protected Database(boolean IFUCKINGHATEJAVA) {}
+
     /**
      * Gets user from database by id
      *
