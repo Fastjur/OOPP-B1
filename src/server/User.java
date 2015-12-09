@@ -140,46 +140,20 @@ public class User {
         text += "available: " + this.availability.toString() + "\n";
 
         // coursesTeachingList
-        text += "Courses teaching: ";
-        for (int i = 0; i < coursesTeachingList.size(); i++) {
-            text += coursesTeachingList.get(i);
-            if (i < coursesTeachingList.size() - 1) {
-                text += ";";
-            }
-        }
-        text += "\n";
+        text += "Courses teaching: " + this.coursesTeachingList.toString() + "\n";
 
         // coursesLearningList
-        text += "Courses learning: ";
-        for (int i = 0; i < coursesLearningList.size(); i++) {
-            text += coursesLearningList.get(i);
-            if (i < coursesLearningList.size() - 1) {
-                text += ";";
-            }
-        }
-        text += "\n";
+        text += "Courses learning: " + this.coursesLearningList.toString() + "\n";
 
         // buddieList
-        text += "Courses searching Buddy: ";
-        for (int i = 0; i < buddyList.size(); i++) {
-            text += buddyList.get(i);
-            if (i < buddyList.size() - 1) {
-                text += ";";
-            }
-        }
+        text += "Courses searching Buddy: " + this.buddyList.toString() + "\n";
 
-        text += "\n" + gender + "\n" + nationality + "\n";
+        text += gender + "\n" + nationality + "\n";
 
         // languageList
-        text += "languages: ";
-        for (int i = 0; i < languageList.size(); i++) {
-            text += languageList.get(i);
-            if (i < languageList.size() - 1) {
-                text += ";";
-            }
-        }
+        text += "languages: " + this.languageList.toString() + "\n";
 
-        text += "\n" + description + "\n" + location;
+        text += description + "\n" + location;
         return text;
     }
 
@@ -482,7 +456,7 @@ public class User {
      *
      * @param description - String
      */
-    public void setDescriptionID(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
