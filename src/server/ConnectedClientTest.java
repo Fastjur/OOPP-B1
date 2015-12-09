@@ -120,4 +120,60 @@ public class ConnectedClientTest {
         assertEquals(0, response.errorCode);
         assertEquals("Login successful.", response.errorMessage);
     }
+
+    @Test
+    public void testRegisterNew() throws Exception {
+        Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
+
+        Thread.sleep(1000);
+
+        OutputStream outStream = socket.getOutputStream();
+        InputStream inStream = socket.getInputStream();
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("action", "register");
+        Map<String, Object> requestData = new HashMap<>();
+        User newUser = new User();
+        newUser.setMail("mail@example.com");
+        requestData.put("newUser", newUser);
+        request.put("requestData", requestData);
+
+        byte[] msg = mapper.writeValueAsString(request).getBytes(StandardCharsets.UTF_8);
+
+        outStream.write(ByteBuffer.allocate(4).putInt(msg.length).array());
+        outStream.write(msg);
+
+        Response response = readResponse(inStream);
+
+        assertEquals(0, response.errorCode);
+        assertEquals("Registration successful.", response.errorMessage);
+    }
+
+    @Test
+    public void testRegisterExisting() throws Exception {
+        Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
+
+        Thread.sleep(1000);
+
+        OutputStream outStream = socket.getOutputStream();
+        InputStream inStream = socket.getInputStream();
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("action", "register");
+        Map<String, Object> requestData = new HashMap<>();
+        User newUser = new User();
+        newUser.setMail("sinterklaas@sintmail.nl");
+        requestData.put("newUser", newUser);
+        request.put("requestData", requestData);
+
+        byte[] msg = mapper.writeValueAsString(request).getBytes(StandardCharsets.UTF_8);
+
+        outStream.write(ByteBuffer.allocate(4).putInt(msg.length).array());
+        outStream.write(msg);
+
+        Response response = readResponse(inStream);
+
+        assertEquals(2, response.errorCode);
+        assertEquals("That user already exists.", response.errorMessage);
+    }
 }

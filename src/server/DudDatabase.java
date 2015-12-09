@@ -19,8 +19,13 @@ public class DudDatabase extends Database {
                     "sinterklaas@sintmail.nl", "+316123456789", new Address("A", "B", "C", "D"),
                     "study1", "university", 3, new AvailableTimes(), new ArrayList<String>(),
                     new ArrayList<String>(), new ArrayList<String>(), "male", "NLD",
-                    "It's-a-me", "Spanje");
+                    new ArrayList<String>(), "It's-a-me", "Spanje");
         }
         return null;
+    }
+
+    @Override
+    public void addUser(User user) {
+        return;
     }
 }
