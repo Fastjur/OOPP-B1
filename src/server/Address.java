@@ -20,7 +20,7 @@ public class Address {
         this.city = city;
     }
 
-    public boolean Contains(String s) {
+    public boolean contains(String s) {
         if(this.street.equals(s)) {
             return true;
         } else if (this.housenumber.equals(s)) {
