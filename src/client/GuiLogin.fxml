@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="342.0" prefWidth="406.9998558593725" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <Group id="Group" layoutX="167.0" layoutY="139.0" scaleX="1.0" scaleY="1.0" />
+    <ToolBar id="toolbar" layoutX="0.0" layoutY="0.0" prefHeight="50.0" prefWidth="407.0">
+      <stylesheets>
+        <URL value="@gui.css" />
+      </stylesheets>
+    </ToolBar>
+    <TextField layoutX="123.0" layoutY="185.0" prefHeight="30.0" prefWidth="200.0" promptText="Username" style=".background {&#10;fx-background-colour:  #228b22;&#10;}" />
+    <PasswordField layoutX="124.0" layoutY="215.0" prefHeight="30.0" prefWidth="200.0" promptText="Password" />
+    <Button layoutX="124.0" layoutY="256.0" maxHeight="30.0" maxWidth="100.0" mnemonicParsing="false" prefHeight="30.0" text="Login">
+      <font>
+        <Font size="14.0" />
+      </font>
+    </Button>
+    <Label layoutX="124.0" layoutY="150.0" prefHeight="30.0" prefWidth="86.0" text="Login">
+      <font>
+        <Font size="20.0" />
+      </font>
+    </Label>
+    <Button layoutX="118.0" layoutY="110.0" mnemonicParsing="false" onAction="#loginFunction" text="Login" textOverrun="WORD_ELLIPSIS" />
+    <Button layoutX="183.0" layoutY="110.0" mnemonicParsing="false" text="Register" />
+  </children>
+  <stylesheets>
+    <URL value="@gui.css" />
+  </stylesheets>
+</AnchorPane>
