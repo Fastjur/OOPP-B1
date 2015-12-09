@@ -1,5 +1,7 @@
 package server;
 
+import org.codehaus.jackson.annotate.JsonCreator;
+
 public class Address {
     private String street, housenumber, zipcode, city;
 
@@ -17,6 +19,22 @@ public class Address {
         this.zipcode = zipcode;
         this.city = city;
     }
+
+    public boolean contains(String s) {
+        if(this.street.equals(s)) {
+            return true;
+        } else if (this.housenumber.equals(s)) {
+            return true;
+        } else if (this.zipcode.equals(s)) {
+            return true;
+        } else if (this.city.equals(s)) {
+            return true;
+        }
+        return false;
+    }
+
+    @JsonCreator
+    public Address() { }
 
     /**
      * toString: gives a textual representation of Address

@@ -1,136 +1,135 @@
 package server;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
+
+import java.io.IOException;
+import java.sql.Time;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * TimePeriod class that specifies a starting and ending time on a day basis
+ * @author Jurriaan Den Toonder
+ * @version 0.5
+ */
 public class TimePeriod {
-    private Timepoint beginTime, endTime;
+    private int start;
+    private int end;
 
     /**
-     * TimePeriod: constructor for class TimePeriod
-     *
-     * @param beginTime - Timepoint
-     * @param endTime   - Timepoint
+     * Empty constructor for JSON
      */
-    public TimePeriod(Timepoint beginTime, Timepoint endTime) {
-        // check if TimePeriod is valid, i.e. endTime not earlier than beginTime
-        if (!endTime.earlierThan(beginTime)) {
-            this.beginTime = beginTime;
-            this.endTime = endTime;
-        } else { // create empty period
-            this.beginTime = beginTime;
-            this.endTime = beginTime;
-        }
+    public TimePeriod(){}
+
+    /**
+     * Constructor using minute notation
+     * @param start int, minutes from 00:00 to the starting point of the TimePeriod
+     * @param end int, minutes from 00:00 to the ending point of the TimePeriod
+     */
+    public TimePeriod(int start, int end) {
+        this.start = start;
+        this.end = end;
     }
 
     /**
-     * toString: gives a textual representation of TimePeriod
-     *
+     * Constructor allowing the use of a String representation of times
+     * 24h notation
+     * @param start String, starting time of TimePeriod ("xx:xx")
+     * @param end String, ending time of TimePeriod ("xx:xx")
+     */
+    public TimePeriod(String start, String end) {
+        if(start == null || end == null) {
+            throw new IllegalArgumentException("Start or end time is null");
+        }
+        if(start.equals(end)) {
+            throw new IllegalArgumentException("Start and end time are the same");
+        }
+        Pattern p = Pattern.compile("[0-9]{2}:[0-9]{2}");
+        Matcher mStart = p.matcher(start),
+                mEnd = p.matcher(end);
+        if(!mStart.matches() || !mEnd.matches()) {
+            throw new IllegalArgumentException("Illegal start or end time specified!");
+        }
+        int startInt = parseToMinutes(start),
+            endInt = parseToMinutes(end);
+        if(endInt - startInt <= 0) {
+            throw new IllegalArgumentException("Start time is after end time");
+        }
+        this.start = startInt;
+        this.end = endInt;
+    }
+
+    /**
+     * Formats this TimePeriod object to JSON and returns it in a String
+     * @return String, JSON representation of this TimePeriod
+     * @throws IOException
+     */
+    public String toJson() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(this);
+    }
+
+    /**
+     * Creates a TimePeriod from a JSON formatted String
+     * @param json String, JSON representation of a TimePeriod object
+     * @return TimePeriod object
+     * @throws IOException
+     */
+    public static TimePeriod fromJson(String json) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(json, TimePeriod.class);
+    }
+
+    /**
+     * Takes a String representing a time and returns it as a minutes from 00:00 representation
+     * So 01:00 = 60, 01:30 = 90
+     * @param time String representation of a time
+     * @return int, amount of minutes from 00:00
+     */
+    private int parseToMinutes(String time) {
+        String[] split = time.split(":");
+        int minutes = 0;
+        minutes += Integer.parseInt(split[0]) * 60;
+        minutes += Integer.parseInt(split[1]);
+        return minutes;
+    }
+
+    /**
+     * Return this TimePeriod as a String representation
      * @return String
      */
     public String toString() {
-        return this.beginTime.toString() + " - " + this.endTime.toString();
+        return "<TimePeriod(" + this.start + "-" + this.end + ")>";
     }
 
-    /**
-     * beginPeriode: getter for private attribute beginHour and beginMinute
-     *
-     * @return beginMinute - int
-     */
-    public Timepoint getBeginTime() {
-        return beginTime;
-    }
-
-    /**
-     * endPeriod: getter for private attribute endHour + endMinute
-     *
-     * @return endMinute - int
-     */
-    public Timepoint getEndTime() {
-        return endTime;
-    }
-
-    /**
-     * setBeginTime: setter for private attribute beginTime
-     *
-     * @param beginTime - Timepoint
-     */
-    public void setBeginTime(Timepoint beginTime) {
-        if (beginTime.earlierThan(endTime)) {
-            this.beginTime = beginTime;
-        }
-    }
-
-    /**
-     * setEndTime: setter for private attribute endTime
-     *
-     * @param endTime - Timepoint
-     */
-    public void setEndTime(Timepoint endTime) {
-        if (endTime.laterThan(beginTime)) {
-            this.endTime = endTime;
-        }
-    }
-
-    /**
-     * overlap: checks if period1 has overlapping times with period2
-     *
-     * @param period1 - TimePeriod
-     * @param period2 - TimePeriod
-     * @return overlapPeriod - TimePeriod
-     */
-    public TimePeriod overlap(TimePeriod period2) {
-        TimePeriod overlapPeriod = new TimePeriod(new Timepoint(0, 0), new Timepoint(0, 0));
-
-        if ((this.endTime.earlierThan(period2.getEndTime()) || this.endTime.equals(period2.getEndTime())) &&
-                period2.getBeginTime().earlierThan(this.endTime)) {
-            overlapPeriod.setEndTime(this.endTime);
-        } else if (period2.getEndTime().earlierThan(this.endTime) &&
-                this.beginTime.earlierThan(period2.getEndTime())) {
-            overlapPeriod.setEndTime(period2.getEndTime());
-        } else {
-            // there is a beginTime for the overlap, but no end time, so no overlap
-            return new TimePeriod(new Timepoint(0, 0), new Timepoint(0, 0)); // return empty overlapPeriod
-        }
-
-        if ((this.beginTime.earlierThan(period2.getBeginTime()) || this.beginTime.equals(period2.getBeginTime())) &&
-                (this.endTime.laterThan(period2.getBeginTime()) ||
-                        this.endTime.equals(period2.getBeginTime()))) {
-            overlapPeriod.setBeginTime(period2.getBeginTime()); // overlap.beginTime = period2.beginTime
-        } else if ((period2.getBeginTime().earlierThan(this.beginTime) ||
-                (period2.getBeginTime().equals(this.beginTime))) &&
-                period2.getEndTime().laterThan(this.beginTime)) {
-            overlapPeriod.setBeginTime(this.beginTime); // overlap.beginTime = period1.beginTime
-        } else {
-            // there is and time, but no beginTime for the overlap, so no overlap
-            return new TimePeriod(new Timepoint(0, 0), new Timepoint(0, 0)); // return empty overlapPeriod
-        }
-
-        // both beginTime and endTime for overlap found
-        return overlapPeriod;
-    }
-
-    /**
-     * isEmpty: checks if the period is empty
-     *
-     * @param period - TimePeriod
-     * @return booleans
-     */
-    public boolean isEmpty() {
-        return this.beginTime.equals(this.endTime);
-    }
-
-    /**
-     * equals: checks if current object is the same as the other object
-     *
-     * @param other - Object
-     * @return boolean
-     */
     public boolean equals(Object other) {
-        if (other instanceof TimePeriod) {
-            TimePeriod that = (TimePeriod) other;
-            if (this.beginTime.equals(that.getBeginTime()) &&
-                    this.endTime.equals(that.getEndTime())) {
-                return true;
-            }
-        }
-        return false;
+        if (other == this)
+            return true;
+        if (!(other instanceof TimePeriod))
+            return false;
+
+        TimePeriod that = (TimePeriod) other;
+        return this.start == that.start &&
+                this.end == that.end;
+    }
+
+    /*
+       Start of Getters and Setters block
+     */
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
     }
 }
