@@ -36,7 +36,7 @@ public class GuiMatchPage extends Application {
 
         Scene scene = new Scene(pane);
 
-        String cssURL = this.getClass().getResource("MatchPage.css").toExternalForm();
+        String cssURL = this.getClass().getResource("css/MatchPage.css").toExternalForm();
         scene.getStylesheets().add(cssURL);
 
         primaryStage.setScene(scene);

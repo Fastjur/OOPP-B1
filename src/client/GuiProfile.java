@@ -1,3 +1,5 @@
+package client;
+
 import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Scene;
@@ -16,7 +18,7 @@ import javafx.stage.Stage;
  *
  * @author Sebastiaan Hester
  */
-public class ProfileGUI extends Application {
+public class GuiProfile extends Application {
 
     @Override
     public void start(Stage PrimaryStage) throws Exception {
