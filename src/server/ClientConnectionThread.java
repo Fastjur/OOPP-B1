@@ -104,13 +104,18 @@ public class ClientConnectionThread extends Thread {
                     response = new Response("register");
                     User newuser = mapper.treeToValue(messageObj.get("requestData").get("newUser"), User.class);
                     newuser.setUserID(-1);
+                    boolean exists = false;
                     try {
-                        Server.getDb().getUser(newuser.getMail());
-                    } catch (SQLException e) {
+                        User u = Server.getDb().getUser(newuser.getMail());
+                        exists = u != null;
+                    } catch (SQLException e) { }
+
+                    if (exists) {
                         response.errorCode = 2;
                         response.errorMessage = "That user already exists.";
                         break;
                     }
+
                     try {
                         Server.getDb().addUser(newuser);
                     } catch (SQLException e) {
