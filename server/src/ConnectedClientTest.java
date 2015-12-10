@@ -1,5 +1,3 @@
-package server;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;

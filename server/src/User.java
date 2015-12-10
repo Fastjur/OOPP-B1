@@ -1,5 +1,3 @@
-package server;
-
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;

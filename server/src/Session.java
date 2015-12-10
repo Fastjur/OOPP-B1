@@ -1,5 +1,3 @@
-package server;
-
 /**
  * Created by Zoë van Steijn on 25-11-2015.
  */
