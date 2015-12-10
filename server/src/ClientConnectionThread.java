@@ -166,6 +166,7 @@ public class ClientConnectionThread extends Thread {
 
                 case "match":
                     response = new Response("match");
+                    System.out.println(messageObj.toString());
                     double maxDist = messageObj.get("data").get("maxdist").getDoubleValue(),
                             latitude = messageObj.get("data").get("latitude").getDoubleValue(),
                             longitude = messageObj.get("data").get("longitude").getDoubleValue();

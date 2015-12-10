@@ -1,9 +1,6 @@
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.sql.Time;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Fastjur on 10-12-2015.

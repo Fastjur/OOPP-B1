@@ -1,5 +1,3 @@
-package client;
-
 import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Scene;
