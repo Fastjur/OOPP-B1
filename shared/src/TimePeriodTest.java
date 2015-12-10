@@ -21,49 +21,49 @@ public class TimePeriodTest {
     @Test
     public void testToJson() throws Exception {
         String expected = "{\"start\":1,\"end\":2}";
-        assertEquals(expected, p.toJson());
+        Assert.assertEquals(expected, p.toJson());
     }
 
     @Test
     public void testFromJson() throws Exception {
         TimePeriod a = new TimePeriod(1, 2);
-        assertEquals(a, TimePeriod.fromJson(p.toJson()));
+        Assert.assertEquals(a, TimePeriod.fromJson(p.toJson()));
     }
 
     @Test
     public void testToString() throws Exception {
         String expected = "<TimePeriod(1-2)>";
-        assertEquals(expected, p.toString());
+        Assert.assertEquals(expected, p.toString());
     }
 
     @Test
     public void testEquals() throws Exception {
         TimePeriod a = new TimePeriod(1, 2);
-        assertEquals(a, p);
-        assertEquals(p, p2);
-        assertEquals(p, p);
-        assertFalse(p.equals("ayy"));
+        Assert.assertEquals(a, p);
+        Assert.assertEquals(p, p2);
+        Assert.assertEquals(p, p);
+        Assert.assertFalse(p.equals("ayy"));
     }
 
     @Test
     public void testGetStart() throws Exception {
-        assertEquals(1, p.getStart());
+        Assert.assertEquals(1, p.getStart());
     }
 
     @Test
     public void testSetStart() throws Exception {
         p.setStart(50);
-        assertEquals(50, p.getStart());
+        Assert.assertEquals(50, p.getStart());
     }
 
     @Test
     public void testGetEnd() throws Exception {
-        assertEquals(2, p.getEnd());
+        Assert.assertEquals(2, p.getEnd());
     }
 
     @Test
     public void testSetEnd() throws Exception {
         p.setEnd(55);
-        assertEquals(55, p.getEnd());
+        Assert.assertEquals(55, p.getEnd());
     }
 }
