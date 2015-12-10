@@ -22,7 +22,7 @@ public class User {
     private ArrayList<String> coursesLearningList;
     private ArrayList<String> buddyList;
     private ArrayList<String> languageList;
-    private AvailableTimes availability;
+    private AvailableTimes availableDates;
 
     /**
      * User: constructor for class User
@@ -62,7 +62,7 @@ public class User {
         this.study = study;
         this.university = university;
         this.studyYear = studyYear;
-        this.availability = available;
+        this.availableDates = available;
         this.coursesTeachingList = teaching;
         this.coursesLearningList = learning;
         this.buddyList = buddys;
@@ -118,8 +118,8 @@ public class User {
                 + formattedDate + "\n" + mail + "\n" + phonenumber + "\n" + study
                 + "\n" + university + "\n" + Integer.toString(studyYear) + "\n" + latitude + "\n" + longitude + "\n";
 
-        // availability
-        text += "available: " + this.availability.toString() + "\n";
+        // availableDates
+        text += "available: " + this.availableDates.toString() + "\n";
 
         // coursesTeachingList
         text += "Courses teaching: " + this.coursesTeachingList.toString() + "\n";
@@ -296,11 +296,11 @@ public class User {
     }
 
     /**
-     * getAvailability: getter for private arraylist availablelist
+     * getAvailableDates: getter for private arraylist availablelist
      * @return AvailableList - ArrayList<AvaliableDate>
      */
-    public AvailableTimes getAvailability() {
-        return this.availability;
+    public AvailableTimes getAvailableDates() {
+        return this.availableDates;
     }
 
     /**
@@ -464,7 +464,7 @@ public class User {
                     this.coursesTeachingList.equals(that.getCoursesTeachingList()) &&
                     this.buddyList.equals(that.getBuddyList()) &&
                     this.languageList.equals(that.getLanguageList()) &&
-                    this.availability.equals(that.getAvailability()) &&
+                    this.availableDates.equals(that.getAvailableDates()) &&
                     this.latitude == that.latitude &&
                     this.longitude == that.longitude;
         }
