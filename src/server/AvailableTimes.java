@@ -63,24 +63,6 @@ public class AvailableTimes {
     }
 
     /**
-     * Get all the TimePeriods of a day
-     * @param day int, day of week to get the TimePeriods from, 1 = monday, 7 = sunday
-     * @return ArrayList containing all the TimePeriods of a given day
-     */
-    public ArrayList<TimePeriod> getTimesOfDay(int day) {
-        switch(day) {
-            case 1: return this.monday;
-            case 2: return this.tuesday;
-            case 3: return this.wednesday;
-            case 4: return this.thursday;
-            case 5: return this.friday;
-            case 6: return this.saturday;
-            case 7: return this.sunday;
-        }
-        return null;
-    }
-
-    /**
      * Get a single TimePeriod from a given day using the TimePeriod's index
      * @param day int, day of week, 1 = monday, 7 = sunday
      * @param index int, index of the TimePeriod

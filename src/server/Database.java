@@ -64,12 +64,11 @@ public class Database {
                 "WHERE users.email = ? LIMIT 1");
         stmt.setString(1, email);
         ResultSet rs = stmt.executeQuery();
-        int id = -1;
-        while (rs.next()) {
+        int id;
+        if (rs.next()) {
             id = rs.getInt("id");
-        }
-        if (id == -1) {
-            throw new IllegalArgumentException("Couldn't find user id by email in database");
+        } else {
+            return null;
         }
         return getUser(id);
     }
@@ -155,6 +154,8 @@ public class Database {
             usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber, study, university,
                     studyYear, availability, coursesTeaching, coursesLearning, coursesSearchingBuddy, sex, nationality,
                     languages, bio, latitude, longitude);
+        } else {
+            return null;
         }
         return usr;
     }
@@ -228,14 +229,13 @@ public class Database {
         stmt.setString(1, user.getNationality());
         rs = stmt.executeQuery();
         int nationality_id = -1;
-        while (rs.next()) {
+        if (rs.next()) {
             nationality_id = rs.getInt("id");
-        }
-        stmt.close();
-        if (nationality_id == -1) {
+        } else {
             throw new IllegalArgumentException("[ERROR] Couldn't get or find nationality id, aborting add to database\n" +
                     "    Arguments: " + user.getNationality());
         }
+        stmt.close();
 
         /**
          * Get the university id, throw IllegalArgumentException on fail
@@ -243,15 +243,15 @@ public class Database {
         stmt = connection.prepareStatement("SELECT id FROM `universities` WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getUniversity());
         rs = stmt.executeQuery();
-        int university_id = -1;
-        while (rs.next()) {
+        int university_id;
+        if (rs.next()) {
             university_id = rs.getInt("id");
-        }
-        stmt.close();
-        if (university_id == -1) {
+        } else {
             throw new IllegalArgumentException("[ERROR] Couldn't get or find university id, aborting add to database\n" +
                     "    Argument: " + user.getUniversity());
         }
+        stmt.close();
+
 
         /**
          * Get the study id, throw IllegalArgumentException on fail
@@ -259,14 +259,13 @@ public class Database {
         stmt = connection.prepareStatement("SELECT id FROM `studies` WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getStudy());
         rs = stmt.executeQuery();
-        int study_id = -1;
-        while (rs.next()) {
+        int study_id;
+        if (rs.next()) {
             study_id = rs.getInt("id");
-        }
-        stmt.close();
-        if (study_id == -1) {
+        } else {
             throw new IllegalArgumentException("[ERROR] Couldn't get or find study id, aborting add to database");
         }
+        stmt.close();
 
         /**
          * Insert user into database, finally
@@ -293,7 +292,7 @@ public class Database {
         stmt.executeUpdate();
         rs = stmt.getGeneratedKeys();
         if (rs.next()) {
-            user.setUserID(rs.getInt("id"));
+            user.setUserID(rs.getInt(1));
         } else {
             throw new IllegalArgumentException("[ERROR] Couldn't retrieve newly added users ID.\n" +
                     "    Presume database invalid");
@@ -371,15 +370,14 @@ public class Database {
         stmt = connection.prepareStatement("SELECT id FROM nationalities WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getNationality());
         rs = stmt.executeQuery();
-        int nationality_id = -1;
-        while (rs.next()) {
+        int nationality_id;
+        if (rs.next()) {
             nationality_id = rs.getInt("id");
-        }
-        stmt.close();
-        if (nationality_id == -1) {
+        } else {
             throw new IllegalArgumentException("[ERROR] Could not get nationality id, aborting update to database\n    " +
                     "Argument: (name:\"" + user.getNationality() + "\")");
         }
+        stmt.close();
 
         /**
          * Get university id
@@ -387,15 +385,14 @@ public class Database {
         stmt = connection.prepareStatement("SELECT id FROM universities WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getUniversity());
         rs = stmt.executeQuery();
-        int university_id = -1;
-        while (rs.next()) {
+        int university_id;
+        if (rs.next()) {
             university_id = rs.getInt("id");
-        }
-        stmt.close();
-        if (university_id == -1) {
+        } else {
             throw new IllegalArgumentException("[ERROR] Could not get university id, aborting update to database\n    " +
                     "Argument: (name:\"" + user.getUniversity() + "\")");
         }
+        stmt.close();
 
         /**
          * Get study id
@@ -403,15 +400,14 @@ public class Database {
         stmt = connection.prepareStatement("SELECT id FROM studies WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getStudy());
         rs = stmt.executeQuery();
-        int study_id = -1;
-        while (rs.next()) {
+        int study_id;
+        if (rs.next()) {
             study_id = rs.getInt("id");
-        }
-        stmt.close();
-        if (study_id == -1) {
+        } else {
             throw new IllegalArgumentException("[ERROR] Could not get study id, aborting update to database\n    " +
                     "Argument: (name:\"" + user.getStudy() + "\")");
         }
+        stmt.close();
 
         /**
          * Finally fucking update the user

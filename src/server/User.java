@@ -111,9 +111,14 @@ public class User {
     public String toString() {
         String text;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = "";
+        try {
+            formattedDate = df.format(birthday);
+        } catch (NullPointerException ignored) {}
+
         text = Integer.toString(userID) + "\n" + password + "\n" + firstname + " " + lastname + "\n"
-                + df.format(birthday) + "\n" + mail + "\n" + phonenumber + "\n" + study
-                + "\n" + university + "\n" + Integer.toString(studyYear) + "\n" + latitude + "\n" + longitude;
+                + formattedDate + "\n" + mail + "\n" + phonenumber + "\n" + study
+                + "\n" + university + "\n" + Integer.toString(studyYear) + "\n" + latitude + "\n" + longitude + "\n";
 
         // availability
         text += "available: " + this.availability.toString() + "\n";
