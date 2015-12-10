@@ -191,7 +191,7 @@ public class UserTest {
 
     @Test
     public void testNotEqualsDifferAvailability() {
-        testuser2.getAvailability().addTimePeriod(3, new TimePeriod(12, 13));
+        testuser2.getAvailableDates().addTimePeriod(3, new TimePeriod(12, 13));
         assertNotEquals(testuser1, testuser2);
     }
 

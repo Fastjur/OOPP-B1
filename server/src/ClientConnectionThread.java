@@ -166,26 +166,15 @@ public class ClientConnectionThread extends Thread {
 
                 case "match":
                     response = new Response("match");
-                    System.out.println(messageObj.toString());
-                    double maxDist = messageObj.get("data").get("maxdist").getDoubleValue(),
-                            latitude = messageObj.get("data").get("latitude").getDoubleValue(),
-                            longitude = messageObj.get("data").get("longitude").getDoubleValue();
-                    AvailableTimes aTimes = mapper.treeToValue(messageObj.get("data").get("availability"),
-                            AvailableTimes.class);
-                    ArrayList learning = mapper.treeToValue(messageObj.get("data").get("learning"), ArrayList.class),
-                            teaching = mapper.treeToValue(messageObj.get("data").get("teaching"), ArrayList.class),
-                            buddys = mapper.treeToValue(messageObj.get("data").get("buddys"), ArrayList.class),
-                            languages = mapper.treeToValue(messageObj.get("data").get("languages"), ArrayList.class);
-                    response.errorCode = 0;
-                    response.errorMessage = "Received all data";
-                    System.out.println(maxDist);
-                    System.out.println(latitude);
-                    System.out.println(longitude);
-                    System.out.println(aTimes);
-                    System.out.println(learning);
-                    System.out.println(teaching);
-                    System.out.println(buddys);
-                    System.out.println(languages);
+                    try {
+                        response.errorMessage = "Received Matches request";
+                        Server.getDb().getMatches(this.client.userId, messageObj);
+                        response.errorCode = 0;
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        response.errorCode = 3;
+                        response.errorMessage = "Could not get match users from database";
+                    }
                     break;
 
                 default:
@@ -197,7 +186,8 @@ public class ClientConnectionThread extends Thread {
             client.sendMessage(mapper.writeValueAsString(response));
 
         } catch (java.io.IOException ex) {
-            System.out.println("Something went wrong while reading a message from the network.\n" + ex.getLocalizedMessage());
+            System.out.println("Something went wrong while reading a message from the network.\n" +
+                    ex.getLocalizedMessage());
         }
     }
 }
