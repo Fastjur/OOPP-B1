@@ -19,44 +19,44 @@ public class UserTest {
     @Before
     public void createUserObject() {
         testuser1 = new User(1, "Pepernoten01", "Sinter", "Klaas", new Date(1),
-                "sinterklaas@sintmail.nl", "+316123456789", new Address("A", "B", "C", "D"),
+                "sinterklaas@sintmail.nl", "+316123456789",
                 "study1", "university", 3, new AvailableTimes(), new ArrayList<String>(),
                 new ArrayList<String>(), new ArrayList<String>(), "male", "NLD",
-                new ArrayList<String>(), "It's-a-me", "Spanje");
+                new ArrayList<String>(), "It's-a-me", 0, 3);
 
         testuser2 = new User(1, "Pepernoten01", "Sinter", "Klaas", new Date(1),
-                "sinterklaas@sintmail.nl", "+316123456789", new Address("A", "B", "C", "D"),
+                "sinterklaas@sintmail.nl", "+316123456789",
                 "study1", "university", 3, new AvailableTimes(), new ArrayList<String>(),
                 new ArrayList<String>(), new ArrayList<String>(), "male", "NLD",
-                new ArrayList<String>(), "It's-a-me", "Spanje");
+                new ArrayList<String>(), "It's-a-me", 0, 3);
     }
 
     @Test
     public void testFromJsonEquals() throws Exception {
-        User fromjson = User.fromJson("{\"password\":\"Pepernoten01\",\"firstname\":\"Sinter\",\"lastname\":\"Klaas\"" +
-                ",\"mail\":\"sinterklaas@sintmail.nl\",\"phonenumber\":\"+316123456789\"," +
-                "\"study\":\"study1\",\"university\":\"university\",\"gender\":\"male\"," +
-                "\"nationality\":\"NLD\",\"description\":\"It's-a-me\",\"location\":\"Spanje\"," +
-                "\"birthday\":1,\"userID\":1,\"studyYear\":3,\"address\":{\"street\":\"A\"," +
-                "\"housenumber\":\"B\",\"zipcode\":\"C\",\"city\":\"D\"},\"coursesTeachingList\":[]," +
+        User fromjson = User.fromJson("{\"password\":\"Pepernoten01\",\"firstname\":\"Sinter\"," +
+                "\"lastname\":\"Klaas\",\"mail\":\"sinterklaas@sintmail.nl\"," +
+                "\"phonenumber\":\"+316123456789\",\"study\":\"study1\"," +
+                "\"university\":\"university\",\"gender\":\"male\",\"nationality\":\"NLD\"," +
+                "\"description\":\"It's-a-me\",\"birthday\":1,\"userID\":1,\"studyYear\":3," +
+                "\"latitude\":0.0,\"longitude\":3.0,\"coursesTeachingList\":[]," +
                 "\"coursesLearningList\":[],\"buddyList\":[],\"languageList\":[]," +
-                "\"availability\":{\"monday\":[],\"tuesday\":[],\"wednesday\":[],\"thursday\":[]," +
-                "\"friday\":[],\"saturday\":[],\"sunday\":[]}}");
+                "\"availability\":{\"monday\":[],\"tuesday\":[],\"wednesday\":[]," +
+                "\"thursday\":[],\"friday\":[],\"saturday\":[],\"sunday\":[]}}");
 
         assertEquals(testuser1, fromjson);
     }
 
     @Test
     public void testToJson() throws Exception {
-        assertEquals("{\"password\":\"Pepernoten01\",\"firstname\":\"Sinter\",\"lastname\":\"Klaas\"" +
-                ",\"mail\":\"sinterklaas@sintmail.nl\",\"phonenumber\":\"+316123456789\"," +
-                "\"study\":\"study1\",\"university\":\"university\",\"gender\":\"male\"," +
-                "\"nationality\":\"NLD\",\"description\":\"It's-a-me\",\"location\":\"Spanje\"," +
-                "\"birthday\":1,\"userID\":1,\"studyYear\":3,\"address\":{\"street\":\"A\"," +
-                "\"housenumber\":\"B\",\"zipcode\":\"C\",\"city\":\"D\"},\"coursesTeachingList\":[]," +
+        assertEquals("{\"password\":\"Pepernoten01\",\"firstname\":\"Sinter\"," +
+                "\"lastname\":\"Klaas\",\"mail\":\"sinterklaas@sintmail.nl\"," +
+                "\"phonenumber\":\"+316123456789\",\"study\":\"study1\"," +
+                "\"university\":\"university\",\"gender\":\"male\",\"nationality\":\"NLD\"," +
+                "\"description\":\"It's-a-me\",\"birthday\":1,\"userID\":1,\"studyYear\":3," +
+                "\"latitude\":0.0,\"longitude\":3.0,\"coursesTeachingList\":[]," +
                 "\"coursesLearningList\":[],\"buddyList\":[],\"languageList\":[]," +
-                "\"availability\":{\"monday\":[],\"tuesday\":[],\"wednesday\":[],\"thursday\":[]," +
-                "\"friday\":[],\"saturday\":[],\"sunday\":[]}}", testuser1.toJson());
+                "\"availability\":{\"monday\":[],\"tuesday\":[],\"wednesday\":[]," +
+                "\"thursday\":[],\"friday\":[],\"saturday\":[],\"sunday\":[]}}", testuser1.toJson());
     }
 
     @Test
@@ -67,10 +67,11 @@ public class UserTest {
                 "1970-01-01\n" +
                 "sinterklaas@sintmail.nl\n" +
                 "+316123456789\n" +
-                "A B, C D\n" +
                 "study1\n" +
                 "university\n" +
                 "3\n" +
+                "0.0\n" +
+                "3.0\n" +
                 "available: Maandag() Dinsdag() Woensdag() Donderdag() Vrijdag() Zaterdag() Zondag()\n" +
                 "Courses teaching: []\n" +
                 "Courses learning: []\n" +
@@ -78,8 +79,9 @@ public class UserTest {
                 "male\n" +
                 "NLD\n" +
                 "languages: []\n" +
-                "It's-a-me\n" +
-                "Spanje", testuser1.toString());
+                "description: It's-a-me\n" +
+                "longitude: 3.0\n" +
+                "latitude: 0.0", testuser1.toString());
     }
 
     @Test
@@ -130,12 +132,6 @@ public class UserTest {
     }
 
     @Test
-    public void testNotEqualsDifferAddress() {
-        testuser2.setAddress(new Address("9","9","9","9"));
-        assertNotEquals(testuser1, testuser2);
-    }
-
-    @Test
     public void testNotEqualsDifferStudy() {
         testuser2.setStudy("38");
         assertNotEquals(testuser1, testuser2);
@@ -172,12 +168,6 @@ public class UserTest {
     }
 
     @Test
-    public void testNotEqualsDifferLocation() {
-        testuser2.setLocation("[1, -3]");
-        assertNotEquals(testuser1, testuser2);
-    }
-
-    @Test
     public void testNotEqualsDifferCoursesLearning() {
         testuser2.getCoursesLearningList().add("Maymays");
         assertNotEquals(testuser1, testuser2);
@@ -204,6 +194,18 @@ public class UserTest {
     @Test
     public void testNotEqualsDifferAvailability() {
         testuser2.getAvailability().addTimePeriod(3, new TimePeriod(12, 13));
+        assertNotEquals(testuser1, testuser2);
+    }
+
+    @Test
+    public void testNotEqualsDifferLongitude() {
+        testuser2.setLongitude(33);
+        assertNotEquals(testuser1, testuser2);
+    }
+
+    @Test
+    public void testNotEqualsDifferLatitude() {
+        testuser2.setLatitude(21);
         assertNotEquals(testuser1, testuser2);
     }
 }

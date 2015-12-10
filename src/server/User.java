@@ -137,7 +137,12 @@ public class User {
         // languageList
         text += "languages: " + this.languageList.toString() + "\n";
         
-        text += "\n" + description;
+        text += "description: " + description + "\n";
+
+        text += "longitude: " + longitude + "\n";
+
+        text += "latitude: " + latitude;
+
         return text;
     }
 
