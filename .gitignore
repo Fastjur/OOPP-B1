@@ -1,7 +1,6 @@
 #Untracked files
-/.idea
 /.git
 /out
-*.iml
-*.class
 *.project
+/.idea/workspace.xml
+/.idea/tasks.xml
