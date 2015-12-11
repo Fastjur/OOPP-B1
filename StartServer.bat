@@ -1,3 +1,3 @@
 @echo off
-java -classpath ".\server\lib\*;.\out\production\server" Server
+java -classpath ".\server\lib\*;.\out\production\OOPP-B1\server" Server
 pause
