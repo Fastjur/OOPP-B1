@@ -1,4 +1,7 @@
 #Untracked files
+/.idea
 /.git
 /out
+*.iml
+*.class
 *.project
