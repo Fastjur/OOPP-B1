@@ -133,6 +133,79 @@ public class AvailableTimes {
         return res;
     }
 
+    /**
+     * Returns an AvailableTimes object with TimePeriods that are in both `this` AND `that`
+     *
+     * @param that The object to intersect `this` with
+     * @return AvailableTimes object containing the intersection between this and that
+     */
+    public AvailableTimes intersect(AvailableTimes that) {
+        if (this == that || this.equals(that)) {
+            return that;
+        }
+        AvailableTimes res = new AvailableTimes();
+        int index = 0;
+        for (TimePeriod p : that.getMonday()) {
+            if (this.monday.contains(that.getMonday().get(index))) {
+                res.addTimePeriod(1, p);
+            }
+            index++;
+        }
+        index = 0;
+        for (TimePeriod p : that.getTuesday()) {
+            if (this.tuesday.contains(that.getTuesday().get(index))) {
+                res.addTimePeriod(2, p);
+            }
+            index++;
+        }
+        index = 0;
+        for (TimePeriod p : that.getWednesday()) {
+            if (this.wednesday.contains(that.getWednesday().get(index))) {
+                res.addTimePeriod(3, p);
+            }
+            index++;
+        }
+        index = 0;
+        for (TimePeriod p : that.getThursday()) {
+            if (this.thursday.contains(that.getThursday().get(index))) {
+                res.addTimePeriod(4, p);
+            }
+            index++;
+        }
+        index = 0;
+        for (TimePeriod p : that.getFriday()) {
+            if (this.friday.contains(that.getFriday().get(index))) {
+                res.addTimePeriod(5, p);
+            }
+            index++;
+        }
+        index = 0;
+        for (TimePeriod p : that.getSaturday()) {
+            if (this.saturday.contains(that.getSaturday().get(index))) {
+                res.addTimePeriod(6, p);
+            }
+            index++;
+        }
+        index = 0;
+        for (TimePeriod p : that.getSunday()) {
+            if (this.sunday.contains(that.getSunday().get(index))) {
+                res.addTimePeriod(7, p);
+            }
+            index++;
+        }
+        return res;
+    }
+
+    /**
+     * Returns the total amount of TimePeriods in this AvailableTimes object
+     *
+     * @return integer, total amount of TimePeriods
+     */
+    public int size() {
+        return this.monday.size() + this.tuesday.size() + this.wednesday.size() + this.thursday.size() +
+                this.friday.size() + this.saturday.size() + this.sunday.size();
+    }
+
     public boolean equals(Object other) {
         if (other instanceof AvailableTimes) {
             AvailableTimes that = (AvailableTimes) other;

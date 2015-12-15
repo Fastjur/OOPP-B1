@@ -1,12 +1,13 @@
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -56,9 +57,9 @@ public class ClientConnectionThread extends Thread {
                     System.out.println("Client sent an invalid request, disconnecting client.");
                     this.client.closeConnection();
                 }
-            } catch (java.net.SocketException SEx) {
+            } catch (SocketException SEx) {
                 // Socket closed.
-            } catch (java.io.IOException IOEx) {
+            } catch (IOException IOEx) {
                 System.out.println("Something went wrong while reading a message from the network.\n" + IOEx.getLocalizedMessage());
             }
         }
@@ -167,9 +168,17 @@ public class ClientConnectionThread extends Thread {
                 case "match":
                     response = new Response("match");
                     try {
-                        response.errorMessage = "Received Matches request";
-                        Server.getDb().getMatches(this.client.userId, messageObj);
-                        response.errorCode = 0;
+                        ArrayList<ArrayList<User>> result = Server.getDb().getMatches(this.client.userId, messageObj);
+                        if (result == null) {
+                            response.errorMessage = "No matches found!";
+                            response.errorCode = 4;
+                        } else {
+                            response.errorMessage = "Retrieved Matches";
+                            response.errorCode = 0;
+                            response.putData("canTeach", result.get(0));
+                            response.putData("canLearn", result.get(1));
+                            response.putData("canBuddyUp", result.get(2));
+                        }
                     } catch (SQLException e) {
                         e.printStackTrace();
                         response.errorCode = 3;
@@ -185,9 +194,9 @@ public class ClientConnectionThread extends Thread {
 
             client.sendMessage(mapper.writeValueAsString(response));
 
-        } catch (java.io.IOException ex) {
+        } catch (IOException ex) {
             System.out.println("Something went wrong while reading a message from the network.\n" +
                     ex.getLocalizedMessage());
-        }
+        } //TODO catch all other exceptions and add to logfile
     }
 }

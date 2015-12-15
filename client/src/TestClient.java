@@ -65,7 +65,7 @@ public class TestClient {
                     jsonlanguages = mapper.writeValueAsString(languages);
 
             ObjectNode data = mapper.createObjectNode();
-            data.put("maxdist", 25);
+            data.put("maxdist", 500);
             data.put("latitude", 51.98278);
             data.put("longitude", 4.34825);
             data.put("availability", aTimes.toJson());
@@ -78,6 +78,8 @@ public class TestClient {
 
             String json = mapper.writeValueAsString(jsonObject);
             sendMessage(json);
+
+            sendMessage("{\"action\": \"logout\"}");
 
             while (!shouldStop) {
                 try {
