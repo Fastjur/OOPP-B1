@@ -444,7 +444,7 @@ public class GuiProfile extends Application {
         setStyleButton(yourMatches);
         setStyleButton(chat);
         setStyleButton(profile);
-        
+
     }
 
     public void yourMatchesClick() {
