@@ -15,10 +15,14 @@ public class Backend {
     public static String serverAddress;
     private static ListenThread listenThread;
     private static ArrayList<IMessageListener> messageListeners = new ArrayList<>();
-    private static ArrayList<IDisconnectListener> connectionListeners = new ArrayList<>();
+    private static ArrayList<IDisconnectListener> disconnectListeners = new ArrayList<>();
 
     public static void addMessageListener(IMessageListener listener) {
         messageListeners.add(listener);
+    }
+
+    public static void addDisconnectListener(IDisconnectListener listener) {
+        disconnectListeners.add(listener);
     }
 
     public static void onResponse(Response response) {
@@ -28,8 +32,8 @@ public class Backend {
     }
 
     public static void onDisconnect(boolean erroneous) {
-        for(IDisconnectListener listener : connectionListeners) {
-            listener.onConnectionChange(erroneous);
+        for(IDisconnectListener listener : disconnectListeners) {
+            listener.onDisconnect(erroneous);
         }
     }
 
