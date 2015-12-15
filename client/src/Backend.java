@@ -25,6 +25,11 @@ public class Backend {
         disconnectListeners.add(listener);
     }
 
+    public static void removeAllListeners() {
+        messageListeners.clear();
+        disconnectListeners.clear();
+    }
+
     public static void onResponse(Response response) {
         for(IMessageListener listener : messageListeners) {
             listener.onIncomingResponse(response);
