@@ -26,7 +26,7 @@ public class ListenThread extends Thread {
     public void run() {
         this.shouldstop = false;
 
-        while (!shouldstop) {
+        while (!shouldstop && Backend.isConnected()) {
             try {
                 byte[] buf = new byte[4];
                 inputStream.read(buf);
@@ -46,6 +46,7 @@ public class ListenThread extends Thread {
                 System.out.println("Something went wrong while reading a message from the network.\n" + IOEx.getLocalizedMessage());
             }
         }
+        Backend.onDisconnect(shouldstop);
     }
 
     private void handleResponse(String response) {
