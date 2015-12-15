@@ -1,0 +1,41 @@
+#sideBarTitledPanes > .title > .arrow-button .arrow{
+    -fx-focus-color: -fx-control-inner-background;
+    -fx-faint-focus-color: -fx-control-inner-background;
+}
+
+#sideBarTitledPanes .title:hover{
+    -fx-background-color: #BDBDBD ;
+}
+
+#sideBarTitledPanes .title{
+    -fx-background-color: #EEEEEE;
+    -fx-font-weight: bold;
+}
+
+#sideBarTitledPanes .content VBox{
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+#dropDownCourses{
+    -fx-background-color: #EEEEEE;
+}
+
+#sideBarMatch{
+    -fx-background-color: #EEEEEE;
+}
+
+#courseButton{
+    -fx-background-color: transparent;
+    -fx-min-width: 200px;
+    -fx-alignment: center-left;
+    -fx-background-radius: 0;
+}
+
+#courseButton:hover, #selectedCourseButton{
+    -fx-min-width: 200px;
+    -fx-alignment: center-left;
+    -fx-background-color: #BDBDBD;
+}
+
+
