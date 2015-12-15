@@ -52,9 +52,14 @@ public class Server {
         String input = "";
         System.out.println("Type 'quit' to exit the server.");
 
-        while (!input.equals("quit")) {
-            input = scanner.nextLine();
-            System.out.println("You typed: " + input);
+        try {
+            while (!input.equals("quit")) {
+                input = scanner.nextLine();
+                System.out.println("You typed: " + input);
+            }
+        } catch (Exception e) {
+            // Catch every unhandled and unchecked exception here, allowing the server to continue
+            // TODO Adds an entry to the log file for investigation
         }
 
         //Will only continue to here once the user types quit

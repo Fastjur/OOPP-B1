@@ -4,6 +4,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 /**
  * Main database class that defines the database functions
@@ -625,10 +627,11 @@ public class Database {
     /**
      * Used to get matching users using given parameters
      * @param node JSON node containing the search parameters
-     * @return
+     * @return ArrayList containing 3 ArrayLists, the first is an ArrayList containing users the requesting user can
+     * teach, the second who he can learn from, the third who he can buddy up with.
      * @throws SQLException
      */
-    public ArrayList<User> getMatches(int self_id, JsonNode node) throws SQLException, IOException {
+    public ArrayList<ArrayList<User>> getMatches(int self_id, JsonNode node) throws SQLException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         double maxDist = node.get("data").get("maxdist").getDoubleValue(),
                             latitude = node.get("data").get("latitude").getDoubleValue(),
@@ -651,7 +654,6 @@ public class Database {
                 "LEFT JOIN universities ON users.university_id = universities.id " +
                 "LEFT JOIN studies ON users.study = studies.id " + where + " " +
                 "HAVING distance <= ?";
-        System.out.println(query);
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setDouble(1, latitude);
         stmt.setDouble(2, latitude);
@@ -664,39 +666,34 @@ public class Database {
                 canLearn = new ArrayList<>(),
                 canBuddyUp = new ArrayList<>();
         while(rs.next()) {
-            matches.add(getUser(rs.getInt("id")));
+            User user = getUser(rs.getInt("id"));
+            user.setPassword("");
+            matches.add(user);
         }
         stmt.close();
+        ListIterator it = matches.listIterator();
         int index = 0;
-        for (User user : matches) {
-            if (listIntersection(user.getLanguageList(), languages).size() == 0) {
+        if (it.hasNext()){
+            User user = (User) it.next();
+            if (listIntersection(user.getLanguageList(), languages).size() == 0 || aTimes.intersect(user.getAvailableDates()).size() == 0) {
                 matches.remove(index);
             }
             index++;
         }
         if (matches.size() == 0) {
-            return matches; //returns empty result
+            return null;
         }
-        /*
-        fixme: This code is not correct semantically due to return type.
         User self = getUser(self_id);
-        for (User user : matches) {
-            if (listIntersection(user.getCoursesLearningList(), teaching).size() > 0) {
-                canTeach.add(user);
-            }
-        }
-        for (User user : matches) {
-            if (listIntersection(user.getCoursesTeachingList(), learning).size() > 0) {
-                canLearn.add(user);
-            }
-        }
-        for (User user : matches) {
-            if (listIntersection(user.getBuddyList(), buddys).size() > 0) {
-                canBuddyUp.add(user);
-            }
-        }*/
+        canTeach.addAll(matches.stream().filter(user -> listIntersection(user.getCoursesLearningList(), teaching).size() > 0).collect(Collectors.toList()));
+        canLearn.addAll(matches.stream().filter(user -> listIntersection(user.getCoursesTeachingList(), learning).size() > 0).collect(Collectors.toList()));
+        canBuddyUp.addAll(matches.stream().filter(user -> listIntersection(user.getBuddyList(), buddys).size() > 0).collect(Collectors.toList()));
 
-        return null;
+        ArrayList<ArrayList<User>> total = new ArrayList<>();
+        total.add(canTeach);
+        total.add(canLearn);
+        total.add(canBuddyUp);
+
+        return total;
     }
 
     /**
