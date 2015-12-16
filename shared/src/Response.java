@@ -37,4 +37,15 @@ public class Response {
                 + "\" \"responseData\" : " + responseData.toString()
                 + " }";
     }
+
+    public boolean equals(Object other) {
+        if (other instanceof Response) {
+            Response that = (Response)other;
+            return that.errorMessage.equals(this.errorMessage)
+                    && that.errorCode == this.errorCode
+                    && that.responseTo.equals(this.responseTo)
+                    && that.responseData.equals(this.responseData);
+        }
+        return false;
+    }
 }

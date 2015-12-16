@@ -112,6 +112,29 @@ public class AvailableTimesTest {
     }
 
     @Test
+    public void testIntersect() throws Exception {
+        AvailableTimes bTimes = new AvailableTimes(),
+                intersect = new AvailableTimes();
+        TimePeriod p1 = new TimePeriod(150,250);
+        TimePeriod p2 = new TimePeriod(2,3);
+        bTimes.addTimePeriod(1, p1);
+        bTimes.addTimePeriod(1, new TimePeriod(500,600));
+        bTimes.addTimePeriod(3, p2);
+        intersect.addTimePeriod(1, p1);
+        intersect.addTimePeriod(3, p2);
+
+        assertEquals(intersect, aTimes.intersect(bTimes));
+        assertEquals(aTimes, aTimes.intersect(aTimes));
+        assertNotEquals(aTimes, new AvailableTimes());
+    }
+
+    @Test
+    public void testSize() throws Exception {
+        assertEquals(8, aTimes.size());
+        assertEquals(0, new AvailableTimes().size());
+    }
+
+    @Test
     public void testEquals() throws Exception {
         AvailableTimes bTimes = new AvailableTimes();
         AvailableTimes cTimes = new AvailableTimes();
