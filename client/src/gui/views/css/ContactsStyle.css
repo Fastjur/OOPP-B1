@@ -1,0 +1,58 @@
+#background, #backgroundFoot, #center {
+    -fx-background-color: #FFFFFF;
+}
+
+#headText {
+    -fx-font-family: "Roboto";
+}
+
+#name {
+    -fx-font-size: 40;
+}
+
+#age {
+    -fx-font-size: 25;
+}
+
+#centerLeft {
+    -fx-background-color: #FFFFFF;
+}
+
+#description, #university, #study {
+    -fx-font-size: 17;
+    -fx-font-family: roboto;
+}
+
+#descriptionInfo, #universityInfo, #studyInfo {
+    -fx-font-size: 13;
+    -fx-font-family: roboto;
+}
+
+#available {
+    -fx-background-color: #F06292;
+    -fx-padding: 20 20 0 20;
+    -fx-font-family: roboto;
+    -fx-font-size: 30;
+}
+
+#days {
+    -fx-background-color: #F06292;
+    -fx-padding: 20;
+    -fx-font-family: light-roboto;
+    -fx-font-size: 17;
+}
+
+#buttonChat {
+    -fx-base: #FFFFFF;
+    -fx-font-size: 24;
+    -fx-font-family: Roboto;
+    -fx-text-fill: #000000;
+    -fx-border-color: #FFFFFF;
+    -fx-focus-color: #FFFFFF;
+    -fx-body-color: #FFFFFF;
+    -fx-inner-border: #FFFFFF;
+    -fx-faint-focus-color: #FFFFFF;
+    -fx-border-width: 0;
+}
+
+
