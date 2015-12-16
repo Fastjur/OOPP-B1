@@ -12,23 +12,23 @@ public class GuiTopBar extends Application {
     Button chat;
     Button profile;
 
-    String styleButton = "-fx-font: 24 light-roboto;-fx-base: lightseagreen;" +
-            "-fx-text-fill: white;-fx-focus-color: lightseagreen;" +
-            "-fx-faint-focus-color: lightseagreen;-fx-border-width: 50px 1px 10px 1px;" +
-            "-fx-border-color: lightseagreen;-fx-inner-border: lightseagreen;-fx-body-color: lightseagreen;";
-    String styleActiveButton = "-fx-font: 24 light-roboto;-fx-base: lightseagreen;" +
-            "-fx-text-fill: white; -fx-focus-color: lightseagreen;-fx-faint-focus-color: lightseagreen;" +
-            "-fx-border-color: lightseagreen lightseagreen palevioletred lightseagreen;" +
-            "-fx-inner-border: lightseagreen;-fx-body-color: lightseagreen;" +
+    String styleButton = "-fx-font: 24 light-roboto;-fx-base: #26A69A;" +
+            "-fx-text-fill: #FFFFFF;-fx-focus-color: #26A69A;" +
+            "-fx-faint-focus-color: #26A69A;-fx-border-width: 50px 1px 10px 1px;" +
+            "-fx-border-color: #26A69A;-fx-inner-border: #26A69A;-fx-body-color: #26A69A;";
+    String styleActiveButton = "-fx-font: 24 light-roboto;-fx-base: #26A69A;" +
+            "-fx-text-fill: #FFFFFF; -fx-focus-color: #26A69A;-fx-faint-focus-color: #26A69A;" +
+            "-fx-border-color: #26A69A #26A69A #F06292 #26A69A;" +
+            "-fx-inner-border: #26A69A;-fx-body-color: #26A69A;" +
             "-fx-border-width: 50px 1px 10px 1px;";
-    String styleHoverNonActiveButton = "-fx-font: 24 light-roboto;-fx-base: lightseagreen;" +
-            "-fx-text-fill: black;-fx-focus-color: lightseagreen;-fx-faint-focus-color: lightseagreen; " +
-            "-fx-border-color: lightseagreen;-fx-inner-border: lightseagreen;-fx-body-color: lightseagreen;" +
+    String styleHoverNonActiveButton = "-fx-font: 24 light-roboto;-fx-base: #26A69A;" +
+            "-fx-text-fill: #000000;-fx-focus-color: #26A69A;-fx-faint-focus-color: #26A69A; " +
+            "-fx-border-color: #26A69A;-fx-inner-border: #26A69A;-fx-body-color: #26A69A;" +
             "-fx-border-width: 50px 1px 10px 1px;";
-    String styleHoverActiveButton = "-fx-font: 24 light-roboto; -fx-base: lightseagreen;" +
-            "-fx-text-fill: black;-fx-focus-color: lightseagreen;-fx-faint-focus-color: lightseagreen; " +
-            "-fx-border-color: lightseagreen lightseagreen palevioletred lightseagreen;" +
-            "-fx-inner-border: lightseagreen;-fx-body-color: lightseagreen;" +
+    String styleHoverActiveButton = "-fx-font: 24 light-roboto; -fx-base: #26A69A;" +
+            "-fx-text-fill: #000000;-fx-focus-color: #26A69A;-fx-faint-focus-color: #26A69A; " +
+            "-fx-border-color: #26A69A #26A69A #F06292 #26A69A;" +
+            "-fx-inner-border: #26A69A;-fx-body-color: #26A69A;" +
             "-fx-border-width: 50px 1px 10px 1px;";
 
 
@@ -67,8 +67,8 @@ public class GuiTopBar extends Application {
         // Add buttons to a layout pane in a toolbar
         BorderPane pane = new BorderPane();
         ToolBar toolbar = new ToolBar(findMatch, yourMatches, chat, profile);
-        toolbar.setStyle("-fx-background-color: lightseagreen;" +
-                "-fx-border-color: darkcyan transparent transparent transparent;" +
+        toolbar.setStyle("-fx-background-color: #26A69A;" +
+                "-fx-border-color: #00796B transparent transparent transparent;" +
                 "-fx-border-width: 20px 0 0 200px;-fx-padding: 50%, 0, 0, 0;");
         pane.setTop(toolbar);
 
@@ -85,7 +85,6 @@ public class GuiTopBar extends Application {
     // Style of a button when it isn't active
     public void setStyleButton(Button button) {
         button.setStyle(styleButton);
-
     }
 
     // Style of a button when it is active
