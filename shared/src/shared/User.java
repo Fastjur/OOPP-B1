@@ -10,6 +10,7 @@ import java.util.Date;
 
 /**
  * Main user class that will hold a users info in memory
+ *
  * @author Emma Jimmink
  * @author Jurriaan Den Toonder
  * @version 0.5
@@ -40,12 +41,12 @@ public class User {
      * @param university  - String
      * @param studyYear   - int
      * @param available   - ArrayList
-     * @param teaching   - ArrayList
-     * @param learning   - ArrayList
-     * @param buddys   - ArrayList
+     * @param teaching    - ArrayList
+     * @param learning    - ArrayList
+     * @param buddys      - ArrayList
      * @param gender      - String
      * @param nationality - String
-     * @param languages - ArrayList
+     * @param languages   - ArrayList
      * @param description - String
      * @param latitude    - Latitude of users location
      * @param longitude   - Longitude of users location
@@ -95,6 +96,7 @@ public class User {
     /**
      * Returns this object represented as a JSON string
      * Author: Jurriaan Den Toonder
+     *
      * @return String, JSON notation of this object
      * @throws IOException
      */
@@ -114,7 +116,8 @@ public class User {
         String formattedDate = "";
         try {
             formattedDate = df.format(birthday);
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException ignored) {
+        }
 
         text = Integer.toString(userID) + "\n" + password + "\n" + firstname + " " + lastname + "\n"
                 + formattedDate + "\n" + mail + "\n" + phonenumber + "\n" + study
@@ -136,7 +139,7 @@ public class User {
 
         // languageList
         text += "languages: " + this.languageList.toString() + "\n";
-        
+
         text += "description: " + description + "\n";
 
         text += "longitude: " + longitude + "\n";
@@ -267,6 +270,7 @@ public class User {
 
     /**
      * getCoursesTeachingList: getter for private arraylist coursesteaching
+     *
      * @return CoursesTeaching - ArrayList<String>
      */
     public ArrayList<String> getCoursesTeachingList() {
@@ -275,6 +279,7 @@ public class User {
 
     /**
      * getCoursesLearningList: getter for private arraylist courseslearning
+     *
      * @return CoursesLearning - ArrayList<String>
      */
     public ArrayList<String> getCoursesLearningList() {
@@ -283,6 +288,7 @@ public class User {
 
     /**
      * getBuddyList: getter for private arraylist buddylist
+     *
      * @return BuddyList - ArrayList<String>
      */
     public ArrayList<String> getBuddyList() {
@@ -291,6 +297,7 @@ public class User {
 
     /**
      * getLanguageList: getter for private arraylist languagelist
+     *
      * @return LanguageList - ArrayList<String>
      */
     public ArrayList<String> getLanguageList() {
@@ -299,6 +306,7 @@ public class User {
 
     /**
      * getAvailableDates: getter for private arraylist availablelist
+     *
      * @return AvailableList - ArrayList<AvaliableDate>
      */
     public AvailableTimes getAvailableDates() {

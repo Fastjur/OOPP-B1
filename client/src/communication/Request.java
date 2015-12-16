@@ -18,7 +18,8 @@ public class Request {
     }
 
     @JsonCreator
-    public Request() { }
+    public Request() {
+    }
 
     public void putData(String key, Object value) {
         this.requestData.put(key, value);

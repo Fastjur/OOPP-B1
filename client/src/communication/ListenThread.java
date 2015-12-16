@@ -69,7 +69,7 @@ public class ListenThread extends Thread {
             switch (responseTo) {
                 case "match":
                     ArrayList<User> canTeach = mapper.readValue(responseObj.get("responseData").get("canTeach")
-                                            .getTextValue(),
+                                    .getTextValue(),
                             mapper.getTypeFactory().constructCollectionType(ArrayList.class, User.class)),
                             canLearn = mapper.readValue(responseObj.get("responseData").get("canLearn").getTextValue(),
                                     mapper.getTypeFactory().constructCollectionType(ArrayList.class, User.class)),

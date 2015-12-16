@@ -1,38 +1,38 @@
-#sideBarTitledPanes > .title > .arrow-button .arrow{
+#sideBarTitledPanes > .title > .arrow-button .arrow {
     -fx-focus-color: -fx-control-inner-background;
     -fx-faint-focus-color: -fx-control-inner-background;
 }
 
-#sideBarTitledPanes .title:hover{
-    -fx-background-color: #BDBDBD ;
+#sideBarTitledPanes .title:hover {
+    -fx-background-color: #BDBDBD;
 }
 
-#sideBarTitledPanes .title{
+#sideBarTitledPanes .title {
     -fx-background-color: #EEEEEE;
     -fx-font-weight: bold;
 }
 
-#sideBarTitledPanes .content VBox{
+#sideBarTitledPanes .content VBox {
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
 
-#dropDownCourses{
+#dropDownCourses {
     -fx-background-color: #EEEEEE;
 }
 
-#sideBarMatch{
+#sideBarMatch {
     -fx-background-color: #EEEEEE;
 }
 
-#courseButton{
+#courseButton {
     -fx-background-color: transparent;
     -fx-min-width: 200px;
     -fx-alignment: center-left;
     -fx-background-radius: 0;
 }
 
-#courseButton:hover, #selectedCourseButton{
+#courseButton:hover, #selectedCourseButton {
     -fx-min-width: 200px;
     -fx-alignment: center-left;
     -fx-background-color: #BDBDBD;

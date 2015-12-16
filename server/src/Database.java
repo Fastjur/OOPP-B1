@@ -30,7 +30,8 @@ public class Database {
         connection = ConnectionManager.getConnection();
     }
 
-    protected Database(boolean IFUCKINGHATEJAVA) {}
+    protected Database(boolean IFUCKINGHATEJAVA) {
+    }
 
     /**
      * Gets user from database by id
@@ -628,6 +629,7 @@ public class Database {
 
     /**
      * Used to get matching users using given parameters
+     *
      * @param node JSON node containing the search parameters
      * @return ArrayList containing 3 ArrayLists, the first is an ArrayList containing users the requesting user can
      * teach, the second who he can learn from, the third who he can buddy up with.
@@ -636,26 +638,26 @@ public class Database {
     public ArrayList<ArrayList<User>> getMatches(int self_id, JsonNode node) throws SQLException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         double maxDist = node.get("data").get("maxdist").getDoubleValue(),
-                            latitude = node.get("data").get("latitude").getDoubleValue(),
-                            longitude = node.get("data").get("longitude").getDoubleValue();
-                    AvailableTimes aTimes = mapper.readValue(node.get("data").get("availability").getTextValue(),
-                            AvailableTimes.class);
-                    ArrayList learning = mapper.readValue(node.get("data").get("learning").getTextValue(),
-                                    ArrayList.class),
-                            teaching = mapper.readValue(node.get("data").get("teaching").getTextValue(),
-                                    ArrayList.class),
-                            buddys = mapper.readValue(node.get("data").get("buddys").getTextValue(),
-                                    ArrayList.class),
-                            languages = mapper.readValue(node.get("data").get("languages").getTextValue(),
-                                    ArrayList.class);
+                latitude = node.get("data").get("latitude").getDoubleValue(),
+                longitude = node.get("data").get("longitude").getDoubleValue();
+        AvailableTimes aTimes = mapper.readValue(node.get("data").get("availability").getTextValue(),
+                AvailableTimes.class);
+        ArrayList learning = mapper.readValue(node.get("data").get("learning").getTextValue(),
+                ArrayList.class),
+                teaching = mapper.readValue(node.get("data").get("teaching").getTextValue(),
+                        ArrayList.class),
+                buddys = mapper.readValue(node.get("data").get("buddys").getTextValue(),
+                        ArrayList.class),
+                languages = mapper.readValue(node.get("data").get("languages").getTextValue(),
+                        ArrayList.class);
         String where = "WHERE users.id <> ?",
                 dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * 1.1515 ) as distance",
                 query = "SELECT users.id, nationalities.name AS nationality, universities.name AS university, email, passwd, firstname, lastname, sex, birthdate, studies.name AS study, bio, studyYear, availableDates, phonenumber, latitude, longitude, " +
-                dist + " FROM `users` " +
-                "LEFT JOIN nationalities ON users.nationality_id = nationalities.id " +
-                "LEFT JOIN universities ON users.university_id = universities.id " +
-                "LEFT JOIN studies ON users.study = studies.id " + where + " " +
-                "HAVING distance <= ?";
+                        dist + " FROM `users` " +
+                        "LEFT JOIN nationalities ON users.nationality_id = nationalities.id " +
+                        "LEFT JOIN universities ON users.university_id = universities.id " +
+                        "LEFT JOIN studies ON users.study = studies.id " + where + " " +
+                        "HAVING distance <= ?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setDouble(1, latitude);
         stmt.setDouble(2, latitude);
@@ -667,7 +669,7 @@ public class Database {
                 canTeach = new ArrayList<>(),
                 canLearn = new ArrayList<>(),
                 canBuddyUp = new ArrayList<>();
-        while(rs.next()) {
+        while (rs.next()) {
             User user = getUser(rs.getInt("id"));
             user.setPassword("");
             matches.add(user);
@@ -675,7 +677,7 @@ public class Database {
         stmt.close();
         ListIterator<User> it = matches.listIterator();
         int index = 0;
-        while (it.hasNext()){
+        while (it.hasNext()) {
             User user = it.next();
             if (listIntersection(user.getLanguageList(), languages).size() == 0 || aTimes.intersect(user.getAvailableDates()).size() == 0) {
                 matches.remove(index);
@@ -699,9 +701,10 @@ public class Database {
 
     /**
      * Returns the intersection between two ArrayLists, thus only elements that are in both lists
+     *
      * @param list1 ArrayList 1
      * @param list2 ArrayList 2
-     * @param <T> Type specifier
+     * @param <T>   Type specifier
      * @return ArrayList with intersections between lists
      */
     private <T> ArrayList<T> listIntersection(ArrayList<T> list1, ArrayList<T> list2) {

@@ -111,7 +111,8 @@ public class ClientConnectionThread extends Thread {
                     try {
                         User u = Server.getDb().getUser(newuser.getMail());
                         exists = u != null;
-                    } catch (SQLException e) { }
+                    } catch (SQLException e) {
+                    }
 
                     if (exists) {
                         response.errorCode = 2;
@@ -148,7 +149,7 @@ public class ClientConnectionThread extends Thread {
                                 response.errorMessage = "Login successful.";
                                 break;
                             }
-                        } catch(SQLException e) {
+                        } catch (SQLException e) {
                             // user not found
                         }
                         response.errorCode = 3;

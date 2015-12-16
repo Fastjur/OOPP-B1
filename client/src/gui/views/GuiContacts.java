@@ -59,7 +59,7 @@ public class GuiContacts extends Application {
 
         Button btn = chatButton();
         pane.setAlignment(btn, Pos.CENTER_RIGHT);
-        pane.setMargin(btn, new Insets(10,10,10,10));
+        pane.setMargin(btn, new Insets(10, 10, 10, 10));
         pane.setBottom(btn);
 
         Scene scene = new Scene(pane, Color.WHITE);
@@ -117,7 +117,7 @@ public class GuiContacts extends Application {
 
         VBox descr = new VBox(2);
         TextFlow description = new TextFlow();
-        Text descriptionTitle  = new Text("Description");
+        Text descriptionTitle = new Text("Description");
         Text descriptionInfo = new Text(_description);
         description.getChildren().addAll(descriptionInfo);
         description.setPadding(new Insets(0, 30, 0, 0));
@@ -173,7 +173,7 @@ public class GuiContacts extends Application {
 
     // Available
     public VBox right(ArrayList _monTimes, ArrayList _tueTimes, ArrayList _wedTimes, ArrayList _thuTimes,
-                            ArrayList _friTimes, ArrayList _satTimes, ArrayList _sunTimes) {
+                      ArrayList _friTimes, ArrayList _satTimes, ArrayList _sunTimes) {
         VBox vbox = new VBox();
         VBox available = new VBox();
         VBox days = new VBox();

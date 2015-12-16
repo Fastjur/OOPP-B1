@@ -34,9 +34,8 @@ public class GuiTopBar extends Application {
             "-fx-border-width: 50px 1px 10px 1px;";
 
 
-
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         // create buttons
         findMatch = new Button();
         findMatch.setText("Find Match");
@@ -59,7 +58,7 @@ public class GuiTopBar extends Application {
         chat.setOnMouseEntered(e -> setStyleHoverButton(chat));
         chat.setOnMouseExited(e -> setStyleButtonOriginal(chat));
 
-        profile = new Button ();
+        profile = new Button();
         profile.setText("Profile");
         setStyleButton(profile);
         profile.setOnAction(e -> profileClick());

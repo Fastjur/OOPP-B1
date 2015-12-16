@@ -19,6 +19,7 @@ import java.util.ArrayList;
  * Created by Fastjur on 10-12-2015.
  * SHOULD NOT BE USED ON RELEASES
  * SOLELY FOR TESTING PURPOSES
+ *
  * @author Jurriaan Den Toonder
  */
 public class TestClient {
@@ -89,7 +90,7 @@ public class TestClient {
                     byte[] buf = new byte[4];
                     in.read(buf);
                     int messageLength = ByteBuffer.wrap(buf).getInt();
-                    if(messageLength > 0 && messageLength < 65536) {
+                    if (messageLength > 0 && messageLength < 65536) {
                         byte[] buffer = new byte[messageLength];
                         in.read(buffer, 0, messageLength);
                         String message = decodeMessage(buffer);

@@ -1,28 +1,28 @@
 #root {
-	-fx-background-color:  #26A69A;
-	-fx-border-color: white;
-	-fx-border-radius: 20;
-	-fx-padding: 10 10 10 10;
-	-fx-background-radius: 20;
+    -fx-background-color: #26A69A;
+    -fx-border-color: white;
+    -fx-border-radius: 20;
+    -fx-padding: 10 10 10 10;
+    -fx-background-radius: 20;
 
 }
 
 #bp {
-	-fx-background-color:  #EEEEEE;
+    -fx-background-color: #EEEEEE;
 
 }
 
 #btnLogin {
-    -fx-background-color:	#F06292;
-    -fx-text-fill:  #FFFFFF;
+    -fx-background-color: #F06292;
+    -fx-text-fill: #FFFFFF;
 }
 
-#BLT, #BR{
-    -fx-background-color:	#26A69A;
-    -fx-text-fill:  #FFFFFF;
+#BLT, #BR {
+    -fx-background-color: #26A69A;
+    -fx-text-fill: #FFFFFF;
 }
 
 #text, #text2 {
-	-fx-fill:  #26A69A;
+    -fx-fill: #26A69A;
 }
 

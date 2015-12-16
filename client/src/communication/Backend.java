@@ -37,13 +37,13 @@ public class Backend {
     }
 
     public static void onResponse(Response response) {
-        for(IMessageListener listener : messageListeners) {
+        for (IMessageListener listener : messageListeners) {
             listener.onIncomingResponse(response);
         }
     }
 
     public static void onDisconnect(boolean erroneous) {
-        for(IDisconnectListener listener : disconnectListeners) {
+        for (IDisconnectListener listener : disconnectListeners) {
             listener.onDisconnect(erroneous);
         }
     }
@@ -118,7 +118,7 @@ public class Backend {
     }
 
     public static void match(User self) {
-        if(!isConnected())
+        if (!isConnected())
             return;
 
         try {

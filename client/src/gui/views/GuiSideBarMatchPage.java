@@ -9,7 +9,9 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-/**Sidebar for the match page
+/**
+ * Sidebar for the match page
+ *
  * @author Zoë van Steijn.
  */
 public class GuiSideBarMatchPage extends Application {
@@ -39,11 +41,11 @@ public class GuiSideBarMatchPage extends Application {
         // Create Study Buddy drop-down menu
         VBox studyBuddySubj = new VBox();
         studyBuddySubj.setId("dropDownCourses");
-        for(int i=0; i<buddyCourses.size(); i++){
+        for (int i = 0; i < buddyCourses.size(); i++) {
             Button sbCourse = new Button(buddyCourses.get(i));
             sbCourse.setId("courseButton");
             sbCourse.setOnAction(event -> buddyCoursesClick(sbCourse));
-           studyBuddySubj.getChildren().add(i, sbCourse);
+            studyBuddySubj.getChildren().add(i, sbCourse);
         }
 
         TitledPane studyBuddyDropDown = new TitledPane("Find a Study Buddy", studyBuddySubj);
@@ -54,7 +56,7 @@ public class GuiSideBarMatchPage extends Application {
         // Create Learning Courses drop-down menu
         VBox learningSubj = new VBox();
         learningSubj.setId("dropDownCourses");
-        for(int i=0; i<learningCourses.size(); i++){
+        for (int i = 0; i < learningCourses.size(); i++) {
             Button lCourse = new Button(learningCourses.get(i));
             lCourse.setId("courseButton");
             lCourse.setOnAction(event -> learningCoursesClick(lCourse));
@@ -69,7 +71,7 @@ public class GuiSideBarMatchPage extends Application {
         // Create Teaching Courses drop-down menu
         VBox teachingSubj = new VBox();
         teachingSubj.setId("dropDownCourses");
-        for(int i=0; i<teachingCourses.size(); i++){
+        for (int i = 0; i < teachingCourses.size(); i++) {
             Button tCourse = new Button(teachingCourses.get(i));
             tCourse.setId("courseButton");
             tCourse.setOnAction(event -> teachingCourseClick(tCourse));
@@ -98,7 +100,7 @@ public class GuiSideBarMatchPage extends Application {
     }
 
     private void buddyCoursesClick(Button sbCourse) {
-        if(scene.lookup("#selectedCourseButton") instanceof Button) {
+        if (scene.lookup("#selectedCourseButton") instanceof Button) {
             Button oldCourse = (Button) scene.lookup("#selectedCourseButton");
             oldCourse.setId("courseButton");
         }
@@ -110,7 +112,7 @@ public class GuiSideBarMatchPage extends Application {
     }
 
     private void learningCoursesClick(Button lCourse) {
-        if(scene.lookup("#selectedCourseButton") instanceof Button) {
+        if (scene.lookup("#selectedCourseButton") instanceof Button) {
             Button oldCourse = (Button) scene.lookup("#selectedCourseButton");
             oldCourse.setId("courseButton");
         }
@@ -122,16 +124,18 @@ public class GuiSideBarMatchPage extends Application {
     }
 
     private void teachingCourseClick(Button tCourse) {
-        if(scene.lookup("#selectedCourseButton") instanceof Button) {
+        if (scene.lookup("#selectedCourseButton") instanceof Button) {
             Button oldCourse = (Button) scene.lookup("#selectedCourseButton");
             oldCourse.setId("courseButton");
         }
         tCourse.setId("selectedCourseButton");
-    
+
         String course = tCourse.getText();
 
         // TODO: Get all users from database who need a tutor for this course & show the first user on the Match Page
     }
 
-    public static void main(String[] args){ launch(args);}
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

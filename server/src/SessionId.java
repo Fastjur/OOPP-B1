@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 public class SessionId {
     private SecureRandom random = new SecureRandom();
 
-    public String randomSessionId(){
+    public String randomSessionId() {
         return new BigInteger(160, random).toString(32);
     }
 }
