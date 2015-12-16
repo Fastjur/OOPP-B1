@@ -29,7 +29,6 @@ public class TestClient {
         try {
             socket = new Socket(InetAddress.getLocalHost(), 8372);
             Thread.sleep(1000);
-            socket.setSoTimeout(10000);
             in = socket.getInputStream();
             out = socket.getOutputStream();
             AvailableTimes aTimes = new AvailableTimes();
