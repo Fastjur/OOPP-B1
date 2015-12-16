@@ -1,0 +1,62 @@
+#sidebar    {
+    -fx-background-color: #EEEEEE;
+}
+
+.sidebarBtn {
+    -fx-display: inline-block;
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14pt;
+    -fx-font-weight: bold;
+    -fx-background-color: #EEEEEE;
+}
+
+.sidebarBtn:hover{
+    -fx-background-color: #BDBDBD;
+}
+
+#uploadPicBtn   {
+    -fx-background-color: #F06292;
+    -fx-text-fill: #FFFFFF;
+}
+
+#profileInfoLabel   {
+    -fx-background-color: #F06292;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 20pt;
+    -fx-font-family: "Roboto";
+}
+
+#profileInfoGridPane    {
+    -fx-background-color: #EEEEEE;
+}
+
+#profileInfoPane  {
+    -fx-background-color: #BDBDBD;
+}
+
+#profileAdditionalInfoGridPaneContainerPane {
+    -fx-background-color: #EEEEEE;
+}
+
+#profileInfoCoursesLabelPane    {
+    -fx-background-color: #EEEEEE;
+    -fx-font-family: "Roboto";
+    -fx-font-weight: bold;
+    -fx-font-size: 20pt;
+}
+
+#profileInfoCoursesGridPane {
+    -fx-background-color: #EEEEEE;
+}
+
+#profileInfoContinuedGridPane   {
+    -fx-background-color: #EEEEEE;
+}
+
+#profileAvailabilityTitlePane   {
+    -fx-text-fill: #FFFFFF;
+}
+
+#profileAvailabilityPane    {
+    -fx-background-color: #F06292;
+}
