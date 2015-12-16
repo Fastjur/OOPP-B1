@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="MySQL - ooppb1@db4free.net" uuid="40a95822-cc36-4e49-914c-3a954d834f05">
+      <secret-storage>master_key</secret-storage>
+      <user-name>oopp_usr</user-name>
+      <schema-pattern>ooppb1.*</schema-pattern>
+      <default-schemas>ooppb1.*</default-schemas>
+    </data-source>
+  </component>
+</project>
