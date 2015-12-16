@@ -23,16 +23,16 @@ public class GuiProfile extends Application {
     public void start(Stage PrimaryStage) throws Exception {
 
         BorderPane ProfileInfoPane = new BorderPane();
-        Scene scene = new Scene(ProfileInfoPane, 1920, 1080);
-        PrimaryStage.setScene(scene);
+        Scene profileScene = new Scene(ProfileInfoPane, 1920, 1080);
+        PrimaryStage.setScene(profileScene);
 
         //Insets:
         Insets noPaddingInsets = new Insets(0);
         Insets sideBarBtnInsets = new Insets(0, 0, 0, 20);
-        Insets profileAdditionalInfoInsets = new Insets(10,30,10,10);
+        Insets profileAdditionalInfoInsets = new Insets(10, 30, 10, 10);
         Insets profileAvailabilityTitlePaneInsets = new Insets(10);
         Insets profileAvailabilityGridPaneInsets = new Insets(0, 10, 5, 10);
-        Insets profileAvailabilityPaneInsets = new Insets(0,20,0,0);
+        Insets profileAvailabilityPaneInsets = new Insets(0, 20, 0, 0);
         Insets profileInsets = new Insets(10, 30, 30, 30);
 
         //Shape settings
@@ -64,6 +64,7 @@ public class GuiProfile extends Application {
         profile.setText("Profile");
         setStyleButton(profile);
         profile.setOnAction(e -> profileClick());
+        profile.setOnMouseClicked(e -> PrimaryStage.setScene(profileScene));
         profile.setOnMouseEntered(e -> setStyleHoverButton(profile));
         profile.setOnMouseExited(e -> setStyleButtonOriginal(profile));
 
@@ -148,9 +149,9 @@ public class GuiProfile extends Application {
         //Labels
         Label profileInfoLabel = new Label("Personal");
         profileInfoLabel.setAlignment(Pos.BOTTOM_LEFT);
-        profileInfoLabel.setMinSize(1250,60);
-        profileInfoLabel.setPrefSize(1250,60);
-        profileInfoLabel.setMaxSize(1250,60);
+        profileInfoLabel.setMinSize(1250, 60);
+        profileInfoLabel.setPrefSize(1250, 60);
+        profileInfoLabel.setMaxSize(1250, 60);
         profileInfoLabel.setPadding(sideBarBtnInsets);
         profileInfoLabel.setId("profileInfoLabel");
         Label name = new Label("Name:");
@@ -221,12 +222,6 @@ public class GuiProfile extends Application {
         profilePicPane.setAlignment(Pos.TOP_LEFT);
         profilePicPane.getChildren().addAll(profilePicView, uploadPicBtn);
         profilePicPane.setId("profilePicPane");
-
-        /*
-        HBox profileInfoTitlePane = new HBox();
-        profileInfoTitlePane.setPadding(profileInfoTitleInsets);
-        profileInfoTitlePane.getChildren().addAll(profileInfoLabel);
-        */
 
         GridPane profileInfoGridPane = new GridPane();
         profileInfoGridPane.setAlignment(Pos.BOTTOM_LEFT);
@@ -360,7 +355,7 @@ public class GuiProfile extends Application {
         ProfileInfoPane.setCenter(profile);
 
         String styleURL = this.getClass().getResource("css/ProfileStyle.css").toExternalForm();
-        scene.getStylesheets().add(styleURL);
+        profileScene.getStylesheets().add(styleURL);
         try {
             PrimaryStage.show();
         } catch (Exception e) {
