@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class GUILauncher extends Application {
     private static Scene GUIScene;
     private static BorderPane GUI;
+    private static GuiTopBar topbar;
     private static GuiProfileConstructor profile;
     private static GuiFindMatchConstructor findMatch;
     private static GuiSideBarFindMatchConstructor findMatchSideBar;
@@ -49,12 +50,14 @@ public class GUILauncher extends Application {
         findMatchSideBar  = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
         profile = new GuiProfileConstructor();
         sideBar = new GUISideBarConstructor();
+        topbar = new GuiTopBar();
 
+        GUI.setTop(topbar);
         GUI.setCenter(findMatch);
         GUI.setLeft(findMatchSideBar);
 
         PrimaryStage.setScene(GUIScene);
-        GUIScene.getStylesheets().addAll("/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css");
+        GUIScene.getStylesheets().addAll("/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css");
         PrimaryStage.show();
     }
 
@@ -62,7 +65,7 @@ public class GUILauncher extends Application {
         launch(args);
     }
 
-    //Event handler methods
+    //Events Find Match Page
 
     public static void findMatchBuddyCoursesClick(Button sbCourse) {
         if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
@@ -98,5 +101,41 @@ public class GUILauncher extends Application {
         String course = tCourse.getText();
 
         // TODO: Get all users from database who need a tutor for this course & show the first user on the Match Page
+    }
+
+    // Events TopBar
+
+    public static void findMatchClick(Button fMatch, Button yourMatches, Button chat, Button profile) {
+        fMatch.setId("findMatchActive");
+        yourMatches.setId("yourMatches");
+        chat.setId("chat");
+        profile.setId("profile");
+
+        GUI.setCenter(findMatch);
+        GUI.setLeft(findMatchSideBar);
+    }
+
+    public static void yourMatchesClick(Button findMatch, Button yourMatches, Button chat, Button profile) {
+        yourMatches.setId("yourMatchesActive");
+        findMatch.setId("findMatch");
+        chat.setId("chat");
+        profile.setId("profile");
+    }
+
+    public static void chatClick(Button findMatch, Button yourMatches, Button chat, Button profile) {
+        chat.setId("chatActive");
+        findMatch.setId("findMatch");
+        yourMatches.setId("yourMatches");
+        profile.setId("profile");
+    }
+
+    public static void profileClick(Button findMatch, Button yourMatches, Button chat, Button prof) {
+        prof.setId("profileActive");
+        findMatch.setId("findMatch");
+        yourMatches.setId("yourMatches");
+        chat.setId("chat");
+
+        GUI.setCenter(profile);
+        GUI.setLeft(sideBar);
     }
 }

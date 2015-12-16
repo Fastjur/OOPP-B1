@@ -24,54 +24,21 @@ public class GuiTopBar extends ToolBar {
         findMatch = new Button();
         findMatch.setText("Find Match");
         findMatch.setId("findMatch");
-        findMatch.setOnAction(e -> findMatchClick());
+        findMatch.setOnAction(e -> GUILauncher.findMatchClick(findMatch, yourMatches, chat, profile));
 
         yourMatches = new Button();
         yourMatches.setText("Your Matches");
         yourMatches.setId("yourMatches");
-        yourMatches.setOnAction(e -> yourMatchesClick());
+        yourMatches.setOnAction(e -> GUILauncher.yourMatchesClick(findMatch, yourMatches, chat, profile));
 
         chat = new Button();
         chat.setText("Chat");
         chat.setId("chat");
-        chat.setOnAction(e -> chatClick());
+        chat.setOnAction(e -> GUILauncher.chatClick(findMatch, yourMatches, chat, profile));
 
         profile = new Button();
         profile.setText("Profile");
         profile.setId("profile");
-        profile.setOnAction(e -> profileClick());
-    }
-
-    // Events
-    public void findMatchClick() {
-        findMatch.setId("findMatchActive");
-        yourMatches.setId("yourMatches");
-        chat.setId("chat");
-        profile.setId("profile");
-
-    }
-
-    public void yourMatchesClick() {
-        yourMatches.setId("yourMatchesActive");
-        findMatch.setId("findMatch");
-        chat.setId("chat");
-        profile.setId("profile");
-
-    }
-
-    public void chatClick() {
-        chat.setId("chatActive");
-        findMatch.setId("findMatch");
-        yourMatches.setId("yourMatches");
-        profile.setId("profile");
-
-    }
-
-    public void profileClick() {
-        profile.setId("profileActive");
-        findMatch.setId("findMatch");
-        yourMatches.setId("yourMatches");
-        chat.setId("chat");
-
+        profile.setOnAction(e -> GUILauncher.profileClick(findMatch, yourMatches, chat, profile));
     }
 }
