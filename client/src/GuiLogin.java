@@ -1,7 +1,9 @@
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Reflection;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -68,9 +71,7 @@ public class GuiLogin extends Application {
 
         //Implementing Nodes for GridPane
         //Login
-        Label lblUserName = new Label("Username");
         final TextField txtUserName = new TextField();
-        Label lblPassword = new Label("Password");
         final PasswordField pf = new PasswordField();
         Button btnLoginTop = new Button("Login");
         Button btnLoginBot= new Button("Login");
@@ -78,23 +79,17 @@ public class GuiLogin extends Application {
         final Label lblMessage = new Label();
 
         //Register
-        Label lblUserName2 = new Label("Username");
         final TextField txtUserName2 = new TextField();
-        Label lblPassword2 = new Label("Password");
         final PasswordField pf2 = new PasswordField();
-        Label lblPassword3 = new Label("Password");
         final PasswordField pf3 = new PasswordField();
         Button btnLoginReg = new Button("Login");
         Button btnRegisterTop = new Button("Register");
         Button btnRegisterBot = new Button("Register");
-        Label lblPasswordRetype = new Label("Retype");
         final PasswordField txtRetypePas = new PasswordField();
 
         //Adding Nodes to GridPane layout
         //Login
-        gridPane.add(lblUserName, 1, 1);
         gridPane.add(txtUserName, 2, 1, 2, 1);
-        gridPane.add(lblPassword, 1, 2);
         gridPane.add(pf, 2, 2, 2, 1);
         gridPane.add(btnLoginTop, 2,0);
         gridPane.add(btnLoginBot, 2, 3);
@@ -102,11 +97,8 @@ public class GuiLogin extends Application {
         gridPane.add(lblMessage, 2, 4, 2,1);
 
         //Register
-        gridPane2.add(lblUserName2, 1, 1);
         gridPane2.add(txtUserName2, 2, 1, 2, 1);
-        gridPane2.add(lblPassword2, 1, 2);
         gridPane2.add(pf2, 2, 2, 2, 1);
-        gridPane2.add(lblPasswordRetype, 1,3,2,1);
         gridPane2.add(txtRetypePas, 2, 3, 2,1);
         gridPane2.add(btnRegisterTop, 3,0);
         gridPane2.add(btnLoginReg, 2,0);
@@ -177,21 +169,44 @@ public class GuiLogin extends Application {
         bp2.setCenter(gridPane2);
 
         //Adding BorderPane to the scene and loading CSS
-        Scene scene = new Scene(bp);
-        Scene scene2 = new Scene(bp2);
-        btnRegister.setOnAction(e -> primaryStage.setScene(scene2));
-        btnLoginReg.setOnAction(e -> primaryStage.setScene(scene));
-       // scene.getStylesheets().add(getClass().getClassLoader().getResource("login.css").toExternalForm());
-        scene.getStylesheets().add("css/login.css");
-        scene2.getStylesheets().add("css/login.css");
-        primaryStage.setScene(scene);
+        Scene loginScene = new Scene(bp);
+        Scene registerScene = new Scene(bp2);
+
+        //MouseHover
+        //Login
+        mouseHover(btnLoginBot, loginScene);
+        mouseHover(btnLoginTop, loginScene);
+        mouseHover(btnRegister, loginScene);
+        mouseHover(btnLoginReg, registerScene);
+        mouseHover(btnRegisterTop, registerScene);
+        mouseHover(btnRegisterBot, registerScene);
+
+        btnRegister.setOnAction(e -> primaryStage.setScene(registerScene));
+        btnLoginReg.setOnAction(e -> primaryStage.setScene(loginScene));
+        loginScene.getStylesheets().add("css/login.css");
+        registerScene.getStylesheets().add("css/login.css");
+        primaryStage.setScene(loginScene);
 
         //primaryStage.setResizable(false);
+        primaryStage.setMinWidth(400);
+        primaryStage.setMinHeight(300);
         primaryStage.show();
 
-        //Login CSS:  -fx-background-radius: 30, 30, 29, 28;
-        // -fx-padding: 3px 10px 3px 10px;
 
 
     }
-}
+    public static void mouseHover(Button btn, Scene scene) {
+        btn.setOnMouseEntered(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.HAND);
+            }
+        });
+        btn.setOnMouseExited(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                scene.setCursor(Cursor.DEFAULT); //Change cursor to crosshair
+            }
+        });
+    }}
+

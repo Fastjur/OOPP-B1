@@ -12,12 +12,17 @@
 
 }
 
-#btnLogin, #BLT, #BR {
+#btnLogin {
     -fx-background-color:	#F06292;
     -fx-text-fill:  #FFFFFF;
 }
 
+#BLT, #BR{
+    -fx-background-color:	#26A69A;
+    -fx-text-fill:  #FFFFFF;
+}
+
 #text, #text2 {
-	-fx-fill:  Red;
+	-fx-fill:  #26A69A;
 }
 
