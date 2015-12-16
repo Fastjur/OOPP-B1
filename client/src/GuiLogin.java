@@ -35,6 +35,7 @@ public class GuiLogin extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("MindMatch Login");
 
+        //BorderPane
         //Login
         BorderPane bp = new BorderPane();
         bp.setPadding(new Insets(10,50,50,50));
@@ -111,9 +112,6 @@ public class GuiLogin extends Application {
         gridPane2.add(btnLoginReg, 2,0);
         gridPane2.add(btnRegisterBot, 2,4, 2, 1);
 
-
-
-
         //Reflection for gridPane
         Reflection r = new Reflection();
         r.setFraction(0.7f);
@@ -146,9 +144,12 @@ public class GuiLogin extends Application {
 
         //Add ID's to Nodes
         bp.setId("bp");
+        btnLoginTop.setId("BLT");
+        btnRegister.setId("BR");
         gridPane.setId("root");
         btnLoginBot.setId("btnLogin");
         text.setId("text");
+        text2.setId("text2");
 
         //Action for btnLogin
         btnLoginBot.setOnAction(new EventHandler<ActionEvent>() {
@@ -181,10 +182,15 @@ public class GuiLogin extends Application {
         btnRegister.setOnAction(e -> primaryStage.setScene(scene2));
         btnLoginReg.setOnAction(e -> primaryStage.setScene(scene));
        // scene.getStylesheets().add(getClass().getClassLoader().getResource("login.css").toExternalForm());
+        scene.getStylesheets().add("css/login.css");
+        scene2.getStylesheets().add("css/login.css");
         primaryStage.setScene(scene);
 
         //primaryStage.setResizable(false);
         primaryStage.show();
+
+        //Login CSS:  -fx-background-radius: 30, 30, 29, 28;
+        // -fx-padding: 3px 10px 3px 10px;
 
 
     }

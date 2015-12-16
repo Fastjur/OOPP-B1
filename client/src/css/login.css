@@ -1,5 +1,5 @@
 #root {
-	-fx-background-color:  linear-gradient(lightgray, gray);
+	-fx-background-color:  #26A69A;
 	-fx-border-color: white;
 	-fx-border-radius: 20;
 	-fx-padding: 10 10 10 10;
@@ -8,16 +8,16 @@
 }
 
 #bp {
-	-fx-background-color:  linear-gradient(gray,DimGrey );
+	-fx-background-color:  #EEEEEE;
 
 }
 
-#btnLogin {
-    -fx-background-radius: 30, 30, 29, 28;
-    -fx-padding: 3px 10px 3px 10px;
-    -fx-background-color:	linear-gradient(orange, orangered );
+#btnLogin, #BLT, #BR {
+    -fx-background-color:	#F06292;
+    -fx-text-fill:  #FFFFFF;
 }
 
-#text {
-	-fx-fill:  linear-gradient(orange , orangered);
+#text, #text2 {
+	-fx-fill:  Red;
 }
+
