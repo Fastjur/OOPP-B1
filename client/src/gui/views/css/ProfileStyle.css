@@ -1,36 +1,20 @@
-#sidebar {
-    -fx-background-color: #EEEEEE;
-}
-
-.sidebarBtn {
-    -fx-display: inline-block;
-    -fx-font-family: "Roboto";
-    -fx-font-size: 14pt;
-    -fx-font-weight: bold;
-    -fx-background-color: #EEEEEE;
-}
-
-.sidebarBtn:hover {
-    -fx-background-color: #BDBDBD;
-}
-
-#uploadPicBtn {
+#uploadPicBtn   {
     -fx-background-color: #F06292;
     -fx-text-fill: #FFFFFF;
 }
 
-#profileInfoLabel {
+#profileInfoLabel   {
     -fx-background-color: #F06292;
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 20pt;
     -fx-font-family: "Roboto";
 }
 
-#profileInfoGridPane {
+#profileInfoGridPane    {
     -fx-background-color: #EEEEEE;
 }
 
-#profileInfoPane {
+#profileInfoPane  {
     -fx-background-color: #BDBDBD;
 }
 
@@ -38,7 +22,7 @@
     -fx-background-color: #EEEEEE;
 }
 
-#profileInfoCoursesLabelPane {
+#profileInfoCoursesLabelPane    {
     -fx-background-color: #EEEEEE;
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
@@ -49,14 +33,14 @@
     -fx-background-color: #EEEEEE;
 }
 
-#profileInfoContinuedGridPane {
+#profileInfoContinuedGridPane   {
     -fx-background-color: #EEEEEE;
 }
 
-#profileAvailabilityTitlePane {
+#profileAvailabilityTitlePane   {
     -fx-text-fill: #FFFFFF;
 }
 
-#profileAvailabilityPane {
+#profileAvailabilityPane    {
     -fx-background-color: #F06292;
 }
