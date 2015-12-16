@@ -1,3 +1,5 @@
+package shared;
+
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
@@ -25,7 +27,7 @@ public class User {
     private AvailableTimes availableDates;
 
     /**
-     * User: constructor for class User
+     * shared.User: constructor for class shared.User
      *
      * @param userID      - int
      * @param password    - String
@@ -102,7 +104,7 @@ public class User {
     }
 
     /**
-     * toString: gives a textual representation of User
+     * toString: gives a textual representation of shared.User
      *
      * @return text - String
      */

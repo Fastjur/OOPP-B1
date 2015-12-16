@@ -1,3 +1,5 @@
+package shared;
+
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
@@ -5,7 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Fastjur on 2-12-2015.
- * AvailableTimes holds the TimePeriods of a User object on a weekday basis
+ * shared.AvailableTimes holds the TimePeriods of a shared.User object on a weekday basis
  * @see TimePeriod
  * @author Jurriaan Den Toonder
  * @version 0.5
@@ -31,9 +33,9 @@ public class AvailableTimes {
     }
 
     /**
-     * Creates an AvailableTimes object from a JSON string
+     * Creates an shared.AvailableTimes object from a JSON string
      * @param json JSON formatted string to create user from
-     * @return AvailableTimes object with properties given in JSON string
+     * @return shared.AvailableTimes object with properties given in JSON string
      * @throws IOException
      */
     public static AvailableTimes fromJson(String json) throws IOException {
@@ -44,9 +46,9 @@ public class AvailableTimes {
     }
 
     /**
-     * Add a TimePeriod to this AvailableTimes object
+     * Add a shared.TimePeriod to this shared.AvailableTimes object
      * @param day int, day of week. 1 = monday, 7 = sunday
-     * @param p TimePeriod, the TimePeriod to add to this AvailableTimes object
+     * @param p shared.TimePeriod, the shared.TimePeriod to add to this shared.AvailableTimes object
      */
     public void addTimePeriod(int day, TimePeriod p) {
         switch(day){
@@ -61,10 +63,10 @@ public class AvailableTimes {
     }
 
     /**
-     * Get a single TimePeriod from a given day using the TimePeriod's index
+     * Get a single shared.TimePeriod from a given day using the shared.TimePeriod's index
      * @param day int, day of week, 1 = monday, 7 = sunday
-     * @param index int, index of the TimePeriod
-     * @return TimePeriod
+     * @param index int, index of the shared.TimePeriod
+     * @return shared.TimePeriod
      */
     public TimePeriod getPeriod(int day, int index) {
         switch(day) {
@@ -80,9 +82,9 @@ public class AvailableTimes {
     }
 
     /**
-     * Remove a TimePeriod from a given day using the TimePeriod's index
+     * Remove a shared.TimePeriod from a given day using the shared.TimePeriod's index
      * @param day int, day of week, 1 = monday, 7 = sunday
-     * @param index int, index of TimePeriod
+     * @param index int, index of shared.TimePeriod
      */
     public void removeTime(int day, int index) {
         switch(day) {
@@ -97,7 +99,7 @@ public class AvailableTimes {
     }
 
     /**
-     * Return this AvailableTimes object in a String representation
+     * Return this shared.AvailableTimes object in a String representation
      * @return String
      */
     public String toString() {
@@ -134,10 +136,10 @@ public class AvailableTimes {
     }
 
     /**
-     * Returns an AvailableTimes object with TimePeriods that are in both `this` AND `that`
+     * Returns an shared.AvailableTimes object with TimePeriods that are in both `this` AND `that`
      *
      * @param that The object to intersect `this` with
-     * @return AvailableTimes object containing the intersection between this and that
+     * @return shared.AvailableTimes object containing the intersection between this and that
      */
     public AvailableTimes intersect(AvailableTimes that) {
         if (this == that || this.equals(that)) {
@@ -197,7 +199,7 @@ public class AvailableTimes {
     }
 
     /**
-     * Returns the total amount of TimePeriods in this AvailableTimes object
+     * Returns the total amount of TimePeriods in this shared.AvailableTimes object
      *
      * @return integer, total amount of TimePeriods
      */

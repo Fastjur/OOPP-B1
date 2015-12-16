@@ -1,10 +1,10 @@
+import shared.AvailableTimes;
+import shared.TimePeriod;
+import shared.User;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 

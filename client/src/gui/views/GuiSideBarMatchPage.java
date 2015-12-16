@@ -1,3 +1,5 @@
+package gui.views;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -87,7 +89,7 @@ public class GuiSideBarMatchPage extends Application {
 
         scene = new Scene(sideBar, 400, 600);
 
-        String cssURL = this.getClass().getResource("css/SideBarMatchPage.css").toExternalForm();
+        String cssURL = this.getClass().getResource("/gui/views/css/SideBarMatchPage.css").toExternalForm();
         scene.getStylesheets().add(cssURL);
 
         primaryStage.setScene(scene);

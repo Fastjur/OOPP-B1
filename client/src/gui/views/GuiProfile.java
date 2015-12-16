@@ -1,3 +1,5 @@
+package gui.views;
+
 import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Scene;
@@ -188,7 +190,7 @@ public class GuiProfile extends Application {
         sunday.setId("availabilityDateLabel");
 
         //Image settings
-        Image profilePic = new Image("/images/ProfilePicTestImage.jpg");
+        Image profilePic = new Image("/gui/views/resources/ProfilePicTestImage.jpg");
         ImageView profilePicView = new ImageView(profilePic);
         profilePicView.setFitHeight(460);
         profilePicView.setFitWidth(410);
@@ -354,7 +356,7 @@ public class GuiProfile extends Application {
         ProfileInfoPane.setLeft(sidebarPane);
         ProfileInfoPane.setCenter(profile);
 
-        String styleURL = this.getClass().getResource("css/ProfileStyle.css").toExternalForm();
+        String styleURL = this.getClass().getResource("gui/views/css/ProfileStyle.css").toExternalForm();
         profileScene.getStylesheets().add(styleURL);
         try {
             PrimaryStage.show();

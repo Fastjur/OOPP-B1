@@ -1,3 +1,5 @@
+package communication;
+
 /**
  * Created by Govert on 15-12-2015.
  */

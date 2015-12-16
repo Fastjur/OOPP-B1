@@ -1,13 +1,13 @@
+package shared;
+
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * TimePeriod class that specifies a starting and ending time on a day basis
+ * shared.TimePeriod class that specifies a starting and ending time on a day basis
  * @author Jurriaan Den Toonder
  * @version 0.5
  */
@@ -22,8 +22,8 @@ public class TimePeriod {
 
     /**
      * Constructor using minute notation
-     * @param start int, minutes from 00:00 to the starting point of the TimePeriod
-     * @param end int, minutes from 00:00 to the ending point of the TimePeriod
+     * @param start int, minutes from 00:00 to the starting point of the shared.TimePeriod
+     * @param end int, minutes from 00:00 to the ending point of the shared.TimePeriod
      */
     public TimePeriod(int start, int end) {
         this.start = start;
@@ -33,8 +33,8 @@ public class TimePeriod {
     /**
      * Constructor allowing the use of a String representation of times
      * 24h notation
-     * @param start String, starting time of TimePeriod ("xx:xx")
-     * @param end String, ending time of TimePeriod ("xx:xx")
+     * @param start String, starting time of shared.TimePeriod ("xx:xx")
+     * @param end String, ending time of shared.TimePeriod ("xx:xx")
      */
     public TimePeriod(String start, String end) {
         if(start == null || end == null) {
@@ -59,8 +59,8 @@ public class TimePeriod {
     }
 
     /**
-     * Formats this TimePeriod object to JSON and returns it in a String
-     * @return String, JSON representation of this TimePeriod
+     * Formats this shared.TimePeriod object to JSON and returns it in a String
+     * @return String, JSON representation of this shared.TimePeriod
      * @throws IOException
      */
     public String toJson() throws IOException {
@@ -69,9 +69,9 @@ public class TimePeriod {
     }
 
     /**
-     * Creates a TimePeriod from a JSON formatted String
-     * @param json String, JSON representation of a TimePeriod object
-     * @return TimePeriod object
+     * Creates a shared.TimePeriod from a JSON formatted String
+     * @param json String, JSON representation of a shared.TimePeriod object
+     * @return shared.TimePeriod object
      * @throws IOException
      */
     public static TimePeriod fromJson(String json) throws IOException {
@@ -94,7 +94,7 @@ public class TimePeriod {
     }
 
     /**
-     * Return this TimePeriod as a String representation
+     * Return this shared.TimePeriod as a String representation
      * @return String
      */
     public String toString() {

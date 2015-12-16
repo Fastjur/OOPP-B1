@@ -1,3 +1,6 @@
+import shared.AvailableTimes;
+import shared.User;
+
 import java.util.ArrayList;
 import java.util.Date;
 

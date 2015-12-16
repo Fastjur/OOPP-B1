@@ -1,5 +1,9 @@
+package communication;
+
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import shared.Response;
+import shared.User;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +11,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 /**
  * Created by Govert on 14-12-2015.
@@ -43,7 +48,8 @@ public class ListenThread extends Thread {
             } catch (java.net.SocketException SEx) {
                 // Socket closed.
             } catch (java.io.IOException IOEx) {
-                System.out.println("Something went wrong while reading a message from the network.\n" + IOEx.getLocalizedMessage());
+                System.out.println("Something went wrong while reading a message from the network.\n" +
+                        IOEx.getLocalizedMessage());
             }
         }
         Backend.onDisconnect(shouldstop);
@@ -61,7 +67,16 @@ public class ListenThread extends Thread {
             res.errorMessage = responseObj.get("errorMessage").getTextValue();
 
             switch (responseTo) {
-                // there are no responses that include data yet (matches?, getuserinfo?)
+                case "match":
+                    ArrayList<User> canTeach = mapper.readValue(responseObj.get("responseData").get("canTeach")
+                                            .getTextValue(),
+                            mapper.getTypeFactory().constructCollectionType(ArrayList.class, User.class)),
+                            canLearn = mapper.readValue(responseObj.get("responseData").get("canLearn").getTextValue(),
+                                    mapper.getTypeFactory().constructCollectionType(ArrayList.class, User.class)),
+                            canBuddyUp = mapper.readValue(responseObj.get("responseData").get("canBuddyUp")
+                                            .getTextValue(),
+                                    mapper.getTypeFactory().constructCollectionType(ArrayList.class, User.class));
+                    break;
             }
 
             Backend.onResponse(res);

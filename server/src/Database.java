@@ -1,3 +1,5 @@
+import shared.AvailableTimes;
+import shared.User;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -34,7 +36,7 @@ public class Database {
      * Gets user from database by id
      *
      * @param id int, id from user
-     * @return User object if found, otherwise null
+     * @return shared.User object if found, otherwise null
      * @throws SQLException
      * @throws IOException
      */
@@ -58,7 +60,7 @@ public class Database {
      * Gets user from database by email
      *
      * @param email String, email from user
-     * @return User object if found, otherwise null
+     * @return shared.User object if found, otherwise null
      * @throws SQLException
      * @throws IOException
      */
@@ -78,7 +80,7 @@ public class Database {
 
     private User processGetUser(ResultSet rs) throws SQLException, IOException {
         //fixme: NullPointerExceptions on empty result from Database
-        User usr = new User();
+        User usr;
         if (rs.next()) {
             int id = rs.getInt("id"),
                     studyYear = rs.getInt("studyYear");
@@ -167,7 +169,7 @@ public class Database {
      * Adds a user to the database
      * This method checks the incoming user object and returns an IllegalArgumentException if one of its attributes is out of range or null
      *
-     * @param user User object
+     * @param user shared.User object
      * @throws SQLException
      * @throws IOException
      * @throws IllegalArgumentException
@@ -231,7 +233,7 @@ public class Database {
         stmt = connection.prepareStatement("SELECT id FROM `nationalities` WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getNationality());
         rs = stmt.executeQuery();
-        int nationality_id = -1;
+        int nationality_id;
         if (rs.next()) {
             nationality_id = rs.getInt("id");
         } else {
@@ -312,7 +314,7 @@ public class Database {
     /**
      * Update a user in the database. According to the ID in the given user object
      *
-     * @param user User object
+     * @param user shared.User object
      * @throws IllegalArgumentException
      * @throws SQLException
      * @throws IOException
@@ -611,7 +613,7 @@ public class Database {
     }
 
     /**
-     * Remove a user from the database using the given User object id
+     * Remove a user from the database using the given shared.User object id
      *
      * @param user remove user that has the id in this given object
      * @throws SQLException
@@ -671,10 +673,10 @@ public class Database {
             matches.add(user);
         }
         stmt.close();
-        ListIterator it = matches.listIterator();
+        ListIterator<User> it = matches.listIterator();
         int index = 0;
-        if (it.hasNext()){
-            User user = (User) it.next();
+        while (it.hasNext()){
+            User user = it.next();
             if (listIntersection(user.getLanguageList(), languages).size() == 0 || aTimes.intersect(user.getAvailableDates()).size() == 0) {
                 matches.remove(index);
             }
@@ -683,7 +685,6 @@ public class Database {
         if (matches.size() == 0) {
             return null;
         }
-        User self = getUser(self_id);
         canTeach.addAll(matches.stream().filter(user -> listIntersection(user.getCoursesLearningList(), teaching).size() > 0).collect(Collectors.toList()));
         canLearn.addAll(matches.stream().filter(user -> listIntersection(user.getCoursesTeachingList(), learning).size() > 0).collect(Collectors.toList()));
         canBuddyUp.addAll(matches.stream().filter(user -> listIntersection(user.getBuddyList(), buddys).size() > 0).collect(Collectors.toList()));

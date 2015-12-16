@@ -1,3 +1,5 @@
+package gui.views;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -15,13 +17,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 
 
 public class GuiLogin extends Application {
@@ -41,31 +41,31 @@ public class GuiLogin extends Application {
         //BorderPane
         //Login
         BorderPane bp = new BorderPane();
-        bp.setPadding(new Insets(10,50,50,50));
+        bp.setPadding(new Insets(10, 50, 50, 50));
 
         //Register
         BorderPane bp2 = new BorderPane();
-        bp.setPadding(new Insets(10,50,50,50));
+        bp.setPadding(new Insets(10, 50, 50, 50));
 
         //Adding HBox
         //Login
         HBox hb = new HBox();
-        hb.setPadding(new Insets(20,20,20,30));
+        hb.setPadding(new Insets(20, 20, 20, 30));
 
         //Register
         HBox hb2 = new HBox();
-        hb2.setPadding(new Insets(20,20,20,30));
+        hb2.setPadding(new Insets(20, 20, 20, 30));
 
         //Adding GridPane
         //Login
         GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(60,60,60,60));
+        gridPane.setPadding(new Insets(60, 60, 60, 60));
         gridPane.setHgap(10);
         gridPane.setVgap(5);
 
         //Register
         GridPane gridPane2 = new GridPane();
-        gridPane2.setPadding(new Insets(60,60,60,60));
+        gridPane2.setPadding(new Insets(60, 60, 60, 60));
         gridPane2.setHgap(10);
         gridPane2.setVgap(5);
 
@@ -74,7 +74,7 @@ public class GuiLogin extends Application {
         final TextField txtUserName = new TextField();
         final PasswordField pf = new PasswordField();
         Button btnLoginTop = new Button("Login");
-        Button btnLoginBot= new Button("Login");
+        Button btnLoginBot = new Button("Login");
         Button btnRegister = new Button("Register");
         final Label lblMessage = new Label();
 
@@ -91,18 +91,18 @@ public class GuiLogin extends Application {
         //Login
         gridPane.add(txtUserName, 2, 1, 2, 1);
         gridPane.add(pf, 2, 2, 2, 1);
-        gridPane.add(btnLoginTop, 2,0);
+        gridPane.add(btnLoginTop, 2, 0);
         gridPane.add(btnLoginBot, 2, 3);
-        gridPane.add(btnRegister, 3,0);
-        gridPane.add(lblMessage, 2, 4, 2,1);
+        gridPane.add(btnRegister, 3, 0);
+        gridPane.add(lblMessage, 2, 4, 2, 1);
 
         //Register
         gridPane2.add(txtUserName2, 2, 1, 2, 1);
         gridPane2.add(pf2, 2, 2, 2, 1);
-        gridPane2.add(txtRetypePas, 2, 3, 2,1);
-        gridPane2.add(btnRegisterTop, 3,0);
-        gridPane2.add(btnLoginReg, 2,0);
-        gridPane2.add(btnRegisterBot, 2,4, 2, 1);
+        gridPane2.add(txtRetypePas, 2, 3, 2, 1);
+        gridPane2.add(btnRegisterTop, 3, 0);
+        gridPane2.add(btnLoginReg, 2, 0);
+        gridPane2.add(btnRegisterBot, 2, 4, 2, 1);
 
         //Reflection for gridPane
         Reflection r = new Reflection();
@@ -148,11 +148,10 @@ public class GuiLogin extends Application {
             public void handle(ActionEvent event) {
                 checkUser = txtUserName.getText().toString();
                 checkPw = pf.getText().toString();
-                if(checkUser.equals(user) && checkPw.equals(pw)){
+                if (checkUser.equals(user) && checkPw.equals(pw)) {
                     lblMessage.setText("Congratulations!");
                     lblMessage.setTextFill(Color.GREEN);
-                }
-                else{
+                } else {
                     lblMessage.setText("Incorrect user or pw.");
                     lblMessage.setTextFill(Color.RED);
                 }
@@ -183,8 +182,8 @@ public class GuiLogin extends Application {
 
         btnRegister.setOnAction(e -> primaryStage.setScene(registerScene));
         btnLoginReg.setOnAction(e -> primaryStage.setScene(loginScene));
-        loginScene.getStylesheets().add("css/login.css");
-        registerScene.getStylesheets().add("css/login.css");
+        loginScene.getStylesheets().add("/gui/views/css/login.css");
+        registerScene.getStylesheets().add("/gui/views/css/login.css");
         primaryStage.setScene(loginScene);
 
         //primaryStage.setResizable(false);
@@ -193,8 +192,8 @@ public class GuiLogin extends Application {
         primaryStage.show();
 
 
-
     }
+
     public static void mouseHover(Button btn, Scene scene) {
         btn.setOnMouseEntered(new EventHandler() {
             @Override
@@ -208,5 +207,6 @@ public class GuiLogin extends Application {
                 scene.setCursor(Cursor.DEFAULT); //Change cursor to crosshair
             }
         });
-    }}
+    }
+}
 

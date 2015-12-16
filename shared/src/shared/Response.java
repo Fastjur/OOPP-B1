@@ -1,3 +1,5 @@
+package shared;
+
 import org.codehaus.jackson.annotate.JsonCreator;
 
 import java.util.HashMap;

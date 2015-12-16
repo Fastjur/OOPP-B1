@@ -1,6 +1,13 @@
+package test;
+
+import communication.Backend;
+import communication.IDisconnectListener;
+import communication.IMessageListener;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import shared.Response;
 
 import java.io.IOException;
 import java.util.Date;
@@ -56,7 +63,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     public void testOnResponseSingleListener() throws Exception {
         Backend.addMessageListener(this);
         Backend.onResponse(new Response("test"));
-        assertEquals(new Response("test"), this.response);
+        Assert.assertEquals(new Response("test"), this.response);
     }
 
     @Test

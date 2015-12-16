@@ -1,3 +1,5 @@
+import shared.User;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -5,7 +7,7 @@ import java.util.Scanner;
 
 /**
  * Main Server Class
- * This file will most likely contain the main method for starting up the server
+ * This file will most likely contain the shared method for starting up the server
  *
  * @author Jurriaan Den Toonder
  * @author Govert de Gans

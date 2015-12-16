@@ -1,4 +1,10 @@
+package communication;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import shared.Response;
+import shared.User;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -108,6 +114,20 @@ public class Backend {
             listenThread.sendMessage((new ObjectMapper()).writeValueAsString(request));
         } catch (java.io.IOException e) {
 
+        }
+    }
+
+    public static void match(User self) {
+        if(!isConnected())
+            return;
+
+        try {
+            Request request = new Request("match");
+
+            request.putData("self", self);
+            listenThread.sendMessage((new ObjectMapper()).writeValueAsString(request));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

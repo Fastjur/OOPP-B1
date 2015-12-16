@@ -1,3 +1,5 @@
+package gui.views;
+
 import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Cursor;
@@ -15,11 +17,11 @@ public class GuiMatchPage extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        String nomatchURL = this.getClass().getResource("images/nomatch.png").toExternalForm();
-        String matchURL = this.getClass().getResource("images/match.png").toExternalForm();
+        String nomatchURL = this.getClass().getResource("/gui/views/resources/nomatch.png").toExternalForm();
+        String matchURL = this.getClass().getResource("/gui/views/resources/match.png").toExternalForm();
         HBox bottomBox = bottomBox(nomatchURL, matchURL);
 
-        String pfURL = this.getClass().getResource("images/pfExample.jpg").toExternalForm();
+        String pfURL = this.getClass().getResource("/gui/views/resources/pfExample.jpg").toExternalForm();
         HBox pfBox = pfBox(pfURL);
 
         String name = "Rebecca Black";
@@ -34,7 +36,7 @@ public class GuiMatchPage extends Application {
 
         Scene scene = new Scene(pane);
 
-        String cssURL = this.getClass().getResource("css/MatchPage.css").toExternalForm();
+        String cssURL = this.getClass().getResource("/gui/views/css/MatchPage.css").toExternalForm();
         scene.getStylesheets().add(cssURL);
 
         primaryStage.setScene(scene);

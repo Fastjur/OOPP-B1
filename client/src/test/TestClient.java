@@ -1,5 +1,9 @@
+package test;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
+import shared.AvailableTimes;
+import shared.TimePeriod;
 
 import java.io.IOException;
 import java.io.InputStream;

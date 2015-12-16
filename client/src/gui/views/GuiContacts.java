@@ -1,3 +1,4 @@
+package gui.views;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -27,7 +28,7 @@ public class GuiContacts extends Application {
     public void start(Stage primaryStage) {
         String name = "Rebecca Black";
         String age = "18";
-        String img = this.getClass().getResource("images/pfExample.jpg").toExternalForm();
+        String img = this.getClass().getResource("/gui/views/resources/pfExample.jpg").toExternalForm();
         String description = "Seven a.m. waking up in the morning. Gotta be fresh, gotta go downstairs. " +
                 "Gotta have my bowl, gotta have cereal. Seein' everything the time is goin'. " +
                 "Tickin' on and on, everybody's rushin'. Gotta get down to the bus stop. Gotta catch my bus. I see my friends.";
@@ -62,7 +63,7 @@ public class GuiContacts extends Application {
         pane.setBottom(btn);
 
         Scene scene = new Scene(pane, Color.WHITE);
-        String css = this.getClass().getResource("css/ContactsStyle.css").toExternalForm();
+        String css = this.getClass().getResource("/gui/views/css/ContactsStyle.css").toExternalForm();
         scene.getStylesheets().add(css);
         primaryStage.setScene(scene);
         primaryStage.setTitle("TwoBrains/Contacts");
@@ -73,9 +74,9 @@ public class GuiContacts extends Application {
 
     public Button chatButton() {
         Button chat = new Button();
-        chat.getStylesheets().add(this.getClass().getResource("css/ContactsStyle.css").toExternalForm());
+        chat.getStylesheets().add(this.getClass().getResource("/gui/views/css/ContactsStyle.css").toExternalForm());
         chat.setText("Chat");
-        ImageView chatIcon = new ImageView("images/chatIcon.png");
+        ImageView chatIcon = new ImageView("/gui/views/resources/chatIcon.png");
         chatIcon.setFitHeight(30);
         chatIcon.setPreserveRatio(true);
         chat.setGraphic(chatIcon);

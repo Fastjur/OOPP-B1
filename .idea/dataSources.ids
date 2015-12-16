@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="MySQL - ooppb1@db4free.net" uuid="40a95822-cc36-4e49-914c-3a954d834f05">
+  <data-source name="MySQL - ooppb1@db4free.net" uuid="9a81e37e-3fce-4a27-b645-d708b6dfd031">
     <database-info product="MySQL" version="5.7.10" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
@@ -256,50 +256,54 @@ users_id</columns>
         <mandatory>1</mandatory>
         <data-type>double</data-type>
       </column>
-      <index id="69" parent="10" name="id">
+      <column id="69" parent="10" name="maxdist">
+        <mandatory>1</mandatory>
+        <data-type>double</data-type>
+      </column>
+      <index id="70" parent="10" name="id">
         <columns>id</columns>
         <unique>1</unique>
       </index>
-      <key id="70" parent="10" name="id">
+      <key id="71" parent="10" name="id">
         <columns>id</columns>
         <underlying-index>id</underlying-index>
       </key>
-      <key id="71" parent="10" name="PRIMARY">
+      <key id="72" parent="10" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="72" parent="10" name="users_nationality_id">
+      <foreign-key id="73" parent="10" name="users_nationality_id">
         <columns>nationality_id</columns>
         <ref-key>nationalities.id</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="73" parent="10" name="users_university_id">
+      <foreign-key id="74" parent="10" name="users_university_id">
         <columns>university_id</columns>
         <ref-key>universities.id</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="74" parent="11" name="users_id">
+      <column id="75" parent="11" name="users_id">
         <mandatory>1</mandatory>
         <data-type>int(10) unsigned</data-type>
       </column>
-      <column id="75" parent="11" name="languages_id">
+      <column id="76" parent="11" name="languages_id">
         <mandatory>1</mandatory>
         <data-type>int(10) unsigned</data-type>
       </column>
-      <key id="76" parent="11" name="PRIMARY">
+      <key id="77" parent="11" name="PRIMARY">
         <columns>users_id
 languages_id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="77" parent="11" name="has_languages_lang_id">
+      <foreign-key id="78" parent="11" name="has_languages_lang_id">
         <columns>languages_id</columns>
         <ref-key>languages.id</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="78" parent="11" name="has_languages_users_id">
+      <foreign-key id="79" parent="11" name="has_languages_users_id">
         <columns>users_id</columns>
         <ref-key>users.id</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
