@@ -25,6 +25,7 @@ public class ListenThread extends Thread {
     public ListenThread(Socket socket) throws IOException {
         this.inputStream = socket.getInputStream();
         this.outputStream = socket.getOutputStream();
+        this.setName("ListenThread");
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ListenThread extends Thread {
                         IOEx.getLocalizedMessage());
             }
         }
-        Backend.onDisconnect(shouldstop);
+        Backend.onDisconnect(!shouldstop);
     }
 
     private void handleResponse(String response) {
