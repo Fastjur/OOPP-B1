@@ -1,6 +1,9 @@
 package gui.views;
 
+import communication.Backend;
+import communication.IMessageListener;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -13,7 +16,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Reflection;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -22,13 +24,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import shared.Response;
 
+public class GuiLogin extends Application implements IMessageListener {
 
-public class GuiLogin extends Application {
-
-    String user = "Yosin12";
-    String pw = "Yosin12";
-    String checkUser, checkPw;
+    private final Label lblMessage = new Label();
 
     public static void main(String[] args) {
         launch(args);
@@ -76,7 +76,6 @@ public class GuiLogin extends Application {
         Button btnLoginTop = new Button("Login");
         Button btnLoginBot = new Button("Login");
         Button btnRegister = new Button("Register");
-        final Label lblMessage = new Label();
 
         //Register
         final TextField txtUserName2 = new TextField();
@@ -143,18 +142,18 @@ public class GuiLogin extends Application {
         text.setId("text");
         text2.setId("text2");
 
+        //Initialize Backend
+        Backend.serverAddress = "::1";
+        Backend.serverPort = 8372;
+        Backend.connectToServer();
+        Backend.addMessageListener(this);
+
         //Action for btnLogin
         btnLoginBot.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                checkUser = txtUserName.getText().toString();
-                checkPw = pf.getText().toString();
-                if (checkUser.equals(user) && checkPw.equals(pw)) {
-                    lblMessage.setText("Congratulations!");
-                    lblMessage.setTextFill(Color.GREEN);
-                } else {
-                    lblMessage.setText("Incorrect user or pw.");
-                    lblMessage.setTextFill(Color.RED);
-                }
+                String checkUser = txtUserName.getText(),
+                       checkPw = pf.getText();
+                Backend.login(checkUser, checkPw);
                 txtUserName.setText("");
                 pf.setText("");
             }
@@ -191,7 +190,6 @@ public class GuiLogin extends Application {
         primaryStage.setMinHeight(300);
         primaryStage.show();
 
-
     }
 
     public static void mouseHover(Button btn, Scene scene) {
@@ -205,6 +203,24 @@ public class GuiLogin extends Application {
             @Override
             public void handle(Event event) {
                 scene.setCursor(Cursor.DEFAULT); //Change cursor to crosshair
+            }
+        });
+    }
+
+    @Override
+    public void onIncomingResponse(Response response) {
+        Platform.runLater(new Runnable(){
+            public void run() {
+                System.out.println(response);
+                if (response.responseTo.equals("login")) {
+                    if (response.errorCode == 0) {
+                        lblMessage.setText(response.errorMessage);
+                        lblMessage.setTextFill(Color.GREEN);
+                    } else {
+                        lblMessage.setText(response.errorMessage);
+                        lblMessage.setTextFill(Color.RED);
+                    }
+                }
             }
         });
     }
