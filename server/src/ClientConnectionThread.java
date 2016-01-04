@@ -60,7 +60,13 @@ public class ClientConnectionThread extends Thread {
                     this.client.closeConnection();
                 }
             } catch (SocketException SEx) {
-                // Socket closed.
+                System.out.println("Remote socket closed, closing connection.");
+                try {
+                    this.client.closeConnection();
+                } catch (IOException e) {
+                    System.out.println("Could not close the connection");
+                    e.printStackTrace();
+                }
             } catch (IOException IOEx) {
                 System.out.println("Something went wrong while reading a message from the network.\n" + IOEx.getLocalizedMessage());
             }
