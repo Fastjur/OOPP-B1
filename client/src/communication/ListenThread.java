@@ -67,7 +67,7 @@ public class ListenThread extends Thread {
             res.errorMessage = responseObj.get("errorMessage").getTextValue();
 
             switch (responseTo) {
-                case "match":
+                case "getMatches":
                     ArrayList<User> canTeach = mapper.readValue(responseObj.get("responseData").get("canTeach")
                                     .getTextValue(),
                             mapper.getTypeFactory().constructCollectionType(ArrayList.class, User.class)),

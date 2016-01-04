@@ -600,6 +600,17 @@ public class Database {
         stmt.close();
     }
 
+    public int getCourseIdByName(String name) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("SELECT id FROM courses WHERE name=?");
+        stmt.setString(1, name);
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()) {
+            return rs.getInt("id");
+        } else {
+            return -1;
+        }
+    }
+
     /**
      * Remove a user from the database using given id
      *
@@ -697,6 +708,63 @@ public class Database {
         total.add(canBuddyUp);
 
         return total;
+    }
+
+    /**
+     * Adds a match to the database when a user accepts it
+     * @param self ID of the user itself
+     * @param matchedUserId ID of the user to whom 'self' matched
+     * @param type Type of match, should be 'learning', 'teaching' or 'buddy'
+     * @throws SQLException
+     */
+    public void acceptMatch(int self, int matchedUserId, String type, String course) throws SQLException {
+        if (course.equals("")) {
+            course = "NONE";
+        }
+        int courseId = getCourseIdByName(course);
+        if (courseId == -1)
+            throw new IllegalArgumentException("[ERROR] Couldn't find course ID by name!");
+        PreparedStatement stmt = connection.prepareStatement("INSERT INTO `matches`(id, matched_user_id, match_type, " +
+                "courses_id) VALUES(NULL,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+        ResultSet rs;
+        stmt.setInt(1, matchedUserId);
+        stmt.setString(2, type);
+        if (courseId == 0) {
+            stmt.setNull(3, Types.NULL);
+        } else {
+            stmt.setInt(3, courseId);
+        }
+        stmt.executeUpdate();
+        rs = stmt.getGeneratedKeys();
+        int matchId;
+        if (rs.next()) {
+            matchId = rs.getInt(1);
+        } else {
+            throw new IllegalArgumentException("[ERROR] Couldn't retrieve newly added match ID.\n" +
+                    "    Presume database invalid");
+        }
+        stmt.close();
+
+        stmt = connection.prepareStatement("INSERT INTO `users_has_matches`(users_id, matches_id) VALUES(?,?)");
+        stmt.setInt(1, self);
+        stmt.setInt(2, matchId);
+        stmt.executeUpdate();
+        stmt.close();
+    }
+
+    /**
+     * Removes a match from the database, cascades automatically in the other tables.
+     * @param self The id of the user itself, to prevent someone deleting another users matches
+     * @param matchId The ID of the match to be deleted
+     * @throws SQLException
+     */
+    public void removeMatch(int self, int matchId) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement("DELETE matches FROM matches INNER JOIN users_has_matches " +
+                "ON matches_id = matches.id WHERE users_id = ? AND matches.id = ?");
+        stmt.setInt(1, self);
+        stmt.setInt(2, matchId);
+        stmt.executeUpdate();
+        stmt.close();
     }
 
     /**
