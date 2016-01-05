@@ -1,28 +1,44 @@
-#root {
-    -fx-background-color: #26A69A;
-    -fx-border-color: white;
-    -fx-border-radius: 20;
-    -fx-padding: 10 10 10 10;
-    -fx-background-radius: 20;
-
+#root, #root2, #root3 {
+	-fx-background-color:  #26A69A;
+	-fx-border-radius: 20;
+	-fx-padding: 10 10 10 10;
+	-fx-background-radius: 0;
 }
 
-#bp {
-    -fx-background-color: #EEEEEE;
-
+#bp, #bp2, #bp3 {
+	-fx-background-color: #FFFFFF;
 }
 
-#btnLogin {
-    -fx-background-color: #F06292;
-    -fx-text-fill: #FFFFFF;
+#btnLogin, #BRB, #BRR3 {
+    -fx-background-color:	#F06292;
+    -fx-text-fill:  #FFFFFF;
+    -fx-postion: relative;
+    -fx-left: -10px;
 }
 
-#BLT, #BR {
-    -fx-background-color: #26A69A;
-    -fx-text-fill: #FFFFFF;
+#BLT, #BR, #BLR, #BRT, #BRR, #BRR2, #BLRES, #resReg, #resLog{
+    -fx-background-color:	#00796B;
+    -fx-text-fill:  #FFFFFF;
+    -fx-font-family: "roboto";
 }
 
-#text, #text2 {
-    -fx-fill: #26A69A;
+#text, #text2, #text3 {
+	-fx-fill:  #FFFFFF;
+	-fx-font-family: "roboto";
 }
+
+#loginLabel, #registerLabel, #resLabel{
+    -fx-text-fill:  #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-fonfamily: "roboto";
+}
+
+#info, #info2{
+    -fx-text-fill:  #FFFFFF;
+    -fx-fonfamily: "roboto";
+}
+
+
+
 
