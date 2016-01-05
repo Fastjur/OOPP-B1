@@ -10,6 +10,7 @@
 #sideBarTitledPanes .title {
     -fx-background-color: #EEEEEE;
     -fx-font-weight: bold;
+    -fx-font-size: 12pt;
 }
 
 #sideBarTitledPanes .content VBox {
