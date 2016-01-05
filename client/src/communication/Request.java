@@ -28,6 +28,10 @@ public class Request {
         this.requestData.put(key, value);
     }
 
+    public String getAction() {
+        return this.action;
+    }
+
     public Map<String, Object> getRequestData() {
         return this.requestData;
     }

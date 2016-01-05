@@ -48,7 +48,7 @@ public class Backend {
     public static boolean connectToServer() {
         if (isConnected())
             return true;
-        if (serverPort == 0 || serverAddress.equals(null))
+        if (serverPort < 1 || serverAddress.equals(null))
             return false;
         try {
             socket = new Socket(serverAddress, serverPort);
