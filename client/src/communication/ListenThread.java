@@ -25,6 +25,7 @@ public class ListenThread extends Thread {
     public ListenThread(Socket socket) throws IOException {
         this.inputStream = socket.getInputStream();
         this.outputStream = socket.getOutputStream();
+        this.setName("ListenThread");
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ListenThread extends Thread {
                         IOEx.getLocalizedMessage());
             }
         }
-        Backend.onDisconnect(shouldstop);
+        Backend.onDisconnect(!shouldstop);
     }
 
     private void handleResponse(String response) {
@@ -67,7 +68,7 @@ public class ListenThread extends Thread {
             res.errorMessage = responseObj.get("errorMessage").getTextValue();
 
             switch (responseTo) {
-                case "match":
+                case "getMatches":
                     ArrayList<User> canTeach = mapper.readValue(responseObj.get("responseData").get("canTeach")
                                     .getTextValue(),
                             mapper.getTypeFactory().constructCollectionType(ArrayList.class, User.class)),

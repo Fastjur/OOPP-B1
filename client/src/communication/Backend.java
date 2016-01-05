@@ -1,8 +1,5 @@
 package communication;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import shared.Response;
 import shared.User;
 
@@ -51,15 +48,18 @@ public class Backend {
     public static boolean connectToServer() {
         if (isConnected())
             return true;
-        if (serverPort == 0 || serverAddress.equals(null))
+        if (serverPort < 1 || serverAddress.equals(null))
             return false;
         try {
             socket = new Socket(serverAddress, serverPort);
             listenThread = new ListenThread(socket);
             listenThread.start();
             connected = true;
+            System.out.println("Connected to server!");
             return true;
         } catch (java.io.IOException e) {
+            System.out.println("Could not connect to server!");
+            e.printStackTrace();
             return false;
         }
     }
@@ -74,9 +74,10 @@ public class Backend {
     }
 
     public static void login(String email, String password) {
-        if (!isConnected())
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot login: Not connected!");
             return;
-
+        }
         try {
             // TODO: hash password here
 
@@ -84,48 +85,85 @@ public class Backend {
             request.putData("email", email);
             request.putData("pass", password);
 
-            listenThread.sendMessage((new ObjectMapper()).writeValueAsString(request));
+            listenThread.sendMessage(request.toSendableJSON());
         } catch (java.io.IOException e) {
-
+            e.printStackTrace();
         }
     }
 
     public static void logout() {
-        if (!isConnected())
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot logout: Not connected!");
             return;
+        }
 
         try {
             Request request = new Request("logout");
 
-            listenThread.sendMessage((new ObjectMapper()).writeValueAsString(request));
+            listenThread.sendMessage(request.toSendableJSON());
         } catch (java.io.IOException e) {
-
+            e.printStackTrace();
         }
     }
 
     public static void register(User newuser) {
-        if (!isConnected())
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot register: Not connected!");
             return;
+        }
 
         try {
             Request request = new Request("register");
 
             request.putData("newUser", newuser);
-            listenThread.sendMessage((new ObjectMapper()).writeValueAsString(request));
+            listenThread.sendMessage(request.toSendableJSON());
         } catch (java.io.IOException e) {
-
+            e.printStackTrace();
         }
     }
 
-    public static void match(User self) {
-        if (!isConnected())
+    public static void getMatches(User self) {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot get matches: Not connected!");
             return;
+        }
 
         try {
-            Request request = new Request("match");
+            Request request = new Request("getMatches");
 
             request.putData("self", self);
-            listenThread.sendMessage((new ObjectMapper()).writeValueAsString(request));
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void acceptMatch(User self, String matchType) {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot accept match: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("acceptMatch");
+
+            request.putData("matchUser", self.getUserID());
+            request.putData("matchType", matchType);
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getSelf() {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot retrieve your information: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("getSelf");
+            listenThread.sendMessage(request.toSendableJSON());
         } catch (IOException e) {
             e.printStackTrace();
         }

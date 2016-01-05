@@ -8,8 +8,9 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class GUILauncher extends Application {
-    private static Scene GUIScene;
+    static Scene GUIScene;
     private static BorderPane GUI;
+    private static GuiLoginConstructor login;
     private static GuiTopBar topbar;
     private static GuiProfileConstructor profile;
     private static GuiFindMatchConstructor findMatch;
@@ -51,13 +52,12 @@ public class GUILauncher extends Application {
         profile = new GuiProfileConstructor();
         sideBar = new GUISideBarConstructor();
         topbar = new GuiTopBar();
+        login = new GuiLoginConstructor();
 
-        GUI.setTop(topbar);
-        GUI.setCenter(findMatch);
-        GUI.setLeft(findMatchSideBar);
+        GUI.setCenter(login.bp);
 
         PrimaryStage.setScene(GUIScene);
-        GUIScene.getStylesheets().addAll("/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css");
+        GUIScene.getStylesheets().addAll("/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");
         PrimaryStage.show();
     }
 
@@ -65,8 +65,16 @@ public class GUILauncher extends Application {
         launch(args);
     }
 
-    //Events Find Match Page
+    //Events Login page
+    public static void switchToRegister(){
+        GUI.setCenter(login.bp2);
+    }
 
+    public static void switchToLogin(){
+        GUI.setCenter(login.bp);
+    }
+
+    //Events Find Match Page
     public static void findMatchBuddyCoursesClick(Button sbCourse) {
         if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
             Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");

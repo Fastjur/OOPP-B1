@@ -28,8 +28,6 @@ public class GuiProfileConstructor extends BorderPane {
         Circle editToggleBtnShape = new Circle(50);
 
         //Buttons:
-
-
         Button uploadPicBtn = new Button();
         uploadPicBtn.setPadding(noPaddingInsets);
         uploadPicBtn.setMinSize(410, 30);
