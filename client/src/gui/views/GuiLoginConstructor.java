@@ -2,13 +2,10 @@ package gui.views;
 
 import communication.Backend;
 import communication.IMessageListener;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Reflection;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -25,28 +21,28 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import shared.Response;
 
-public class GuiLogin extends Application implements IMessageListener {
+/**
+ * Constructor for the login and register page of the application
+ * Author: Sebastiaan Hester
+ */
+public class GuiLoginConstructor extends BorderPane implements IMessageListener {
 
     private final Label lblMessage = new Label();
+    BorderPane bp;
+    BorderPane bp2;
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("MindMatch Login");
+    public GuiLoginConstructor(){
+        super();
 
         //BorderPane
         //Login
-        BorderPane bp = new BorderPane();
+        bp = new BorderPane();
         bp.setPadding(new Insets(10, 50, 50, 50));
 
         //Register
-        BorderPane bp2 = new BorderPane();
+        bp2 = new BorderPane();
         bp.setPadding(new Insets(10, 50, 50, 50));
 
         //Adding HBox
@@ -149,10 +145,10 @@ public class GuiLogin extends Application implements IMessageListener {
         Backend.addMessageListener(this);
 
         //Action for btnLogin
-        btnLoginBot.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
+        btnLoginBot.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
                 String checkUser = txtUserName.getText(),
-                       checkPw = pf.getText();
+                        checkPw = pf.getText();
                 Backend.login(checkUser, checkPw);
                 txtUserName.setText("");
                 pf.setText("");
@@ -166,22 +162,18 @@ public class GuiLogin extends Application implements IMessageListener {
         bp2.setTop(hb2);
         bp2.setCenter(gridPane2);
 
-        //Adding BorderPane to the scene and loading CSS
-        Scene loginScene = new Scene(bp);
-        Scene registerScene = new Scene(bp2);
-
         //MouseHover
-        mouseHover(btnLoginBot, loginScene);
-        mouseHover(btnLoginTop, loginScene);
-        mouseHover(btnRegister, loginScene);
-        mouseHover(btnLoginReg, registerScene);
-        mouseHover(btnRegisterTop, registerScene);
-        mouseHover(btnRegisterBot, registerScene);
+        mouseHover(btnLoginBot, GUILauncher.GUIScene);
+        mouseHover(btnLoginTop, GUILauncher.GUIScene);
+        mouseHover(btnRegister, GUILauncher.GUIScene);
+        mouseHover(btnLoginReg, GUILauncher.GUIScene);
+        mouseHover(btnRegisterTop, GUILauncher.GUIScene);
+        mouseHover(btnRegisterBot, GUILauncher.GUIScene);
 
         btnLoginBot.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                loginScene.setCursor(Cursor.WAIT);
+                GUILauncher.GUIScene.setCursor(Cursor.WAIT);
             }
         });
 
@@ -191,18 +183,9 @@ public class GuiLogin extends Application implements IMessageListener {
         txtUserName2.setPromptText("Username");
         pf2.setPromptText("Password");
         pf3.setPromptText("Retype Password");
-
-        btnRegister.setOnAction(e -> primaryStage.setScene(registerScene));
-        btnLoginReg.setOnAction(e -> primaryStage.setScene(loginScene));
-        loginScene.getStylesheets().add("/gui/views/css/login.css");
-        registerScene.getStylesheets().add("/gui/views/css/login.css");
-        primaryStage.setScene(loginScene);
-
-        //primaryStage.setResizable(false);
-        primaryStage.setMinWidth(400);
-        primaryStage.setMinHeight(300);
-        primaryStage.show();
-
+        super.setCenter(bp);
+        btnRegister.setOnMouseClicked(e -> GUILauncher.switchToRegister());
+        btnLoginReg.setOnMouseClicked(e -> GUILauncher.switchToLogin());
     }
 
     public static void mouseHover(Button btn, Scene scene) {
@@ -229,155 +212,4 @@ public class GuiLogin extends Application implements IMessageListener {
             }
         });
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

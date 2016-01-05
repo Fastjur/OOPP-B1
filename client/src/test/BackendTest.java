@@ -178,7 +178,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
         Backend.login("email","pass");
         Backend.logout();
         Backend.register(new User());
-        Backend.match(new User());
+        //Backend.match(new User());
         assertNull(this.response);
     }
 }
