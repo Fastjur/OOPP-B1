@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,6 +17,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Reflection;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -77,6 +79,9 @@ public class GuiLogin extends Application implements IMessageListener {
         Button btnLoginBot = new Button("Login");
         Button btnRegister = new Button("Register");
 
+        //final Label lblMessage = new Label();
+        final Label loginLabel = new Label("Login");
+
         //Register
         final TextField txtUserName2 = new TextField();
         final PasswordField pf2 = new PasswordField();
@@ -84,30 +89,24 @@ public class GuiLogin extends Application implements IMessageListener {
         Button btnLoginReg = new Button("Login");
         Button btnRegisterTop = new Button("Register");
         Button btnRegisterBot = new Button("Register");
-        final PasswordField txtRetypePas = new PasswordField();
 
         //Adding Nodes to GridPane layout
         //Login
-        gridPane.add(txtUserName, 2, 1, 2, 1);
-        gridPane.add(pf, 2, 2, 2, 1);
-        gridPane.add(btnLoginTop, 2, 0);
-        gridPane.add(btnLoginBot, 2, 3);
-        gridPane.add(btnRegister, 3, 0);
-        gridPane.add(lblMessage, 2, 4, 2, 1);
+        gridPane.add(txtUserName, 2, 2, 2, 1);
+        gridPane.add(pf, 2, 3, 2, 1);
+        gridPane.add(btnLoginTop, 2,0, 2,1);
+        gridPane.add(loginLabel, 2,1);
+        gridPane.add(btnLoginBot, 2, 4);
+        gridPane.add(btnRegister, 4,0,2,1 );
+        gridPane.add(lblMessage, 2, 5, 2,1);
 
         //Register
         gridPane2.add(txtUserName2, 2, 1, 2, 1);
         gridPane2.add(pf2, 2, 2, 2, 1);
-        gridPane2.add(txtRetypePas, 2, 3, 2, 1);
-        gridPane2.add(btnRegisterTop, 3, 0);
-        gridPane2.add(btnLoginReg, 2, 0);
-        gridPane2.add(btnRegisterBot, 2, 4, 2, 1);
-
-        //Reflection for gridPane
-        Reflection r = new Reflection();
-        r.setFraction(0.7f);
-        gridPane.setEffect(r);
-        gridPane2.setEffect(r);
+        gridPane2.add(pf3, 2, 3, 2,1);
+        gridPane2.add(btnRegisterTop, 3,0);
+        gridPane2.add(btnLoginReg, 2,0);
+        gridPane2.add(btnRegisterBot, 2,4, 2, 1);
 
         //DropShadow effect
         //Login
@@ -141,6 +140,7 @@ public class GuiLogin extends Application implements IMessageListener {
         btnLoginBot.setId("btnLogin");
         text.setId("text");
         text2.setId("text2");
+        loginLabel.setId("loginLabel");
 
         //Initialize Backend
         Backend.serverAddress = "::1";
@@ -171,13 +171,26 @@ public class GuiLogin extends Application implements IMessageListener {
         Scene registerScene = new Scene(bp2);
 
         //MouseHover
-        //Login
         mouseHover(btnLoginBot, loginScene);
         mouseHover(btnLoginTop, loginScene);
         mouseHover(btnRegister, loginScene);
         mouseHover(btnLoginReg, registerScene);
         mouseHover(btnRegisterTop, registerScene);
         mouseHover(btnRegisterBot, registerScene);
+
+        btnLoginBot.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                loginScene.setCursor(Cursor.WAIT);
+            }
+        });
+
+        //Promt Text
+        txtUserName.setPromptText("Username");
+        pf.setPromptText("Password");
+        txtUserName2.setPromptText("Username");
+        pf2.setPromptText("Password");
+        pf3.setPromptText("Retype Password");
 
         btnRegister.setOnAction(e -> primaryStage.setScene(registerScene));
         btnLoginReg.setOnAction(e -> primaryStage.setScene(loginScene));
@@ -189,21 +202,16 @@ public class GuiLogin extends Application implements IMessageListener {
         primaryStage.setMinWidth(400);
         primaryStage.setMinHeight(300);
         primaryStage.show();
+/*<<<<<<< HEAD
 
+=======
+>>>>>>> fa5778eb0e11ee0648d856068ed886ab1cbf3371*/
     }
 
     public static void mouseHover(Button btn, Scene scene) {
-        btn.setOnMouseEntered(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                scene.setCursor(Cursor.HAND);
-            }
-        });
-        btn.setOnMouseExited(new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                scene.setCursor(Cursor.DEFAULT); //Change cursor to crosshair
-            }
+        btn.setOnMouseEntered(event -> scene.setCursor(Cursor.HAND));
+        btn.setOnMouseExited(event -> {
+            scene.setCursor(Cursor.DEFAULT); //Change cursor to crosshair
         });
     }
 
@@ -225,4 +233,153 @@ public class GuiLogin extends Application implements IMessageListener {
         });
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

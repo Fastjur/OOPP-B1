@@ -24,5 +24,43 @@
 
 #text, #text2 {
     -fx-fill: #26A69A;
+	-fx-background-color:  #26A69A;
+	-fx-border-radius: 20;
+	-fx-padding: 10 10 10 10;
+	-fx-background-radius: 0;
 }
+
+#bp {
+	-fx-background-color:  #FFFFFF;
+}
+
+#btnLogin {
+    -fx-background-color:	#F06292;
+    -fx-text-fill:  #FFFFFF;
+    -fx-postion: relative;
+    -fx-left: -10px;
+}
+
+#BLT, #BR{
+    -fx-background-color:	#00796B;
+    -fx-text-fill:  #FFFFFF;
+    -fx-font-family: "roboto";
+}
+
+#text, #text2 {
+	-fx-fill:  #26A69A;
+	-fx-font-family: "roboto";
+}
+
+#btnLogin:hover {
+    -fx-text-fill:  #000000;
+}
+
+#loginLabel{
+    -fx-text-fill:  #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-fonfamily: "roboto";
+}
+
 
