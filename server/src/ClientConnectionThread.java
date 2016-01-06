@@ -269,7 +269,8 @@ public class ClientConnectionThread extends Thread {
                     } else {
                         int self = client.userId;
                         try {
-                            Server.getDb().getUser(self);
+                            User dbSelf = Server.getDb().getUser(self);
+                            response.putData("self", dbSelf);
                             response.errorMessage = "Retrieved your information!";
                             response.errorCode = 0;
                         } catch (SQLException e) {
