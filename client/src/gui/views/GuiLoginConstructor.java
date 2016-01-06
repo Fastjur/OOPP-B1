@@ -27,11 +27,11 @@ import shared.Response;
  * Constructor for the login and register page of the application
  * Author: Sebastiaan Hester
  */
-public class GuiLoginConstructor extends BorderPane implements IMessageListener {
+public class GuiLoginConstructor extends BorderPane {
 
-    private final Label lblMessage = new Label();
-    BorderPane bp;
-    BorderPane bp2;
+    protected final Label lblMessage = new Label();
+    protected BorderPane bp;
+    protected BorderPane bp2;
 
     public GuiLoginConstructor(){
         super();
@@ -71,6 +71,11 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         //Login
         final TextField txtUserName = new TextField();
         final PasswordField pf = new PasswordField();
+
+        //TODO Remove, this is solely for ease of debugging
+        txtUserName.setText("sinterklaas@sintmail.nl");
+        pf.setText("Pepernoten01");
+
         Button btnLoginTop = new Button("Login");
         Button btnLoginBot = new Button("Login");
         Button btnRegister = new Button("Register");
@@ -138,17 +143,6 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         text2.setId("text2");
         loginLabel.setId("loginLabel");
 
-        //Action for btnLogin
-        btnLoginBot.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                String checkUser = txtUserName.getText(),
-                        checkPw = pf.getText();
-                Backend.login(checkUser, checkPw);
-                txtUserName.setText("");
-                pf.setText("");
-            }
-        });
-
         //Add HBox and GridPane layout to BorderPane Layout
         bp.setTop(hb);
         bp.setCenter(gridPane);
@@ -168,6 +162,16 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
             @Override
             public void handle(MouseEvent event) {
                 GUILauncher.GUIScene.setCursor(Cursor.WAIT);
+                String checkUser = txtUserName.getText(),
+                        checkPw = pf.getText();
+                Backend.login(checkUser, checkPw);
+                System.out.println("Trying to login: " + checkUser + " " + checkPw);
+                txtUserName.setText("");
+                pf.setText("");
+                Platform.runLater(() -> {
+                    lblMessage.setText("Logging in...");
+                    lblMessage.setTextFill(Color.ORANGE);
+                });
             }
         });
 
@@ -180,45 +184,12 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         super.setCenter(bp);
         btnRegister.setOnMouseClicked(e -> GUILauncher.switchToRegister());
         btnLoginReg.setOnMouseClicked(e -> GUILauncher.switchToLogin());
-
-        //Initialize Backend
-        Backend.serverAddress = "::1";
-        Backend.serverPort = 8372;
-        Backend.connectToServer();
-        Backend.addMessageListener(this);
-
-        if (!Backend.isConnected()) {
-            Platform.runLater(new Runnable() {
-                public void run() {
-                    lblMessage.setText("Could not connect to server!");
-                    lblMessage.setTextFill(Color.RED);
-                }
-            });
-        }
     }
 
     public static void mouseHover(Button btn, Scene scene) {
         btn.setOnMouseEntered(event -> scene.setCursor(Cursor.HAND));
         btn.setOnMouseExited(event -> {
             scene.setCursor(Cursor.DEFAULT); //Change cursor to crosshair
-        });
-    }
-
-    @Override
-    public void onIncomingResponse(Response response) {
-        Platform.runLater(new Runnable(){
-            public void run() {
-                System.out.println(response);
-                if (response.responseTo.equals("login")) {
-                    if (response.errorCode == 0) {
-                        lblMessage.setText(response.errorMessage);
-                        lblMessage.setTextFill(Color.GREEN);
-                    } else {
-                        lblMessage.setText(response.errorMessage);
-                        lblMessage.setTextFill(Color.RED);
-                    }
-                }
-            }
         });
     }
 }
