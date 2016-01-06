@@ -1,13 +1,22 @@
 package gui.views;
 
+import communication.Backend;
+import communication.IMessageListener;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.codehaus.jackson.map.ObjectMapper;
+import shared.Response;
+import shared.User;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class GUILauncher extends Application {
+public class GUILauncher extends Application implements IMessageListener {
     static Scene GUIScene;
     private static BorderPane GUI;
     private static GuiLoginConstructor login;
@@ -18,7 +27,7 @@ public class GUILauncher extends Application {
     private static GUISideBarConstructor sideBar;
 
     @Override
-    public void start(Stage PrimaryStage) throws Exception{
+    public void start(Stage PrimaryStage) throws Exception {
         String nomatchURL = this.getClass().getResource("resources/nomatch.png").toExternalForm();
         String matchURL = this.getClass().getResource("resources/match.png").toExternalForm();
 
@@ -67,6 +76,37 @@ public class GUILauncher extends Application {
         PrimaryStage.setScene(GUIScene);
         GUIScene.getStylesheets().addAll("/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");
         PrimaryStage.show();
+
+        Backend.serverAddress = "::1";
+        Backend.serverPort = 8372;
+        Backend.connectToServer();
+        Backend.addMessageListener(this);
+
+        if (!Backend.isConnected()) {
+            Platform.runLater(() -> {
+                login.lblMessage.setText("Could not connect to server!");
+                login.lblMessage.setTextFill(Color.RED);
+            });
+        }
+
+        if (!Backend.isConnected()) {
+            System.out.println("Could not establish connection to server (" + Backend.serverAddress + " using port "
+                    + Backend.serverPort + ")");
+        } else {
+            Platform.runLater(() -> {
+                login.lblMessage.setText("Connected to server!");
+                login.lblMessage.setTextFill(Color.GREEN);
+            });
+        }
+    }
+
+    public void stop() {
+        try {
+            Backend.closeConnection();
+            System.out.println("Successfully closed connection to server");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args){
@@ -121,7 +161,9 @@ public class GUILauncher extends Application {
 
     // Events TopBar
 
+    @SuppressWarnings("Duplicates")
     public static void findMatchClick(Button fMatch, Button yourMatches, Button chat, Button profile) {
+        //FIXME duplicate code
         fMatch.setId("findMatchActive");
         yourMatches.setId("yourMatches");
         chat.setId("chat");
@@ -145,7 +187,9 @@ public class GUILauncher extends Application {
         profile.setId("profile");
     }
 
+    @SuppressWarnings("Duplicates")
     public static void profileClick(Button findMatch, Button yourMatches, Button chat, Button prof) {
+        //FIXME duplicate code
         prof.setId("profileActive");
         findMatch.setId("findMatch");
         yourMatches.setId("yourMatches");
@@ -153,5 +197,41 @@ public class GUILauncher extends Application {
 
         GUI.setCenter(profile);
         GUI.setLeft(sideBar);
+    }
+
+    @Override
+    public void onIncomingResponse(Response response) {
+        System.out.println(response);
+        ObjectMapper mapper = new ObjectMapper();
+        Platform.runLater(() -> {
+            switch (response.responseTo) {
+                case "login":
+                    if (response.errorCode == 0) {
+                        login.lblMessage.setText(response.errorMessage);
+                        login.lblMessage.setTextFill(Color.GREEN);
+                        Backend.getSelf();
+                    } else {
+                        login.lblMessage.setText(response.errorMessage);
+                        login.lblMessage.setTextFill(Color.RED);
+                    }
+                    break;
+
+                case "getSelf":
+                    if (response.errorCode == 0) {
+                        login.lblMessage.setText(response.errorMessage);
+                        login.lblMessage.setTextFill(Color.GREEN);
+                        try {
+                            System.out.println(response.getResponseData());
+                            Backend.setSelfObject(mapper.readValue(response.getResponseData().get("self").toString(),
+                                    User.class));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        login.lblMessage.setText(response.errorMessage);
+                        login.lblMessage.setTextFill(Color.RED);
+                    }
+            }
+        });
     }
 }
