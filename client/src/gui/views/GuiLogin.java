@@ -12,8 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Reflection;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -23,18 +21,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-
-
 public class GuiLogin extends Application {
 
-    String user = "Yosin12";
-    String pw = "Yosin12";
+    String user = "Test";
+    String pw = "Test";
     String checkUser, checkPw;
 
     public static void main(String[] args) {
@@ -43,16 +38,11 @@ public class GuiLogin extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("MindMatch Login");
 
         //BorderPane
         //Login
         BorderPane bp = new BorderPane();
         bp.setPadding(new Insets(10, 50, 50, 50));
-
-        //Image img = new Image("mm.jpg");
-        //ImageView imgView = new ImageView(img);
-        //bp.getChildren().add(imgView);
 
         //Register
         BorderPane bp2 = new BorderPane();
@@ -70,14 +60,11 @@ public class GuiLogin extends Application {
                 "-fx-border-color: #00796B transparent transparent transparent;" +
                 "-fx-border-width: 20px 0 0 200px;-fx-padding: 50%, 0, 0, 0;");
 
-
-
         //Register
         HBox hb2 = new HBox();
         hb2.setStyle("-fx-background-color: #26A69A;" +
                 "-fx-border-color: #00796B transparent transparent transparent;" +
                 "-fx-border-width: 20px 0 0 200px;-fx-padding: 50%, 0, 0, 0;");
-
 
         //Reset Password
         HBox hb3 = new HBox();
@@ -93,7 +80,7 @@ public class GuiLogin extends Application {
         gridPane.setHgap(10);
         gridPane.setVgap(5);
         gridPane.setMaxWidth(500);
-        gridPane.setMaxHeight(200);
+        gridPane.setMaxHeight(300);
         hb.setId("hb");
 
         //Register
@@ -114,6 +101,7 @@ public class GuiLogin extends Application {
         gridPane3.setMaxHeight(300);
         hb3.setId("hb3");
 
+
         //Implementing Nodes for GridPane
         //Login
         final TextField txtUserName = new TextField();
@@ -122,6 +110,8 @@ public class GuiLogin extends Application {
         Button btnLoginBot = new Button("Login");
         Button btnRegister = new Button("Register");
         final Label lblMessage = new Label();
+        final Label resMessage = new Label();
+        final Label res2Message = new Label();
         final Label loginLabel = new Label("Login");
         Button btnResetLog = new Button("Reset");
 
@@ -174,9 +164,9 @@ public class GuiLogin extends Application {
         gridPane3.add(resetPasswordLabel, 2, 1, 3, 1);
         gridPane3.add(txtUserName3, 2, 2, 3, 1);
         gridPane3.add(txtUserName4, 2, 3, 3, 1);
-        // gridPane3.add(info, 2, 4, 3, 1);
-        //gridPane3.add(info2, 2, 5, 3, 1);
         gridPane3.add(btnResetRes2, 2, 4, 3, 1);
+        gridPane3.add(resMessage, 2, 5, 3, 1);
+        gridPane3.add(res2Message, 2, 6, 3, 1);
 
 
         //Adding text
@@ -197,6 +187,22 @@ public class GuiLogin extends Application {
         hb.getChildren().add(text);
         hb2.getChildren().add(text2);
         hb3.getChildren().add(text3);
+
+        //Adding Pic to Vbox
+        //Login
+        VBox vb = new VBox();
+        ImageView iv = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo.png")));
+        vb.getChildren().add(iv);
+
+        //Register
+        VBox vb2 = new VBox();
+        ImageView iv2 = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo.png")));
+        vb2.getChildren().add(iv2);
+
+        //Reset
+        VBox vb3 = new VBox();
+        ImageView iv3 = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo.png")));
+        vb3.getChildren().add(iv3);
 
         //Add ID's to Nodes
         //Login
@@ -231,22 +237,6 @@ public class GuiLogin extends Application {
         info.setId("info");
         info2.setId("info2");
 
-        //Pop-up window for Reset button
-        btnResetRes2.setOnAction(
-                new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        final Stage dialog = new Stage();
-                        dialog.initModality(Modality.APPLICATION_MODAL);
-                        dialog.initOwner(primaryStage);
-                        VBox dialogVbox = new VBox(20);
-                        dialogVbox.getChildren().add(new Text("An email with instructions will be sent to you shortly."));
-                        Scene dialogScene = new Scene(dialogVbox, 350, 200);
-                        dialog.setScene(dialogScene);
-                        dialog.show();
-                    }
-                });
-
 
         //Action for btnLogin
         btnLoginBot.setOnAction(new EventHandler<ActionEvent>() {
@@ -257,7 +247,7 @@ public class GuiLogin extends Application {
                     lblMessage.setText("Congratulations!");
                     lblMessage.setTextFill(Color.GREEN);
                 } else {
-                    lblMessage.setText("Incorrect user or pw.");
+                    lblMessage.setText("Incorrect Username or Password.");
                     lblMessage.setTextFill(Color.RED);
                 }
                 txtUserName.setText("");
@@ -265,18 +255,40 @@ public class GuiLogin extends Application {
             }
         });
 
-        //Add HBox and GridPane layout to BorderPane Layout
+        //Reset button message
+        btnResetRes2.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+
+                    resMessage.setText("An email with instructions");
+                    res2Message.setText("will be sent to you shortly.");
+                    resMessage.setTextFill(Color.WHITE);
+                    res2Message.setTextFill(Color.WHITE);
+                //txtUserName.setText("");
+               // pf.setText("");
+            }
+        });
+
+        //Add V/HBox and GridPane layout to BorderPane Layout
         //Login
         bp.setTop(hb);
         bp.setCenter(gridPane);
+        bp.setLeft(vb);
+        vb.setTranslateY(300);
+        vb.setTranslateX(130);
 
         //Register
         bp2.setTop(hb2);
         bp2.setCenter(gridPane2);
+        bp2.setLeft(vb2);
+        vb2.setTranslateY(300);
+        vb2.setTranslateX(130);
 
         //Reset
         bp3.setTop(hb3);
         bp3.setCenter(gridPane3);
+        bp3.setLeft(vb3);
+        vb3.setTranslateY(300);
+        vb3.setTranslateX(130);
 
 
         //Adding BorderPane to the scene and loading CSS
@@ -300,12 +312,6 @@ public class GuiLogin extends Application {
         mouseHover(btnResetRes, resetScene);
         mouseHover(btnResetRes2, resetScene);
 
-        btnLoginBot.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                loginScene.setCursor(Cursor.WAIT);
-            }
-        });
 
 
         //Promt Text
@@ -317,179 +323,38 @@ public class GuiLogin extends Application {
         txtUserName3.setPromptText("Email Adress");
         txtUserName4.setPromptText("Confirm Email Adress");
 
+        //Button actions
         btnRegister.setOnAction(e -> primaryStage.setScene(registerScene));
         btnLoginReg.setOnAction(e -> primaryStage.setScene(loginScene));
         btnResetLog.setOnAction(e -> primaryStage.setScene(resetScene));
         btnResetReg.setOnAction(e -> primaryStage.setScene(resetScene));
         btnLoginRes.setOnAction(e -> primaryStage.setScene(loginScene));
         btnRegisterRes.setOnAction(e -> primaryStage.setScene(registerScene));
+        btnLoginBot.setDefaultButton(true);
+        btnRegisterBot.setDefaultButton(true);
+        btnResetRes2.setDefaultButton(true);
+        //btnLoginBot.setOnMouseClicked(e->loginScene.setCursor(Cursor.WAIT));
+
+        //CSS
         loginScene.getStylesheets().add("/gui/views/css/login.css");
         registerScene.getStylesheets().add("/gui/views/css/login.css");
         resetScene.getStylesheets().add("/gui/views/css/login.css");
-        primaryStage.setScene(loginScene);
 
-        primaryStage.setResizable(false);
-        primaryStage.setMinWidth(400);
-        primaryStage.setMinHeight(300);
+        //Stage settings
+        primaryStage.setScene(loginScene);
+        primaryStage.setWidth(1920);
+        primaryStage.setHeight(1080);
+        primaryStage.setTitle("MindMatch");
         primaryStage.show();
 
     }
 
+    //Method for mousehovers
     public static void mouseHover(Button btn, Scene scene) {
         btn.setOnMouseEntered(event -> scene.setCursor(Cursor.HAND));
         btn.setOnMouseExited(event -> {
-            scene.setCursor(Cursor.DEFAULT); //Change cursor to crosshair
+            scene.setCursor(Cursor.DEFAULT);
         });
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
