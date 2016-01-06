@@ -33,7 +33,7 @@ public class ConnectedClientTest {
     }
 
     @Before
-    public void startlistenthread() throws Exception{
+    public void startlistenthread() throws Exception {
         mapper = new ObjectMapper();
         clients = new ArrayList<>();
         thread = new ListenThread(clients, 9999);
@@ -107,7 +107,7 @@ public class ConnectedClientTest {
         request.put("action", "login");
         Map<String, Object> requestData = new HashMap<>();
         requestData.put("email", "sinterklaas@sintmail.nl");
-        requestData.put("pass","Pepernoten01");
+        requestData.put("pass", "Pepernoten01");
         request.put("requestData", requestData);
 
         byte[] msg = mapper.writeValueAsString(request).getBytes(StandardCharsets.UTF_8);

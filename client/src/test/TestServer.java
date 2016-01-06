@@ -34,6 +34,10 @@ public class TestServer extends Thread {
         }
     }
 
+    public void dispose() throws IOException {
+        this.serverSocket.close();
+    }
+
     public String receiveMessage() throws IOException {
         byte[] buf = new byte[4];
         inputStream.read(buf);

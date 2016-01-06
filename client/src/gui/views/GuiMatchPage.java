@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 public class GuiMatchPage extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         String nomatchURL = this.getClass().getResource("/gui/views/resources/nomatch.png").toExternalForm();
         String matchURL = this.getClass().getResource("/gui/views/resources/match.png").toExternalForm();
         HBox bottomBox = bottomBox(nomatchURL, matchURL);
@@ -46,7 +46,7 @@ public class GuiMatchPage extends Application {
         primaryStage.show();
     }
 
-    private HBox bottomBox(String Url1, String Url2){
+    private HBox bottomBox(String Url1, String Url2) {
         ImageView nmView = new ImageView(new Image(Url1));
         ImageView mView = new ImageView(new Image(Url2));
 
@@ -61,12 +61,12 @@ public class GuiMatchPage extends Application {
         hbox.setId("bottomBox");
         hbox.getChildren().addAll(nmView, mView);
         hbox.setAlignment(Pos.CENTER);
-        hbox.setPadding(new Insets(20,0,20,0));
+        hbox.setPadding(new Insets(20, 0, 20, 0));
         hbox.setMinHeight(120);
         return hbox;
     }
 
-    private ScrollPane rightBox(String _name, String _age, String _description){
+    private ScrollPane rightBox(String _name, String _age, String _description) {
         VBox vbox = new VBox(5);
 
         Text nameUser = new Text(_name);
@@ -81,7 +81,7 @@ public class GuiMatchPage extends Application {
         age.setStyle("-fx-font-size: 150%");
         TextFlow description = new TextFlow();
         description.getChildren().addAll(descr, descriptionUser);
-        description.setPadding(new Insets(30,0,0,0));
+        description.setPadding(new Insets(30, 0, 0, 0));
         vbox.getChildren().addAll(name, age, description);
         vbox.setAlignment(Pos.TOP_LEFT);
 
@@ -97,16 +97,15 @@ public class GuiMatchPage extends Application {
         return rightBox;
     }
 
-    private static HBox pfBox(String pfURL){
+    private static HBox pfBox(String pfURL) {
         Image pf = new Image(pfURL);
-        BackgroundImage pfView= new BackgroundImage(pf, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(100, 100, true, true, false, true));
+        BackgroundImage pfView = new BackgroundImage(pf, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(100, 100, true, true, false, true));
         HBox pfBox = new HBox();
         pfBox.setBackground(new Background(pfView));
         return pfBox;
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         launch(args);
     }
 }

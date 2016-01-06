@@ -1,0 +1,15 @@
+#sidebar    {
+    -fx-background-color: #EEEEEE;
+}
+
+.sidebarBtn {
+    -fx-display: inline-block;
+    -fx-font-family: "Roboto";
+    -fx-font-size: 12pt;
+    -fx-font-weight: bold;
+    -fx-background-color: #EEEEEE;
+}
+
+.sidebarBtn:hover{
+    -fx-background-color: #BDBDBD;
+}

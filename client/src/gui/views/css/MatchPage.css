@@ -1,29 +1,30 @@
-#bottomBox{
+#bottomBox {
     -fx-background-color: #F06292;
 }
 
-#rightBox{
+#rightBox {
     -fx-background-color: white;
 }
 
 .scroll-bar, .track {
     -fx-background-color: lightgrey;
 }
-.scroll-bar .increment-button, .decrement-button{
+
+.scroll-bar .increment-button, .decrement-button {
     -fx-background-insets: 0em;
     -fx-background-color: lightgrey;
 }
 
-.scroll-bar .increment-button:hover, .decrement-button:hover{
+.scroll-bar .increment-button:hover, .decrement-button:hover {
     -fx-background-color: grey;
 }
 
-.scroll-bar .thumb{
+.scroll-bar .thumb {
     -fx-background-color: grey;
     -fx-background-radius: 0em;
     -fx-background-insets: 0em;
 }
 
-.scroll-bar .increment-arrow, .decrement-arrow{
+.scroll-bar .increment-arrow, .decrement-arrow {
     -fx-background-color: black;
 }

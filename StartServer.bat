@@ -12,5 +12,5 @@ echo = Copyright 2015-2016                           =
 echo =================================================
 echo.
 echo.
-java -classpath ".\server\lib\*;.\out\production\server" Server
+java -classpath ".\server\lib\*;.\shared\lib\*;.\out\production\shared;.\out\production\server" Server
 pause

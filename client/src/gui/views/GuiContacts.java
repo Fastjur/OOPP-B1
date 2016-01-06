@@ -31,7 +31,7 @@ public class GuiContacts extends BorderPane{
 
 
     public GuiContacts(String name, String age, String img, String description,
-                                String university, String study, AvailableTimes availabletimes) {
+                       String university, String study, AvailableTimes availabletimes) {
         super();
         this.name = name;
         this.age = age;
