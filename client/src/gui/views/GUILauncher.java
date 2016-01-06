@@ -11,9 +11,13 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.codehaus.jackson.map.ObjectMapper;
 import shared.Response;
+import shared.TimePeriod;
 import shared.User;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 public class GUILauncher extends Application implements IMessageListener {
@@ -161,7 +165,6 @@ public class GUILauncher extends Application implements IMessageListener {
 
     // Events TopBar
 
-    @SuppressWarnings("Duplicates")
     public static void findMatchClick(Button fMatch, Button yourMatches, Button chat, Button profile) {
         //FIXME duplicate code
         fMatch.setId("findMatchActive");
@@ -187,7 +190,6 @@ public class GUILauncher extends Application implements IMessageListener {
         profile.setId("profile");
     }
 
-    @SuppressWarnings("Duplicates")
     public static void profileClick(Button findMatch, Button yourMatches, Button chat, Button prof) {
         //FIXME duplicate code
         prof.setId("profileActive");
@@ -197,6 +199,53 @@ public class GUILauncher extends Application implements IMessageListener {
 
         GUI.setCenter(profile);
         GUI.setLeft(sideBar);
+
+        if (Backend.getSelfObject() != null) {
+            User self = Backend.getSelfObject();
+            profile.tf1.setText(self.getFirstname() + " " + self.getLastname());
+            profile.tf2.setText(self.getGender());
+
+            LocalDate now = LocalDate.now(),
+                      birthday = self.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            int age = Period.between(birthday, now).getYears();
+            profile.tf3.setText(String.valueOf(age));
+            profile.tf4.setText(birthday.toString());
+            profile.tf5.setText(self.getNationality());
+            profile.tf6.setText(listToString(self.getLanguageList()));
+            profile.tf7.setText(self.getMail());
+            profile.tf8.setText(self.getPhonenumber());
+            profile.tf9.setText("NOT APPLICABLE");
+            profile.tf10.setText(self.getPassword());
+            profile.tf11.setText(self.getUniversity());
+            profile.tf12.setText(self.getStudy());
+            profile.tf13.setText(String.valueOf(self.getStudyYear()));
+            profile.tf14.setText(listToString(self.getCoursesLearningList()));
+            profile.tf15.setText(listToString(self.getCoursesTeachingList()));
+            profile.tf16.setText(listToString(self.getBuddyList()));
+
+            profile.tf17.setText(listToString(self.getAvailableDates().getMonday()));
+            profile.tf18.setText(listToString(self.getAvailableDates().getTuesday()));
+            profile.tf19.setText(listToString(self.getAvailableDates().getWednesday()));
+            profile.tf20.setText(listToString(self.getAvailableDates().getThursday()));
+            profile.tf21.setText(listToString(self.getAvailableDates().getFriday()));
+            profile.tf22.setText(listToString(self.getAvailableDates().getSaturday()));
+            profile.tf23.setText(listToString(self.getAvailableDates().getSunday()));
+        }
+    }
+
+    private static String listToString (ArrayList list) {
+        String res = "";
+        if (list.size() == 0)
+            return res;
+        for (Object o : list) {
+            if (o instanceof String) {
+                res += o + ",";
+            } else if (o instanceof TimePeriod) {
+                res += o.toString() + ",";
+            }
+        }
+        res = res.substring(0, res.length() - 1);
+        return res;
     }
 
     @Override
@@ -221,9 +270,11 @@ public class GUILauncher extends Application implements IMessageListener {
                         login.lblMessage.setText(response.errorMessage);
                         login.lblMessage.setTextFill(Color.GREEN);
                         try {
-                            System.out.println(response.getResponseData());
                             Backend.setSelfObject(mapper.readValue(response.getResponseData().get("self").toString(),
                                     User.class));
+                            GUI.setLeft(findMatchSideBar);
+                            GUI.setTop(topbar);
+                            GUI.setCenter(findMatch);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

@@ -1,5 +1,6 @@
 package gui.views;
 
+import communication.Backend;
 import javafx.geometry.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,8 +9,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+import shared.User;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 
 public class GuiProfileConstructor extends BorderPane {
+
+    protected TextField tf1, tf2, tf3, tf4, tf5, tf6, tf7, tf8, tf9, tf10, tf11, tf12, tf13, tf14, tf15, tf16, tf17,
+            tf18, tf19, tf20, tf21, tf22, tf23;
 
     public GuiProfileConstructor() {
         super();
@@ -41,51 +50,51 @@ public class GuiProfileConstructor extends BorderPane {
         editToggleBtn.setText("V");
 
         //TextFields
-        TextField tf1 = new TextField("Info goes here");
+        tf1 = new TextField("Info goes here");
         tf1.setEditable(false);
-        TextField tf2 = new TextField("Info goes here");
+        tf2 = new TextField("Info goes here");
         tf2.setEditable(false);
-        TextField tf3 = new TextField("Info goes here");
+        tf3 = new TextField("Info goes here");
         tf3.setEditable(false);
-        TextField tf4 = new TextField("Info goes here");
+        tf4 = new TextField("Info goes here");
         tf4.setEditable(false);
-        TextField tf5 = new TextField("Info goes here");
+        tf5 = new TextField("Info goes here");
         tf5.setEditable(false);
-        TextField tf6 = new TextField("Info goes here");
+        tf6 = new TextField("Info goes here");
         tf6.setEditable(false);
-        TextField tf7 = new TextField("Info goes here");
+        tf7 = new TextField("Info goes here");
         tf7.setEditable(false);
-        TextField tf8 = new TextField("Info goes here");
+        tf8 = new TextField("Info goes here");
         tf8.setEditable(false);
-        TextField tf9 = new TextField("Info goes here");
+        tf9 = new TextField("Info goes here");
         tf9.setEditable(false);
-        TextField tf10 = new TextField("Info goes here");
+        tf10 = new TextField("Info goes here");
         tf10.setEditable(false);
-        TextField tf11 = new TextField("Info goes here");
+        tf11 = new TextField("Info goes here");
         tf11.setEditable(false);
-        TextField tf12 = new TextField("Info goes here");
+        tf12 = new TextField("Info goes here");
         tf12.setEditable(false);
-        TextField tf13 = new TextField("Info goes here");
+        tf13 = new TextField("Info goes here");
         tf13.setEditable(false);
-        TextField tf14 = new TextField("Info goes here");
+        tf14 = new TextField("Info goes here");
         tf14.setEditable(false);
-        TextField tf15 = new TextField("Info goes here");
+        tf15 = new TextField("Info goes here");
         tf15.setEditable(false);
-        TextField tf16 = new TextField("Info goes here");
+        tf16 = new TextField("Info goes here");
         tf16.setEditable(false);
-        TextField tf17 = new TextField("Info goes here");
+        tf17 = new TextField("Info goes here");
         tf17.setEditable(false);
-        TextField tf18 = new TextField("Info goes here");
+        tf18 = new TextField("Info goes here");
         tf18.setEditable(false);
-        TextField tf19 = new TextField("Info goes here");
+        tf19 = new TextField("Info goes here");
         tf19.setEditable(false);
-        TextField tf20 = new TextField("Info goes here");
+        tf20 = new TextField("Info goes here");
         tf20.setEditable(false);
-        TextField tf21 = new TextField("Info goes here");
+        tf21 = new TextField("Info goes here");
         tf21.setEditable(false);
-        TextField tf22 = new TextField("Info goes here");
+        tf22 = new TextField("Info goes here");
         tf22.setEditable(false);
-        TextField tf23 = new TextField("Info goes here");
+        tf23 = new TextField("Info goes here");
         tf23.setEditable(false);
 
         //Labels
