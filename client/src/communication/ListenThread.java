@@ -2,6 +2,7 @@ package communication;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import shared.Response;
 import shared.User;
 
@@ -12,6 +13,9 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by Govert on 14-12-2015.
@@ -67,17 +71,11 @@ public class ListenThread extends Thread {
             res.errorCode = responseObj.get("errorCode").getIntValue();
             res.errorMessage = responseObj.get("errorMessage").getTextValue();
 
-            switch (responseTo) {
-                case "getMatches":
-                    ArrayList<User> canTeach = mapper.readValue(responseObj.get("responseData").get("canTeach")
-                                    .getTextValue(),
-                            mapper.getTypeFactory().constructCollectionType(ArrayList.class, User.class)),
-                            canLearn = mapper.readValue(responseObj.get("responseData").get("canLearn").getTextValue(),
-                                    mapper.getTypeFactory().constructCollectionType(ArrayList.class, User.class)),
-                            canBuddyUp = mapper.readValue(responseObj.get("responseData").get("canBuddyUp")
-                                            .getTextValue(),
-                                    mapper.getTypeFactory().constructCollectionType(ArrayList.class, User.class));
-                    break;
+            Iterator<Map.Entry<String, JsonNode>> nodeIterator = responseObj.get("responseData").getFields();
+
+            while (nodeIterator.hasNext()) {
+                Map.Entry<String, JsonNode> entry = (Map.Entry<String, JsonNode>) nodeIterator.next();
+                res.putData(entry.getKey(), entry.getValue());
             }
 
             Backend.onResponse(res);
