@@ -33,6 +33,10 @@ public class Response {
         return this.responseData;
     }
 
+    public void setResponseData(Map<String, Object> map) {
+        this.responseData = map;
+    }
+
     public String toString() {
         return "{ \"responseTo\" : \"" + this.responseTo
                 + "\" \"errorCode\" : \"" + errorCode
