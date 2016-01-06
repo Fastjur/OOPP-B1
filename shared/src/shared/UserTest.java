@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 /**
  * @author Govert de Gans
- * @version  2015-12-09
+ * @version 2015-12-09
  */
 public class UserTest {
     User testuser1;

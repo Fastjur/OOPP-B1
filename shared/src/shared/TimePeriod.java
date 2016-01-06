@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 /**
  * shared.TimePeriod class that specifies a starting and ending time on a day basis
+ *
  * @author Jurriaan Den Toonder
  * @version 0.5
  */
@@ -18,12 +19,14 @@ public class TimePeriod {
     /**
      * Empty constructor for JSON
      */
-    public TimePeriod(){}
+    public TimePeriod() {
+    }
 
     /**
      * Constructor using minute notation
+     *
      * @param start int, minutes from 00:00 to the starting point of the shared.TimePeriod
-     * @param end int, minutes from 00:00 to the ending point of the shared.TimePeriod
+     * @param end   int, minutes from 00:00 to the ending point of the shared.TimePeriod
      */
     public TimePeriod(int start, int end) {
         this.start = start;
@@ -33,25 +36,26 @@ public class TimePeriod {
     /**
      * Constructor allowing the use of a String representation of times
      * 24h notation
+     *
      * @param start String, starting time of shared.TimePeriod ("xx:xx")
-     * @param end String, ending time of shared.TimePeriod ("xx:xx")
+     * @param end   String, ending time of shared.TimePeriod ("xx:xx")
      */
     public TimePeriod(String start, String end) {
-        if(start == null || end == null) {
+        if (start == null || end == null) {
             throw new IllegalArgumentException("Start or end time is null");
         }
-        if(start.equals(end)) {
+        if (start.equals(end)) {
             throw new IllegalArgumentException("Start and end time are the same");
         }
         Pattern p = Pattern.compile("[0-9]{2}:[0-9]{2}");
         Matcher mStart = p.matcher(start),
                 mEnd = p.matcher(end);
-        if(!mStart.matches() || !mEnd.matches()) {
+        if (!mStart.matches() || !mEnd.matches()) {
             throw new IllegalArgumentException("Illegal start or end time specified!");
         }
         int startInt = parseToMinutes(start),
-            endInt = parseToMinutes(end);
-        if(endInt - startInt <= 0) {
+                endInt = parseToMinutes(end);
+        if (endInt - startInt <= 0) {
             throw new IllegalArgumentException("Start time is after end time");
         }
         this.start = startInt;
@@ -60,6 +64,7 @@ public class TimePeriod {
 
     /**
      * Formats this shared.TimePeriod object to JSON and returns it in a String
+     *
      * @return String, JSON representation of this shared.TimePeriod
      * @throws IOException
      */
@@ -70,6 +75,7 @@ public class TimePeriod {
 
     /**
      * Creates a shared.TimePeriod from a JSON formatted String
+     *
      * @param json String, JSON representation of a shared.TimePeriod object
      * @return shared.TimePeriod object
      * @throws IOException
@@ -82,6 +88,7 @@ public class TimePeriod {
     /**
      * Takes a String representing a time and returns it as a minutes from 00:00 representation
      * So 01:00 = 60, 01:30 = 90
+     *
      * @param time String representation of a time
      * @return int, amount of minutes from 00:00
      */
@@ -95,6 +102,7 @@ public class TimePeriod {
 
     /**
      * Return this shared.TimePeriod as a String representation
+     *
      * @return String
      */
     public String toString() {

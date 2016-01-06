@@ -8,22 +8,25 @@ import java.util.ArrayList;
 /**
  * Created by Fastjur on 2-12-2015.
  * shared.AvailableTimes holds the TimePeriods of a shared.User object on a weekday basis
- * @see TimePeriod
+ *
  * @author Jurriaan Den Toonder
  * @version 0.5
+ * @see TimePeriod
  */
 public class AvailableTimes {
     private ArrayList<TimePeriod> monday = new ArrayList<>(), tuesday = new ArrayList<>(),
-                                  wednesday = new ArrayList<>(), thursday = new ArrayList<>(),
-                                  friday = new ArrayList<>(), saturday = new ArrayList<>(), sunday = new ArrayList<>();
+            wednesday = new ArrayList<>(), thursday = new ArrayList<>(),
+            friday = new ArrayList<>(), saturday = new ArrayList<>(), sunday = new ArrayList<>();
 
     /**
      * Empty constructor for JSON
      */
-    public AvailableTimes() {}
+    public AvailableTimes() {
+    }
 
     /**
      * Returns this object in a String in JSON format
+     *
      * @return String, this object formatted in JSON
      * @throws IOException
      */
@@ -34,6 +37,7 @@ public class AvailableTimes {
 
     /**
      * Creates an shared.AvailableTimes object from a JSON string
+     *
      * @param json JSON formatted string to create user from
      * @return shared.AvailableTimes object with properties given in JSON string
      * @throws IOException
@@ -47,59 +51,98 @@ public class AvailableTimes {
 
     /**
      * Add a shared.TimePeriod to this shared.AvailableTimes object
+     *
      * @param day int, day of week. 1 = monday, 7 = sunday
-     * @param p shared.TimePeriod, the shared.TimePeriod to add to this shared.AvailableTimes object
+     * @param p   shared.TimePeriod, the shared.TimePeriod to add to this shared.AvailableTimes object
      */
     public void addTimePeriod(int day, TimePeriod p) {
-        switch(day){
-            case 1: this.monday.add(p); break;
-            case 2: this.tuesday.add(p); break;
-            case 3: this.wednesday.add(p); break;
-            case 4: this.thursday.add(p); break;
-            case 5: this.friday.add(p); break;
-            case 6: this.saturday.add(p); break;
-            case 7: this.sunday.add(p); break;
+        switch (day) {
+            case 1:
+                this.monday.add(p);
+                break;
+            case 2:
+                this.tuesday.add(p);
+                break;
+            case 3:
+                this.wednesday.add(p);
+                break;
+            case 4:
+                this.thursday.add(p);
+                break;
+            case 5:
+                this.friday.add(p);
+                break;
+            case 6:
+                this.saturday.add(p);
+                break;
+            case 7:
+                this.sunday.add(p);
+                break;
         }
     }
 
     /**
      * Get a single shared.TimePeriod from a given day using the shared.TimePeriod's index
-     * @param day int, day of week, 1 = monday, 7 = sunday
+     *
+     * @param day   int, day of week, 1 = monday, 7 = sunday
      * @param index int, index of the shared.TimePeriod
      * @return shared.TimePeriod
      */
     public TimePeriod getPeriod(int day, int index) {
-        switch(day) {
-            case 1: return this.monday.get(index);
-            case 2: return this.tuesday.get(index);
-            case 3: return this.wednesday.get(index);
-            case 4: return this.thursday.get(index);
-            case 5: return this.friday.get(index);
-            case 6: return this.saturday.get(index);
-            case 7: return this.sunday.get(index);
+        switch (day) {
+            case 1:
+                return this.monday.get(index);
+            case 2:
+                return this.tuesday.get(index);
+            case 3:
+                return this.wednesday.get(index);
+            case 4:
+                return this.thursday.get(index);
+            case 5:
+                return this.friday.get(index);
+            case 6:
+                return this.saturday.get(index);
+            case 7:
+                return this.sunday.get(index);
         }
         return null;
     }
 
     /**
      * Remove a shared.TimePeriod from a given day using the shared.TimePeriod's index
-     * @param day int, day of week, 1 = monday, 7 = sunday
+     *
+     * @param day   int, day of week, 1 = monday, 7 = sunday
      * @param index int, index of shared.TimePeriod
      */
     public void removeTime(int day, int index) {
-        switch(day) {
-            case 1: this.monday.remove(index); break;
-            case 2: this.tuesday.remove(index); break;
-            case 3: this.wednesday.remove(index); break;
-            case 4: this.thursday.remove(index); break;
-            case 5: this.friday.remove(index); break;
-            case 6: this.saturday.remove(index); break;
-            case 7: this.sunday.remove(index); break;
+        switch (day) {
+            case 1:
+                this.monday.remove(index);
+                break;
+            case 2:
+                this.tuesday.remove(index);
+                break;
+            case 3:
+                this.wednesday.remove(index);
+                break;
+            case 4:
+                this.thursday.remove(index);
+                break;
+            case 5:
+                this.friday.remove(index);
+                break;
+            case 6:
+                this.saturday.remove(index);
+                break;
+            case 7:
+                this.sunday.remove(index);
+                break;
         }
     }
 
     /**
      * Return this shared.AvailableTimes object in a String representation
+     *
      * @return String
      */
     public String toString() {

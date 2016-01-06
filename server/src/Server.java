@@ -78,15 +78,14 @@ public class Server {
         return db;
     }
 
-    public void logIn(String email, String password){
+    public void logIn(String email, String password) {
         User user;
         try {
             user = db.getUser(email);
-            if(user.getMail().equals(email) && user.getPassword().equals(password)){
+            if (user.getMail().equals(email) && user.getPassword().equals(password)) {
                 Session session = new Session(user.getUserID());
                 sessions.add(session);
-            }
-            else{
+            } else {
                 System.out.println("Authentication failed.");
             }
         } catch (IOException | SQLException e) {

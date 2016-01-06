@@ -6,6 +6,7 @@ import java.util.Date;
 
 /**
  * This is a dud database which should only be used for testing purposes.
+ *
  * @author Govert de Gans
  */
 public class DudDatabase extends Database {

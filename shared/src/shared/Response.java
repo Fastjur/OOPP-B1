@@ -22,7 +22,8 @@ public class Response {
     }
 
     @JsonCreator
-    public Response() { }
+    public Response() {
+    }
 
     public void putData(String key, Object value) {
         this.responseData.put(key, value);
@@ -42,7 +43,7 @@ public class Response {
 
     public boolean equals(Object other) {
         if (other instanceof Response) {
-            Response that = (Response)other;
+            Response that = (Response) other;
             return that.errorMessage.equals(this.errorMessage)
                     && that.errorCode == this.errorCode
                     && that.responseTo.equals(this.responseTo)
