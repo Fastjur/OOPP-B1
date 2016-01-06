@@ -19,6 +19,9 @@ public class GUILauncher extends Application {
 
     @Override
     public void start(Stage PrimaryStage) throws Exception{
+        ArrayList<String> languages = new ArrayList<>();
+        languages.add("English");
+        Double distance = 2500.0;
         String nomatchURL = this.getClass().getResource("resources/nomatch.png").toExternalForm();
         String matchURL = this.getClass().getResource("resources/match.png").toExternalForm();
 
@@ -47,7 +50,7 @@ public class GUILauncher extends Application {
         GUI = new BorderPane();
         GUIScene = new Scene(GUI);
 
-        findMatch = new GuiFindMatchConstructor(name, age, descr, matchURL, nomatchURL, pfURL);
+        findMatch = new GuiFindMatchConstructor(languages, distance, name, age, descr, matchURL, nomatchURL, pfURL);
         findMatchSideBar  = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
         profile = new GuiProfileConstructor();
         sideBar = new GUISideBarConstructor();
@@ -119,7 +122,7 @@ public class GUILauncher extends Application {
         fMatch.setId("findMatchActive");
         yourMatches.setId("yourMatches");
         chat.setId("chat");
-        profile.setId("profile");
+        profile.setId("profileBtn");
 
         GUI.setCenter(findMatch);
         GUI.setLeft(findMatchSideBar);
@@ -129,18 +132,18 @@ public class GUILauncher extends Application {
         yourMatches.setId("yourMatchesActive");
         findMatch.setId("findMatch");
         chat.setId("chat");
-        profile.setId("profile");
+        profile.setId("profileBtn");
     }
 
     public static void chatClick(Button findMatch, Button yourMatches, Button chat, Button profile) {
         chat.setId("chatActive");
         findMatch.setId("findMatch");
         yourMatches.setId("yourMatches");
-        profile.setId("profile");
+        profile.setId("profileBtn");
     }
 
     public static void profileClick(Button findMatch, Button yourMatches, Button chat, Button prof) {
-        prof.setId("profileActive");
+        prof.setId("profileBtnActive");
         findMatch.setId("findMatch");
         yourMatches.setId("yourMatches");
         chat.setId("chat");

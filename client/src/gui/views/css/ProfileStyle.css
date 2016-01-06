@@ -1,3 +1,7 @@
+#profileBtn {
+    -fx-background-color: #FFFFFF;
+}
+
 #uploadPicBtn   {
     -fx-background-color: #F06292;
     -fx-text-fill: #FFFFFF;
@@ -19,7 +23,8 @@
 }
 
 #profileAdditionalInfoGridPaneContainerPane {
-    -fx-background-color: #EEEEEE;
+    -fx-background-color: forestgreen;
+    -fx-fill: forestgreen;
 }
 
 #profileInfoCoursesLabelPane    {
@@ -30,11 +35,11 @@
 }
 
 #profileInfoCoursesGridPane {
-    -fx-background-color: #EEEEEE;
+    -fx-background-color: darkred;
 }
 
 #profileInfoContinuedGridPane   {
-    -fx-background-color: #EEEEEE;
+    -fx-background-color: aquamarine;
 }
 
 #profileAvailabilityTitlePane   {
@@ -43,4 +48,8 @@
 
 #profileAvailabilityPane    {
     -fx-background-color: #F06292;
+}
+
+#profileBot  {
+    -fx-background-color: yellow;
 }

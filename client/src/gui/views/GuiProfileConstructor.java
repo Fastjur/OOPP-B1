@@ -204,11 +204,12 @@ public class GuiProfileConstructor extends BorderPane {
         ColumnConstraints col2Constraints = new ColumnConstraints(750, 750, 750, Priority.ALWAYS, HPos.LEFT, true);
         col2Constraints.setPercentWidth(79);
         profileInfoGridPane.getColumnConstraints().addAll(col1Constraints, col2Constraints);
-        for (int i = 1; i <= 10; i++) {
+        /*for (int i = 1; i <= 10; i++) {
             profileInfoGridPane.addRow(i);
             RowConstraints rowConstraints = new RowConstraints(30, 30, 30, Priority.NEVER, VPos.CENTER, true);
             profileInfoGridPane.getRowConstraints().addAll(rowConstraints);
         }
+        */
         profileInfoGridPane.setId("profileInfoGridPane");
 
         VBox profileInfoPane = new VBox(0);
@@ -232,11 +233,11 @@ public class GuiProfileConstructor extends BorderPane {
         ColumnConstraints continuedInfoCol2Constraints = new ColumnConstraints(260, 520, 520, Priority.ALWAYS, HPos.LEFT, true);
         continuedInfoCol2Constraints.setPercentWidth(77);
         profileInfoContinuedGridPane.getColumnConstraints().addAll(continuedInfoCol1Constraints, continuedInfoCol2Constraints);
-        for (int i = 0; i <= 2; i++) {
+        /*for (int i = 0; i <= 2; i++) {
             profileInfoContinuedGridPane.addRow(i);
             RowConstraints rowConstraints = new RowConstraints(30, 30, 30, Priority.NEVER, VPos.CENTER, true);
             profileInfoContinuedGridPane.getRowConstraints().addAll(rowConstraints);
-        }
+        }*/
         profileInfoContinuedGridPane.setId("profileInfoContinuedGridPane");
 
         HBox profileInfoCoursesLabelPane = new HBox();
@@ -249,29 +250,30 @@ public class GuiProfileConstructor extends BorderPane {
 
         GridPane profileInfoCoursesGridPane = new GridPane();
         profileInfoCoursesGridPane.setAlignment(Pos.TOP_LEFT);
-        profileInfoCoursesGridPane.setMinWidth(770);
-        profileInfoCoursesGridPane.setPrefWidth(770);
-        profileInfoCoursesGridPane.setMaxWidth(770);
+        profileInfoCoursesGridPane.setMinWidth(300);
+        profileInfoCoursesGridPane.setPrefWidth(600);
+        profileInfoCoursesGridPane.setMaxWidth(600);
         profileInfoCoursesGridPane.addColumn(0, findATutor, becomeATutor, findStudyBuddy);
-        ColumnConstraints coursesCol1Constraints = new ColumnConstraints(240, 240, 240, Priority.NEVER, HPos.LEFT, false);
-        coursesCol1Constraints.setPercentWidth(34);
+        ColumnConstraints coursesCol1Constraints = new ColumnConstraints(120, 240, 240, Priority.NEVER, HPos.LEFT, false);
+        coursesCol1Constraints.setPercentWidth(40);
         profileInfoCoursesGridPane.addColumn(1, tf14, tf15, tf16);
-        ColumnConstraints coursesCol2Constraints = new ColumnConstraints(420, 420, 420, Priority.NEVER, HPos.LEFT, true);
-        coursesCol2Constraints.setPercentWidth(66);
+        ColumnConstraints coursesCol2Constraints = new ColumnConstraints(180, 360, 360, Priority.NEVER, HPos.LEFT, true);
+        coursesCol2Constraints.setPercentWidth(60);
         profileInfoCoursesGridPane.getColumnConstraints().addAll(coursesCol1Constraints, coursesCol2Constraints);
-        for (int i = 0; i <= 2; i++) {
+        /*for (int i = 0; i <= 2; i++) {
             profileInfoCoursesGridPane.addRow(i);
             RowConstraints rowConstraints = new RowConstraints(30, 30, 30, Priority.NEVER, VPos.CENTER, true);
-            profileInfoContinuedGridPane.getRowConstraints().addAll(rowConstraints);
-        }
+            profileInfoCoursesGridPane.getRowConstraints().addAll(rowConstraints);
+        }*/
         profileInfoCoursesGridPane.setId("profileInfoCoursesGridPane");
 
         VBox profileAdditionalInfoGridPaneContainerPane = new VBox();
+        profileAdditionalInfoGridPaneContainerPane.setPadding(profileAvailabilityTitlePaneInsets);
         profileAdditionalInfoGridPaneContainerPane.setSpacing(0);
         profileAdditionalInfoGridPaneContainerPane.setAlignment(Pos.TOP_LEFT);
-        profileAdditionalInfoGridPaneContainerPane.setMinSize(330, 180);
-        profileAdditionalInfoGridPaneContainerPane.setPrefSize(660, 360);
-        profileAdditionalInfoGridPaneContainerPane.setMaxSize(660, 360);
+        profileAdditionalInfoGridPaneContainerPane.setMinWidth(385);
+        profileAdditionalInfoGridPaneContainerPane.setPrefWidth(770);
+        profileAdditionalInfoGridPaneContainerPane.setMaxWidth(770);
         profileAdditionalInfoGridPaneContainerPane.getChildren().addAll(profileInfoContinuedGridPane, profileInfoCoursesLabelPane, profileInfoCoursesGridPane);
         profileAdditionalInfoGridPaneContainerPane.setId("profileAdditionalInfoGridPaneContainerPane");
 
@@ -282,20 +284,19 @@ public class GuiProfileConstructor extends BorderPane {
 
         GridPane profileAvailabilityGridPane = new GridPane();
         profileAvailabilityGridPane.setAlignment(Pos.TOP_LEFT);
-
         profileAvailabilityGridPane.setPadding(profileAvailabilityGridPaneInsets);
         profileAvailabilityGridPane.addColumn(0, monday, tuesday, wednesday, thursday, friday, saturday, sunday);
-        ColumnConstraints availabilityCol1Constraints = new ColumnConstraints(180, 180, 180, Priority.NEVER, HPos.LEFT, false);
-        availabilityCol1Constraints.setPercentWidth(30);
+        ColumnConstraints availabilityCol1Constraints = new ColumnConstraints(130, 130, 130, Priority.NEVER, HPos.LEFT, false);
+        availabilityCol1Constraints.setPercentWidth(24);
         profileAvailabilityGridPane.addColumn(1, tf17, tf18, tf19, tf20, tf21, tf22, tf23);
         ColumnConstraints availabilityCol2Constraints = new ColumnConstraints(420, 420, 420, Priority.ALWAYS, HPos.LEFT, true);
-        availabilityCol2Constraints.setPercentWidth(70);
+        availabilityCol2Constraints.setPercentWidth(76);
         profileAvailabilityGridPane.getColumnConstraints().addAll(availabilityCol1Constraints, availabilityCol2Constraints);
-        for (int i = 0; i < 7; i++) {
+        /*for (int i = 0; i < 7; i++) {
             profileAvailabilityGridPane.addRow(i);
             RowConstraints rowConstraints = new RowConstraints(48, 48, 48, Priority.NEVER, VPos.CENTER, true);
             profileAvailabilityGridPane.getRowConstraints().addAll(rowConstraints);
-        }
+        }*/
         profileAvailabilityGridPane.setId("profileAvailabilityGridPane");
 
         VBox profileAvailabilityPane = new VBox();
@@ -304,6 +305,7 @@ public class GuiProfileConstructor extends BorderPane {
         profileAvailabilityPane.setMinWidth(670);
         profileAvailabilityPane.setPrefWidth(670);
         profileAvailabilityPane.setMaxWidth(670);
+        profileAvailabilityPane.setPrefHeight(320);
         profileAvailabilityPane.getChildren().addAll(profileAvailabilityTitlePane, profileAvailabilityGridPane);
         profileAvailabilityPane.setId("profileAvailabilityPane");
 
@@ -313,20 +315,22 @@ public class GuiProfileConstructor extends BorderPane {
         profileTop.getChildren().addAll(profilePicPane,profileInfoPane);
         profileTop.setId("profileTop");
 
-        HBox profileAdditionalInfoPane = new HBox();
-        profileAdditionalInfoPane.setPadding(profileAdditionalInfoInsets);
-        profileAdditionalInfoPane.setSpacing(20);
-        profileAdditionalInfoPane.setAlignment(Pos.TOP_LEFT);
-        profileAdditionalInfoPane.getChildren().addAll(profileAdditionalInfoGridPaneContainerPane, profileAvailabilityPane);
-        profileAdditionalInfoPane.setId("profileAdditionalInfoPane");
+        HBox profileBot = new HBox();
+        profileBot.setPadding(profileAdditionalInfoInsets);
+        profileBot.setSpacing(20);
+        profileBot.setMinWidth(1500);
+        profileBot.setPrefWidth(1500);
+        profileBot.setMaxWidth(1500);
+        profileBot.setAlignment(Pos.TOP_LEFT);
+        profileBot.getChildren().addAll(profileAdditionalInfoGridPaneContainerPane, profileAvailabilityPane);
+        profileBot.setId("profileBot");
 
         VBox profile = new VBox();
         profile.setPadding(profileInsets);
         profile.setSpacing(30);
-        profile.getChildren().addAll(profileTop, profileAdditionalInfoPane);
+        profile.getChildren().addAll(profileTop, profileBot);
         profile.setId("profile");
 
         super.setCenter(profile);
-
     }
 }
