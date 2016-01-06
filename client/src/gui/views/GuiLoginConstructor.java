@@ -138,12 +138,6 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         text2.setId("text2");
         loginLabel.setId("loginLabel");
 
-        //Initialize Backend
-        Backend.serverAddress = "::1";
-        Backend.serverPort = 8372;
-        Backend.connectToServer();
-        Backend.addMessageListener(this);
-
         //Action for btnLogin
         btnLoginBot.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
@@ -186,6 +180,21 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         super.setCenter(bp);
         btnRegister.setOnMouseClicked(e -> GUILauncher.switchToRegister());
         btnLoginReg.setOnMouseClicked(e -> GUILauncher.switchToLogin());
+
+        //Initialize Backend
+        Backend.serverAddress = "::1";
+        Backend.serverPort = 8372;
+        Backend.connectToServer();
+        Backend.addMessageListener(this);
+
+        if (!Backend.isConnected()) {
+            Platform.runLater(new Runnable() {
+                public void run() {
+                    lblMessage.setText("Could not connect to server!");
+                    lblMessage.setTextFill(Color.RED);
+                }
+            });
+        }
     }
 
     public static void mouseHover(Button btn, Scene scene) {
