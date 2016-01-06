@@ -173,8 +173,20 @@ public class Backend {
         }
     }
 
-    public static void setSelf(User self) {
+    /**
+     * Sets the User object of Backend, representing the currently logged in user
+     * @param self User object
+     */
+    public static void setSelfObject(User self) {
         selfUserObj = self;
+    }
+
+    /**
+     * Getter for the User object representing the currently logged in user
+     * @return User object
+     */
+    public static User getSelfObject() {
+        return selfUserObj;
     }
 
     public static boolean isConnected() {
