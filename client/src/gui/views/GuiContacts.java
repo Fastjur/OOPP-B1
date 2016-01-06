@@ -1,87 +1,84 @@
 package gui.views;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.stage.Stage;
-
+import shared.AvailableTimes;
+import shared.TimePeriod;
 import java.util.ArrayList;
 
-public class GuiContacts extends Application {
+/**
+ * Created by Emma on 16-12-15.
+ */
+public class GuiContacts extends BorderPane{
+    private ScrollPane center;
+    private Button bottom;
+    private String name;
+    private String age;
+    private String img;
+    private String description;
+    private String university;
+    private String study;
+    private AvailableTimes availabletimes;
 
-    public static void main(String[] args) {
-        System.out.println("Launching JavaFX");
-        launch(args);
-        System.out.println("Finished");
+
+    public GuiContacts(String name, String age, String img, String description,
+                       String university, String study, AvailableTimes availabletimes) {
+        super();
+        this.name = name;
+        this.age = age;
+        this.img = img;
+        this.description = description;
+        this.university =university;
+        this.study = study;
+        this.availabletimes = availabletimes;
+        chatButton();
+        center();
+        super.setCenter(center);
+        super.setAlignment(bottom, Pos.BOTTOM_RIGHT);
+        super.setBottom(bottom);
+        super.setId("background");
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        String name = "Rebecca Black";
-        String age = "18";
-        String img = this.getClass().getResource("/gui/views/resources/pfExample.jpg").toExternalForm();
-        String description = "Seven a.m. waking up in the morning. Gotta be fresh, gotta go downstairs. " +
-                "Gotta have my bowl, gotta have cereal. Seein' everything the time is goin'. " +
-                "Tickin' on and on, everybody's rushin'. Gotta get down to the bus stop. Gotta catch my bus. I see my friends.";
-        String university = "U.C.L.A.";
-        String study = "Academic writing";
-        ArrayList<String> monTimes = new ArrayList<>();
-        monTimes.add("18:00-21:00");
-        ArrayList<String> tueTimes = new ArrayList<>();
-        tueTimes.add("12:00-14:30");
-        ArrayList<String> wedTimes = new ArrayList<>();
-        wedTimes.add("13:00-14:00");
-        wedTimes.add("20:00-21:00");
-        ArrayList<String> thuTimes = new ArrayList<>();
-        thuTimes.add("09:00-10:00");
-        ArrayList<String> friTimes = new ArrayList<>();
-        ArrayList<String> satTimes = new ArrayList<>();
-        satTimes.add("23:00-00:00");
-        ArrayList<String> sunTimes = new ArrayList<>();
-        sunTimes.add("13:00-15:00");
-
-        ScrollPane scroll = scroll(center(left(head(img, headText(name, age)), centerLeft(description, university, study)),
-                right(monTimes, tueTimes, wedTimes, thuTimes, friTimes, satTimes, sunTimes)));
-        scroll.setFitToHeight(true);
-
-        BorderPane pane = new BorderPane(scroll);
-        pane.setId("backgroundFoot");
-        scroll.setId("background");
-
-        Button btn = chatButton();
-        pane.setAlignment(btn, Pos.CENTER_RIGHT);
-        pane.setMargin(btn, new Insets(10, 10, 10, 10));
-        pane.setBottom(btn);
-
-        Scene scene = new Scene(pane, Color.WHITE);
-        String css = this.getClass().getResource("/gui/views/css/ContactsStyle.css").toExternalForm();
-        scene.getStylesheets().add(css);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("TwoBrains/Contacts");
-        primaryStage.setMinWidth(400);
-        primaryStage.setMinHeight(300);
-        primaryStage.show();
+    public void chatButton() {
+        bottom = new Button();
+        bottom.setText("Chat");
+        chatButtonNormal();
+        bottom.setOnAction(e -> chatButtonAction());
+        bottom.setOnMouseEntered(e -> chatButtonHover());
+        bottom.setOnMouseExited(e -> chatButtonNormal());
     }
 
-    public Button chatButton() {
-        Button chat = new Button();
-        chat.getStylesheets().add(this.getClass().getResource("/gui/views/css/ContactsStyle.css").toExternalForm());
-        chat.setText("Chat");
+    public void chatButtonNormal() {
         ImageView chatIcon = new ImageView("/gui/views/resources/chatIcon.png");
-        chatIcon.setFitHeight(30);
+        chatIcon.setFitHeight(50);
         chatIcon.setPreserveRatio(true);
-        chat.setGraphic(chatIcon);
-        chat.setId("buttonChat");
-        return chat;
+        bottom.setGraphic(chatIcon);
+        bottom.setId("buttonChat");
+    }
+
+    public void chatButtonHover() {
+        ImageView chatIcon = new ImageView("/gui/views/resources/chatIconHover.png");
+        chatIcon.setFitHeight(50);
+        chatIcon.setPreserveRatio(true);
+        bottom.setGraphic(chatIcon);
+        bottom.setId("buttonChatHover");
+    }
+
+    public void chatButtonAction() {
+        ImageView chatIcon = new ImageView("/gui/views/resources/chatIconHover.png");
+        chatIcon.setFitHeight(60);
+        chatIcon.setPreserveRatio(true);
+        bottom.setGraphic(chatIcon);
+        bottom.setId("buttonChatAction");
     }
 
     // picture and headtext (name and age)
@@ -117,7 +114,7 @@ public class GuiContacts extends Application {
 
         VBox descr = new VBox(2);
         TextFlow description = new TextFlow();
-        Text descriptionTitle = new Text("Description");
+        Text descriptionTitle  = new Text("Description");
         Text descriptionInfo = new Text(_description);
         description.getChildren().addAll(descriptionInfo);
         description.setPadding(new Insets(0, 30, 0, 0));
@@ -156,13 +153,13 @@ public class GuiContacts extends Application {
     }
 
     // return String of elements from the arraylist
-    public String getElements(ArrayList list) {
+    public String getElements(ArrayList<TimePeriod> list) {
         String text = "";
         if (list.size() == 0) {
             text = "-";
         } else {
             for (int i = 0; i < list.size(); i++) {
-                text += list.get(i).toString();
+                text += list.get(i).getStart() + "-" + list.get(i).getEnd();
                 if (i < list.size() - 1) {
                     text += "\n";
                 }
@@ -172,8 +169,7 @@ public class GuiContacts extends Application {
     }
 
     // Available
-    public VBox right(ArrayList _monTimes, ArrayList _tueTimes, ArrayList _wedTimes, ArrayList _thuTimes,
-                      ArrayList _friTimes, ArrayList _satTimes, ArrayList _sunTimes) {
+    public VBox right(AvailableTimes availabletimes) {
         VBox vbox = new VBox();
         VBox available = new VBox();
         VBox days = new VBox();
@@ -183,37 +179,38 @@ public class GuiContacts extends Application {
 
         HBox mon = new HBox();
         Text monday = new Text("Monday:\t\t");
-        Text monTimes = new Text(getElements(_monTimes));
+        Text monTimes = new Text(getElements(availabletimes.getMonday())
+        );
         mon.getChildren().addAll(monday, monTimes);
 
         HBox tue = new HBox();
         Text tuesday = new Text("Tuesday:\t\t");
-        Text tueTimes = new Text(getElements(_tueTimes));
+        Text tueTimes = new Text(getElements(availabletimes.getTuesday()));
         tue.getChildren().addAll(tuesday, tueTimes);
 
         HBox wed = new HBox();
         Text wednesday = new Text("Wednesday:\t");
-        Text wedTimes = new Text(getElements(_wedTimes));
+        Text wedTimes = new Text(getElements(availabletimes.getWednesday()));
         wed.getChildren().addAll(wednesday, wedTimes);
 
         HBox thu = new HBox();
         Text thursday = new Text("Thursday:\t\t");
-        Text thuTimes = new Text(getElements(_thuTimes));
+        Text thuTimes = new Text(getElements(availabletimes.getThursday()));
         thu.getChildren().addAll(thursday, thuTimes);
 
         HBox fri = new HBox();
         Text friday = new Text("Friday:\t\t");
-        Text friTimes = new Text(getElements(_friTimes));
+        Text friTimes = new Text(getElements(availabletimes.getFriday()));
         fri.getChildren().addAll(friday, friTimes);
 
         HBox sat = new HBox();
         Text saturday = new Text("Saturday:\t\t");
-        Text satTimes = new Text(getElements(_satTimes));
+        Text satTimes = new Text(getElements(availabletimes.getSaturday()));
         sat.getChildren().addAll(saturday, satTimes);
 
         HBox sun = new HBox();
         Text sunday = new Text("Sunday:\t\t");
-        Text sunTimes = new Text(getElements(_sunTimes));
+        Text sunTimes = new Text(getElements(availabletimes.getSunday()));
         sun.getChildren().addAll(sunday, sunTimes);
 
         days.getChildren().addAll(mon, tue, wed, thu, fri, sat, sun);
@@ -225,7 +222,7 @@ public class GuiContacts extends Application {
     }
 
     // the whole screen (except footer)
-    public HBox center(VBox _left, VBox _right) {
+    public HBox content(VBox _left, VBox _right) {
         HBox hbox = new HBox(5);
         hbox.getChildren().addAll(_left, _right);
         hbox.setId("center");
@@ -239,7 +236,16 @@ public class GuiContacts extends Application {
         scrollPane.setContent(_center);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setId("ID");
         return scrollPane;
     }
+
+    // center
+    public void center() {
+        center = scroll(content(left(head(img, headText(name, age)), centerLeft(description, university, study)), right(availabletimes)));
+        center.setId("screen");
+    }
+
 
 }

@@ -16,19 +16,20 @@ public class GUISideBarConstructor extends VBox {
 
         Button editProfileBtn = new Button();
         editProfileBtn.setPadding(sideBarBtnInsets);
-        editProfileBtn.setMinSize(200, 50);
-        editProfileBtn.setPrefSize(200, 50);
-        editProfileBtn.setMaxSize(200, 50);
+        editProfileBtn.setMinSize(300, 37);
+        editProfileBtn.setPrefSize(300, 37);
+        editProfileBtn.setMaxSize(300, 37);
         editProfileBtn.setText("Edit Profile");
-        editProfileBtn.setTextAlignment(TextAlignment.LEFT);
+        editProfileBtn.setAlignment(Pos.CENTER_LEFT);
         editProfileBtn.getStyleClass().add("sidebarBtn");
 
         Button logoutBtn = new Button();
         logoutBtn.setPadding(sideBarBtnInsets);
-        logoutBtn.setMinSize(200, 50);
-        logoutBtn.setPrefSize(200, 50);
-        logoutBtn.setMaxSize(200, 50);
+        logoutBtn.setMinSize(300, 37);
+        logoutBtn.setPrefSize(300, 37);
+        logoutBtn.setMaxSize(300, 37);
         logoutBtn.setText("Logout");
+        logoutBtn.setAlignment(Pos.CENTER_LEFT);
         logoutBtn.setOnMouseClicked(e -> System.exit(0));
         logoutBtn.getStyleClass().add("sidebarBtn");
 

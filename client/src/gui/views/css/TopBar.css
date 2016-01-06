@@ -1,0 +1,55 @@
+#toolbar {
+    -fx-background-color: #26A69A;
+    -fx-border-color: #00796B transparent transparent transparent;
+    -fx-border-width: 20px 0 0 200px;
+    -fx-padding: 50%, 0, 0, 0;
+}
+
+#findMatch, #yourMatches, #chat, #profile {
+    -fx-font: 24 light-roboto;
+    -fx-base: #26A69A;
+    -fx-text-fill: #FFFFFF;
+    -fx-focus-color: #26A69A;
+    -fx-faint-focus-color: #26A69A;
+    -fx-border-width: 50px 1px 10px 1px;
+    -fx-border-color: #26A69A;
+    -fx-inner-border: #26A69A;
+    -fx-body-color: #26A69A;
+}
+
+#findMatch:hover, #yourMatches:hover, #chat:hover, #profile:hover {
+    -fx-font: 24 light-roboto;
+    -fx-base: #26A69A;
+    -fx-text-fill: #000000;
+    -fx-focus-color: #26A69A;
+    -fx-faint-focus-color: #26A69A;
+    -fx-border-color: #26A69A;
+    -fx-inner-border: #26A69A;
+    -fx-body-color: #26A69A;
+    -fx-border-width: 50px 1px 10px 1px;
+}
+
+#findMatchActive, #yourMatchesActive, #chatActive, #profileActive {
+    -fx-font: 24 light-roboto;
+    -fx-base: #26A69A;
+    -fx-text-fill: #FFFFFF;
+    -fx-focus-color: #26A69A;
+    -fx-faint-focus-color: #26A69A;
+    -fx-border-color: #26A69A #26A69A #F06292 #26A69A;
+    -fx-inner-border: #26A69A;
+    -fx-body-color: #26A69A;
+    -fx-border-width: 50px 1px 10px 1px;
+}
+
+#findMatchActive:hover, #yourMatchesActive:hover,
+#chatActive:hover, #profileActive:hover {
+    -fx-font: 24 light-roboto;
+    -fx-base: #26A69A;
+    -fx-text-fill: #000000;
+    -fx-focus-color: #26A69A;
+    -fx-faint-focus-color: #26A69A;
+    -fx-border-color: #26A69A #26A69A #F06292 #26A69A;
+    -fx-inner-border: #26A69A;
+    -fx-body-color: #26A69A;
+    -fx-border-width: 50px 1px 10px 1px;
+}

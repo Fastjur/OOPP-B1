@@ -1,4 +1,4 @@
-#background, #backgroundFoot, #center {
+#center, #background {
     -fx-background-color: #FFFFFF;
 }
 
@@ -42,17 +42,36 @@
     -fx-font-size: 17;
 }
 
-#buttonChat {
+#buttonChat, #buttonChatHover, #buttonChatAction {
     -fx-base: #FFFFFF;
-    -fx-font-size: 24;
     -fx-font-family: Roboto;
-    -fx-text-fill: #000000;
     -fx-border-color: #FFFFFF;
     -fx-focus-color: #FFFFFF;
     -fx-body-color: #FFFFFF;
     -fx-inner-border: #FFFFFF;
     -fx-faint-focus-color: #FFFFFF;
     -fx-border-width: 0;
+}
+
+#buttonChat {
+    -fx-font-size: 30;
+    -fx-text-fill: #000000;
+}
+
+#buttonChatHover {
+    -fx-font-size: 30;
+    -fx-text-fill: #F06292;
+}
+
+#buttonChatAction {
+    -fx-font-size: 36;
+    -fx-text-fill: #F06292;
+}
+
+#screen {
+    -fx-padding: 50 20 0 0;
+    -fx-background-color: #FFFFFF;
+
 }
 
 

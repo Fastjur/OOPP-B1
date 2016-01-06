@@ -123,6 +123,8 @@ public class GuiLogin extends Application implements IMessageListener {
         Button btnLoginTop = new Button("Login");
         Button btnLoginBot = new Button("Login");
         Button btnRegister = new Button("Register");
+
+        final Label lblMessage = new Label();
         final Label loginLabel = new Label("Login");
         Button btnResetLog = new Button("Reset");
 
@@ -303,8 +305,7 @@ public class GuiLogin extends Application implements IMessageListener {
             }
         });
 
-
-        //Promt Text
+        //Prompt Text
         txtUserName.setPromptText("Email Adress");
         pf.setPromptText("Password");
         txtUserName2.setPromptText("Email Adress");
@@ -377,4 +378,5 @@ public class GuiLogin extends Application implements IMessageListener {
             }
         });
     }
+
 }

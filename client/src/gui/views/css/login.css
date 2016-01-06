@@ -1,4 +1,5 @@
 #root, #root2, #root3 {
+>>>>>>> 551dd910f7677dfb3279355a993dcd8243ca9bd5
 	-fx-background-color:  #26A69A;
 	-fx-border-radius: 20;
 	-fx-padding: 10 10 10 10;
@@ -27,7 +28,12 @@
 	-fx-font-family: "roboto";
 }
 
+#btnLogin:hover {
+    -fx-text-fill:  #000000;
+}
+
 #loginLabel, #registerLabel, #resLabel{
+>>>>>>> 551dd910f7677dfb3279355a993dcd8243ca9bd5
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
     -fx-font-size: 20px;
