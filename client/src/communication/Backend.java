@@ -19,6 +19,7 @@ public class Backend {
     private static ListenThread listenThread;
     private static ArrayList<IMessageListener> messageListeners = new ArrayList<>();
     private static ArrayList<IDisconnectListener> disconnectListeners = new ArrayList<>();
+    private static User selfUserObj;
 
     public static void addMessageListener(IMessageListener listener) {
         messageListeners.add(listener);
@@ -58,7 +59,6 @@ public class Backend {
             System.out.println("Connected to server!");
             return true;
         } catch (java.io.IOException e) {
-            System.out.println("Could not connect to server!");
             e.printStackTrace();
             return false;
         }
@@ -155,6 +155,10 @@ public class Backend {
         }
     }
 
+    /**
+     * Note, this get's a user from the database by ID
+     * THIS IS NOT THE GETTER FOR THE USER OBJECT IN BACKEND
+     */
     public static void getSelf() {
         if (!isConnected()) {
             System.out.println("[ERROR] Cannot retrieve your information: Not connected!");
@@ -167,6 +171,10 @@ public class Backend {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void setSelf(User self) {
+        selfUserObj = self;
     }
 
     public static boolean isConnected() {
