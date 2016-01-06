@@ -28,33 +28,41 @@ public class GUILauncher extends Application {
         String age = "18";
         String descr = "Seven a.m. waking up in the morning. Gotta be fresh, gotta go downstairs. Gotta have my bowl, gotta have cereal. Seein' everything the time is goin'. Tickin' on and on, everybody's rushin'. Gotta get down to the bus stop. Gotta catch my bus. I see my friends.";
 
-        // Needs to be replaced with user's list of buddy courses
+        // Needs to be replaced with match's list of buddy courses
         ArrayList<String> buddyCourses = new ArrayList<>();
         buddyCourses.add("Calculus");
         buddyCourses.add("Redeneren & Logica");
 
-        // Needs to be replaced with user's list of learning courses
+        // Needs to be replaced with match's list of learning courses
         ArrayList<String> learningCourses = new ArrayList<>();
         learningCourses.add("Calculus");
         learningCourses.add("OOProgrammeren");
         learningCourses.add("Web & Database Technology");
 
-        // Needs to be replaced with user's list of teaching courses
+        // Needs to be replaced with match's list of teaching courses
         ArrayList<String> teachingCourses = new ArrayList<>();
         teachingCourses.add("Computer Organisation");
         teachingCourses.add("Redeneren & Logica");
 
+        // Needs to be replaced with languages of match
+        ArrayList<String> languages = new ArrayList<>();
+        languages.add("Nederlands");
+        languages.add("Engels");
+
+        // Needs to be replaced with distance to match
+        double distance = 1.5;
+
         GUI = new BorderPane();
         GUIScene = new Scene(GUI);
 
-        findMatch = new GuiFindMatchConstructor(name, age, descr, matchURL, nomatchURL, pfURL);
+        findMatch = new GuiFindMatchConstructor(languages, distance, name, age, descr, matchURL, nomatchURL, pfURL);
         findMatchSideBar  = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
         profile = new GuiProfileConstructor();
         sideBar = new GUISideBarConstructor();
         topbar = new GuiTopBar();
         login = new GuiLoginConstructor();
 
-        GUI.setCenter(login.bp);
+        GUI.setCenter(login);
 
         PrimaryStage.setScene(GUIScene);
         GUIScene.getStylesheets().addAll("/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");

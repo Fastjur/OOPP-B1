@@ -10,6 +10,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.util.ArrayList;
+
 /**Gui find match page
  * @author Zoë van Steijn
  */
@@ -19,12 +21,14 @@ public class GuiFindMatchConstructor extends BorderPane {
     private ScrollPane right;
     private String name;
     private String age;
-    private String description;
-    private String matchIconUrl;
-    private String nomatchIconUrl;
-    private String profilePicUrl;
+    public static String description;
+    public String matchIconUrl;
+    public String nomatchIconUrl;
+    public String profilePicUrl;
+    public ArrayList<String> languages;
+    public double distance;
 
-    public GuiFindMatchConstructor(String name, String age, String descr, String matchIconUrl, String nomatchIconUrl, String profilePicUrl){
+    public GuiFindMatchConstructor(ArrayList<String> languages, double distance, String name, String age, String descr, String matchIconUrl, String nomatchIconUrl, String profilePicUrl){
         super();
         this.name = name;
         this.age = age;
@@ -32,6 +36,8 @@ public class GuiFindMatchConstructor extends BorderPane {
         this.matchIconUrl = matchIconUrl;
         this.nomatchIconUrl = nomatchIconUrl;
         this.profilePicUrl = profilePicUrl;
+        this.languages = languages;
+        this.distance = distance;
         bottomBox();
         rightBox();
         pfBox();
@@ -62,20 +68,46 @@ public class GuiFindMatchConstructor extends BorderPane {
     private void rightBox(){
         VBox vbox = new VBox(5);
 
+        //name
         Text nameUser = new Text(name);
+        TextFlow name = new TextFlow(nameUser);
+        name.setStyle("-fx-font-size: 300%");
+
+        //age
         Text ageUser = new Text("Age: " + age);
+        TextFlow age = new TextFlow(ageUser);
+        age.setStyle("-fx-font-size: 150%");
+
+        //description
         Text descr = new Text("Description\n");
         descr.setStyle("-fx-font-size: 150%");
         Text descriptionUser = new Text(description);
-
-        TextFlow name = new TextFlow(nameUser);
-        name.setStyle("-fx-font-size: 300%");
-        TextFlow age = new TextFlow(ageUser);
-        age.setStyle("-fx-font-size: 150%");
         TextFlow description = new TextFlow();
         description.getChildren().addAll(descr, descriptionUser);
         description.setPadding(new Insets(30,0,0,0));
-        vbox.getChildren().addAll(name, age, description);
+
+        //languages
+        String languageList = "";
+        for(int i = 0; i<languages.size()-1; i++){
+            languageList = languageList + languages.get(i) + "\n";
+        }
+        languageList = languageList + languages.get(languages.size() -1);
+        Text lang = new Text("Languages\n");
+        lang.setStyle("-fx-font-size: 150%");
+        Text languagesUser = new Text(languageList);
+        TextFlow languagesBox = new TextFlow();
+        languagesBox.getChildren().addAll(lang, languagesUser);
+        languagesBox.setPadding(new Insets(30,0,0,0));
+
+        //distance
+        Text dist = new Text("Distance\n");
+        dist.setStyle("-fx-font-size: 150%");
+        Text distanceUser = new Text(Double.toString(distance) + " km");
+        TextFlow distance = new TextFlow();
+        distance.getChildren().addAll(dist, distanceUser);
+        distance.setPadding(new Insets(30,0,0,0));
+
+        vbox.getChildren().addAll(name, age, description, languagesBox, distance);
         vbox.setAlignment(Pos.TOP_LEFT);
 
         vbox.setPadding(new Insets(30, 30, 30, 30));
