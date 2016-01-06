@@ -16,10 +16,16 @@ public class ConnectionManager {
     private static Connection con;
 
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
-        System.out.println("Attempting to connect to databse");
         Class.forName(driver);
         con = DriverManager.getConnection(url, user, pass);
-        System.out.println("Successful connection to database");
         return con;
+    }
+
+    public static void close() {
+        try {
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

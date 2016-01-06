@@ -36,12 +36,6 @@ public class Server {
         } catch (IllegalStateException e) {
             System.out.println("[ERROR] Could not create database connection");
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            System.out.println("[ERROR] Could not find database driver");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("[ERROR] SQLException occurred");
-            e.printStackTrace();
         }
 
     }
@@ -76,21 +70,6 @@ public class Server {
 
     public static Database getDb() {
         return db;
-    }
-
-    public void logIn(String email, String password) {
-        User user;
-        try {
-            user = db.getUser(email);
-            if (user.getMail().equals(email) && user.getPassword().equals(password)) {
-                Session session = new Session(user.getUserID());
-                sessions.add(session);
-            } else {
-                System.out.println("Authentication failed.");
-            }
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 }

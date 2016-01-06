@@ -119,7 +119,8 @@ public class ClientConnectionThread extends Thread {
                     try {
                         User u = Server.getDb().getUser(newuser.getMail());
                         exists = u != null;
-                    } catch (SQLException e) {
+                    } catch (SQLException | ClassNotFoundException e) {
+                        e.printStackTrace();
                     }
 
                     if (exists) {
@@ -130,7 +131,7 @@ public class ClientConnectionThread extends Thread {
 
                     try {
                         Server.getDb().addUser(newuser);
-                    } catch (SQLException e) {
+                    } catch (ClassNotFoundException | SQLException e) {
                         response.errorCode = 1;
                         response.errorMessage = "Generic error.";
                         break;
@@ -157,11 +158,15 @@ public class ClientConnectionThread extends Thread {
                                 response.errorMessage = "Login successful.";
                                 break;
                             }
-                        } catch (SQLException e) {
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 1;
+                            response.errorMessage = "Generic error";
                             e.printStackTrace();
+                            break;
                         }
                         response.errorCode = 3;
                         response.errorMessage = "Invalid email/password.";
+                        break;
                     }
                     break;
 
@@ -197,7 +202,7 @@ public class ClientConnectionThread extends Thread {
                                 response.putData("canLearn", result.get(1));
                                 response.putData("canBuddyUp", result.get(2));
                             }
-                        } catch (SQLException e) {
+                        } catch (ClassNotFoundException | SQLException e) {
                             e.printStackTrace();
                             response.errorCode = 3;
                             response.errorMessage = "Could not get match users from database";
@@ -229,7 +234,7 @@ public class ClientConnectionThread extends Thread {
                                 Server.getDb().acceptMatch(client.userId, matchUserId, matchType, course);
                                 response.errorMessage = "Added match to database!";
                                 response.errorCode = 0;
-                            } catch (SQLException e) {
+                            } catch (ClassNotFoundException | SQLException e) {
                                 e.printStackTrace();
                                 response.errorCode = 5;
                                 response.errorMessage = "Couldn't add match to database!";
@@ -251,7 +256,7 @@ public class ClientConnectionThread extends Thread {
                             Server.getDb().removeMatch(self, matchId);
                             response.errorCode = 0;
                             response.errorMessage = "Removed match from database!";
-                        } catch (SQLException e) {
+                        } catch (ClassNotFoundException | SQLException e) {
                             e.printStackTrace();
                             response.errorCode = 6;
                             response.errorMessage = "Couldn't remove match from database";
@@ -273,7 +278,7 @@ public class ClientConnectionThread extends Thread {
                             response.putData("self", dbSelf);
                             response.errorMessage = "Retrieved your information!";
                             response.errorCode = 0;
-                        } catch (SQLException e) {
+                        } catch (ClassNotFoundException | SQLException e) {
                             e.printStackTrace();
                             response.errorCode = 7;
                             response.errorMessage = "Couldn't retrieve your information!";

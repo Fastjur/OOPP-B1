@@ -26,8 +26,7 @@ public class Database {
      *
      * @see ConnectionManager
      */
-    public Database() throws IllegalStateException, SQLException, ClassNotFoundException {
-        connection = ConnectionManager.getConnection();
+    public Database() {
     }
 
     protected Database(boolean IFUCKINGHATEJAVA) {
@@ -41,9 +40,10 @@ public class Database {
      * @throws SQLException
      * @throws IOException
      */
-    public User getUser(int id) throws SQLException, IOException {
+    public User getUser(int id) throws SQLException, IOException, ClassNotFoundException {
         //TODO: Check for null values returned by database and generate appropriate exceptions
         User user;
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name AS nationality," +
                 "studies.name AS study, universities.name AS university, email AS dbemail, passwd, firstname," +
                 "lastname, sex, birthdate, bio, studyYear, availableDates, phonenumber, latitude, longitude " +
@@ -54,6 +54,7 @@ public class Database {
         ResultSet rs = stmt.executeQuery();
         user = processGetUser(rs);
         stmt.close();
+        ConnectionManager.close();
         return user;
     }
 
@@ -65,7 +66,8 @@ public class Database {
      * @throws SQLException
      * @throws IOException
      */
-    public User getUser(String email) throws SQLException, IOException {
+    public User getUser(String email) throws SQLException, IOException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT users.id FROM `users` " +
                 "WHERE users.email = ? LIMIT 1");
         stmt.setString(1, email);
@@ -76,10 +78,12 @@ public class Database {
         } else {
             return null;
         }
+        stmt.close();
+        ConnectionManager.close();
         return getUser(id);
     }
 
-    private User processGetUser(ResultSet rs) throws SQLException, IOException {
+    private User processGetUser(ResultSet rs) throws SQLException, IOException, ClassNotFoundException {
         //fixme: NullPointerExceptions on empty result from Database
         User usr;
         if (rs.next()) {
@@ -104,6 +108,7 @@ public class Database {
             /**
              * Get buddy courses names
              */
+            connection = ConnectionManager.getConnection();
             PreparedStatement stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
                     "LEFT JOIN coursesSearchingBuddy ON courses_id = courses.id " +
                     "WHERE coursesSearchingBuddy.users_id = ?");
@@ -156,6 +161,7 @@ public class Database {
                 languages.add(rs2.getString("name"));
             }
             stmt.close();
+            ConnectionManager.close();
 
             usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber, study, university,
                     studyYear, availability, coursesTeaching, coursesLearning, coursesSearchingBuddy, sex, nationality,
@@ -176,7 +182,7 @@ public class Database {
      * @throws IllegalArgumentException
      * @see User
      */
-    public void addUser(User user) throws SQLException, IOException, IllegalArgumentException {
+    public void addUser(User user) throws SQLException, IOException, IllegalArgumentException, ClassNotFoundException {
         if (user == null) {
             throw new IllegalArgumentException("[ERROR] User object was null, cannot add to database");
         }
@@ -231,6 +237,7 @@ public class Database {
         /**
          * Get the nationality id, throw IllegalArgumentException on fail
          */
+        connection = ConnectionManager.getConnection();
         stmt = connection.prepareStatement("SELECT id FROM `nationalities` WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getNationality());
         rs = stmt.executeQuery();
@@ -304,6 +311,7 @@ public class Database {
                     "    Presume database invalid");
         }
         stmt.close();
+        ConnectionManager.close();
 
         /**
          * Insert languages and courses
@@ -320,7 +328,7 @@ public class Database {
      * @throws SQLException
      * @throws IOException
      */
-    public void updateUser(User user) throws IllegalArgumentException, SQLException, IOException {
+    public void updateUser(User user) throws IllegalArgumentException, SQLException, IOException, ClassNotFoundException {
         if (user == null) {
             throw new IllegalArgumentException("[ERROR] User object was null, cannot add to database");
         }
@@ -373,6 +381,7 @@ public class Database {
         /**
          * Get nationality id
          */
+        connection = ConnectionManager.getConnection();
         stmt = connection.prepareStatement("SELECT id FROM nationalities WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getNationality());
         rs = stmt.executeQuery();
@@ -441,6 +450,7 @@ public class Database {
 
         stmt.executeUpdate();
         stmt.close();
+        ConnectionManager.close();
 
         /**
          * Update languages and courses
@@ -450,10 +460,11 @@ public class Database {
 
     }
 
-    private void updateDbLanguages(User user) throws SQLException {
+    private void updateDbLanguages(User user) throws SQLException, ClassNotFoundException {
         PreparedStatement stmt;
         ResultSet rs;
 
+        connection = ConnectionManager.getConnection();
         stmt = connection.prepareStatement("DELETE FROM `users_has_languages` WHERE users_id = ?");
         stmt.setInt(1, user.getUserID());
         stmt.executeUpdate();
@@ -488,9 +499,10 @@ public class Database {
             }
             stmt.close();
         }
+        ConnectionManager.close();
     }
 
-    private void updateDbCourses(User user) throws SQLException {
+    private void updateDbCourses(User user) throws SQLException, ClassNotFoundException {
         PreparedStatement stmt;
         ResultSet rs;
         StringBuilder builder;
@@ -499,6 +511,7 @@ public class Database {
         /**
          * Delete all residual course entries
          */
+        connection = ConnectionManager.getConnection();
         stmt = connection.prepareStatement("DELETE FROM `coursesLearning` WHERE users_id = ?;");
         stmt.setInt(1, user.getUserID());
         stmt.executeUpdate();
@@ -598,17 +611,22 @@ public class Database {
             stmt.executeUpdate();
         }
         stmt.close();
+        ConnectionManager.close();
     }
 
-    public int getCourseIdByName(String name) throws SQLException {
+    public int getCourseIdByName(String name) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT id FROM courses WHERE name=?");
         stmt.setString(1, name);
         ResultSet rs = stmt.executeQuery();
+        int id;
         if(rs.next()) {
-            return rs.getInt("id");
+            id = rs.getInt("id");
         } else {
-            return -1;
+            id = -1;
         }
+        stmt.close();
+        return id;
     }
 
     /**
@@ -617,11 +635,13 @@ public class Database {
      * @param id int, remove user with this id
      * @throws SQLException
      */
-    public void removeUser(int id) throws SQLException {
+    public void removeUser(int id) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM `users` WHERE id = ?");
         stmt.setInt(1, id);
         stmt.executeUpdate();
         stmt.close();
+        ConnectionManager.close();
     }
 
     /**
@@ -630,7 +650,7 @@ public class Database {
      * @param user remove user that has the id in this given object
      * @throws SQLException
      */
-    public void removeUser(User user) throws SQLException {
+    public void removeUser(User user) throws SQLException, ClassNotFoundException {
         if (user == null) {
             throw new IllegalArgumentException("User object was null, cannot delete from database");
         }
@@ -646,7 +666,7 @@ public class Database {
      * teach, the second who he can learn from, the third who he can buddy up with.
      * @throws SQLException
      */
-    public ArrayList<ArrayList<User>> getMatches(int self_id, JsonNode node) throws SQLException, IOException {
+    public ArrayList<ArrayList<User>> getMatches(int self_id, JsonNode node) throws SQLException, IOException, ClassNotFoundException {
         ObjectMapper mapper = new ObjectMapper();
         double maxDist = node.get("data").get("maxdist").getDoubleValue(),
                 latitude = node.get("data").get("latitude").getDoubleValue(),
@@ -669,6 +689,7 @@ public class Database {
                         "LEFT JOIN universities ON users.university_id = universities.id " +
                         "LEFT JOIN studies ON users.study = studies.id " + where + " " +
                         "HAVING distance <= ?";
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setDouble(1, latitude);
         stmt.setDouble(2, latitude);
@@ -686,6 +707,7 @@ public class Database {
             matches.add(user);
         }
         stmt.close();
+        ConnectionManager.close();
         ListIterator<User> it = matches.listIterator();
         int index = 0;
         while (it.hasNext()) {
@@ -717,13 +739,14 @@ public class Database {
      * @param type Type of match, should be 'learning', 'teaching' or 'buddy'
      * @throws SQLException
      */
-    public void acceptMatch(int self, int matchedUserId, String type, String course) throws SQLException {
+    public void acceptMatch(int self, int matchedUserId, String type, String course) throws SQLException, ClassNotFoundException {
         if (course.equals("")) {
             course = "NONE";
         }
         int courseId = getCourseIdByName(course);
         if (courseId == -1)
             throw new IllegalArgumentException("[ERROR] Couldn't find course ID by name!");
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO `matches`(id, matched_user_id, match_type, " +
                 "courses_id) VALUES(NULL,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         ResultSet rs;
@@ -750,6 +773,7 @@ public class Database {
         stmt.setInt(2, matchId);
         stmt.executeUpdate();
         stmt.close();
+        ConnectionManager.close();
     }
 
     /**
@@ -758,13 +782,15 @@ public class Database {
      * @param matchId The ID of the match to be deleted
      * @throws SQLException
      */
-    public void removeMatch(int self, int matchId) throws SQLException {
+    public void removeMatch(int self, int matchId) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("DELETE matches FROM matches INNER JOIN users_has_matches " +
                 "ON matches_id = matches.id WHERE users_id = ? AND matches.id = ?");
         stmt.setInt(1, self);
         stmt.setInt(2, matchId);
         stmt.executeUpdate();
         stmt.close();
+        ConnectionManager.close();
     }
 
     /**
@@ -791,10 +817,6 @@ public class Database {
      * Attempt to close the database connection
      */
     public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        ConnectionManager.close();
     }
 }
