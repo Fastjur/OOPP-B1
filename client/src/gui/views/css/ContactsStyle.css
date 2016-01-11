@@ -18,12 +18,12 @@
     -fx-background-color: #FFFFFF;
 }
 
-#description, #university, #study {
+#description, #university, #study, #language, #distance {
     -fx-font-size: 17;
     -fx-font-family: roboto;
 }
 
-#descriptionInfo, #universityInfo, #studyInfo {
+#descriptionInfo, #universityInfo, #studyInfo, #languageInfo, #distanceInfo {
     -fx-font-size: 13;
     -fx-font-family: roboto;
 }
@@ -74,4 +74,25 @@
 
 }
 
+scroll-bar, .track {
+    -fx-background-color: lightgrey;
+}
 
+.scroll-bar .increment-button, .decrement-button {
+    -fx-background-insets: 0em;
+    -fx-background-color: lightgrey;
+}
+
+.scroll-bar .increment-button:hover, .decrement-button:hover {
+    -fx-background-color: grey;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: grey;
+    -fx-background-radius: 0em;
+    -fx-background-insets: 0em;
+}
+
+.scroll-bar .increment-arrow, .decrement-arrow {
+    -fx-background-color: black;
+}
