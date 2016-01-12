@@ -151,4 +151,6 @@ public class GUILauncher extends Application {
         GUI.setCenter(profile);
         GUI.setLeft(sideBar);
     }
+
+
 }

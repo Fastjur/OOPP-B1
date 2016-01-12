@@ -4,7 +4,7 @@
 }
 
 #profilePicPane {
-    -fx-effect: dropshadow(gaussian, black, 10, 0.1, 1, 1);
+    -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 2, 2);
 }
 #profileInfoLabel   {
     -fx-background-color: #F06292;
@@ -15,7 +15,7 @@
 
 #profileInfoPane  {
     -fx-background-color: #EEEEEE;
-    -fx-effect: dropshadow(gaussian, black, 10, 0.1, 1, 1);
+    -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 2, 2);
 }
 
 #profileInfoCoursesLabelPane    {
@@ -35,10 +35,15 @@
 
 #profileBotContainerPane    {
     -fx-background-color: #EEEEEE  ;
-    -fx-effect: dropshadow(gaussian, black, 10, 0.1, 1, 1);
+    -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 2, 2);
 }
 
 #editToggleBtn  {
     -fx-background-image: url("/gui/views/resources/editToggleButton.jpg");
-    -fx-background-color: #26A69A;
+    -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 1, 1);
+}
+
+#editToggleBtnActive  {
+    -fx-background-image: url("/gui/views/resources/editToggleButtonActive.jpg");
+    -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 1, 1);
 }

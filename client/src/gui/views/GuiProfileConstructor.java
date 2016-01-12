@@ -1,5 +1,6 @@
 package gui.views;
 
+import javafx.event.EventHandler;
 import javafx.geometry.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.IndexedCell;
@@ -7,9 +8,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 
+/**
+ * Constructor for building the profile page of the GUI
+ * Author: Sebastiaan Hester
+ */
 public class GuiProfileConstructor extends BorderPane {
 
     public GuiProfileConstructor() {
@@ -23,32 +29,18 @@ public class GuiProfileConstructor extends BorderPane {
         Insets profileAvailabilityTitlePaneInsets = new Insets(10);
         Insets profileAvailabilityGridPaneInsets = new Insets(0, 10, 5, 10);
         Insets profileAvailabilityPaneInsets = new Insets(0, 20, 0, 0);
-        Insets editToggleBtnInsets = new Insets(0,20,20,0);
+        Insets editToggleBtnInsets = new Insets(0,20,20,10);
         Insets profileInsets = new Insets(10, 30, 30, 30);
 
         //Shape settings
         Circle editToggleBtnShape = new Circle(70);
 
-        //Buttons:
-        Button uploadPicBtn = new Button();
-        uploadPicBtn.setPadding(noPaddingInsets);
-        uploadPicBtn.setMinSize(410, 40);
-        uploadPicBtn.setPrefSize(410, 40);
-        uploadPicBtn.setMaxSize(410, 40);
-        uploadPicBtn.setText("Upload picture");
-        uploadPicBtn.setId("uploadPicBtn");
-
-        Button editToggleBtn = new Button();
-        editToggleBtn.setShape(editToggleBtnShape);
-        editToggleBtn.setPrefSize(70,70);
-        editToggleBtn.setId("editToggleBtn");
-
         //TextFields
-        TextField tf1 = new TextField("Info goes here");
+        TextField tf1 = new TextField();
+        tf1.setPromptText("Info goes here");
         tf1.setEditable(false);
         tf1.setMaxHeight(20);
         tf1.setPrefHeight(20);
-
         TextField tf2 = new TextField("Info goes here");
         tf2.setEditable(false);
         tf2.setMaxHeight(20);
@@ -138,6 +130,76 @@ public class GuiProfileConstructor extends BorderPane {
         tf23.setMaxHeight(20);
         tf23.setPrefHeight(20);
 
+        //Buttons:
+        Button uploadPicBtn = new Button();
+        uploadPicBtn.setPadding(noPaddingInsets);
+        uploadPicBtn.setMinSize(410, 40);
+        uploadPicBtn.setPrefSize(410, 40);
+        uploadPicBtn.setMaxSize(410, 40);
+        uploadPicBtn.setText("Upload picture");
+        uploadPicBtn.setId("uploadPicBtn");
+
+        Button editToggleBtn = new Button();
+        editToggleBtn.setShape(editToggleBtnShape);
+        editToggleBtn.setPrefSize(70,70);
+        editToggleBtn.setOnMouseClicked(event -> {
+            if (editToggleBtn.getId().equals("editToggleBtn")) {
+                tf1.setEditable(true);
+                tf2.setEditable(true);
+                tf3.setEditable(true);
+                tf4.setEditable(true);
+                tf5.setEditable(true);
+                tf6.setEditable(true);
+                tf7.setEditable(true);
+                tf8.setEditable(true);
+                tf9.setEditable(true);
+                tf10.setEditable(true);
+                tf11.setEditable(true);
+                tf12.setEditable(true);
+                tf13.setEditable(true);
+                tf14.setEditable(true);
+                tf15.setEditable(true);
+                tf16.setEditable(true);
+                tf17.setEditable(true);
+                tf18.setEditable(true);
+                tf19.setEditable(true);
+                tf20.setEditable(true);
+                tf21.setEditable(true);
+                tf22.setEditable(true);
+                tf23.setEditable(true);
+                editToggleBtn.setId("editToggleBtnActive");
+            }
+            else{
+                tf1.setEditable(false);
+                tf2.setEditable(false);
+                tf3.setEditable(false);
+                tf4.setEditable(false);
+                tf5.setEditable(false);
+                tf6.setEditable(false);
+                tf7.setEditable(false);
+                tf8.setEditable(false);
+                tf9.setEditable(false);
+                tf10.setEditable(false);
+                tf11.setEditable(false);
+                tf12.setEditable(false);
+                tf13.setEditable(false);
+                tf14.setEditable(false);
+                tf15.setEditable(false);
+                tf16.setEditable(false);
+                tf17.setEditable(false);
+                tf18.setEditable(false);
+                tf19.setEditable(false);
+                tf20.setEditable(false);
+                tf21.setEditable(false);
+                tf22.setEditable(false);
+                tf23.setEditable(false);
+                editToggleBtn.setId("editToggleBtn");
+            }
+        });
+        editToggleBtn.setId("editToggleBtn");
+
+
+
         //Labels
         Label profileInfoLabel = new Label("Personal");
         profileInfoLabel.setAlignment(Pos.BOTTOM_LEFT);
@@ -226,15 +288,15 @@ public class GuiProfileConstructor extends BorderPane {
 
         GridPane profileInfoContinuedGridPane = new GridPane();
         profileInfoContinuedGridPane.setAlignment(Pos.TOP_LEFT);
-        profileInfoContinuedGridPane.setMinWidth(345);
-        profileInfoContinuedGridPane.setPrefWidth(690);
-        profileInfoContinuedGridPane.setMaxWidth(690);
+        profileInfoContinuedGridPane.setMinWidth(340);
+        profileInfoContinuedGridPane.setPrefWidth(680);
+        profileInfoContinuedGridPane.setMaxWidth(680);
         profileInfoContinuedGridPane.addColumn(0, university, study, studyYear);
         ColumnConstraints continuedInfoCol1Constraints = new ColumnConstraints(80, 160, 160, Priority.NEVER, HPos.LEFT, false);
-        continuedInfoCol1Constraints.setPercentWidth(23);
+        continuedInfoCol1Constraints.setPercentWidth(24);
         profileInfoContinuedGridPane.addColumn(1, tf11, tf12, tf13);
-        ColumnConstraints continuedInfoCol2Constraints = new ColumnConstraints(265, 530, 530, Priority.ALWAYS, HPos.LEFT, true);
-        continuedInfoCol2Constraints.setPercentWidth(77);
+        ColumnConstraints continuedInfoCol2Constraints = new ColumnConstraints(260, 520, 520, Priority.ALWAYS, HPos.LEFT, true);
+        continuedInfoCol2Constraints.setPercentWidth(76);
         profileInfoContinuedGridPane.getColumnConstraints().addAll(continuedInfoCol1Constraints, continuedInfoCol2Constraints);
         /*for (int i = 0; i <= 2; i++) {
             profileInfoContinuedGridPane.addRow(i);
@@ -244,24 +306,24 @@ public class GuiProfileConstructor extends BorderPane {
         profileInfoContinuedGridPane.setId("profileInfoContinuedGridPane");
 
         HBox profileInfoCoursesLabelPane = new HBox();
-        profileInfoCoursesLabelPane.setMinSize(345,55);
-        profileInfoCoursesLabelPane.setPrefSize(690,110);
-        profileInfoCoursesLabelPane.setMaxSize(690,110);
+        profileInfoCoursesLabelPane.setMinSize(340,55);
+        profileInfoCoursesLabelPane.setPrefSize(680,110);
+        profileInfoCoursesLabelPane.setMaxSize(680,110);
         profileInfoCoursesLabelPane.setAlignment(Pos.BOTTOM_LEFT);
         profileInfoCoursesLabelPane.getChildren().addAll(courses);
         profileInfoCoursesLabelPane.setId("profileInfoCoursesLabelPane");
 
         GridPane profileInfoCoursesGridPane = new GridPane();
         profileInfoCoursesGridPane.setAlignment(Pos.TOP_LEFT);
-        profileInfoCoursesGridPane.setMinWidth(345);
-        profileInfoCoursesGridPane.setPrefWidth(690);
-        profileInfoCoursesGridPane.setMaxWidth(690);
+        profileInfoCoursesGridPane.setMinWidth(340);
+        profileInfoCoursesGridPane.setPrefWidth(680);
+        profileInfoCoursesGridPane.setMaxWidth(680);
         profileInfoCoursesGridPane.addColumn(0, findATutor, becomeATutor, findStudyBuddy);
         ColumnConstraints coursesCol1Constraints = new ColumnConstraints(80, 160, 160, Priority.NEVER, HPos.LEFT, false);
-        coursesCol1Constraints.setPercentWidth(23);
+        coursesCol1Constraints.setPercentWidth(24);
         profileInfoCoursesGridPane.addColumn(1, tf14, tf15, tf16);
-        ColumnConstraints coursesCol2Constraints = new ColumnConstraints(265, 530, 530, Priority.NEVER, HPos.LEFT, true);
-        coursesCol2Constraints.setPercentWidth(77);
+        ColumnConstraints coursesCol2Constraints = new ColumnConstraints(260, 520, 520, Priority.NEVER, HPos.LEFT, true);
+        coursesCol2Constraints.setPercentWidth(76);
         profileInfoCoursesGridPane.getColumnConstraints().addAll(coursesCol1Constraints, coursesCol2Constraints);
         /*for (int i = 0; i <= 2; i++) {
             profileInfoCoursesGridPane.addRow(i);
@@ -274,9 +336,9 @@ public class GuiProfileConstructor extends BorderPane {
         profileAdditionalInfoGridPaneContainerPane.setPadding(profileAvailabilityTitlePaneInsets);
         profileAdditionalInfoGridPaneContainerPane.setSpacing(0);
         profileAdditionalInfoGridPaneContainerPane.setAlignment(Pos.TOP_LEFT);
-        profileAdditionalInfoGridPaneContainerPane.setMinWidth(345);
-        profileAdditionalInfoGridPaneContainerPane.setPrefWidth(690);
-        profileAdditionalInfoGridPaneContainerPane.setMaxWidth(690);
+        profileAdditionalInfoGridPaneContainerPane.setMinWidth(340);
+        profileAdditionalInfoGridPaneContainerPane.setPrefWidth(680);
+        profileAdditionalInfoGridPaneContainerPane.setMaxWidth(680);
         profileAdditionalInfoGridPaneContainerPane.getChildren().addAll(profileInfoContinuedGridPane, profileInfoCoursesLabelPane, profileInfoCoursesGridPane);
         profileAdditionalInfoGridPaneContainerPane.setId("profileAdditionalInfoGridPaneContainerPane");
 
@@ -348,4 +410,5 @@ public class GuiProfileConstructor extends BorderPane {
 
         super.setCenter(profile);
     }
+
 }
