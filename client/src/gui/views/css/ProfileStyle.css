@@ -18,38 +18,27 @@
     -fx-effect: dropshadow(gaussian, black, 10, 0.1, 1, 1);
 }
 
-#profileAdditionalInfoGridPaneContainerPane {
-    -fx-background-color: forestgreen;
-    -fx-fill: forestgreen;
-}
-
 #profileInfoCoursesLabelPane    {
-    -fx-background-color: #EEEEEE;
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
     -fx-font-size: 20pt;
 }
 
-#profileInfoCoursesGridPane {
-    -fx-background-color: darkred;
-}
-
-#profileInfoContinuedGridPane   {
-    -fx-background-color: aquamarine;
-}
-
 #profileAvailabilityTitlePane   {
-    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 26pt;
 }
 
 #profileAvailabilityPane    {
     -fx-background-color: #F06292;
 }
 
-#profileBotContainerPane  {
+#profileBotContainerPane    {
+    -fx-background-color: #EEEEEE  ;
     -fx-effect: dropshadow(gaussian, black, 10, 0.1, 1, 1);
 }
 
 #editToggleBtn  {
-    -fx-background-image: url("/gui/views/resources/editToggleButton.png");
+    -fx-background-image: url("/gui/views/resources/editToggleButton.jpg");
+    -fx-background-color: #26A69A;
 }

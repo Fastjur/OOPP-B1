@@ -2,6 +2,7 @@ package gui.views;
 
 import javafx.geometry.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.IndexedCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -22,10 +23,11 @@ public class GuiProfileConstructor extends BorderPane {
         Insets profileAvailabilityTitlePaneInsets = new Insets(10);
         Insets profileAvailabilityGridPaneInsets = new Insets(0, 10, 5, 10);
         Insets profileAvailabilityPaneInsets = new Insets(0, 20, 0, 0);
+        Insets editToggleBtnInsets = new Insets(0,20,20,0);
         Insets profileInsets = new Insets(10, 30, 30, 30);
 
         //Shape settings
-        Circle editToggleBtnShape = new Circle(60);
+        Circle editToggleBtnShape = new Circle(70);
 
         //Buttons:
         Button uploadPicBtn = new Button();
@@ -38,8 +40,8 @@ public class GuiProfileConstructor extends BorderPane {
 
         Button editToggleBtn = new Button();
         editToggleBtn.setShape(editToggleBtnShape);
-        editToggleBtn.setPrefSize(60,60);
-        editToggleBtn.setText("V");
+        editToggleBtn.setPrefSize(70,70);
+        editToggleBtn.setId("editToggleBtn");
 
         //TextFields
         TextField tf1 = new TextField("Info goes here");
@@ -242,9 +244,9 @@ public class GuiProfileConstructor extends BorderPane {
         profileInfoContinuedGridPane.setId("profileInfoContinuedGridPane");
 
         HBox profileInfoCoursesLabelPane = new HBox();
-        profileInfoCoursesLabelPane.setMinWidth(345);
-        profileInfoCoursesLabelPane.setPrefWidth(690);
-        profileInfoCoursesLabelPane.setMaxWidth(690);
+        profileInfoCoursesLabelPane.setMinSize(345,55);
+        profileInfoCoursesLabelPane.setPrefSize(690,110);
+        profileInfoCoursesLabelPane.setMaxSize(690,110);
         profileInfoCoursesLabelPane.setAlignment(Pos.BOTTOM_LEFT);
         profileInfoCoursesLabelPane.getChildren().addAll(courses);
         profileInfoCoursesLabelPane.setId("profileInfoCoursesLabelPane");
@@ -310,8 +312,6 @@ public class GuiProfileConstructor extends BorderPane {
         profileAvailabilityPane.getChildren().addAll(profileAvailabilityTitlePane, profileAvailabilityGridPane);
         profileAvailabilityPane.setId("profileAvailabilityPane");
 
-
-
         HBox profileBotContainerPane = new HBox();
         profileBotContainerPane.setPadding(profileAdditionalInfoInsets);
         profileBotContainerPane.setSpacing(20);
@@ -323,7 +323,7 @@ public class GuiProfileConstructor extends BorderPane {
         profileBotContainerPane.setId("profileBotContainerPane");
 
         VBox editToggleBtnPane = new VBox();
-        editToggleBtnPane.setPadding(noPaddingInsets);
+        editToggleBtnPane.setPadding(editToggleBtnInsets);
         editToggleBtnPane.setAlignment(Pos.BOTTOM_CENTER);
         editToggleBtnPane.getChildren().addAll(editToggleBtn);
         editToggleBtnPane.setId("editToggleBtnPane");
