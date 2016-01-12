@@ -87,20 +87,14 @@ public class GUILauncher extends Application implements IMessageListener {
         Backend.addMessageListener(this);
 
         if (!Backend.isConnected()) {
-            Platform.runLater(() -> {
-                login.lblMessage.setText("Could not connect to server!");
-                login.lblMessage.setTextFill(Color.RED);
-            });
+            login.setLblMessage("Could not connect to server!", Color.RED);
         }
 
         if (!Backend.isConnected()) {
             System.out.println("Could not establish connection to server (" + Backend.serverAddress + " using port "
                     + Backend.serverPort + ")");
         } else {
-            Platform.runLater(() -> {
-                login.lblMessage.setText("Connected to server!");
-                login.lblMessage.setTextFill(Color.GREEN);
-            });
+            login.setLblMessage("Connected to server!", Color.GREEN);
         }
     }
 
@@ -256,19 +250,16 @@ public class GUILauncher extends Application implements IMessageListener {
             switch (response.responseTo) {
                 case "login":
                     if (response.errorCode == 0) {
-                        login.lblMessage.setText(response.errorMessage);
-                        login.lblMessage.setTextFill(Color.GREEN);
+                        login.setLblMessage(response.errorMessage, Color.GREEN);
                         Backend.getSelf();
                     } else {
-                        login.lblMessage.setText(response.errorMessage);
-                        login.lblMessage.setTextFill(Color.RED);
+                        login.setLblMessage(response.errorMessage, Color.RED);
                     }
                     break;
 
                 case "getSelf":
                     if (response.errorCode == 0) {
-                        login.lblMessage.setText(response.errorMessage);
-                        login.lblMessage.setTextFill(Color.GREEN);
+                        login.setLblMessage(response.errorMessage, Color.GREEN);
                         try {
                             Backend.setSelfObject(mapper.readValue(response.getResponseData().get("self").toString(),
                                     User.class));
@@ -279,8 +270,7 @@ public class GUILauncher extends Application implements IMessageListener {
                             e.printStackTrace();
                         }
                     } else {
-                        login.lblMessage.setText(response.errorMessage);
-                        login.lblMessage.setTextFill(Color.RED);
+                        login.setLblMessage(response.errorMessage, Color.RED);
                     }
             }
         });

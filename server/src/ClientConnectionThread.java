@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -113,11 +115,11 @@ public class ClientConnectionThread extends Thread {
                 case "register":
                     System.out.println("Received register from userid: " + client.userId);
                     response = new Response("register");
-                    User newuser = mapper.treeToValue(requestData.get("newUser"), User.class);
-                    newuser.setUserID(-1);
+                    String regemail = requestData.get("email").asText(),
+                            regpassword = requestData.get("password").asText();
                     boolean exists = false;
                     try {
-                        User u = Server.getDb().getUser(newuser.getMail());
+                        User u = Server.getDb().getUser(regemail);
                         exists = u != null;
                     } catch (SQLException | ClassNotFoundException e) {
                         e.printStackTrace();
@@ -130,7 +132,7 @@ public class ClientConnectionThread extends Thread {
                     }
 
                     try {
-                        Server.getDb().addUser(newuser);
+                        Server.getDb().addUser(regemail, regpassword);
                     } catch (ClassNotFoundException | SQLException e) {
                         response.errorCode = 1;
                         response.errorMessage = "Generic error.";
@@ -152,13 +154,19 @@ public class ClientConnectionThread extends Thread {
                         System.out.println(email + " " + pass);//Gets appended to the first 'Received login'
                         try {
                             User user = Server.getDb().getUser(email);
-                            if (user != null && user.getPassword().equals(pass)) {
-                                this.client.userId = user.getUserID();
-                                response.errorCode = 0;
-                                response.errorMessage = "Login successful.";
+                            if (user != null) {
+                                if (PasswordHash.validatePassword(pass, user.getPassword())) {
+                                    client.userId = user.getUserID();
+                                    response.errorCode = 0;
+                                    response.errorMessage = "Login successful!";
+                                    break;
+                                }
+                            } else {
+                                response.errorCode = 3;
+                                response.errorMessage = "Couldn't find user!";
                                 break;
                             }
-                        } catch (ClassNotFoundException | SQLException e) {
+                        } catch (ClassNotFoundException | SQLException | InvalidKeySpecException | NoSuchAlgorithmException e) {
                             response.errorCode = 1;
                             response.errorMessage = "Generic error";
                             e.printStackTrace();

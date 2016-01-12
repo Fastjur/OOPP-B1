@@ -29,7 +29,7 @@ import shared.Response;
  */
 public class GuiLoginConstructor extends BorderPane {
 
-    protected final Label lblMessage = new Label();
+    private final Label lblMessage = new Label();
     protected BorderPane bp;
     protected BorderPane bp2;
 
@@ -158,20 +158,30 @@ public class GuiLoginConstructor extends BorderPane {
         mouseHover(btnRegisterTop, GUILauncher.GUIScene);
         mouseHover(btnRegisterBot, GUILauncher.GUIScene);
 
-        btnLoginBot.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                GUILauncher.GUIScene.setCursor(Cursor.WAIT);
-                String checkUser = txtUserName.getText(),
-                        checkPw = pf.getText();
-                Backend.login(checkUser, checkPw);
-                System.out.println("Trying to login: " + checkUser + " " + checkPw);
-                txtUserName.setText("");
-                pf.setText("");
-                Platform.runLater(() -> {
-                    lblMessage.setText("Logging in...");
-                    lblMessage.setTextFill(Color.ORANGE);
-                });
+        btnLoginBot.setOnMouseClicked(event -> {
+            GUILauncher.GUIScene.setCursor(Cursor.WAIT);
+            String checkUser = txtUserName.getText(),
+                    checkPw = pf.getText();
+            Backend.login(checkUser, checkPw);
+            System.out.println("Trying to login: " + checkUser + " " + checkPw);
+            txtUserName.setText("");
+            pf.setText("");
+            setLblMessage("Logging in...", Color.ORANGE);
+        });
+
+        btnRegisterBot.setOnMouseClicked(event -> {
+            GUILauncher.GUIScene.setCursor(Cursor.WAIT);
+            String regMail = txtUserName2.getText(),
+                    regPass = pf2.getText(),
+                    repeatPass = pf3.getText();
+            if (regMail.equals("") || regPass.equals("") || repeatPass.equals("")) {
+                setLblMessage("Please fill in all the fields!", Color.RED);
+            } else if (!regPass.equals(repeatPass)) {
+                setLblMessage("Passwords don't match!", Color.RED);
+            } else if (regPass.length() < 8) {
+                setLblMessage("Password must be atleast 8 characters long", Color.RED);
+            } else {
+                Backend.register(regMail, regPass);
             }
         });
 
@@ -184,6 +194,13 @@ public class GuiLoginConstructor extends BorderPane {
         super.setCenter(bp);
         btnRegister.setOnMouseClicked(e -> GUILauncher.switchToRegister());
         btnLoginReg.setOnMouseClicked(e -> GUILauncher.switchToLogin());
+    }
+
+    protected void setLblMessage(String text, Color color) {
+        Platform.runLater(() -> {
+            lblMessage.setText(text);
+            lblMessage.setTextFill(color);
+        });
     }
 
     public static void mouseHover(Button btn, Scene scene) {

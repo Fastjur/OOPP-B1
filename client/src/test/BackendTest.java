@@ -137,15 +137,9 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     @Test
     public void testRegister() throws Exception {
         Backend.connectToServer();
-        Backend.register(new User());
+        Backend.register("TestUser", "TestPass");
         String result = testServer.receiveMessage();
-        assertEquals("{\"action\":\"register\",\"requestData\":{\"newUser\":" +
-                "{\"password\":null,\"firstname\":null,\"lastname\":null,\"mail\":null," +
-                "\"phonenumber\":null,\"study\":null,\"university\":null,\"gender\":null," +
-                "\"nationality\":null,\"description\":null,\"birthday\":null,\"userID\":0," +
-                "\"studyYear\":0,\"latitude\":0.0,\"longitude\":0.0,\"coursesTeachingList\":null," +
-                "\"coursesLearningList\":null,\"buddyList\":null,\"languageList\":null," +
-                "\"availableDates\":null}}}", result);
+        assertEquals("{\"action\":\"register\",\"requestData\":\"{\\\"password\\\":\\\"TestPass\\\",\\\"email\\\":\\\"TestUser\\\"}\"}", result);
     }
 
     @Test
@@ -177,7 +171,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     public void testNotConnectedLoginRegisterLogoutMatch() {
         Backend.login("email","pass");
         Backend.logout();
-        Backend.register(new User());
+        Backend.register("", "");
         //Backend.match(new User());
         assertNull(this.response);
     }

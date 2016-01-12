@@ -106,7 +106,7 @@ public class Backend {
         }
     }
 
-    public static void register(User newuser) {
+    public static void register(String email, String password) {
         if (!isConnected()) {
             System.out.println("[ERROR] Cannot register: Not connected!");
             return;
@@ -115,7 +115,8 @@ public class Backend {
         try {
             Request request = new Request("register");
 
-            request.putData("newUser", newuser);
+            request.putData("email", email);
+            request.putData("password", password);
             listenThread.sendMessage(request.toSendableJSON());
         } catch (java.io.IOException e) {
             e.printStackTrace();
