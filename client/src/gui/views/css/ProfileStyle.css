@@ -1,12 +1,11 @@
-#profileBtn {
-    -fx-background-color: #FFFFFF;
-}
-
 #uploadPicBtn   {
     -fx-background-color: #F06292;
     -fx-text-fill: #FFFFFF;
 }
 
+#profilePicPane {
+    -fx-effect: dropshadow(gaussian, black, 10, 0.1, 1, 1);
+}
 #profileInfoLabel   {
     -fx-background-color: #F06292;
     -fx-text-fill: #FFFFFF;
@@ -14,12 +13,9 @@
     -fx-font-family: "Roboto";
 }
 
-#profileInfoGridPane    {
-    -fx-background-color: #EEEEEE;
-}
-
 #profileInfoPane  {
-    -fx-background-color: #BDBDBD;
+    -fx-background-color: #EEEEEE;
+    -fx-effect: dropshadow(gaussian, black, 10, 0.1, 1, 1);
 }
 
 #profileAdditionalInfoGridPaneContainerPane {
@@ -50,6 +46,10 @@
     -fx-background-color: #F06292;
 }
 
-#profileBot  {
-    -fx-background-color: yellow;
+#profileBotContainerPane  {
+    -fx-effect: dropshadow(gaussian, black, 10, 0.1, 1, 1);
+}
+
+#editToggleBtn  {
+    -fx-background-image: url("/gui/views/resources/editToggleButton.png");
 }
