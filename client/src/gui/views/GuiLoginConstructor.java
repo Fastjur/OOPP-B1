@@ -1,7 +1,6 @@
 package gui.views;
 
 import communication.Backend;
-import communication.IMessageListener;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,10 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -25,20 +22,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import shared.Response;
 
 /**
  * Constructor for the login and register page of the application
  * Author: Sebastiaan Hester
  */
-public class GuiLoginConstructor extends BorderPane implements IMessageListener {
+public class GuiLoginConstructor extends BorderPane {
 
-    private final Label lblMessage = new Label();
-    BorderPane bp;
-    BorderPane bp2;
-    BorderPane bp3;
+    private final Label loginMessage = new Label(),
+                        registerMessage = new Label(),
+                        resetMessage = new Label(),
+                        resetMessage2 = new Label();
+    protected BorderPane bp;
+    protected BorderPane bp2;
+    protected BorderPane bp3;
 
-    public GuiLoginConstructor(){
+    public GuiLoginConstructor() {
         super();
 
         //BorderPane
@@ -48,7 +47,7 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
 
         //Register
         bp2 = new BorderPane();
-        bp.setPadding(new Insets(10, 50, 50, 50));
+        bp2.setPadding(new Insets(10, 50, 50, 50));
 
         bp3 = new BorderPane();
         bp3.setPadding(new Insets(10, 50, 50, 50));
@@ -96,17 +95,18 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         //Login
         final TextField txtUserName = new TextField();
         final PasswordField pf = new PasswordField();
+
+        //TODO Remove, this is solely for ease of debugging
+        txtUserName.setText("sinterklaas@sintmail.nl");
+        pf.setText("Pepernoten01");
+
         Button btnLoginTop = new Button("Login");
         Button btnLoginBot = new Button("Login");
         Button btnRegister = new Button("Register");
+        Button btnResetLog = new Button("Reset");
 
         //Labels
-        final Label regMessage = new Label();
-        final Label lblMessage = new Label();
-        final Label resMessage = new Label();
-        final Label res2Message = new Label();
         final Label loginLabel = new Label("Login");
-        Button btnResetLog = new Button("Reset");
 
         //Register
         final TextField txtUserName2 = new TextField();
@@ -120,47 +120,45 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
 
         //Reset Password
         final Label resetPasswordLabel = new Label("Reset Password");
-        final Label info = new Label("An email with instructions will");
-        final Label info2 = new Label("be sent to you shortly.");
         final TextField txtUserName3 = new TextField();
         final TextField txtUserName4 = new TextField();
         Button btnLoginRes = new Button("Login");
         Button btnRegisterRes = new Button("Register");
         Button btnResetRes = new Button("Reset");
-        Button btnResetRes2 = new Button("Reset");
+        Button btnResetBot = new Button("Reset");
 
         //Adding Nodes to GridPane layout
         //Login
         gridPane.add(btnLoginTop, 2, 0);
-        gridPane.add(btnRegister, 3, 0 );
-        gridPane.add(btnResetLog, 4, 0 );
+        gridPane.add(btnRegister, 3, 0);
+        gridPane.add(btnResetLog, 4, 0);
         gridPane.add(loginLabel, 2, 1, 3, 1);
         gridPane.add(txtUserName, 2, 2, 3, 1);
         gridPane.add(pf, 2, 3, 3, 1);
         gridPane.add(btnLoginBot, 2, 4, 3, 1);
-        gridPane.add(lblMessage, 2, 5, 3, 1);
+        gridPane.add(loginMessage, 2, 5, 3, 1);
 
         //Register
         gridPane2.add(btnLoginReg, 2, 0);
         gridPane2.add(btnRegisterTop, 3, 0);
-        gridPane2.add(btnResetReg, 4, 0 );
+        gridPane2.add(btnResetReg, 4, 0);
         gridPane2.add(registerLabel, 2, 1, 3, 1);
         gridPane2.add(txtUserName2, 2, 2, 3, 1);
         gridPane2.add(pf2, 2, 3, 3, 1);
-        gridPane2.add(pf3, 2, 4, 3, 1 );
-        gridPane2.add(btnRegisterBot, 2, 4, 3, 1);
-        gridPane2.add(regMessage, 2, 5, 3, 1 );
+        gridPane2.add(pf3, 2, 4, 3, 1);
+        gridPane2.add(btnRegisterBot, 2, 5, 3, 1);
+        gridPane2.add(registerMessage, 2, 6, 3, 1);
 
         //Reset Password
-        gridPane3.add(btnLoginRes, 2,0);
-        gridPane3.add(btnRegisterRes, 3,0);
-        gridPane3.add(btnResetRes, 4,0);
+        gridPane3.add(btnLoginRes, 2, 0);
+        gridPane3.add(btnRegisterRes, 3, 0);
+        gridPane3.add(btnResetRes, 4, 0);
         gridPane3.add(resetPasswordLabel, 2, 1, 3, 1);
         gridPane3.add(txtUserName3, 2, 2, 3, 1);
         gridPane3.add(txtUserName4, 2, 3, 3, 1);
-        gridPane3.add(btnResetRes2, 2, 4, 3, 1);
-        gridPane3.add(resMessage, 2, 5, 3, 1);
-        gridPane3.add(res2Message, 2, 6, 3, 1);
+        gridPane3.add(btnResetBot, 2, 4, 3, 1);
+        gridPane3.add(resetMessage, 2, 5, 3, 1);
+        gridPane3.add(resetMessage2, 2, 6, 3, 1);
 
 
         //Adding text
@@ -201,6 +199,7 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
 
         //Add ID's to Nodes
         //Login
+        gridPane.setId("root");
         bp.setId("bp");
         btnLoginTop.setId("BLT");
         btnRegister.setId("BR");
@@ -211,6 +210,7 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         btnResetLog.setId("resLog");
 
         //Register
+        gridPane2.setId("root2");
         bp2.setId("bp2");
         btnLoginReg.setId("BLR");
         btnRegisterTop.setId("BRT");
@@ -219,41 +219,15 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         btnResetReg.setId("resReg");
 
         //Reset
+        gridPane3.setId("root3");
         bp3.setId("bp3");
         btnLoginRes.setId("BLRES");
         btnRegisterRes.setId("BRR");
         btnResetRes.setId("BRR2");
-        btnResetRes2.setId("BRR3");
+        btnResetBot.setId("BRR3");
         resetPasswordLabel.setId("resLabel");
         text3.setId("text3");
-        info.setId("info");
-        info2.setId("info2");
 
-        //Action for btnLogin
-        btnLoginBot.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                String checkUser = txtUserName.getText(),
-                        checkPw = pf.getText();
-                Backend.login(checkUser, checkPw);
-                txtUserName.setText("");
-                pf.setText("");
-            }
-        });
-
-        //Reset button message
-        btnResetRes2.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-
-                resMessage.setText("An email with instructions");
-                res2Message.setText("will be sent to you shortly.");
-                resMessage.setTextFill(Color.WHITE);
-                res2Message.setTextFill(Color.WHITE);
-                //txtUserName.setText("");
-                // pf.setText("");
-            }
-        });
-
-        //Add V/HBox and GridPane layout to BorderPane Layout
         //Login
         bp.setTop(hb);
         bp.setCenter(gridPane);
@@ -289,15 +263,38 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         mouseHover(btnResetLog, GUILauncher.GUIScene);
         mouseHover(btnResetReg, GUILauncher.GUIScene);
         mouseHover(btnResetRes, GUILauncher.GUIScene);
-        mouseHover(btnResetRes2, GUILauncher.GUIScene);
+        mouseHover(btnResetBot, GUILauncher.GUIScene);
 
-       /* btnLoginBot.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        btnLoginBot.setOnMouseClicked(event -> {
+            if (!Backend.isConnected()) {
+                setLoginMessage("Could not connect to server!", Color.RED);
+            } else {
                 GUILauncher.GUIScene.setCursor(Cursor.WAIT);
+                String checkUser = txtUserName.getText(),
+                        checkPw = pf.getText();
+                Backend.login(checkUser, checkPw);
+                System.out.println("Trying to login: " + checkUser + " " + checkPw);
+                txtUserName.setText("");
+                pf.setText("");
+                setLoginMessage("Logging in...", Color.ORANGE);
             }
         });
-        */
+
+        btnRegisterBot.setOnMouseClicked(event -> {
+            GUILauncher.GUIScene.setCursor(Cursor.WAIT);
+            String regMail = txtUserName2.getText(),
+                    regPass = pf2.getText(),
+                    repeatPass = pf3.getText();
+            if (regMail.equals("") || regPass.equals("") || repeatPass.equals("")) {
+                setLoginMessage("Please fill in all the fields!", Color.RED);
+            } else if (!regPass.equals(repeatPass)) {
+                setLoginMessage("Passwords don't match!", Color.RED);
+            } else if (regPass.length() < 8) {
+                setLoginMessage("Password must be atleast 8 characters long", Color.RED);
+            } else {
+                Backend.register(regMail, regPass);
+            }
+        });
 
         //Prompt Text
         txtUserName.setPromptText("Email Adress");
@@ -316,86 +313,51 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         btnRegisterRes.setOnAction(e -> GUILauncher.switchToRegister());
         btnLoginBot.setDefaultButton(true);
         btnRegisterBot.setDefaultButton(true);
-        btnResetRes2.setDefaultButton(true);
+        btnResetBot.setDefaultButton(true);
 
-        //Initialize Backend
-        Backend.serverAddress = "::1";
-        Backend.serverPort = 8372;
-        Backend.connectToServer();
-        Backend.addMessageListener(this);
+        btnRegisterBot.setOnAction(event -> {
+            if (!Backend.isConnected()) {
+                setRegisterMessage("Could not connect to server!", Color.RED);
+            }
+            //TODO response listeners in GUILauncher
+        });
 
+        btnResetBot.setOnAction(event -> {
+            if (!Backend.isConnected()) {
+                setResetMessage("Could not connect to server", "", Color.RED);
+            }
+            //TODO response listeners in GUILauncher
+        });
 
-        btnLoginBot.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-        if (!Backend.isConnected()) {
-            Platform.runLater(new Runnable() {
-                public void run() {
-                    lblMessage.setText("Could not connect to server!");
-                    lblMessage.setTextFill(Color.RED);
-                }
-            });
-        }
-        else{       regMessage.setText("Register Succesful!");
-            regMessage.setTextFill(Color.WHITE);
-        }
-        }});
+    }
 
-        btnRegisterBot.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                if (!Backend.isConnected()) {
-                    Platform.runLater(new Runnable() {
-                        public void run() {
-                            regMessage.setText("Could not connect to server!");
-                            regMessage.setTextFill(Color.RED);
-                        }
-                    });
-                }
-                else{       regMessage.setText("Register Succesful!");
-                            regMessage.setTextFill(Color.WHITE);
-                }
-            }});
+    protected void setLoginMessage(String text, Color color) {
+        Platform.runLater(() -> {
+            loginMessage.setText(text);
+            loginMessage.setTextFill(color);
+        });
+    }
 
-        btnResetRes2.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                if (!Backend.isConnected()) {
-                    Platform.runLater(new Runnable() {
-                        public void run() {
-                            resMessage.setText("Could not connect to server!");
-                            resMessage.setTextFill(Color.RED);
-                        }
-                    });
-                }
-                else{       resMessage.setText("An email with instructions");
-                            res2Message.setText("will be sent to you shortly.");
-                            resMessage.setTextFill(Color.WHITE);
-                            res2Message.setTextFill(Color.WHITE);
-                }
-            }});
+    protected void setRegisterMessage(String text, Color color) {
+        Platform.runLater(() -> {
+            registerMessage.setText(text);
+            registerMessage.setTextFill(color);
+        });
+    }
 
+    protected void setResetMessage(String textTop, String textBottom, Color color) {
+        Platform.runLater(() -> {
+            resetMessage.setText(textTop);
+            resetMessage2.setText(textBottom);
+            resetMessage.setTextFill(color);
+            resetMessage2.setTextFill(color);
+        });
     }
 
     public static void mouseHover(Button btn, Scene scene) {
         btn.setOnMouseEntered(event -> scene.setCursor(Cursor.HAND));
         btn.setOnMouseExited(event -> {
             scene.setCursor(Cursor.DEFAULT); //Change cursor to crosshair
-        });
-    }
-
-    @Override
-    public void onIncomingResponse(Response response) {
-        Platform.runLater(new Runnable(){
-            public void run() {
-                System.out.println(response);
-                if (response.responseTo.equals("login")) {
-                    if (response.errorCode == 0) {
-                        lblMessage.setText(response.errorMessage);
-                        lblMessage.setTextFill(Color.GREEN);
-                    } else {
-                        lblMessage.setText(response.errorMessage);
-                        lblMessage.setTextFill(Color.RED);
-                    }
-                }
-            }
         });
     }
 }

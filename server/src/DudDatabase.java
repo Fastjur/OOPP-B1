@@ -9,12 +9,13 @@ import java.util.Date;
  *
  * @author Govert de Gans
  */
+@Deprecated
 public class DudDatabase extends Database {
     public DudDatabase() {
         super(true);
     }
 
-    @Override
+    /*@Override
     public User getUser(String email) {
         if (email.equals("sinterklaas@sintmail.nl")) {
             return new User(1, "Pepernoten01", "Sinter", "Klaas", new Date(00001),
@@ -29,5 +30,5 @@ public class DudDatabase extends Database {
     @Override
     public void addUser(User user) {
         return;
-    }
+    }*/
 }

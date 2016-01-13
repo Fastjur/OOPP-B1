@@ -27,10 +27,6 @@
 	-fx-font-family: "roboto";
 }
 
-#btnLogin:hover {
-    -fx-text-fill:  #000000;
-}
-
 #loginLabel, #registerLabel, #resLabel{
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;

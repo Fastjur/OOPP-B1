@@ -1,6 +1,8 @@
 package gui.views;
 
-import javafx.geometry.*;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +14,12 @@ import javafx.scene.shape.Circle;
  * Author: Sebastiaan Hester
  */
 public class GuiProfileConstructor extends BorderPane {
+
+    protected TextField name, age, email, telephoneNumber, location, tf11, tf12, tf13, tf14, tf15, tf16, tf17, tf18,
+            tf19, tf20, tf21, tf22, tf23;
+    protected ChoiceBox<String> sex, nationality, languages;
+    protected DatePicker dateOfBirth;
+    protected PasswordField password;
 
     public GuiProfileConstructor() {
         super();
@@ -31,12 +39,12 @@ public class GuiProfileConstructor extends BorderPane {
         Circle editToggleBtnShape = new Circle(70);
 
         //Fields for information
-        TextField name = new TextField();
+        name = new TextField();
         name.setPromptText("Info goes here");
         name.setEditable(false);
         name.setMaxHeight(20);
         name.setPrefHeight(20);
-        ChoiceBox<String> sex = new ChoiceBox<>();
+        sex = new ChoiceBox<>();
         sex.setDisable(true);
         sex.getItems().add("Male");
         sex.getItems().add("Female");
@@ -45,7 +53,7 @@ public class GuiProfileConstructor extends BorderPane {
         sex.setMaxWidth(815);
         sex.setPrefWidth(815);
         sex.setId("sexChoiceBox");
-        TextField age = new TextField(){
+        age = new TextField(){
             @Override
             public void replaceText(int start, int end, String text){
                 if(text.matches("\\d+")){
@@ -64,14 +72,14 @@ public class GuiProfileConstructor extends BorderPane {
         age.setEditable(false);
         age.setMaxHeight(20);
         age.setPrefHeight(20);
-        DatePicker dateOfBirth = new DatePicker();
+        dateOfBirth = new DatePicker();
         dateOfBirth.setPromptText("Info goes here");
         dateOfBirth.setDisable(true);
         dateOfBirth.setMaxHeight(20);
         dateOfBirth.setPrefHeight(20);
         dateOfBirth.setMaxWidth(815);
         dateOfBirth.setPrefWidth(815);
-        ChoiceBox<String> nationality = new ChoiceBox<>();
+        nationality = new ChoiceBox<>();
         nationality.setDisable(true);
         nationality.getItems().addAll("Items retrieved from database here");
         nationality.setMaxHeight(20);
@@ -79,7 +87,7 @@ public class GuiProfileConstructor extends BorderPane {
         nationality.setMaxWidth(815);
         nationality.setPrefWidth(815);
         nationality.setId("nationalityChoiceBox");
-        ChoiceBox<String> languages = new ChoiceBox<>();
+        languages = new ChoiceBox<>();
         languages.setDisable(true);
         languages.getItems().addAll("Items retrieved from database here");
         languages.setMaxHeight(20);
@@ -87,12 +95,12 @@ public class GuiProfileConstructor extends BorderPane {
         languages.setMaxWidth(815);
         languages.setPrefWidth(815);
         languages.setId("languagesChoiceBox");
-        TextField email = new TextField();
+        email = new TextField();
         email.setPromptText("Info goes here");
         email.setEditable(false);
         email.setMaxHeight(20);
         email.setPrefHeight(20);
-        TextField telephoneNumber = new TextField(){
+        telephoneNumber = new TextField(){
             @Override
             public void replaceText(int start, int end, String text){
                 if(text.matches("\\d+")){
@@ -111,7 +119,7 @@ public class GuiProfileConstructor extends BorderPane {
         telephoneNumber.setEditable(false);
         telephoneNumber.setMaxHeight(20);
         telephoneNumber.setPrefHeight(20);
-        TextField location = new TextField(){
+        location = new TextField(){
             //Using a regex that isn't completely correct, trying to figure out why the correct one won't work
             @Override
             public void replaceText(int start, int end, String text){
@@ -131,72 +139,72 @@ public class GuiProfileConstructor extends BorderPane {
         location.setEditable(false);
         location.setMaxHeight(20);
         location.setPrefHeight(20);
-        PasswordField password = new PasswordField();
+        password = new PasswordField();
         password.setPromptText("Info goes here");
         password.setEditable(false);
         password.setMaxHeight(20);
         password.setPrefHeight(20);
-        TextField tf11 = new TextField();
+        tf11 = new TextField();
         tf11.setPromptText("Info goes here");
         tf11.setEditable(false);
         tf11.setMaxHeight(20);
         tf11.setPrefHeight(20);
-        TextField tf12 = new TextField();
+        tf12 = new TextField();
         tf12.setPromptText("Info goes here");
         tf12.setEditable(false);
         tf12.setMaxHeight(20);
         tf12.setPrefHeight(20);
-        TextField tf13 = new TextField();
+        tf13 = new TextField();
         tf13.setPromptText("Info goes here");
         tf13.setEditable(false);
         tf13.setMaxHeight(20);
         tf13.setPrefHeight(20);
-        TextField tf14 = new TextField();
+        tf14 = new TextField();
         tf14.setPromptText("Info goes here");
         tf14.setEditable(false);
         tf14.setMaxHeight(20);
         tf14.setPrefHeight(20);
-        TextField tf15 = new TextField();
+        tf15 = new TextField();
         tf15.setPromptText("Info goes here");
         tf15.setEditable(false);
         tf15.setMaxHeight(20);
         tf15.setPrefHeight(20);
-        TextField tf16 = new TextField();
+        tf16 = new TextField();
         tf16.setPromptText("Info goes here");
         tf16.setEditable(false);
         tf16.setMaxHeight(20);
         tf16.setPrefHeight(20);
-        TextField tf17 = new TextField();
+        tf17 = new TextField();
         tf17.setPromptText("Info goes here");
         tf17.setEditable(false);
         tf17.setMaxHeight(20);
         tf17.setPrefHeight(20);
-        TextField tf18 = new TextField();
+        tf18 = new TextField();
         tf18.setPromptText("Info goes here");
         tf18.setEditable(false);
         tf18.setMaxHeight(20);
         tf18.setPrefHeight(20);
-        TextField tf19 = new TextField();
+        tf19 = new TextField();
         tf19.setPromptText("Info goes here");
         tf19.setEditable(false);
         tf19.setMaxHeight(20);
         tf19.setPrefHeight(20);
-        TextField tf20 = new TextField();
+        tf20 = new TextField();
         tf20.setPromptText("Info goes here");
         tf20.setEditable(false);
         tf20.setMaxHeight(20);
         tf20.setPrefHeight(20);
-        TextField tf21 = new TextField();
+        tf21 = new TextField();
         tf21.setPromptText("Info goes here");
         tf21.setEditable(false);
         tf21.setMaxHeight(20);
         tf21.setPrefHeight(20);
-        TextField tf22 = new TextField();
+        tf22 = new TextField();
         tf22.setPromptText("Info goes here");
         tf22.setEditable(false);
         tf22.setMaxHeight(20);
         tf22.setPrefHeight(20);
-        TextField tf23 = new TextField();
+        tf23 = new TextField();
         tf23.setPromptText("Info goes here");
         tf23.setEditable(false);
         tf23.setMaxHeight(20);
