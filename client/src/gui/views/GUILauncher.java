@@ -4,10 +4,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class GUILauncher extends Application {
@@ -18,7 +16,7 @@ public class GUILauncher extends Application {
     private static GuiProfileConstructor profile;
     private static GuiFindMatchConstructor findMatch;
     private static GuiSideBarFindMatchConstructor findMatchSideBar;
-    private static GUISideBarConstructor sideBar;
+    private static GUISideBarConstructor sidebar;
 
     @Override
     public void start(Stage PrimaryStage) throws Exception{
@@ -56,14 +54,13 @@ public class GUILauncher extends Application {
         findMatch = new GuiFindMatchConstructor(languages, distance, name, age, descr, matchURL, nomatchURL, pfURL);
         findMatchSideBar  = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
         profile = new GuiProfileConstructor();
-        sideBar = new GUISideBarConstructor();
+        sidebar = new GUISideBarConstructor();
         topbar = new GuiTopBar();
         login = new GuiLoginConstructor();
 
         GUI.setTop(topbar);
         GUI.setCenter(profile);
-        GUI.setLeft(sideBar);
-
+        GUI.setLeft(sidebar);
 
         PrimaryStage.setScene(GUIScene);
         GUIScene.getStylesheets().addAll("/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");
@@ -153,7 +150,7 @@ public class GUILauncher extends Application {
         chat.setId("chat");
 
         GUI.setCenter(profile);
-        GUI.setLeft(sideBar);
+        GUI.setLeft(sidebar);
     }
 
 
