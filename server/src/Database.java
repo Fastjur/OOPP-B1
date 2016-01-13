@@ -4,6 +4,8 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -26,8 +28,7 @@ public class Database {
      *
      * @see ConnectionManager
      */
-    public Database() throws IllegalStateException, SQLException, ClassNotFoundException {
-        connection = ConnectionManager.getConnection();
+    public Database() {
     }
 
     protected Database(boolean IFUCKINGHATEJAVA) {
@@ -41,9 +42,9 @@ public class Database {
      * @throws SQLException
      * @throws IOException
      */
-    public User getUser(int id) throws SQLException, IOException {
-        //TODO: Check for null values returned by database and generate appropriate exceptions
+    public User getUser(int id) throws SQLException, IOException, ClassNotFoundException {
         User user;
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name AS nationality," +
                 "studies.name AS study, universities.name AS university, email AS dbemail, passwd, firstname," +
                 "lastname, sex, birthdate, bio, studyYear, availableDates, phonenumber, latitude, longitude " +
@@ -54,6 +55,7 @@ public class Database {
         ResultSet rs = stmt.executeQuery();
         user = processGetUser(rs);
         stmt.close();
+        ConnectionManager.close();
         return user;
     }
 
@@ -65,7 +67,8 @@ public class Database {
      * @throws SQLException
      * @throws IOException
      */
-    public User getUser(String email) throws SQLException, IOException {
+    public User getUser(String email) throws SQLException, IOException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT users.id FROM `users` " +
                 "WHERE users.email = ? LIMIT 1");
         stmt.setString(1, email);
@@ -76,10 +79,12 @@ public class Database {
         } else {
             return null;
         }
+        stmt.close();
+        ConnectionManager.close();
         return getUser(id);
     }
 
-    private User processGetUser(ResultSet rs) throws SQLException, IOException {
+    private User processGetUser(ResultSet rs) throws SQLException, IOException, ClassNotFoundException {
         //fixme: NullPointerExceptions on empty result from Database
         User usr;
         if (rs.next()) {
@@ -99,11 +104,45 @@ public class Database {
                     phonenumber = rs.getString("phonenumber"),
                     availabilityString = rs.getString("availableDates");
             Date birthdate = new Date(rs.getLong("birthdate"));
-            AvailableTimes availability = AvailableTimes.fromJson(availabilityString);
+
+            /**
+             * Start of NULL object checking block
+             */
+            if (firstname == null)
+                firstname = "";
+
+            if (lastname == null)
+                lastname = "";
+
+            if (nationality == null)
+                nationality = "";
+
+            if (university == null)
+                university = "";
+
+            if (study == null)
+                study = "";
+
+            if (sex == null)
+                sex = "";
+
+            if (bio == null)
+                bio = "";
+
+            if (phonenumber == null)
+                phonenumber = "";
+
+            AvailableTimes availability;
+            if (availabilityString == null) {
+                availability = new AvailableTimes();
+            } else {
+                availability = AvailableTimes.fromJson(availabilityString);
+            }
 
             /**
              * Get buddy courses names
              */
+            connection = ConnectionManager.getConnection();
             PreparedStatement stmt = connection.prepareStatement("SELECT courses.name FROM courses " +
                     "LEFT JOIN coursesSearchingBuddy ON courses_id = courses.id " +
                     "WHERE coursesSearchingBuddy.users_id = ?");
@@ -156,6 +195,7 @@ public class Database {
                 languages.add(rs2.getString("name"));
             }
             stmt.close();
+            ConnectionManager.close();
 
             usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber, study, university,
                     studyYear, availability, coursesTeaching, coursesLearning, coursesSearchingBuddy, sex, nationality,
@@ -170,146 +210,44 @@ public class Database {
      * Adds a user to the database
      * This method checks the incoming user object and returns an IllegalArgumentException if one of its attributes is out of range or null
      *
-     * @param user shared.User object
+     * @param email Users registration email
+     * @param password Users registration password
      * @throws SQLException
-     * @throws IOException
      * @throws IllegalArgumentException
      * @see User
      */
-    public void addUser(User user) throws SQLException, IOException, IllegalArgumentException {
-        if (user == null) {
-            throw new IllegalArgumentException("[ERROR] User object was null, cannot add to database");
+    public void addUser(String email, String password) throws SQLException, IllegalArgumentException, ClassNotFoundException {
+        if (email == null || password == null || email.equals("") || password.equals("")) {
+            throw new IllegalArgumentException("Email or Password not given, aborting registration");
         }
-        if (user.getUserID() != -1) {
-            throw new IllegalArgumentException("[ERROR] User id was not -1, aborting add to database");
-        }
-        if (user.getPassword() == null || user.getPassword().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User password was null or empty, aborting add to database");
-        }
-        if (user.getFirstname() == null || user.getFirstname().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User firstname was null or empty, aborting add to database");
-        }
-        if (user.getLastname() == null || user.getLastname().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User lastname was null or empty, aborting add to database");
-        }
-        if (user.getBirthday() == null || user.getBirthday().equals(new Date(0))) {
-            throw new IllegalArgumentException("[ERROR] User birthday was null or 0, aborting add to database");
-        }
-        if (user.getMail() == null || user.getMail().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User mail was null or empty, aborting add to database");
-        }
-        if (user.getPhonenumber() == null || user.getPhonenumber().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User phonenumber was null or empty, aborting add to database");
-        }
-        if (user.getStudy() == null || user.getStudy().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User study was null or empty, aborting add to database");
-        }
-        if (user.getUniversity() == null || user.getUniversity().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User university was null or empty, aborting add to database");
-        }
-        if (user.getStudyYear() == 0) {
-            throw new IllegalArgumentException("[ERROR] User studyYear was 0, aborting add to database");
-        }
-        if (user.getGender() == null || user.getGender().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User gender was null or empty, aborting add to database");
-        }
-        if (user.getNationality() == null || user.getNationality().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User nationality was null or empty, aborting add to database");
-        }
-        if (user.getDescription() == null || user.getDescription().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User description was null or empty, aborting add to database");
-        }
-        if (user.getLatitude() == 0) {
-            throw new IllegalArgumentException("[ERROR] User latitude was 0, aborting add to database");
-        }
-        if (user.getLongitude() == 0) {
-            throw new IllegalArgumentException("[ERROR] User longitude was 0, aborting add to database");
+
+        String hash;
+        try {
+            hash = PasswordHash.createHash(password);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Could not hash password!");
         }
 
         PreparedStatement stmt;
         ResultSet rs;
-        /**
-         * Get the nationality id, throw IllegalArgumentException on fail
-         */
-        stmt = connection.prepareStatement("SELECT id FROM `nationalities` WHERE name = ? LIMIT 1");
-        stmt.setString(1, user.getNationality());
-        rs = stmt.executeQuery();
-        int nationality_id;
-        if (rs.next()) {
-            nationality_id = rs.getInt("id");
-        } else {
-            throw new IllegalArgumentException("[ERROR] Couldn't get or find nationality id, aborting add to database\n" +
-                    "    Arguments: " + user.getNationality());
-        }
-        stmt.close();
+        connection = ConnectionManager.getConnection();
 
         /**
-         * Get the university id, throw IllegalArgumentException on fail
+         * Insert user into database
          */
-        stmt = connection.prepareStatement("SELECT id FROM `universities` WHERE name = ? LIMIT 1");
-        stmt.setString(1, user.getUniversity());
-        rs = stmt.executeQuery();
-        int university_id;
-        if (rs.next()) {
-            university_id = rs.getInt("id");
-        } else {
-            throw new IllegalArgumentException("[ERROR] Couldn't get or find university id, aborting add to database\n" +
-                    "    Argument: " + user.getUniversity());
-        }
-        stmt.close();
-
-
-        /**
-         * Get the study id, throw IllegalArgumentException on fail
-         */
-        stmt = connection.prepareStatement("SELECT id FROM `studies` WHERE name = ? LIMIT 1");
-        stmt.setString(1, user.getStudy());
-        rs = stmt.executeQuery();
-        int study_id;
-        if (rs.next()) {
-            study_id = rs.getInt("id");
-        } else {
-            throw new IllegalArgumentException("[ERROR] Couldn't get or find study id, aborting add to database");
-        }
-        stmt.close();
-
-        /**
-         * Insert user into database, finally
-         */
-        stmt = connection.prepareStatement("INSERT INTO `users`(id, nationality_id, university_id, email, passwd," +
-                "firstname, lastname, sex, birthdate, study, bio, studyYear, availableDates, phonenumber, latitude, " +
-                "longitude) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
-        stmt.setInt(1, nationality_id);
-        stmt.setInt(2, university_id);
-        stmt.setString(3, user.getMail());
-        stmt.setString(4, user.getPassword());
-        stmt.setString(5, user.getFirstname());
-        stmt.setString(6, user.getLastname());
-        stmt.setString(7, user.getGender());
-        stmt.setLong(8, user.getBirthday().getTime());
-        stmt.setInt(9, study_id);
-        stmt.setString(10, user.getDescription());
-        stmt.setInt(11, user.getStudyYear());
-        stmt.setString(12, user.getAvailableDates().toJson());
-        stmt.setString(13, user.getPhonenumber());
-        stmt.setDouble(14, user.getLatitude());
-        stmt.setDouble(15, user.getLongitude());
+        stmt = connection.prepareStatement("INSERT INTO `users`(id, email, passwd) VALUES (NULL, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+        stmt.setString(1, email);
+        stmt.setString(2, hash);
 
         stmt.executeUpdate();
         rs = stmt.getGeneratedKeys();
-        if (rs.next()) {
-            user.setUserID(rs.getInt(1));
-        } else {
+        if (!rs.next()) {
             throw new IllegalArgumentException("[ERROR] Couldn't retrieve newly added users ID.\n" +
                     "    Presume database invalid");
         }
         stmt.close();
-
-        /**
-         * Insert languages and courses
-         */
-        updateDbLanguages(user);
-        updateDbCourses(user);
+        ConnectionManager.close();
     }
 
     /**
@@ -320,51 +258,9 @@ public class Database {
      * @throws SQLException
      * @throws IOException
      */
-    public void updateUser(User user) throws IllegalArgumentException, SQLException, IOException {
+    public void updateUser(User user) throws IllegalArgumentException, SQLException, IOException, ClassNotFoundException {
         if (user == null) {
             throw new IllegalArgumentException("[ERROR] User object was null, cannot add to database");
-        }
-        if (user.getPassword() == null || user.getPassword().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User password was null or empty, aborting add to database");
-        }
-        if (user.getFirstname() == null || user.getFirstname().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User firstname was null or empty, aborting add to database");
-        }
-        if (user.getLastname() == null || user.getLastname().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User lastname was null or empty, aborting add to database");
-        }
-        if (user.getBirthday() == null || user.getBirthday().equals(new Date(0))) {
-            throw new IllegalArgumentException("[ERROR] User birthday was null or 0, aborting add to database");
-        }
-        if (user.getMail() == null || user.getMail().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User mail was null or empty, aborting add to database");
-        }
-        if (user.getPhonenumber() == null || user.getPhonenumber().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User phonenumber was null or empty, aborting add to database");
-        }
-        if (user.getStudy() == null || user.getStudy().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User study was null or empty, aborting add to database");
-        }
-        if (user.getUniversity() == null || user.getUniversity().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User university was null or empty, aborting add to database");
-        }
-        if (user.getStudyYear() == 0) {
-            throw new IllegalArgumentException("[ERROR] User studyYear was 0, aborting add to database");
-        }
-        if (user.getGender() == null || user.getGender().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User gender was null or empty, aborting add to database");
-        }
-        if (user.getNationality() == null || user.getNationality().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User nationality was null or empty, aborting add to database");
-        }
-        if (user.getDescription() == null || user.getDescription().equals("")) {
-            throw new IllegalArgumentException("[ERROR] User description was null or empty, aborting add to database");
-        }
-        if (user.getLatitude() == 0) {
-            throw new IllegalArgumentException("[ERROR] User latitude was 0, aborting add to database");
-        }
-        if (user.getLongitude() == 0) {
-            throw new IllegalArgumentException("[ERROR] User longitude was 0, aborting add to database");
         }
 
         PreparedStatement stmt;
@@ -373,6 +269,7 @@ public class Database {
         /**
          * Get nationality id
          */
+        connection = ConnectionManager.getConnection();
         stmt = connection.prepareStatement("SELECT id FROM nationalities WHERE name = ? LIMIT 1");
         stmt.setString(1, user.getNationality());
         rs = stmt.executeQuery();
@@ -441,6 +338,7 @@ public class Database {
 
         stmt.executeUpdate();
         stmt.close();
+        ConnectionManager.close();
 
         /**
          * Update languages and courses
@@ -450,10 +348,11 @@ public class Database {
 
     }
 
-    private void updateDbLanguages(User user) throws SQLException {
+    private void updateDbLanguages(User user) throws SQLException, ClassNotFoundException {
         PreparedStatement stmt;
         ResultSet rs;
 
+        connection = ConnectionManager.getConnection();
         stmt = connection.prepareStatement("DELETE FROM `users_has_languages` WHERE users_id = ?");
         stmt.setInt(1, user.getUserID());
         stmt.executeUpdate();
@@ -488,9 +387,10 @@ public class Database {
             }
             stmt.close();
         }
+        ConnectionManager.close();
     }
 
-    private void updateDbCourses(User user) throws SQLException {
+    private void updateDbCourses(User user) throws SQLException, ClassNotFoundException {
         PreparedStatement stmt;
         ResultSet rs;
         StringBuilder builder;
@@ -499,6 +399,7 @@ public class Database {
         /**
          * Delete all residual course entries
          */
+        connection = ConnectionManager.getConnection();
         stmt = connection.prepareStatement("DELETE FROM `coursesLearning` WHERE users_id = ?;");
         stmt.setInt(1, user.getUserID());
         stmt.executeUpdate();
@@ -598,17 +499,22 @@ public class Database {
             stmt.executeUpdate();
         }
         stmt.close();
+        ConnectionManager.close();
     }
 
-    public int getCourseIdByName(String name) throws SQLException {
+    public int getCourseIdByName(String name) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT id FROM courses WHERE name=?");
         stmt.setString(1, name);
         ResultSet rs = stmt.executeQuery();
+        int id;
         if(rs.next()) {
-            return rs.getInt("id");
+            id = rs.getInt("id");
         } else {
-            return -1;
+            id = -1;
         }
+        stmt.close();
+        return id;
     }
 
     /**
@@ -617,11 +523,13 @@ public class Database {
      * @param id int, remove user with this id
      * @throws SQLException
      */
-    public void removeUser(int id) throws SQLException {
+    public void removeUser(int id) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM `users` WHERE id = ?");
         stmt.setInt(1, id);
         stmt.executeUpdate();
         stmt.close();
+        ConnectionManager.close();
     }
 
     /**
@@ -630,7 +538,7 @@ public class Database {
      * @param user remove user that has the id in this given object
      * @throws SQLException
      */
-    public void removeUser(User user) throws SQLException {
+    public void removeUser(User user) throws SQLException, ClassNotFoundException {
         if (user == null) {
             throw new IllegalArgumentException("User object was null, cannot delete from database");
         }
@@ -646,7 +554,7 @@ public class Database {
      * teach, the second who he can learn from, the third who he can buddy up with.
      * @throws SQLException
      */
-    public ArrayList<ArrayList<User>> getMatches(int self_id, JsonNode node) throws SQLException, IOException {
+    public ArrayList<ArrayList<User>> getMatches(int self_id, JsonNode node) throws SQLException, IOException, ClassNotFoundException {
         ObjectMapper mapper = new ObjectMapper();
         double maxDist = node.get("data").get("maxdist").getDoubleValue(),
                 latitude = node.get("data").get("latitude").getDoubleValue(),
@@ -669,6 +577,7 @@ public class Database {
                         "LEFT JOIN universities ON users.university_id = universities.id " +
                         "LEFT JOIN studies ON users.study = studies.id " + where + " " +
                         "HAVING distance <= ?";
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setDouble(1, latitude);
         stmt.setDouble(2, latitude);
@@ -686,6 +595,7 @@ public class Database {
             matches.add(user);
         }
         stmt.close();
+        ConnectionManager.close();
         ListIterator<User> it = matches.listIterator();
         int index = 0;
         while (it.hasNext()) {
@@ -717,13 +627,14 @@ public class Database {
      * @param type Type of match, should be 'learning', 'teaching' or 'buddy'
      * @throws SQLException
      */
-    public void acceptMatch(int self, int matchedUserId, String type, String course) throws SQLException {
+    public void acceptMatch(int self, int matchedUserId, String type, String course) throws SQLException, ClassNotFoundException {
         if (course.equals("")) {
             course = "NONE";
         }
         int courseId = getCourseIdByName(course);
         if (courseId == -1)
             throw new IllegalArgumentException("[ERROR] Couldn't find course ID by name!");
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO `matches`(id, matched_user_id, match_type, " +
                 "courses_id) VALUES(NULL,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         ResultSet rs;
@@ -750,6 +661,7 @@ public class Database {
         stmt.setInt(2, matchId);
         stmt.executeUpdate();
         stmt.close();
+        ConnectionManager.close();
     }
 
     /**
@@ -758,13 +670,37 @@ public class Database {
      * @param matchId The ID of the match to be deleted
      * @throws SQLException
      */
-    public void removeMatch(int self, int matchId) throws SQLException {
+    public void removeMatch(int self, int matchId) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("DELETE matches FROM matches INNER JOIN users_has_matches " +
                 "ON matches_id = matches.id WHERE users_id = ? AND matches.id = ?");
         stmt.setInt(1, self);
         stmt.setInt(2, matchId);
         stmt.executeUpdate();
         stmt.close();
+        ConnectionManager.close();
+    }
+
+    public void getCompleteMatches(int self) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT\n" +
+                "  matches.matched_user_id AS matched_user,\n" +
+                "  matches.courses_id      AS matched_course\n" +
+                "FROM users u2\n" +
+                "  JOIN users_has_matches ON u2.id = users_has_matches.users_id\n" +
+                "  JOIN matches ON users_has_matches.matches_id = matches.id\n" +
+                "WHERE u2.id = ?\n" +
+                "      AND matches.match_type = 'buddy'");
+        stmt.setInt(1, self);
+
+        ResultSet rs = stmt.executeQuery();
+        ArrayList<ArrayList<Integer>> preMatches = new ArrayList<>();
+        while (rs.next()) {
+            ArrayList<Integer> temp = new ArrayList<>();
+            temp.add(rs.getInt("matched_user"));
+            temp.add(rs.getInt("matched_course"));
+            preMatches.add(temp);
+        }
     }
 
     /**
@@ -791,10 +727,6 @@ public class Database {
      * Attempt to close the database connection
      */
     public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        ConnectionManager.close();
     }
 }

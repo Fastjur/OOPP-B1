@@ -1,5 +1,4 @@
 #root, #root2, #root3 {
->>>>>>> 551dd910f7677dfb3279355a993dcd8243ca9bd5
 	-fx-background-color:  #26A69A;
 	-fx-border-radius: 20;
 	-fx-padding: 10 10 10 10;
@@ -28,23 +27,20 @@
 	-fx-font-family: "roboto";
 }
 
-#btnLogin:hover {
-    -fx-text-fill:  #000000;
-}
-
 #loginLabel, #registerLabel, #resLabel{
->>>>>>> 551dd910f7677dfb3279355a993dcd8243ca9bd5
     -fx-text-fill:  #FFFFFF;
     -fx-font-weight: bold;
     -fx-font-size: 20px;
-    -fx-fonfamily: "roboto";
+    -fx-font-family: "roboto";
 }
 
 #info, #info2{
     -fx-text-fill:  #FFFFFF;
-    -fx-fonfamily: "roboto";
+    -fx-font-family: "roboto";
 }
 
-
-
-
+#hb, #hb2, #hb3 {
+    -fx-background-color: #26A69A;
+    -fx-border-color: #00796B transparent transparent transparent;
+    -fx-border-width: 20px 0 0 200px;-fx-padding: 50%, 0, 0, 0;
+}

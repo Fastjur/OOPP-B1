@@ -19,6 +19,7 @@ public class Backend {
     private static ListenThread listenThread;
     private static ArrayList<IMessageListener> messageListeners = new ArrayList<>();
     private static ArrayList<IDisconnectListener> disconnectListeners = new ArrayList<>();
+    private static User selfUserObj;
 
     public static void addMessageListener(IMessageListener listener) {
         messageListeners.add(listener);
@@ -58,7 +59,6 @@ public class Backend {
             System.out.println("Connected to server!");
             return true;
         } catch (java.io.IOException e) {
-            System.out.println("Could not connect to server!");
             e.printStackTrace();
             return false;
         }
@@ -106,7 +106,7 @@ public class Backend {
         }
     }
 
-    public static void register(User newuser) {
+    public static void register(String email, String password) {
         if (!isConnected()) {
             System.out.println("[ERROR] Cannot register: Not connected!");
             return;
@@ -115,7 +115,8 @@ public class Backend {
         try {
             Request request = new Request("register");
 
-            request.putData("newUser", newuser);
+            request.putData("email", email);
+            request.putData("password", password);
             listenThread.sendMessage(request.toSendableJSON());
         } catch (java.io.IOException e) {
             e.printStackTrace();
@@ -155,6 +156,10 @@ public class Backend {
         }
     }
 
+    /**
+     * Note, this get's a user from the database by ID
+     * THIS IS NOT THE GETTER FOR THE USER OBJECT IN BACKEND
+     */
     public static void getSelf() {
         if (!isConnected()) {
             System.out.println("[ERROR] Cannot retrieve your information: Not connected!");
@@ -167,6 +172,22 @@ public class Backend {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Sets the User object of Backend, representing the currently logged in user
+     * @param self User object
+     */
+    public static void setSelfObject(User self) {
+        selfUserObj = self;
+    }
+
+    /**
+     * Getter for the User object representing the currently logged in user
+     * @return User object
+     */
+    public static User getSelfObject() {
+        return selfUserObj;
     }
 
     public static boolean isConnected() {

@@ -28,10 +28,14 @@ public class GuiContacts extends BorderPane{
     private String university;
     private String study;
     private AvailableTimes availabletimes;
+    private ArrayList<String> language;
+    private Double distance;
+    private String languages = "";
 
 
     public GuiContacts(String name, String age, String img, String description,
-                       String university, String study, AvailableTimes availabletimes) {
+                       String university, String study, AvailableTimes availabletimes, ArrayList<String> language,
+                       Double distance) {
         super();
         this.name = name;
         this.age = age;
@@ -40,6 +44,8 @@ public class GuiContacts extends BorderPane{
         this.university =university;
         this.study = study;
         this.availabletimes = availabletimes;
+        this.language =language;
+        this.distance = distance;
         chatButton();
         center();
         super.setCenter(center);
@@ -109,7 +115,8 @@ public class GuiContacts extends BorderPane{
     }
 
     // info
-    public VBox centerLeft(String _description, String _university, String _study) {
+    public VBox centerLeft(String _description, String _university, String _study,
+                           ArrayList<String> _language, Double _distance) {
         VBox vbox = new VBox(20);
 
         VBox descr = new VBox(2);
@@ -136,7 +143,27 @@ public class GuiContacts extends BorderPane{
         study.setId("study");
         studyInfo.setId("studyInfo");
 
-        vbox.getChildren().addAll(descr, uni, stu);
+        VBox la = new VBox(2);
+        Text language = new Text("Languages");
+        for(int i = 0; i < _language.size(); i++){
+            languages += _language.get(i);
+            for(int j = 0; j < _language.size() - 1; j++){
+                languages += ", ";
+            }
+        }
+        Text languageInfo = new Text(languages);
+        la.getChildren().addAll(language, languageInfo);
+        language.setId("language");
+        languageInfo.setId("languageInfo");
+
+        VBox dis = new VBox(2);
+        Text distance = new Text("Distance");
+        Text distanceInfo = new Text(_distance.toString() + " km");
+        dis.getChildren().addAll(distance, distanceInfo);
+        distance.setId("distance");
+        distanceInfo.setId("distanceInfo");
+
+        vbox.getChildren().addAll(descr, uni, stu, la, dis);
         vbox.setPadding(new Insets(0, 0, 0, 100));
         vbox.setMaxWidth(750);
         vbox.setId("centerLeft");
@@ -237,13 +264,13 @@ public class GuiContacts extends BorderPane{
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        scrollPane.setId("ID");
+        // scrollPane.setId("scroll");
         return scrollPane;
     }
 
     // center
     public void center() {
-        center = scroll(content(left(head(img, headText(name, age)), centerLeft(description, university, study)), right(availabletimes)));
+        center = scroll(content(left(head(img, headText(name, age)), centerLeft(description, university, study, language, distance)), right(availabletimes)));
         center.setId("screen");
     }
 
