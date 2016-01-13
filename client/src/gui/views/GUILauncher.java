@@ -82,6 +82,10 @@ public class GUILauncher extends Application {
         GUI.setCenter(login.bp);
     }
 
+    public static void switchToReset(){
+        GUI.setCenter(login.bp3);
+    }
+
     //Events Find Match Page
     public static void findMatchBuddyCoursesClick(Button sbCourse) {
         if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {

@@ -189,7 +189,6 @@ public class GuiLogin extends Application {
         Text text3 = new Text("MindMatch");
         text3.setFont(Font.font("Courier New", FontWeight.BOLD, 28));
 
-
         //Adding text to HBox
         hb.getChildren().add(text);
         hb2.getChildren().add(text2);
