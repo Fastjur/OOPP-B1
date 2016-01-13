@@ -134,10 +134,10 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         gridPane.add(btnLoginTop, 2, 0);
         gridPane.add(btnRegister, 3, 0 );
         gridPane.add(btnResetLog, 4, 0 );
-        gridPane.add(loginLabel, 2, 1);
+        gridPane.add(loginLabel, 2, 1, 3, 1);
         gridPane.add(txtUserName, 2, 2, 3, 1);
         gridPane.add(pf, 2, 3, 3, 1);
-        gridPane.add(btnLoginBot, 2, 4);
+        gridPane.add(btnLoginBot, 2, 4, 3, 1);
         gridPane.add(lblMessage, 2, 5, 3, 1);
 
         //Register
@@ -148,9 +148,8 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         gridPane2.add(txtUserName2, 2, 2, 3, 1);
         gridPane2.add(pf2, 2, 3, 3, 1);
         gridPane2.add(pf3, 2, 4, 3, 1 );
-        gridPane2.add(btnRegisterBot, 2, 5, 2, 1);
-        gridPane2.add(regMessage, 2, 6, 3, 1 );
-
+        gridPane2.add(btnRegisterBot, 2, 4, 3, 1);
+        gridPane2.add(regMessage, 2, 5, 3, 1 );
 
         //Reset Password
         gridPane3.add(btnLoginRes, 2,0);
@@ -205,7 +204,6 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         bp.setId("bp");
         btnLoginTop.setId("BLT");
         btnRegister.setId("BR");
-        gridPane.setId("root");
         btnLoginBot.setId("btnLogin");
         text.setId("text");
         text2.setId("text2");
@@ -213,7 +211,6 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         btnResetLog.setId("resLog");
 
         //Register
-        gridPane2.setId("root2");
         bp2.setId("bp2");
         btnLoginReg.setId("BLR");
         btnRegisterTop.setId("BRT");
@@ -222,7 +219,6 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         btnResetReg.setId("resReg");
 
         //Reset
-        gridPane3.setId("root3");
         bp3.setId("bp3");
         btnLoginRes.setId("BLRES");
         btnRegisterRes.setId("BRR");
@@ -280,7 +276,7 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         vb3.setTranslateX(130);
 
         //MouseHover
-        //mouseHover(btnLoginBot, GUILauncher.GUIScene);
+        mouseHover(btnLoginBot, GUILauncher.GUIScene);
         mouseHover(btnLoginTop, GUILauncher.GUIScene);
         mouseHover(btnRegister, GUILauncher.GUIScene);
         mouseHover(btnLoginReg, GUILauncher.GUIScene);
@@ -364,12 +360,14 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
                 if (!Backend.isConnected()) {
                     Platform.runLater(new Runnable() {
                         public void run() {
-                            res2Message.setText("Could not connect to server!");
-                            res2Message.setTextFill(Color.RED);
+                            resMessage.setText("Could not connect to server!");
+                            resMessage.setTextFill(Color.RED);
                         }
                     });
                 }
-                else{       res2Message.setText("Reset Succesful!");
+                else{       resMessage.setText("An email with instructions");
+                            res2Message.setText("will be sent to you shortly.");
+                            resMessage.setTextFill(Color.WHITE);
                             res2Message.setTextFill(Color.WHITE);
                 }
             }});
