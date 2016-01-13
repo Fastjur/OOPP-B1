@@ -3,6 +3,9 @@
     -fx-text-fill: #FFFFFF;
 }
 
+#profilePicPane {
+    -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 2, 2);
+}
 #profileInfoLabel   {
     -fx-background-color: #F06292;
     -fx-text-fill: #FFFFFF;
@@ -10,37 +13,51 @@
     -fx-font-family: "Roboto";
 }
 
-#profileInfoGridPane    {
-    -fx-background-color: #EEEEEE;
+#sexChoiceBox, #nationalityChoiceBox, #languagesChoiceBox   {
+    -fx-border-width: 1px;
+    -fx-border-color: #CDCDCD;
+    -fx-background-color: #FFFFFF;
+}
+
+.choice-box:disabled, .choice-box:disabled > * {
+    -fx-opacity: 1;
+}
+
+.date-picker:disabled, .date-picker:disabled > * {
+    -fx-opacity: 1;
 }
 
 #profileInfoPane  {
-    -fx-background-color: #BDBDBD;
-}
-
-#profileAdditionalInfoGridPaneContainerPane {
     -fx-background-color: #EEEEEE;
+    -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 2, 2);
 }
 
 #profileInfoCoursesLabelPane    {
-    -fx-background-color: #EEEEEE;
     -fx-font-family: "Roboto";
     -fx-font-weight: bold;
     -fx-font-size: 20pt;
 }
 
-#profileInfoCoursesGridPane {
-    -fx-background-color: #EEEEEE;
-}
-
-#profileInfoContinuedGridPane   {
-    -fx-background-color: #EEEEEE;
-}
-
 #profileAvailabilityTitlePane   {
-    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 26pt;
 }
 
 #profileAvailabilityPane    {
     -fx-background-color: #F06292;
+}
+
+#profileBotContainerPane    {
+    -fx-background-color: #EEEEEE  ;
+    -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 2, 2);
+}
+
+#editToggleBtn  {
+    -fx-background-image: url("/gui/views/resources/editToggleButton.jpg");
+    -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 1, 1);
+}
+
+#editToggleBtnActive  {
+    -fx-background-image: url("/gui/views/resources/editToggleButtonActive.jpg");
+    -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 1, 1);
 }

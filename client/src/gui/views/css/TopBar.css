@@ -1,11 +1,11 @@
 #toolbar {
     -fx-background-color: #26A69A;
     -fx-border-color: #00796B transparent transparent transparent;
-    -fx-border-width: 20px 0 0 200px;
+    -fx-border-width: 20px 0 0 300px;
     -fx-padding: 50%, 0, 0, 0;
 }
 
-#findMatch, #yourMatches, #chat, #profile {
+#findMatch, #yourMatches, #chat, #profileBtn {
     -fx-font: 24 light-roboto;
     -fx-base: #26A69A;
     -fx-text-fill: #FFFFFF;
@@ -17,7 +17,7 @@
     -fx-body-color: #26A69A;
 }
 
-#findMatch:hover, #yourMatches:hover, #chat:hover, #profile:hover {
+#findMatch:hover, #yourMatches:hover, #chat:hover, #profileBtn:hover {
     -fx-font: 24 light-roboto;
     -fx-base: #26A69A;
     -fx-text-fill: #000000;
@@ -29,7 +29,7 @@
     -fx-border-width: 50px 1px 10px 1px;
 }
 
-#findMatchActive, #yourMatchesActive, #chatActive, #profileActive {
+#findMatchActive, #yourMatchesActive, #chatActive, #profileBtnActive {
     -fx-font: 24 light-roboto;
     -fx-base: #26A69A;
     -fx-text-fill: #FFFFFF;
@@ -42,7 +42,7 @@
 }
 
 #findMatchActive:hover, #yourMatchesActive:hover,
-#chatActive:hover, #profileActive:hover {
+#chatActive:hover, #profileBtnActive:hover {
     -fx-font: 24 light-roboto;
     -fx-base: #26A69A;
     -fx-text-fill: #000000;

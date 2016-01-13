@@ -40,7 +40,7 @@ public class UserTest {
                 "\"description\":\"It's-a-me\",\"birthday\":1,\"userID\":1,\"studyYear\":3," +
                 "\"latitude\":0.0,\"longitude\":3.0,\"coursesTeachingList\":[]," +
                 "\"coursesLearningList\":[],\"buddyList\":[],\"languageList\":[]," +
-                "\"availability\":{\"monday\":[],\"tuesday\":[],\"wednesday\":[]," +
+                "\"availableDates\":{\"monday\":[],\"tuesday\":[],\"wednesday\":[]," +
                 "\"thursday\":[],\"friday\":[],\"saturday\":[],\"sunday\":[]}}");
 
         assertEquals(testuser1, fromjson);
@@ -55,7 +55,7 @@ public class UserTest {
                 "\"description\":\"It's-a-me\",\"birthday\":1,\"userID\":1,\"studyYear\":3," +
                 "\"latitude\":0.0,\"longitude\":3.0,\"coursesTeachingList\":[]," +
                 "\"coursesLearningList\":[],\"buddyList\":[],\"languageList\":[]," +
-                "\"availability\":{\"monday\":[],\"tuesday\":[],\"wednesday\":[]," +
+                "\"availableDates\":{\"monday\":[],\"tuesday\":[],\"wednesday\":[]," +
                 "\"thursday\":[],\"friday\":[],\"saturday\":[],\"sunday\":[]}}", testuser1.toJson());
     }
 

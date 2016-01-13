@@ -11,12 +11,12 @@ public class GuiTopBar extends ToolBar {
     private Button findMatch;
     private Button yourMatches;
     private Button chat;
-    private Button profile;
+    private Button profileBtn;
 
     public GuiTopBar(){
         super();
         buttons();
-        super.getItems().addAll(findMatch, yourMatches, chat, profile);
+        super.getItems().addAll(findMatch, yourMatches, chat, profileBtn);
         super.setId("toolbar");
     }
 
@@ -24,21 +24,21 @@ public class GuiTopBar extends ToolBar {
         findMatch = new Button();
         findMatch.setText("Find Match");
         findMatch.setId("findMatch");
-        findMatch.setOnAction(e -> GUILauncher.findMatchClick(findMatch, yourMatches, chat, profile));
+        findMatch.setOnAction(e -> GUILauncher.findMatchClick(findMatch, yourMatches, chat, profileBtn));
 
         yourMatches = new Button();
         yourMatches.setText("Your Matches");
         yourMatches.setId("yourMatches");
-        yourMatches.setOnAction(e -> GUILauncher.yourMatchesClick(findMatch, yourMatches, chat, profile));
+        yourMatches.setOnAction(e -> GUILauncher.yourMatchesClick(findMatch, yourMatches, chat, profileBtn));
 
         chat = new Button();
         chat.setText("Chat");
         chat.setId("chat");
-        chat.setOnAction(e -> GUILauncher.chatClick(findMatch, yourMatches, chat, profile));
+        chat.setOnAction(e -> GUILauncher.chatClick(findMatch, yourMatches, chat, profileBtn));
 
-        profile = new Button();
-        profile.setText("Profile");
-        profile.setId("profile");
-        profile.setOnAction(e -> GUILauncher.profileClick(findMatch, yourMatches, chat, profile));
+        profileBtn = new Button();
+        profileBtn.setText("Profile");
+        profileBtn.setId("profileBtn");
+        profileBtn.setOnAction(e -> GUILauncher.profileClick(findMatch, yourMatches, chat, profileBtn));
     }
 }

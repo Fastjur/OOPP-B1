@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
 
 public class GUILauncher extends Application {
@@ -15,10 +16,13 @@ public class GUILauncher extends Application {
     private static GuiProfileConstructor profile;
     private static GuiFindMatchConstructor findMatch;
     private static GuiSideBarFindMatchConstructor findMatchSideBar;
-    private static GUISideBarConstructor sideBar;
+    private static GUISideBarConstructor sidebar;
 
     @Override
     public void start(Stage PrimaryStage) throws Exception{
+        ArrayList<String> languages = new ArrayList<>();
+        languages.add("English");
+        Double distance = 2500.0;
         String nomatchURL = this.getClass().getResource("resources/nomatch.png").toExternalForm();
         String matchURL = this.getClass().getResource("resources/match.png").toExternalForm();
 
@@ -28,29 +32,21 @@ public class GUILauncher extends Application {
         String age = "18";
         String descr = "Seven a.m. waking up in the morning. Gotta be fresh, gotta go downstairs. Gotta have my bowl, gotta have cereal. Seein' everything the time is goin'. Tickin' on and on, everybody's rushin'. Gotta get down to the bus stop. Gotta catch my bus. I see my friends.";
 
-        // Needs to be replaced with match's list of buddy courses
+        // Needs to be replaced with user's list of buddy courses
         ArrayList<String> buddyCourses = new ArrayList<>();
         buddyCourses.add("Calculus");
         buddyCourses.add("Redeneren & Logica");
 
-        // Needs to be replaced with match's list of learning courses
+        // Needs to be replaced with user's list of learning courses
         ArrayList<String> learningCourses = new ArrayList<>();
         learningCourses.add("Calculus");
         learningCourses.add("OOProgrammeren");
         learningCourses.add("Web & Database Technology");
 
-        // Needs to be replaced with match's list of teaching courses
+        // Needs to be replaced with user's list of teaching courses
         ArrayList<String> teachingCourses = new ArrayList<>();
         teachingCourses.add("Computer Organisation");
         teachingCourses.add("Redeneren & Logica");
-
-        // Needs to be replaced with languages of match
-        ArrayList<String> languages = new ArrayList<>();
-        languages.add("Nederlands");
-        languages.add("Engels");
-
-        // Needs to be replaced with distance to match
-        double distance = 1.5;
 
         GUI = new BorderPane();
         GUIScene = new Scene(GUI);
@@ -58,11 +54,13 @@ public class GUILauncher extends Application {
         findMatch = new GuiFindMatchConstructor(languages, distance, name, age, descr, matchURL, nomatchURL, pfURL);
         findMatchSideBar  = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
         profile = new GuiProfileConstructor();
-        sideBar = new GUISideBarConstructor();
+        sidebar = new GUISideBarConstructor();
         topbar = new GuiTopBar();
         login = new GuiLoginConstructor();
 
-        GUI.setCenter(login);
+        GUI.setTop(topbar);
+        GUI.setCenter(profile);
+        GUI.setLeft(sidebar);
 
         PrimaryStage.setScene(GUIScene);
         GUIScene.getStylesheets().addAll("/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");
@@ -125,7 +123,7 @@ public class GUILauncher extends Application {
         fMatch.setId("findMatchActive");
         yourMatches.setId("yourMatches");
         chat.setId("chat");
-        profile.setId("profile");
+        profile.setId("profileBtn");
 
         GUI.setCenter(findMatch);
         GUI.setLeft(findMatchSideBar);
@@ -135,23 +133,23 @@ public class GUILauncher extends Application {
         yourMatches.setId("yourMatchesActive");
         findMatch.setId("findMatch");
         chat.setId("chat");
-        profile.setId("profile");
+        profile.setId("profileBtn");
     }
 
     public static void chatClick(Button findMatch, Button yourMatches, Button chat, Button profile) {
         chat.setId("chatActive");
         findMatch.setId("findMatch");
         yourMatches.setId("yourMatches");
-        profile.setId("profile");
+        profile.setId("profileBtn");
     }
 
     public static void profileClick(Button findMatch, Button yourMatches, Button chat, Button prof) {
-        prof.setId("profileActive");
+        prof.setId("profileBtnActive");
         findMatch.setId("findMatch");
         yourMatches.setId("yourMatches");
         chat.setId("chat");
 
         GUI.setCenter(profile);
-        GUI.setLeft(sideBar);
+        GUI.setLeft(sidebar);
     }
 }
