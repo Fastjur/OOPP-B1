@@ -48,7 +48,7 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
 
         //Register
         bp2 = new BorderPane();
-        bp.setPadding(new Insets(10, 50, 50, 50));
+        bp2.setPadding(new Insets(10, 50, 50, 50));
 
         bp3 = new BorderPane();
         bp3.setPadding(new Insets(10, 50, 50, 50));
@@ -72,7 +72,7 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(5);
-        gridPane.setMaxWidth(500);
+        gridPane.setMaxWidth(400);
         gridPane.setMaxHeight(300);
         hb.setId("hb");
 
@@ -80,7 +80,7 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         GridPane gridPane2 = new GridPane();
         gridPane2.setHgap(10);
         gridPane2.setVgap(5);
-        gridPane2.setMaxWidth(500);
+        gridPane2.setMaxWidth(400);
         gridPane2.setMaxHeight(300);
         hb2.setId("hb2");
 
@@ -88,7 +88,7 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         GridPane gridPane3 = new GridPane();
         gridPane3.setHgap(10);
         gridPane3.setVgap(5);
-        gridPane3.setMaxWidth(500);
+        gridPane3.setMaxWidth(400);
         gridPane3.setMaxHeight(300);
         hb3.setId("hb3");
 
@@ -148,8 +148,8 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         gridPane2.add(txtUserName2, 2, 2, 3, 1);
         gridPane2.add(pf2, 2, 3, 3, 1);
         gridPane2.add(pf3, 2, 4, 3, 1 );
-        gridPane2.add(btnRegisterBot, 2, 4, 3, 1);
-        gridPane2.add(regMessage, 2, 5, 3, 1 );
+        gridPane2.add(btnRegisterBot, 2, 5, 3, 1);
+        gridPane2.add(regMessage, 2, 6, 3, 1 );
 
         //Reset Password
         gridPane3.add(btnLoginRes, 2,0);
@@ -186,17 +186,17 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         //Adding Pic to Vbox
         //Login
         VBox vb = new VBox();
-        ImageView iv = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo.png")));
+        ImageView iv = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo-v2.png")));
         vb.getChildren().add(iv);
 
         //Register
         VBox vb2 = new VBox();
-        ImageView iv2 = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo.png")));
+        ImageView iv2 = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo-v2.png")));
         vb2.getChildren().add(iv2);
 
         //Reset
         VBox vb3 = new VBox();
-        ImageView iv3 = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo.png")));
+        ImageView iv3 = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo-v3.png")));
         vb3.getChildren().add(iv3);
 
         //Add ID's to Nodes
@@ -204,6 +204,7 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         bp.setId("bp");
         btnLoginTop.setId("BLT");
         btnRegister.setId("BR");
+        gridPane.setId("root");
         btnLoginBot.setId("btnLogin");
         text.setId("text");
         text2.setId("text2");
@@ -211,6 +212,7 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         btnResetLog.setId("resLog");
 
         //Register
+        gridPane2.setId("root2");
         bp2.setId("bp2");
         btnLoginReg.setId("BLR");
         btnRegisterTop.setId("BRT");
@@ -219,6 +221,7 @@ public class GuiLoginConstructor extends BorderPane implements IMessageListener 
         btnResetReg.setId("resReg");
 
         //Reset
+        gridPane3.setId("root3");
         bp3.setId("bp3");
         btnLoginRes.setId("BLRES");
         btnRegisterRes.setId("BRR");
