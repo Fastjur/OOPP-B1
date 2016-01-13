@@ -1,19 +1,11 @@
 package gui.views;
 
-import javafx.event.EventHandler;
 import javafx.geometry.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.IndexedCell;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
-import javafx.stage.FileChooser;
-
-import java.io.File;
 
 /**
  * Constructor for building the profile page of the GUI
@@ -38,57 +30,112 @@ public class GuiProfileConstructor extends BorderPane {
         //Shape settings
         Circle editToggleBtnShape = new Circle(70);
 
-        //TextFields
-        TextField tf1 = new TextField();
-        tf1.setPromptText("Info goes here");
-        tf1.setEditable(false);
-        tf1.setMaxHeight(20);
-        tf1.setPrefHeight(20);
-        TextField tf2 = new TextField();
-        tf2.setPromptText("Info goes here");
-        tf2.setEditable(false);
-        tf2.setMaxHeight(20);
-        tf2.setPrefHeight(20);
-        TextField tf3 = new TextField();
-        tf3.setPromptText("Info goes here");
-        tf3.setEditable(false);
-        tf3.setMaxHeight(20);
-        tf3.setPrefHeight(20);
-        TextField tf4 = new TextField();
-        tf4.setPromptText("Info goes here");
-        tf4.setEditable(false);
-        tf4.setMaxHeight(20);
-        tf4.setPrefHeight(20);
-        TextField tf5 = new TextField();
-        tf5.setPromptText("Info goes here");
-        tf5.setEditable(false);
-        tf5.setMaxHeight(20);
-        tf5.setPrefHeight(20);
-        TextField tf6 = new TextField();
-        tf6.setPromptText("Info goes here");
-        tf6.setEditable(false);
-        tf6.setMaxHeight(20);
-        tf6.setPrefHeight(20);
-        TextField tf7 = new TextField();
-        tf7.setPromptText("Info goes here");
-        tf7.setEditable(false);
-        tf7.setMaxHeight(20);
-        tf7.setPrefHeight(20);
-        TextField tf8 = new TextField();
-        tf8.setPromptText("Info goes here");
-        tf8.setEditable(false);
-        tf8.setMaxHeight(20);
-        tf8.setPrefHeight(20);
-        TextField tf9 = new TextField();
-        tf9.setPromptText("Info goes here");
-        tf9.setEditable(false);
-        tf9.setMaxHeight(20);
-        tf9.setPrefHeight(20);
-        TextField tf10 = new TextField();
-        tf10.setPromptText("Info goes here");
-        tf10.setEditable(false);
-        tf10.setMaxHeight(20);
-        tf10.setPrefHeight(20);
+        //Fields for information
+        TextField name = new TextField();
+        name.setPromptText("Info goes here");
+        name.setEditable(false);
+        name.setMaxHeight(20);
+        name.setPrefHeight(20);
+        ChoiceBox<String> sex = new ChoiceBox<>();
+        sex.setDisable(true);
+        sex.getItems().add("Male");
+        sex.getItems().add("Female");
+        sex.setMaxHeight(20);
+        sex.setPrefHeight(20);
+        sex.setMaxWidth(815);
+        sex.setPrefWidth(815);
+        sex.setId("sexChoiceBox");
+        TextField age = new TextField(){
+            @Override
+            public void replaceText(int start, int end, String text){
+                if(text.matches("\\d+")){
+                    super.replaceText(start, end, text);
+                }
+            }
+
+            @Override
+            public void replaceSelection(String text){
+                if(text.matches("\\d+")){
+                    super.replaceSelection(text);
+                }
+            }
+        };
+        age.setPromptText("Info goes here");
+        age.setEditable(false);
+        age.setMaxHeight(20);
+        age.setPrefHeight(20);
+        DatePicker dateOfBirth = new DatePicker();
+        dateOfBirth.setPromptText("Info goes here");
+        dateOfBirth.setDisable(true);
+        dateOfBirth.setMaxHeight(20);
+        dateOfBirth.setPrefHeight(20);
+        dateOfBirth.setMaxWidth(815);
+        dateOfBirth.setPrefWidth(815);
+        ChoiceBox<String> nationality = new ChoiceBox<>();
+        nationality.setDisable(true);
+        nationality.getItems().addAll("Items retrieved from database here");
+        nationality.setMaxHeight(20);
+        nationality.setPrefHeight(20);
+        nationality.setMaxWidth(815);
+        nationality.setPrefWidth(815);
+        nationality.setId("nationalityChoiceBox");
+        ChoiceBox<String> languages = new ChoiceBox<>();
+        languages.setDisable(true);
+        languages.getItems().addAll("Items retrieved from database here");
+        languages.setMaxHeight(20);
+        languages.setPrefHeight(20);
+        languages.setMaxWidth(815);
+        languages.setPrefWidth(815);
+        languages.setId("languagesChoiceBox");
+        TextField email = new TextField();
+        email.setPromptText("Info goes here");
+        email.setEditable(false);
+        email.setMaxHeight(20);
+        email.setPrefHeight(20);
+        TextField telephoneNumber = new TextField(){
+            @Override
+            public void replaceText(int start, int end, String text){
+                if(text.matches("\\d+")){
+                    super.replaceText(start, end, text);
+                }
+            }
+
+            @Override
+            public void replaceSelection(String text){
+                if(text.matches("\\d+")){
+                    super.replaceSelection(text);
+                }
+            }
+        };
+        telephoneNumber.setPromptText("Info goes here");
+        telephoneNumber.setEditable(false);
+        telephoneNumber.setMaxHeight(20);
+        telephoneNumber.setPrefHeight(20);
+        TextField location = new TextField(){
+            //Using a regex that isn't completely correct, trying to figure out why the correct one won't work
+            @Override
+            public void replaceText(int start, int end, String text){
+                if(text.matches("[0-9,]+")){
+                    super.replaceText(start, end, text);
+                }
+            }
+
+            @Override
+            public void replaceSelection(String text){
+                if(text.matches("[0-9,]+")){
+                    super.replaceSelection(text);
+                }
+            }
+        };
+        location.setPromptText("Info goes here");
+        location.setEditable(false);
+        location.setMaxHeight(20);
+        location.setPrefHeight(20);
+        PasswordField password = new PasswordField();
+        password.setPromptText("Info goes here");
+        password.setEditable(false);
+        password.setMaxHeight(20);
+        password.setPrefHeight(20);
         TextField tf11 = new TextField();
         tf11.setPromptText("Info goes here");
         tf11.setEditable(false);
@@ -172,16 +219,16 @@ public class GuiProfileConstructor extends BorderPane {
         editToggleBtn.setPrefSize(70,70);
         editToggleBtn.setOnMouseClicked(event -> {
             if (editToggleBtn.getId().equals("editToggleBtn")) {
-                tf1.setEditable(true);
-                tf2.setEditable(true);
-                tf3.setEditable(true);
-                tf4.setEditable(true);
-                tf5.setEditable(true);
-                tf6.setEditable(true);
-                tf7.setEditable(true);
-                tf8.setEditable(true);
-                tf9.setEditable(true);
-                tf10.setEditable(true);
+                name.setEditable(true);
+                sex.setDisable(false);
+                age.setEditable(true);
+                dateOfBirth.setDisable(false);
+                nationality.setDisable(false);
+                languages.setDisable(false);
+                email.setEditable(true);
+                telephoneNumber.setEditable(true);
+                location.setEditable(true);
+                password.setEditable(true);
                 tf11.setEditable(true);
                 tf12.setEditable(true);
                 tf13.setEditable(true);
@@ -198,16 +245,16 @@ public class GuiProfileConstructor extends BorderPane {
                 editToggleBtn.setId("editToggleBtnActive");
             }
             else{
-                tf1.setEditable(false);
-                tf2.setEditable(false);
-                tf3.setEditable(false);
-                tf4.setEditable(false);
-                tf5.setEditable(false);
-                tf6.setEditable(false);
-                tf7.setEditable(false);
-                tf8.setEditable(false);
-                tf9.setEditable(false);
-                tf10.setEditable(false);
+                name.setEditable(false);
+                sex.setDisable(true);
+                age.setEditable(false);
+                dateOfBirth.setDisable(true);
+                nationality.setDisable(true);
+                languages.setDisable(true);
+                email.setEditable(false);
+                telephoneNumber.setEditable(false);
+                location.setEditable(false);
+                password.setEditable(false);
                 tf11.setEditable(false);
                 tf12.setEditable(false);
                 tf13.setEditable(false);
@@ -236,16 +283,16 @@ public class GuiProfileConstructor extends BorderPane {
         profileInfoLabel.setMaxSize(1050, 60);
         profileInfoLabel.setPadding(labelInsets);
         profileInfoLabel.setId("profileInfoLabel");
-        Label name = new Label("Name:");
-        Label sex = new Label("Sex:");
-        Label age = new Label("Age:");
-        Label dateOfBirth = new Label("Date of Birth:");
-        Label nationality = new Label("Nationality");
-        Label languages = new Label("Languages:");
-        Label email = new Label("Email:");
-        Label telephoneNumber = new Label("Telephone Number:");
-        Label address = new Label("Address:");
-        Label password = new Label("Password:");
+        Label nameLabel = new Label("Name:");
+        Label sexLabel = new Label("Sex:");
+        Label ageLabel = new Label("Age:");
+        Label dateOfBirthLabel = new Label("Date of Birth:");
+        Label nationalityLabel = new Label("Nationality");
+        Label languagesLabel = new Label("Languages:");
+        Label emailLabel = new Label("Email:");
+        Label telephoneNumberLabel = new Label("Telephone Number:");
+        Label locationLabel = new Label("Location:");
+        Label passwordLabel = new Label("Password:");
         Label university = new Label("University:");
         Label study = new Label("Study:");
         Label studyYear = new Label("Study Year:");
@@ -290,8 +337,8 @@ public class GuiProfileConstructor extends BorderPane {
         profileInfoGridPane.setMinWidth(1050);
         profileInfoGridPane.setPrefWidth(1050);
         profileInfoGridPane.setMaxWidth(1050);
-        profileInfoGridPane.addColumn(0, name, sex, age, dateOfBirth, nationality, languages, email, telephoneNumber, address, password);
-        profileInfoGridPane.addColumn(1, tf1, tf2, tf3, tf4, tf5, tf6, tf7, tf8, tf9, tf10);
+        profileInfoGridPane.addColumn(0, nameLabel, sexLabel, ageLabel, dateOfBirthLabel, nationalityLabel, languagesLabel, emailLabel, telephoneNumberLabel, locationLabel, passwordLabel);
+        profileInfoGridPane.addColumn(1, name, sex, age, dateOfBirth, nationality, languages, email, telephoneNumber, location, password);
         ColumnConstraints col1Constraints = new ColumnConstraints(140, 280, 280, Priority.NEVER, HPos.LEFT, false);
         col1Constraints.setPercentWidth(21);
         ColumnConstraints col2Constraints = new ColumnConstraints(750, 750, 750, Priority.ALWAYS, HPos.LEFT, true);

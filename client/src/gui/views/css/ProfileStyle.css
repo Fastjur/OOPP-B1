@@ -13,6 +13,20 @@
     -fx-font-family: "Roboto";
 }
 
+#sexChoiceBox, #nationalityChoiceBox, #languagesChoiceBox   {
+    -fx-border-width: 1px;
+    -fx-border-color: #CDCDCD;
+    -fx-background-color: #FFFFFF;
+}
+
+.choice-box:disabled, .choice-box:disabled > * {
+    -fx-opacity: 1;
+}
+
+.date-picker:disabled, .date-picker:disabled > * {
+    -fx-opacity: 1;
+}
+
 #profileInfoPane  {
     -fx-background-color: #EEEEEE;
     -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 2, 2);
