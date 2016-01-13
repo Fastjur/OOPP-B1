@@ -10,6 +10,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.deser.std.TimestampDeserializer;
+import shared.AvailableTimes;
 import shared.Response;
 import shared.TimePeriod;
 import shared.User;
@@ -29,6 +31,8 @@ public class GUILauncher extends Application implements IMessageListener {
     private static GuiFindMatchConstructor findMatch;
     private static GuiSideBarFindMatchConstructor findMatchSideBar;
     private static GUISideBarConstructor sidebar;
+    private static GuiContacts matches;
+    private static GuiChat chatPage;
 
     @Override
     public void start(Stage PrimaryStage) throws Exception{
@@ -60,20 +64,26 @@ public class GUILauncher extends Application implements IMessageListener {
         teachingCourses.add("Computer Organisation");
         teachingCourses.add("Redeneren & Logica");
 
+        AvailableTimes at = new AvailableTimes();
+        TimePeriod tp = new TimePeriod(2,3);
+        at.addTimePeriod(1,tp);
+
         GUI = new BorderPane();
         GUIScene = new Scene(GUI);
 
+        matches = new GuiContacts(name, age, pfURL, descr, "TU Delft", "TI", at, languages, distance);
         findMatch = new GuiFindMatchConstructor(languages, distance, name, age, descr, matchURL, nomatchURL, pfURL);
         findMatchSideBar  = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
         profile = new GuiProfileConstructor();
         sidebar = new GUISideBarConstructor();
         topbar = new GuiTopBar();
         login = new GuiLoginConstructor();
+        chatPage = new GuiChat();
 
         GUI.setCenter(login);
 
         PrimaryStage.setScene(GUIScene);
-        GUIScene.getStylesheets().addAll("/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");
+        GUIScene.getStylesheets().addAll("/gui/views/css/chat.css","/gui/views/css/ContactsStyle.css","/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");
         PrimaryStage.show();
 
         Backend.serverAddress = "::1";
@@ -157,7 +167,6 @@ public class GUILauncher extends Application implements IMessageListener {
     }
 
     // Events TopBar
-
     public static void findMatchClick(Button fMatch, Button yourMatches, Button chat, Button profile) {
         //FIXME duplicate code
         fMatch.setId("findMatchActive");
@@ -174,6 +183,9 @@ public class GUILauncher extends Application implements IMessageListener {
         findMatch.setId("findMatch");
         chat.setId("chat");
         profile.setId("profileBtn");
+
+        GUI.setCenter(matches);
+        GUI.setLeft(findMatchSideBar);
     }
 
     public static void chatClick(Button findMatch, Button yourMatches, Button chat, Button profile) {
@@ -181,6 +193,13 @@ public class GUILauncher extends Application implements IMessageListener {
         findMatch.setId("findMatch");
         yourMatches.setId("yourMatches");
         profile.setId("profileBtn");
+
+        GUI.setCenter(chatPage);
+    }
+
+    public static void matchesChatButton(){
+        //TODO go to chatconversation with this specific match
+        GUI.setCenter(chatPage);
     }
 
     public static void profileClick(Button findMatch, Button yourMatches, Button chat, Button prof) {
