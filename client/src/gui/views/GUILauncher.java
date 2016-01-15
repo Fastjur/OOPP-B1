@@ -70,7 +70,7 @@ public class GUILauncher extends Application implements IMessageListener {
         topbar = new GuiTopBar();
         login = new GuiLoginConstructor();
 
-        GUI.setCenter(login);
+        GUI.setCenter(profile);
 
         PrimaryStage.setScene(GUIScene);
         GUIScene.getStylesheets().addAll("/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");

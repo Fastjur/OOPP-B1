@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 
+//TODO: Put repeatpw fields at bottom of page and resize panes so edit toggle button is next to repeatpw fields
 /**
  * Constructor for building the profile page of the GUI
  * Author: Sebastiaan Hester
@@ -19,7 +20,7 @@ public class GuiProfileConstructor extends BorderPane {
             tf19, tf20, tf21, tf22, tf23;
     protected ChoiceBox<String> sex, nationality, languages;
     protected DatePicker dateOfBirth;
-    protected PasswordField password;
+    protected PasswordField password,repeatPwField1,repeatPwField2;
 
     public GuiProfileConstructor() {
         super();
@@ -34,6 +35,7 @@ public class GuiProfileConstructor extends BorderPane {
         Insets profileAvailabilityPaneInsets = new Insets(0, 20, 0, 0);
         Insets editToggleBtnInsets = new Insets(0,20,20,10);
         Insets profileInsets = new Insets(10, 30, 30, 30);
+        Insets repeatPwInsets = new Insets(10,0,10,30);
 
         //Shape settings
         Circle editToggleBtnShape = new Circle(70);
@@ -209,6 +211,18 @@ public class GuiProfileConstructor extends BorderPane {
         tf23.setEditable(false);
         tf23.setMaxHeight(20);
         tf23.setPrefHeight(20);
+        repeatPwField1 = new PasswordField();
+        repeatPwField1.setEditable(false);
+        repeatPwField1.setPromptText("Type your new password");
+        repeatPwField1.setMinWidth(200);
+        repeatPwField1.setPrefWidth(400);
+        repeatPwField1.setMaxWidth(400);
+        repeatPwField2 = new PasswordField();
+        repeatPwField2.setEditable(false);
+        repeatPwField2.setPromptText("Repeat your new password");
+        repeatPwField2.setMinWidth(200);
+        repeatPwField2.setPrefWidth(400);
+        repeatPwField2.setMaxWidth(400);
 
         //Buttons:
         Button uploadPicBtn = new Button();
@@ -250,6 +264,8 @@ public class GuiProfileConstructor extends BorderPane {
                 tf21.setEditable(true);
                 tf22.setEditable(true);
                 tf23.setEditable(true);
+                repeatPwField1.setEditable(true);
+                repeatPwField2.setEditable(true);
                 editToggleBtn.setId("editToggleBtnActive");
             }
             else{
@@ -276,17 +292,17 @@ public class GuiProfileConstructor extends BorderPane {
                 tf21.setEditable(false);
                 tf22.setEditable(false);
                 tf23.setEditable(false);
+                repeatPwField1.setEditable(false);
+                repeatPwField2.setEditable(false);
                 editToggleBtn.setId("editToggleBtn");
             }
         });
         editToggleBtn.setId("editToggleBtn");
 
-
-
         //Labels
         Label profileInfoLabel = new Label("Personal");
         profileInfoLabel.setAlignment(Pos.BOTTOM_LEFT);
-        profileInfoLabel.setMinSize(1050, 60);
+        profileInfoLabel.setMinSize(525, 30);
         profileInfoLabel.setPrefSize(1050, 60);
         profileInfoLabel.setMaxSize(1050, 60);
         profileInfoLabel.setPadding(labelInsets);
@@ -323,6 +339,13 @@ public class GuiProfileConstructor extends BorderPane {
         saturday.setId("availabilityDateLabel");
         Label sunday = new Label("Sunday:");
         sunday.setId("availabilityDateLabel");
+        Label repeatPwLabel = new Label("Change your password");
+        repeatPwLabel.setAlignment(Pos.BOTTOM_LEFT);
+        repeatPwLabel.setMinSize(700,23);
+        repeatPwLabel.setPrefSize(1400,45);
+        repeatPwLabel.setMaxSize(1400,45);
+        repeatPwLabel.setPadding(repeatPwInsets);
+        repeatPwLabel.setId("repeatPwLabel");
 
         //Image settings
         Image profilePic = new Image("/gui/views/resources/ProfilePicTestImage.jpg");
@@ -485,10 +508,28 @@ public class GuiProfileConstructor extends BorderPane {
         profileBot.getChildren().addAll(profileBotContainerPane, editToggleBtnPane);
         profileBot.setId("profileBot");
 
+        HBox repeatPwFieldBot = new HBox();
+        repeatPwFieldBot.setPadding(profileInsets);
+        repeatPwFieldBot.setSpacing(30);
+        repeatPwFieldBot.setMinWidth(700);
+        repeatPwFieldBot.setPrefWidth(1400);
+        repeatPwFieldBot.setMaxWidth(1400);
+        repeatPwFieldBot.getChildren().addAll(repeatPwField1,repeatPwField2);
+        repeatPwFieldBot.setId("repeatPwFieldBot");
+
+        VBox repeatPwField = new VBox();
+        repeatPwField.setPadding(noPaddingInsets);
+        repeatPwField.setSpacing(0);
+        repeatPwField.setMinWidth(700);
+        repeatPwField.setPrefWidth(1400);
+        repeatPwField.setMaxWidth(1400);
+        repeatPwField.getChildren().addAll(repeatPwLabel,repeatPwFieldBot);
+        repeatPwField.setId("repeatPwField");
+
         VBox profile = new VBox();
         profile.setPadding(profileInsets);
         profile.setSpacing(30);
-        profile.getChildren().addAll(profileTop, profileBot);
+        profile.getChildren().addAll(profileTop,repeatPwField,profileBot);
         profile.setId("profile");
 
         super.setCenter(profile);

@@ -61,3 +61,14 @@
     -fx-background-image: url("/gui/views/resources/editToggleButtonActive.jpg");
     -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 1, 1);
 }
+
+#repeatPwLabel  {
+    -fx-background-color: #F06292;
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14pt;
+    -fx-font-fill: #FFFFFF;
+}
+#repeatPwField  {
+    -fx-background-color: #EEEEEE;
+    -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 1, 1);
+}
