@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Created by Emma on 16-12-15.
  */
 public class GuiContacts extends BorderPane{
-    private ScrollPane center;
+    private VBox center;
     private Button bottom;
     private String name;
     private String age;
@@ -48,10 +48,17 @@ public class GuiContacts extends BorderPane{
         this.distance = distance;
         chatButton();
         center();
-        super.setCenter(center);
         super.setAlignment(bottom, Pos.BOTTOM_RIGHT);
         super.setBottom(bottom);
         super.setId("background");
+
+        BorderPane pane = new BorderPane();
+        pane.setId("pane");
+        pane.setLeft(center);
+        pane.setRight(right(availabletimes));
+
+        super.setCenter(scroll(pane));
+
     }
 
     public void chatButton() {
@@ -245,34 +252,36 @@ public class GuiContacts extends BorderPane{
         available.setId("available");
         days.setId("days");
         vbox.setId("right");
+        vbox.setPadding(new Insets(50, 20, 0, 0));
         return vbox;
     }
 
     // the whole screen (except footer)
-    public HBox content(VBox _left, VBox _right) {
-        HBox hbox = new HBox(5);
-        hbox.getChildren().addAll(_left, _right);
-        hbox.setId("center");
-        return hbox;
+    public VBox content(VBox _left) {
+        VBox vbox = new VBox(5);
+        vbox.getChildren().addAll(_left);
+        vbox.setId("center");
+        return vbox;
     }
 
 
     // scrollpane
-    public ScrollPane scroll(HBox _center) {
+    public ScrollPane scroll(BorderPane _center) {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(_center);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        // scrollPane.setId("scroll");
+        scrollPane.setId("scroll");
         return scrollPane;
     }
 
     // center
     public void center() {
-        center = scroll(content(left(head(img, headText(name, age)), centerLeft(description, university, study, language, distance)), right(availabletimes)));
+        center = content(left(head(img, headText(name, age)), centerLeft(description, university, study, language, distance)));
         center.setId("screen");
     }
+
 
 
 }

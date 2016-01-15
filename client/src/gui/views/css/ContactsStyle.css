@@ -1,4 +1,4 @@
-#center, #background {
+#center, #background, #pane {
     -fx-background-color: #FFFFFF;
 }
 
@@ -72,6 +72,10 @@
     -fx-padding: 50 20 0 0;
     -fx-background-color: #FFFFFF;
 
+}
+
+.bottom {
+    -fx-background-color: yellow;
 }
 
 scroll-bar, .track {
