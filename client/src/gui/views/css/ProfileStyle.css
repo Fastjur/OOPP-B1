@@ -1,5 +1,6 @@
 #uploadPicBtn   {
     -fx-background-color: #F06292;
+    -fx-font-size:16pt;
     -fx-text-fill: #FFFFFF;
 }
 
@@ -32,15 +33,20 @@
     -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 2, 2);
 }
 
-#profileInfoCoursesLabelPane    {
+#profileInfoCoursesLabelPane,#profileInfoCoursesLabelPane > *   {
+    -fx-background-color: #F06292;
     -fx-font-family: "Roboto";
-    -fx-font-weight: bold;
     -fx-font-size: 20pt;
+    -fx-text-fill: #FFFFFF;
 }
 
-#profileAvailabilityTitlePane   {
-    -fx-font-weight: bold;
-    -fx-font-size: 26pt;
+#profileAvailabilityTitlePane > *  {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 22pt;
+}
+
+#profileAvailabilityGridPane    {
+    -fx-background-color: #EEEEEE;
 }
 
 #profileAvailabilityPane    {
@@ -62,12 +68,13 @@
     -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 1, 1);
 }
 
-#repeatPwLabel  {
+#repeatPwLabel {
     -fx-background-color: #F06292;
     -fx-font-family: "Roboto";
-    -fx-font-size: 14pt;
-    -fx-font-fill: #FFFFFF;
+    -fx-font-size: 16pt;
+    -fx-text-fill: #FFFFFF;
 }
+
 #repeatPwField  {
     -fx-background-color: #EEEEEE;
     -fx-effect: dropshadow(gaussian, #383A3B, 10, 0.1, 1, 1);
