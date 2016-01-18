@@ -107,15 +107,15 @@ public class GUILauncher extends Application implements IMessageListener {
 
     //Events Login page
     public static void switchToRegister(){
-        GUI.setCenter(login.bp2);
+        GUI.setCenter(login.bpRegister);
     }
 
     public static void switchToLogin(){
-        GUI.setCenter(login.bp);
+        GUI.setCenter(login.bpLogin);
     }
 
     public static void switchToReset(){
-        GUI.setCenter(login.bp3);
+        GUI.setCenter(login.bpReset);
     }
 
     //Events Find Match Page

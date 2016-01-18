@@ -253,14 +253,14 @@ public class GuiContacts extends BorderPane{
         available.setId("available");
         days.setId("days");
         vbox.setId("right");
-        vbox.setPadding(new Insets(50,30,0,0));
+        vbox.setPadding(new Insets(50, 20, 0, 0));
         return vbox;
     }
 
     // the whole screen (except footer)
     public VBox content(VBox _left) {
         VBox vbox = new VBox(5);
-        vbox.getChildren().add(_left);
+        vbox.getChildren().addAll(_left);
         vbox.setId("center");
         return vbox;
     }
@@ -273,7 +273,7 @@ public class GuiContacts extends BorderPane{
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
-        // scrollPane.setId("scroll");
+        scrollPane.setId("scroll");
         return scrollPane;
     }
 

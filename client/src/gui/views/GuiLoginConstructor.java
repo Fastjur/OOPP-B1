@@ -8,16 +8,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -28,265 +22,281 @@ import javafx.scene.text.Text;
  * Author: Sebastiaan Hester
  */
 public class GuiLoginConstructor extends BorderPane {
-
     private final Label loginMessage = new Label(),
-                        registerMessage = new Label(),
-                        resetMessage = new Label(),
-                        resetMessage2 = new Label();
-    protected BorderPane bp;
-    protected BorderPane bp2;
-    protected BorderPane bp3;
+            registerMessage = new Label(),
+            resetMessage = new Label(),
+            resetMessage2 = new Label();
+    protected BorderPane bpLogin;
+    protected BorderPane bpRegister;
+    protected BorderPane bpReset;
 
     public GuiLoginConstructor() {
         super();
 
-        //BorderPane
-        //Login
-        bp = new BorderPane();
-        bp.setPadding(new Insets(10, 50, 50, 50));
+        bpLogin = new BorderPane();
+        bpLogin.setId("bpLogin");
+        bpRegister = new BorderPane();
+        bpRegister.setId("bpRegister");
+        bpReset = new BorderPane();
+        bpReset.setId("bpReset");
 
-        //Register
-        bp2 = new BorderPane();
-        bp2.setPadding(new Insets(10, 50, 50, 50));
+        HBox hbLogin = new HBox();
+        hbLogin.setId("hbLogin");
+        HBox hbRegister = new HBox();
+        hbRegister.setId("hbRegister");
+        HBox hbReset = new HBox();
+        hbReset.setId("hbReset");
 
-        bp3 = new BorderPane();
-        bp3.setPadding(new Insets(10, 50, 50, 50));
+        GridPane gpLogin = new GridPane();
+        gpLogin.setHgap(0);
+        gpLogin.setVgap(5);
+        gpLogin.setMaxWidth(260);
+        gpLogin.setMinWidth(260);
+        gpLogin.setMaxHeight(250);
+        gpLogin.setMinHeight(250);
+        gpLogin.setId("gpLogin");
 
-        //Adding HBox
-        //Login
-        HBox hb = new HBox();
-        hb.setPadding(new Insets(20, 20, 20, 30));
+        GridPane gpRegister = new GridPane();
+        gpRegister.setHgap(0);
+        gpRegister.setVgap(5);
+        gpRegister.setMaxWidth(260);
+        gpRegister.setMinWidth(260);
+        gpRegister.setMaxHeight(250);
+        gpRegister.setMinHeight(250);
+        gpRegister.setId("gpRegister");
 
-        //Register
-        HBox hb2 = new HBox();
-        hb2.setPadding(new Insets(20, 20, 20, 30));
+        GridPane gpReset = new GridPane();
+        gpReset.setHgap(0);
+        gpReset.setVgap(5);
+        gpReset.setMaxWidth(260);
+        gpReset.setMinWidth(260);
+        gpReset.setMaxHeight(250);
+        gpReset.setMinHeight(250);
+        gpReset.setId("gpReset");
 
-        //Reset Password
-        HBox hb3 = new HBox();
-        hb3.setPadding(new Insets(20, 20, 20, 30));
+        GridPane gpLog = new GridPane();
+        gpLog.setHgap(0);
+        gpLog.setVgap(5);
+        gpLog.setId("gpLog");
 
+        GridPane gpReg = new GridPane();
+        gpReg.setHgap(0);
+        gpReg.setVgap(5);
+        gpReg.setId("gpReg");
 
-        //Adding GridPane
-        //Login
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(5);
-        gridPane.setMaxWidth(400);
-        gridPane.setMaxHeight(300);
-        hb.setId("hb");
-
-        //Register
-        GridPane gridPane2 = new GridPane();
-        gridPane2.setHgap(10);
-        gridPane2.setVgap(5);
-        gridPane2.setMaxWidth(400);
-        gridPane2.setMaxHeight(300);
-        hb2.setId("hb2");
-
-        //Reset Password
-        GridPane gridPane3 = new GridPane();
-        gridPane3.setHgap(10);
-        gridPane3.setVgap(5);
-        gridPane3.setMaxWidth(400);
-        gridPane3.setMaxHeight(300);
-        hb3.setId("hb3");
+        GridPane gpRes = new GridPane();
+        gpRes.setHgap(0);
+        gpRes.setVgap(5);
+        gpRes.setId("gpRes");
 
         //Implementing Nodes for GridPane
-        //Login
-        final TextField txtUserName = new TextField();
-        final PasswordField pf = new PasswordField();
+        final TextField userNameLogin = new TextField();
+        userNameLogin.setMaxWidth(220);
+        userNameLogin.setMinWidth(220);
+        final PasswordField pswLogin = new PasswordField();
+        pswLogin.setMaxWidth(220);
+        pswLogin.setMinWidth(220);
 
         //TODO Remove, this is solely for ease of debugging
-        txtUserName.setText("sinterklaas@sintmail.nl");
-        pf.setText("Pepernoten01");
+        userNameLogin.setText("sinterklaas@sintmail.nl");
+        pswLogin.setText("Pepernoten01");
 
-        Button btnLoginTop = new Button("Login");
-        Button btnLoginBot = new Button("Login");
-        Button btnRegister = new Button("Register");
-        Button btnResetLog = new Button("Reset");
+        final TextField userNameReg = new TextField();
+        userNameReg.setMaxWidth(220);
+        userNameReg.setMinWidth(220);
+        final PasswordField pswReg = new PasswordField();
+        pswReg.setMaxWidth(220);
+        pswReg.setMinWidth(220);
+        final PasswordField pswConfirmReg = new PasswordField();
+        pswConfirmReg.setMaxWidth(220);
+        pswConfirmReg.setMinWidth(220);
+
+        final TextField userNameRes = new TextField();
+        userNameRes.setMaxWidth(220);
+        userNameRes.setMinWidth(220);
+        final TextField userNameRes2 = new TextField();
+        userNameRes2.setMaxWidth(220);
+        userNameRes2.setMinWidth(220);
+
+        Button btnLogLogin = new Button("Login");
+        btnLogLogin.setId("btnLogLogin");
+        Button btnRegLogin = new Button("Login");
+        btnRegLogin.setId("btnRegLogin");
+        Button btnResLogin = new Button("Login");
+        btnResLogin.setId("btnResLogin");
+
+        Button btnLogRegister = new Button("Register");
+        btnLogRegister.setId("btnLogRegister");
+        Button btnRegRegister = new Button("Register");
+        btnRegRegister.setId("btnRegRegister");
+        Button btnResRegister = new Button("Register");
+        btnResRegister.setId("btnResRegister");
+
+        Button btnLogReset = new Button("Reset Password");
+        btnLogReset.setId("btnLogReset");
+        Button btnRegReset = new Button("Reset Password");
+        btnRegReset.setId("btnRegReset");
+        Button btnResReset = new Button("Reset Password");
+        btnResReset.setId("btnResReset");
+
+        Button btnLogSubmit = new Button("Login");
+        btnLogSubmit.setId("logSubmit");
+        Button btnRegSubmit = new Button("Register");
+        btnRegSubmit.setId("regSubmit");
+        Button btnResSubmit = new Button("Reset");
+        btnResSubmit.setId("resSubmit");
 
         //Labels
-        final Label loginLabel = new Label("Login");
+        final Label lbLogin  = new Label("Login");
+        lbLogin.setId("lbLogin");
+        final Label lbRegister = new Label("Register");
+        lbRegister.setId("lbRegister");
+        final Label lbReset = new Label("Reset");
+        lbReset.setId("lbReset");
 
-        //Register
-        final TextField txtUserName2 = new TextField();
-        final PasswordField pf2 = new PasswordField();
-        final PasswordField pf3 = new PasswordField();
-        Button btnLoginReg = new Button("Login");
-        Button btnRegisterTop = new Button("Register");
-        Button btnRegisterBot = new Button("Register");
-        final Label registerLabel = new Label("Register");
-        Button btnResetReg = new Button("Reset");
+        //Adding nodes to gridpane
+        gpLogin.add(btnLogLogin, 0, 0, 1, 1);
+        gpLogin.add(btnLogRegister, 1, 0, 1, 1);
+        gpLogin.add(btnLogReset, 2, 0, 1, 1);
+        gpLogin.add(gpLog, 0, 1, 3, 1);
+        gpLog.add(lbLogin, 0, 0, 3, 1);
+        gpLog.add(userNameLogin, 0, 1, 3, 1);
+        gpLog.add(pswLogin, 0, 3, 3, 1);
+        gpLog.add(btnLogSubmit, 0, 4, 3, 1);
+        gpLog.add(loginMessage, 0, 5, 3, 1);
 
-        //Reset Password
-        final Label resetPasswordLabel = new Label("Reset Password");
-        final TextField txtUserName3 = new TextField();
-        final TextField txtUserName4 = new TextField();
-        Button btnLoginRes = new Button("Login");
-        Button btnRegisterRes = new Button("Register");
-        Button btnResetRes = new Button("Reset");
-        Button btnResetBot = new Button("Reset");
+        gpRegister.add(btnRegLogin, 0, 0, 1, 1);
+        gpRegister.add(btnRegRegister, 1, 0, 1, 1);
+        gpRegister.add(btnRegReset, 2, 0, 1, 1);
+        gpRegister.add(gpReg, 0, 1, 3, 1);
+        gpReg.add(lbRegister, 0, 0, 3, 1);
+        gpReg.add(userNameReg, 0, 1, 3, 1);
+        gpReg.add(pswReg, 0, 2, 3, 1);
+        gpReg.add(pswConfirmReg, 0, 3, 3, 1);
+        gpReg.add(btnRegSubmit, 0, 4, 3, 1);
+        gpReg.add(registerMessage, 0, 5, 3, 1);
 
-        //Adding Nodes to GridPane layout
-        //Login
-        gridPane.add(btnLoginTop, 2, 0);
-        gridPane.add(btnRegister, 3, 0);
-        gridPane.add(btnResetLog, 4, 0);
-        gridPane.add(loginLabel, 2, 1, 3, 1);
-        gridPane.add(txtUserName, 2, 2, 3, 1);
-        gridPane.add(pf, 2, 3, 3, 1);
-        gridPane.add(btnLoginBot, 2, 4, 3, 1);
-        gridPane.add(loginMessage, 2, 5, 3, 1);
-
-        //Register
-        gridPane2.add(btnLoginReg, 2, 0);
-        gridPane2.add(btnRegisterTop, 3, 0);
-        gridPane2.add(btnResetReg, 4, 0);
-        gridPane2.add(registerLabel, 2, 1, 3, 1);
-        gridPane2.add(txtUserName2, 2, 2, 3, 1);
-        gridPane2.add(pf2, 2, 3, 3, 1);
-        gridPane2.add(pf3, 2, 4, 3, 1);
-        gridPane2.add(btnRegisterBot, 2, 5, 3, 1);
-        gridPane2.add(registerMessage, 2, 6, 3, 1);
-
-
-        //Reset Password
-        gridPane3.add(btnLoginRes, 2, 0);
-        gridPane3.add(btnRegisterRes, 3, 0);
-        gridPane3.add(btnResetRes, 4, 0);
-        gridPane3.add(resetPasswordLabel, 2, 1, 3, 1);
-        gridPane3.add(txtUserName3, 2, 2, 3, 1);
-        gridPane3.add(txtUserName4, 2, 3, 3, 1);
-        gridPane3.add(btnResetBot, 2, 4, 3, 1);
-        gridPane3.add(resetMessage, 2, 5, 3, 1);
-        gridPane3.add(resetMessage2, 2, 6, 3, 1);
-
+        gpReset.add(btnResLogin, 0, 0);
+        gpReset.add(btnResRegister, 1, 0);
+        gpReset.add(btnResReset, 2, 0);
+        gpReset.add(gpRes, 0, 1, 3, 1);
+        gpRes.add(lbReset, 0, 0, 3, 1);
+        gpRes.add(userNameRes, 0, 1, 3, 1);
+        gpRes.add(userNameRes2, 0, 2, 3, 1);
+        gpRes.add(btnResSubmit, 0, 3, 3, 1);
+        gpRes.add(resetMessage, 0, 4, 3, 1);
+        gpRes.add(resetMessage2, 0, 5, 3, 1);
 
         //Adding text
-        Text text = new Text("MindMatch");
-        text.setFont(Font.font("Courier New", FontWeight.BOLD, 28));
-        hb.setAlignment(Pos.CENTER_LEFT);
+        Text mmLog = new Text("MindMatch");
+        mmLog.setFont(Font.font("Courier New", FontWeight.BOLD, 28));
+        mmLog.setId("mmLog");
+        mmLog.setFill(Color.WHITE);
+        Text mmReg = new Text("MindMatch");
+        mmReg.setFont(Font.font("Courier New", FontWeight.BOLD, 28));
+        mmReg.setId("mmReg");
+        mmReg.setFill(Color.WHITE);
+        Text mmRes = new Text("MindMatch");
+        mmRes.setFont(Font.font("Courier New", FontWeight.BOLD, 28));
+        mmRes.setId("mmRes");
+        mmRes.setFill(Color.WHITE);
 
-        //Register
-        Text text2 = new Text("MindMatch");
-        text2.setFont(Font.font("Courier New", FontWeight.BOLD, 28));
-        hb.setAlignment(Pos.CENTER_LEFT);
+        hbLogin.getChildren().add(mmLog);
+        hbLogin.setAlignment(Pos.CENTER_LEFT);
+        hbRegister.getChildren().add(mmReg);
+        hbRegister.setAlignment(Pos.CENTER_LEFT);
+        hbReset.getChildren().add(mmRes);
+        hbReset.setAlignment(Pos.CENTER_LEFT);
 
-        //Reset
-        Text text3 = new Text("MindMatch");
-        text3.setFont(Font.font("Courier New", FontWeight.BOLD, 28));
-        hb.setAlignment(Pos.CENTER_LEFT);
+        //Adding picture
+        HBox hbLog = new HBox();
+        hbLog.setId("hbLog");
+        hbLog.setMinWidth(813);
+        hbLog.setMaxWidth(813);
+        hbLog.setMinHeight(275);
+        hbLog.setMaxHeight(275);
+        HBox hbReg = new HBox();
+        hbReg.setId("hbReg");
+        hbReg.setMinWidth(813);
+        hbReg.setMaxWidth(813);
+        hbReg.setMinHeight(275);
+        hbReg.setMaxHeight(275);
+        HBox hbRes = new HBox();
+        hbRes.setId("hbRes");
+        hbRes.setMinWidth(813);
+        hbRes.setMaxWidth(813);
+        hbRes.setMinHeight(275);
+        hbRes.setMaxHeight(275);
 
-        //Adding text to HBox
-        hb.getChildren().add(text);
-        hb2.getChildren().add(text2);
-        hb3.getChildren().add(text3);
+        HBox hbIvLog = new HBox();
+        HBox hbIvReg = new HBox();
+        HBox hbIvRes = new HBox();
 
-        //Adding Pic to Vbox
-        //Login
-        VBox vb = new VBox();
-        ImageView iv = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo-v2.png")));
-        vb.getChildren().add(iv);
+        ImageView ivLog = new ImageView(new Image(getClass().getResourceAsStream("/gui/views/resources/logoMindMatch-01.png")));
+        ivLog.setPreserveRatio(true);
+        ivLog.setFitWidth(350);
+        hbIvLog.getChildren().add(ivLog);
+        hbIvLog.setId("picLog");
+        ImageView ivRes = new ImageView(new Image(getClass().getResourceAsStream("/gui/views/resources/logoMindMatch-01.png")));
+        ivRes.setPreserveRatio(true);
+        ivRes.setFitWidth(350);
+        hbIvRes.getChildren().add(ivRes);
+        hbIvRes.setId("picRes");
+        ImageView ivReg = new ImageView(new Image(getClass().getResourceAsStream("/gui/views/resources/logoMindMatch-02.png")));
+        ivReg.setPreserveRatio(true);
+        ivReg.setFitWidth(350);
+        hbIvReg.getChildren().add(ivReg);
+        hbIvReg.setId("picReg");
+        hbLog.getChildren().addAll(hbIvLog, gpLogin);
+        hbReg.getChildren().addAll(hbIvReg, gpRegister);
+        hbRes.getChildren().addAll(hbIvRes, gpReset);
 
-        //Register
-        VBox vb2 = new VBox();
-        ImageView iv2 = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo-v2.png")));
-        vb2.getChildren().add(iv2);
 
-        //Reset
-        VBox vb3 = new VBox();
-        ImageView iv3 = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo-v3.png")));
-        vb3.getChildren().add(iv3);
+        bpLogin.setTop(hbLogin);
+        bpLogin.setCenter(hbLog);
 
-        //Add ID's to Nodes
-        //Login
-        gridPane.setId("root");
-        bp.setId("bp");
-        btnLoginTop.setId("BLT");
-        btnRegister.setId("BR");
-        gridPane.setId("root");
-        btnLoginBot.setId("btnLogin");
-        text.setId("text");
-        text2.setId("text2");
-        loginLabel.setId("loginLabel");
-        btnResetLog.setId("resLog");
 
-        //Register
-        gridPane2.setId("root2");
-        bp2.setId("bp2");
-        btnLoginReg.setId("BLR");
-        btnRegisterTop.setId("BRT");
-        btnRegisterBot.setId("BRB");
-        registerLabel.setId("registerLabel");
-        btnResetReg.setId("resReg");
+        bpRegister.setTop(hbRegister);
+        bpRegister.setCenter(hbReg);
 
-        //Reset
-        gridPane3.setId("root3");
-        bp3.setId("bp3");
-        btnLoginRes.setId("BLRES");
-        btnRegisterRes.setId("BRR");
-        btnResetRes.setId("BRR2");
-        btnResetBot.setId("BRR3");
-        resetPasswordLabel.setId("resLabel");
-        text3.setId("text3");
+        bpReset.setTop(hbReset);
+        bpReset.setCenter(hbRes);
 
-        //Login
-        bp.setTop(hb);
-        bp.setCenter(gridPane);
-        bp.setLeft(vb);
-        vb.setTranslateY(300);
-        vb.setTranslateX(130);
-
-        //Register
-        bp2.setTop(hb2);
-        bp2.setCenter(gridPane2);
-        bp2.setLeft(vb2);
-        vb2.setTranslateY(300);
-        vb2.setTranslateX(130);
-
-        //Reset
-        bp3.setTop(hb3);
-        bp3.setCenter(gridPane3);
-        bp3.setLeft(vb3);
-        vb3.setTranslateY(300);
-        vb3.setTranslateX(130);
 
         //MouseHover
-        mouseHover(btnLoginBot, GUILauncher.GUIScene);
-        mouseHover(btnLoginTop, GUILauncher.GUIScene);
-        mouseHover(btnRegister, GUILauncher.GUIScene);
-        mouseHover(btnLoginReg, GUILauncher.GUIScene);
-        mouseHover(btnRegisterTop, GUILauncher.GUIScene);
-        mouseHover(btnRegisterBot, GUILauncher.GUIScene);
-        mouseHover(btnLoginRes, GUILauncher.GUIScene);
-        mouseHover(btnLoginRes, GUILauncher.GUIScene);
-        mouseHover(btnLoginRes, GUILauncher.GUIScene);
-        mouseHover(btnRegisterRes, GUILauncher.GUIScene);
-        mouseHover(btnResetLog, GUILauncher.GUIScene);
-        mouseHover(btnResetReg, GUILauncher.GUIScene);
-        mouseHover(btnResetRes, GUILauncher.GUIScene);
-        mouseHover(btnResetBot, GUILauncher.GUIScene);
+        mouseHover(btnLogLogin, GUILauncher.GUIScene);
+        mouseHover(btnLogSubmit, GUILauncher.GUIScene);
+        mouseHover(btnLogRegister, GUILauncher.GUIScene);
+        mouseHover(btnRegSubmit, GUILauncher.GUIScene);
+        mouseHover(btnLogReset, GUILauncher.GUIScene);
+        mouseHover(btnResSubmit, GUILauncher.GUIScene);
+        mouseHover(btnRegLogin, GUILauncher.GUIScene);
+        mouseHover(btnRegRegister, GUILauncher.GUIScene);
+        mouseHover(btnRegReset, GUILauncher.GUIScene);
+        mouseHover(btnResLogin, GUILauncher.GUIScene);
+        mouseHover(btnResRegister, GUILauncher.GUIScene);
+        mouseHover(btnResReset, GUILauncher.GUIScene);
 
-        btnLoginBot.setOnMouseClicked(event -> {
+        btnLogSubmit.setOnMouseClicked(event -> {
             if (!Backend.isConnected()) {
                 setLoginMessage("Could not connect to server!", Color.RED);
             } else {
                 GUILauncher.GUIScene.setCursor(Cursor.WAIT);
-                String checkUser = txtUserName.getText(),
-                        checkPw = pf.getText();
+                String checkUser = userNameLogin.getText(),
+                        checkPw = pswLogin.getText();
                 Backend.login(checkUser, checkPw);
                 System.out.println("Trying to login: " + checkUser + " " + checkPw);
-                txtUserName.setText("");
-                pf.setText("");
+                userNameLogin.setText("");
+                pswLogin.setText("");
                 setLoginMessage("Logging in...", Color.ORANGE);
             }
         });
 
-        btnRegisterBot.setOnMouseClicked(event -> {
+        btnRegSubmit.setOnMouseClicked(event -> {
             GUILauncher.GUIScene.setCursor(Cursor.WAIT);
-            String regMail = txtUserName2.getText(),
-                    regPass = pf2.getText(),
-                    repeatPass = pf3.getText();
+            String regMail = userNameReg.getText(),
+                    regPass = pswReg.getText(),
+                    repeatPass = pswConfirmReg.getText();
             if (regMail.equals("") || regPass.equals("") || repeatPass.equals("")) {
                 setLoginMessage("Please fill in all the fields!", Color.RED);
             } else if (!regPass.equals(repeatPass)) {
@@ -298,38 +308,40 @@ public class GuiLoginConstructor extends BorderPane {
             }
         });
 
-        //Prompt Text
-        txtUserName.setPromptText("Email Adress");
-        pf.setPromptText("Password");
-        txtUserName2.setPromptText("Email Adress");
-        pf2.setPromptText("Password");
-        pf3.setPromptText("Confirm Password");
-        txtUserName3.setPromptText("Email Adress");
-        txtUserName4.setPromptText("Confirm Email Adress");
-        super.setCenter(bp);
-        btnRegister.setOnMouseClicked(e -> GUILauncher.switchToRegister());
-        btnLoginReg.setOnMouseClicked(e -> GUILauncher.switchToLogin());
-        btnResetLog.setOnAction(e -> GUILauncher.switchToReset());
-        btnResetReg.setOnAction(e -> GUILauncher.switchToReset());
-        btnLoginRes.setOnAction(e -> GUILauncher.switchToLogin());
-        btnRegisterRes.setOnAction(e -> GUILauncher.switchToRegister());
-        btnLoginBot.setDefaultButton(true);
-        btnRegisterBot.setDefaultButton(true);
-        btnResetBot.setDefaultButton(true);
+        userNameLogin.setPromptText("Email Adress");
+        pswLogin.setPromptText("Password");
+        userNameReg.setPromptText("Email Adress");
+        pswReg.setPromptText("Password");
+        pswConfirmReg.setPromptText("Confirm Password");
+        userNameRes.setPromptText("Email Adress");
+        userNameRes2.setPromptText("Confirm Email Adress");
+        super.setCenter(bpLogin);
+        btnResRegister.setOnMouseClicked(e -> GUILauncher.switchToRegister());
+        btnResLogin.setOnMouseClicked(e -> GUILauncher.switchToLogin());
+        btnLogReset.setOnAction(e -> GUILauncher.switchToReset());
+        btnRegReset.setOnAction(e -> GUILauncher.switchToReset());
+        btnRegLogin.setOnAction(e -> GUILauncher.switchToLogin());
+        btnLogRegister.setOnAction(e -> GUILauncher.switchToRegister());
+        btnLogSubmit.setDefaultButton(true);
+        btnRegSubmit.setDefaultButton(true);
+        btnResSubmit.setDefaultButton(true);
 
-        btnRegisterBot.setOnAction(event -> {
+        btnRegSubmit.setOnAction(event -> {
             if (!Backend.isConnected()) {
                 setRegisterMessage("Could not connect to server!", Color.RED);
             }
             //TODO response listeners in GUILauncher
         });
 
-        btnResetBot.setOnAction(event -> {
+        btnResSubmit.setOnAction(event -> {
             if (!Backend.isConnected()) {
                 setResetMessage("Could not connect to server", "", Color.RED);
             }
             //TODO response listeners in GUILauncher
         });
+
+
+
 
     }
 
@@ -362,4 +374,5 @@ public class GuiLoginConstructor extends BorderPane {
             scene.setCursor(Cursor.DEFAULT); //Change cursor to crosshair
         });
     }
+
 }
