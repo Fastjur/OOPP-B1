@@ -17,9 +17,12 @@ public class GuiProfileConstructor extends BorderPane {
 
     protected TextField name, age, email, telephoneNumber, location, university, studyYear, monday, tuesday,
             wednesday, thursday, friday, saturday, sunday;
-    protected ChoiceBox<String> sex, nationality, languages, study, findTutor, becomeTutor, findBuddy;
+    protected ChoiceBox<String> sex;
+    protected Accordion nationality, languages, study, findTutor, becomeTutor, findBuddy;
     protected DatePicker dateOfBirth;
     protected PasswordField repeatPwField1,repeatPwField2;
+    protected VBox nationalityBox, languagesBox, studyBox, findTutorBox, becomeTutorBox, findBuddyBox;
+    protected TitledPane nationalityPane, languagesPane, studyPane, findTutorPane, becomeTutorPane, findBuddyPane;
 
     public GuiProfileConstructor() {
         super();
@@ -69,18 +72,24 @@ public class GuiProfileConstructor extends BorderPane {
         dateOfBirth.setDisable(true);
         dateOfBirth.setMaxWidth(815);
         dateOfBirth.setPrefWidth(815);
-        nationality = new ChoiceBox<>();
+        nationalityBox = new VBox(10);
+        nationalityBox.getStyleClass().addAll("vbox");
+        nationalityPane = new TitledPane("Nationality", nationalityBox);
+        nationality = new Accordion();
         nationality.setDisable(true);
-        nationality.getItems().addAll(""); //TODO: Use this method to add items retrieved from DB
+        nationality.getPanes().addAll(nationalityPane); //TODO: Use this method to add items retrieved from DB
         nationality.setMaxWidth(815);
         nationality.setPrefWidth(815);
         nationality.setId("choiceBox");
-        languages = new ChoiceBox<>();
+        languagesBox = new VBox(10);
+        languagesBox.getStyleClass().add("vbox");
+        languagesPane = new TitledPane("Languages", languagesBox);
+        languages = new Accordion();
+        languages.getPanes().addAll(languagesPane);
         languages.setDisable(true);
-        languages.getItems().addAll(""); //TODO: Use this method to add items retrieved from DB
         languages.setMaxWidth(815);
         languages.setPrefWidth(815);
-        languages.setId("choiceBox");
+        languages.setId("accordion");
         email = new TextField();
         email.setEditable(false);
         telephoneNumber = new TextField(){
@@ -103,7 +112,7 @@ public class GuiProfileConstructor extends BorderPane {
             //Using a regex that isn't completely correct, trying to figure out why the correct one won't work
             @Override
             public void replaceText(int start, int end, String text){
-                if(text.matches("[0-9,]+")){
+                if(text.matches("[0-9]+")){
                     super.replaceText(start, end, text);
                 }
             }
@@ -118,24 +127,40 @@ public class GuiProfileConstructor extends BorderPane {
         location.setEditable(false);
         university = new TextField();
         university.setEditable(false);
-        study = new ChoiceBox<>();
+        studyBox = new VBox(10);
+        studyBox.getStyleClass().addAll("vbox");
+        studyPane = new TitledPane("Study", studyBox);
+        study = new Accordion();
+        study.getPanes().addAll(studyPane);
         study.setPrefWidth(525);
         study.setMaxWidth(525);
         study.setDisable(true);
         study.setId("choiceBox");
         studyYear = new TextField();
         studyYear.setEditable(false);
-        findTutor = new ChoiceBox<>();
+        findTutorBox = new VBox(10);
+        findTutorBox.getStyleClass().add("vbox");
+        findTutorPane = new TitledPane("Find tutor for", findTutorBox);
+        findTutor = new Accordion();
+        findTutor.getPanes().addAll(findTutorPane);
         findTutor.setPrefWidth(525);
         findTutor.setMaxWidth(525);
-        findTutor.setId("choiceBox");
         findTutor.setDisable(true);
-        becomeTutor = new ChoiceBox<>();
+        findTutor.setId("choiceBox");
+        becomeTutorBox = new VBox(10);
+        becomeTutorBox.getStyleClass().add("vbox");
+        becomeTutorPane = new TitledPane("Become tutor for", becomeTutorBox);
+        becomeTutor = new Accordion();
+        becomeTutor.getPanes().addAll(becomeTutorPane);
         becomeTutor.setPrefWidth(525);
         becomeTutor.setMaxWidth(525);
         becomeTutor.setDisable(true);
         becomeTutor.setId("choiceBox");
-        findBuddy = new ChoiceBox<>();
+        findBuddyBox = new VBox(10);
+        findBuddyBox.getStyleClass().addAll("vbox");
+        findBuddyPane = new TitledPane("Find buddy for", findBuddyBox);
+        findBuddy = new Accordion();
+        findBuddy.getPanes().addAll(findBuddyPane);
         findBuddy.setPrefWidth(525);
         findBuddy.setMaxWidth(525);
         findBuddy.setDisable(true);
@@ -189,7 +214,7 @@ public class GuiProfileConstructor extends BorderPane {
                 age.setEditable(true);
                 dateOfBirth.setDisable(false);
                 nationality.setDisable(false);
-                languages.setDisable(false);
+                this.languages.setDisable(false);
                 email.setEditable(true);
                 telephoneNumber.setEditable(true);
                 location.setEditable(true);
@@ -216,7 +241,7 @@ public class GuiProfileConstructor extends BorderPane {
                 age.setEditable(false);
                 dateOfBirth.setDisable(true);
                 nationality.setDisable(true);
-                languages.setDisable(true);
+                this.languages.setDisable(true);
                 email.setEditable(false);
                 telephoneNumber.setEditable(false);
                 location.setEditable(false);
@@ -309,7 +334,7 @@ public class GuiProfileConstructor extends BorderPane {
         profileInfoGridPane.setPrefWidth(1050);
         profileInfoGridPane.setMaxWidth(1050);
         profileInfoGridPane.addColumn(0, nameLabel, sexLabel, ageLabel, dateOfBirthLabel, nationalityLabel, languagesLabel, emailLabel, telephoneNumberLabel, locationLabel);
-        profileInfoGridPane.addColumn(1, name, sex, age, dateOfBirth, nationality, languages, email, telephoneNumber, location);
+        profileInfoGridPane.addColumn(1, name, sex, age, dateOfBirth, nationality, this.languages, email, telephoneNumber, location);
         ColumnConstraints col1Constraints = new ColumnConstraints(140, 280, 280, Priority.NEVER, HPos.LEFT, false);
         col1Constraints.setPercentWidth(21);
         ColumnConstraints col2Constraints = new ColumnConstraints(375, 750, 750, Priority.ALWAYS, HPos.LEFT, true);
