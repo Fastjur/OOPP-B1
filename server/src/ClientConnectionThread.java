@@ -349,6 +349,72 @@ public class ClientConnectionThread extends Thread {
                         }
                     }
 
+                case "getStudies":
+                    System.out.println("Received getStudies from userid: " + client.userId);
+                    response = new Response("getStudies");
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        try {
+                            ArrayList<String> dbStudies = Server.getDb().getStudies();
+                            response.putData("dbStudies", dbStudies);
+                            response.errorCode = 0;
+                            response.errorMessage = "Retreived database studies!";
+                            break;
+                        } catch (SQLException | ClassNotFoundException e) {
+                            response.errorCode = 8;
+                            response.errorMessage = "Couldn't get database studies!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "getUniversities":
+                    System.out.println("Received getUniversities from userid: " + client.userId);
+                    response = new Response("getUniversities");
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        try {
+                            ArrayList<String> dbUniversities = Server.getDb().getUniversities();
+                            response.putData("dbUniversities", dbUniversities);
+                            response.errorCode = 0;
+                            response.errorMessage = "Retreived database universities!";
+                            break;
+                        } catch (SQLException | ClassNotFoundException e) {
+                            response.errorCode = 8;
+                            response.errorMessage = "Couldn't get database universities!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "getCourses":
+                    System.out.println("Received getUniversities from userid: " + client.userId);
+                    response = new Response("getCourses");
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        try {
+                            ArrayList<String> dbCourses = Server.getDb().getCourses();
+                            response.putData("dbCourses", dbCourses);
+                            response.errorCode = 0;
+                            response.errorMessage = "Retreived database courses!";
+                            break;
+                        } catch (SQLException | ClassNotFoundException e) {
+                            response.errorCode = 8;
+                            response.errorMessage = "Couldn't get database courses!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
                 default:
                     response = new Response(action);
                     response.errorMessage = "Unknown command.";

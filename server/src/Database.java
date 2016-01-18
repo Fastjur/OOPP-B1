@@ -541,6 +541,39 @@ public class Database {
         return res;
     }
 
+    public ArrayList<String> getStudies() throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT name FROM studies");
+        ResultSet rs = stmt.executeQuery();
+        ArrayList<String> res = new ArrayList<>();
+        while (rs.next()) {
+            res.add(rs.getString("name"));
+        }
+        return res;
+    }
+
+    public ArrayList<String> getUniversities() throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT name FROM universities");
+        ResultSet rs = stmt.executeQuery();
+        ArrayList<String> res = new ArrayList<>();
+        while (rs.next()) {
+            res.add(rs.getString("name"));
+        }
+        return res;
+    }
+
+    public ArrayList<String> getCourses() throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT name FROM courses");
+        ResultSet rs = stmt.executeQuery();
+        ArrayList<String> res = new ArrayList<>();
+        while (rs.next()) {
+            res.add(rs.getString("name"));
+        }
+        return res;
+    }
+
     /**
      * Remove a user from the database using given id
      *
@@ -651,9 +684,6 @@ public class Database {
      * @throws SQLException
      */
     public void acceptMatch(int self, int matchedUserId, String type, String course) throws SQLException, ClassNotFoundException {
-        if (course.equals("")) {
-            course = "NONE";
-        }
         int courseId = getCourseIdByName(course);
         if (courseId == -1)
             throw new IllegalArgumentException("[ERROR] Couldn't find course ID by name!");

@@ -18,14 +18,15 @@ import java.util.ArrayList;
  */
 public class GuiProfileConstructor extends BorderPane {
 
-    protected TextField name, age, email, telephoneNumber, location, university, studyYear, monday, tuesday,
+    protected TextField name, age, email, telephoneNumber, location, studyYear, monday, tuesday,
             wednesday, thursday, friday, saturday, sunday;
     protected ChoiceBox<String> sex;
-    protected Accordion nationality, languages, study, findTutor, becomeTutor, findBuddy;
+    protected Accordion nationality, university, languages, study, findTutor, becomeTutor, findBuddy;
     protected DatePicker dateOfBirth;
     protected PasswordField repeatPwField1,repeatPwField2;
-    protected VBox nationalityBox, languagesBox, studyBox, findTutorBox, becomeTutorBox, findBuddyBox;
-    protected TitledPane nationalityPane, languagesPane, studyPane, findTutorPane, becomeTutorPane, findBuddyPane;
+    protected VBox nationalityBox, universityBox, languagesBox, studyBox, findTutorBox, becomeTutorBox, findBuddyBox;
+    protected TitledPane nationalityPane, universityPane, languagesPane, studyPane, findTutorPane, becomeTutorPane,
+            findBuddyPane;
 
     public GuiProfileConstructor() {
         super();
@@ -77,16 +78,27 @@ public class GuiProfileConstructor extends BorderPane {
         dateOfBirth.setPrefWidth(815);
         nationalityBox = new VBox(10);
         nationalityBox.getStyleClass().addAll("vbox");
-        nationalityPane = new TitledPane("Nationality", nationalityBox);
+        nationalityPane = new TitledPane("Select Nationality", nationalityBox);
         nationality = new Accordion();
         nationality.setDisable(true);
-        nationality.getPanes().addAll(nationalityPane); //TODO: Use this method to add items retrieved from DB
+        nationality.getPanes().addAll(nationalityPane);
         nationality.setMaxWidth(815);
         nationality.setPrefWidth(815);
         nationality.setId("choiceBox");
+
+        universityBox = new VBox(10);
+        universityBox.getStyleClass().addAll("vbox");
+        universityPane = new TitledPane("Select University", universityBox);
+        university = new Accordion();
+        university.setDisable(true);
+        university.getPanes().addAll(universityPane);
+        university.setMaxWidth(815);
+        university.setPrefWidth(815);
+        university.setId("choiceBox");
+
         languagesBox = new VBox(10);
         languagesBox.getStyleClass().add("vbox");
-        languagesPane = new TitledPane("Languages", languagesBox);
+        languagesPane = new TitledPane("Select Languages", languagesBox);
         languages = new Accordion();
         languages.getPanes().addAll(languagesPane);
         languages.setDisable(true);
@@ -128,8 +140,6 @@ public class GuiProfileConstructor extends BorderPane {
             }
         };
         location.setEditable(false);
-        university = new TextField();
-        university.setEditable(false);
         studyBox = new VBox(10);
         studyBox.getStyleClass().addAll("vbox");
         studyPane = new TitledPane("Study", studyBox);
@@ -220,7 +230,7 @@ public class GuiProfileConstructor extends BorderPane {
                 email.setEditable(true);
                 telephoneNumber.setEditable(true);
                 location.setEditable(true);
-                university.setEditable(true);
+                university.setDisable(false);
                 study.setDisable(false);
                 studyYear.setEditable(true);
                 findTutor.setDisable(false);
@@ -246,7 +256,7 @@ public class GuiProfileConstructor extends BorderPane {
                 email.setEditable(false);
                 telephoneNumber.setEditable(false);
                 location.setEditable(false);
-                university.setEditable(false);
+                university.setDisable(true);
                 study.setDisable(true);
                 studyYear.setEditable(false);
                 findTutor.setDisable(true);
@@ -481,8 +491,11 @@ public class GuiProfileConstructor extends BorderPane {
      * @param dbNationalities Arraylist containing all the nationalities from the DB
      */
     public void setNationalities(ArrayList<String> dbNationalities) {
+        nationalityBox.getChildren().clear();
+        ToggleGroup nationalitiesGroup = new ToggleGroup();
         for (String name : dbNationalities){
-            CheckBox cb = new CheckBox(name);
+            RadioButton cb = new RadioButton(name);
+            cb.setToggleGroup(nationalitiesGroup);
             if (Backend.getSelfObject().getNationality().equals(name)) {
                 cb.setSelected(true);
             }
@@ -495,6 +508,7 @@ public class GuiProfileConstructor extends BorderPane {
      * @param dbLanguages ArrayList containing all the languages from the DB
      */
     public void setLanguages(ArrayList<String> dbLanguages) {
+        languagesBox.getChildren().clear();
         for (String name : dbLanguages){
             CheckBox cb = new CheckBox(name);
             if (Backend.getSelfObject().getLanguageList().contains(name)) {
@@ -502,6 +516,72 @@ public class GuiProfileConstructor extends BorderPane {
             }
             languagesBox.getChildren().addAll(cb);
         }
+    }
+
+    /**
+     * First imports all the studies into the choicebox. Then uses the selfobject to check the correct ones.
+     * @param dbStudies ArrayList containing all the studies from the DB
+     */
+    public void setStudies(ArrayList<String> dbStudies) {
+        studyBox.getChildren().clear();
+        ToggleGroup studiesGroup = new ToggleGroup();
+        for (String name : dbStudies){
+            RadioButton cb = new RadioButton(name);
+            cb.setToggleGroup(studiesGroup);
+            if (Backend.getSelfObject().getStudy().equals(name)) {
+                cb.setSelected(true);
+            }
+            studyBox.getChildren().addAll(cb);
+        }
+    }
+
+    /**
+     * First imports all the universities into the choicebox. Then uses the selfobject to check the correct ones.
+     * @param dbUniversities ArrayList containing all the universities from the DB
+     */
+    public void setUniversity(ArrayList<String> dbUniversities) {
+        universityBox.getChildren().clear();
+        ToggleGroup universitiesGroup = new ToggleGroup();
+        for (String name : dbUniversities){
+            RadioButton cb = new RadioButton(name);
+            cb.setToggleGroup(universitiesGroup);
+            if (Backend.getSelfObject().getUniversity().equals(name)) {
+                cb.setSelected(true);
+            }
+            universityBox.getChildren().addAll(cb);
+        }
+    }
+
+    /**
+     * First imports all the courses into the choicebox. Then uses the selfobject to check the correct ones.
+     * @param dbCourses ArrayList containing all the courses from the DB
+     */
+    public void setCourses(ArrayList<String> dbCourses) {
+        findBuddyBox.getChildren().clear();
+        findTutorBox.getChildren().clear();
+        becomeTutorBox.getChildren().clear();
+        for (String name : dbCourses){
+            CheckBox cb = new CheckBox(name);
+            if (Backend.getSelfObject().getBuddyList().contains(name)) {
+                cb.setSelected(true);
+            }
+            findBuddyBox.getChildren().addAll(cb);
+        }
+        for (String name : dbCourses){
+            CheckBox cb = new CheckBox(name);
+            if (Backend.getSelfObject().getCoursesTeachingList().contains(name)) {
+                cb.setSelected(true);
+            }
+            becomeTutorBox.getChildren().addAll(cb);
+        }
+        for (String name : dbCourses){
+            CheckBox cb = new CheckBox(name);
+            if (Backend.getSelfObject().getCoursesLearningList().contains(name)) {
+                cb.setSelected(true);
+            }
+            findTutorBox.getChildren().addAll(cb);
+        }
+
     }
 
 }

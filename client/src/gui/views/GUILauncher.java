@@ -130,6 +130,8 @@ public class GUILauncher extends Application implements IMessageListener {
 
         Backend.getMatches(Backend.getSelfObject());
         User self = Backend.getSelfObject();
+
+        //TODO
     }
 
     public static void findMatchLearningCoursesClick(Button lCourse) {
@@ -206,10 +208,10 @@ public class GUILauncher extends Application implements IMessageListener {
             User self = Backend.getSelfObject();
             profile.name.setText(self.getFirstname() + " " + self.getLastname());
             profile.sex.setValue(self.getGender());
-            if(self.getGender().equals("MALE")) {
+            if(self.getGender().toLowerCase().equals("male")) {
                 profile.sex.getSelectionModel().select(0);
             }
-            if(self.getGender().equals("FEMALE")){
+            if(self.getGender().toLowerCase().equals("female")){
                 profile.sex.getSelectionModel().select(1);
             }
             LocalDate now = LocalDate.now(),
@@ -221,27 +223,7 @@ public class GUILauncher extends Application implements IMessageListener {
             profile.telephoneNumber.setText(self.getPhonenumber());
             profile.location.setText(self.getLongitude() + "," + self.getLatitude());
             //TODO repeatpass field
-            for(int i=0;i<1;i++){
-                CheckBox cb = new CheckBox(self.getNationality());
-                cb.setSelected(true);
-                profile.studyBox.getChildren().addAll(cb);
-            }
             profile.studyYear.setText(String.valueOf(self.getStudyYear()));
-            for(int i=0;i<listToString(self.getCoursesLearningList()).split(",").length;i++){
-                CheckBox cb = new CheckBox(listToString(self.getCoursesLearningList()).split(",")[i]);
-                cb.setSelected(true);
-                profile.findTutorBox.getChildren().addAll(cb);
-            }
-            for(int i=0;i<listToString(self.getCoursesTeachingList()).split(",").length;i++){
-                CheckBox cb = new CheckBox(listToString(self.getCoursesTeachingList()).split(",")[i]);
-                cb.setSelected(true);
-                profile.becomeTutorBox.getChildren().addAll(cb);
-            }
-            for(int i=0;i<listToString(self.getBuddyList()).split(",").length;i++){
-                CheckBox cb = new CheckBox(listToString(self.getBuddyList()).split(",")[i]);
-                cb.setSelected(true);
-                profile.findBuddyBox.getChildren().addAll(cb);
-            }
             profile.monday.setText(listToString(self.getAvailableDates().getMonday()));
             profile.tuesday.setText(listToString(self.getAvailableDates().getTuesday()));
             profile.wednesday.setText(listToString(self.getAvailableDates().getWednesday()));
@@ -287,6 +269,9 @@ public class GUILauncher extends Application implements IMessageListener {
                         Backend.getSelf();
                         Backend.getNationalities();
                         Backend.getLanguages();
+                        Backend.getStudies();
+                        Backend.getUniversities();
+                        Backend.getCourses();
                     } else {
                         login.setLoginMessage(response.errorMessage, Color.RED);
                     }
@@ -334,6 +319,45 @@ public class GUILauncher extends Application implements IMessageListener {
                             e.printStackTrace();
                         }
                         profile.setLanguages(dbLanguages);
+                    }
+                    break;
+
+                case "getStudies":
+                    if (response.errorCode == 0) {
+                        ArrayList<String> dbStudies = null;
+                        try {
+                            dbStudies = mapper.readValue(response.getResponseData().get("dbStudies").toString(),
+                                    typeFactory.constructCollectionType(ArrayList.class, String.class));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        profile.setStudies(dbStudies);
+                    }
+                    break;
+
+                case "getUniversities":
+                    if (response.errorCode == 0) {
+                        ArrayList<String> dbUniversities = null;
+                        try {
+                            dbUniversities = mapper.readValue(response.getResponseData().get("dbUniversities").toString(),
+                                    typeFactory.constructCollectionType(ArrayList.class, String.class));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        profile.setUniversity(dbUniversities);
+                    }
+                    break;
+
+                case "getCourses":
+                    if (response.errorCode == 0) {
+                        ArrayList<String> dbCourses = null;
+                        try {
+                            dbCourses = mapper.readValue(response.getResponseData().get("dbCourses").toString(),
+                                    typeFactory.constructCollectionType(ArrayList.class, String.class));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        profile.setCourses(dbCourses);
                     }
                     break;
             }

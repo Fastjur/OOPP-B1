@@ -189,12 +189,54 @@ public class Backend {
 
     public static void getLanguages() {
         if (!isConnected()) {
-            System.out.println("[ERROR] Cannot get nationalities: Not connected!");
+            System.out.println("[ERROR] Cannot get languages: Not connected!");
             return;
         }
 
         try {
             Request request = new Request("getLanguages");
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getStudies() {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot get studies: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("getStudies");
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getUniversities() {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot get nationalities: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("getUniversities");
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getCourses() {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot get nationalities: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("getCourses");
             listenThread.sendMessage(request.toSendableJSON());
         } catch (IOException e) {
             e.printStackTrace();
