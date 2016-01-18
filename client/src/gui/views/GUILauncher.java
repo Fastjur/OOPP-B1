@@ -10,7 +10,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.deser.std.TimestampDeserializer;
 import shared.AvailableTimes;
 import shared.Response;
 import shared.TimePeriod;
@@ -57,10 +56,6 @@ public class GUILauncher extends Application implements IMessageListener {
         TimePeriod tp = new TimePeriod(2,3);
         at.addTimePeriod(1,tp);*/
 
-        AvailableTimes at = new AvailableTimes();
-        TimePeriod tp = new TimePeriod(2,3);
-        at.addTimePeriod(1,tp);
-
         GUI = new BorderPane();
         GUIScene = new Scene(GUI);
         profile = new GuiProfileConstructor();
@@ -69,7 +64,11 @@ public class GUILauncher extends Application implements IMessageListener {
         login = new GuiLoginConstructor();
         chatPage = new GuiChat();
 
-        GUI.setCenter(findMatch);
+        /**
+         * Do not change this. Most functions rely on an active connection. The login page automatically sets a test
+         * user for login.
+         */
+        GUI.setCenter(login);
 
         PrimaryStage.setScene(GUIScene);
         GUIScene.getStylesheets().addAll("/gui/views/css/chat.css","/gui/views/css/ContactsStyle.css","/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");
