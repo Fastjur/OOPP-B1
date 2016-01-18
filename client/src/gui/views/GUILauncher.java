@@ -29,42 +29,36 @@ public class GUILauncher extends Application implements IMessageListener {
     private static GuiFindMatchConstructor findMatch;
     private static GuiSideBarFindMatchConstructor findMatchSideBar;
     private static GUISideBarConstructor sidebar;
+    private static GuiContacts matches;
+    //private static GuiChat chatPage;
+    private static ArrayList<String> buddyCourses;
+    private static ArrayList<String> learningCourses;
+    private static ArrayList<String> teachingCourses;
+
+    private static String pfURL;//TODO implement
 
     @Override
     public void start(Stage PrimaryStage) throws Exception{
-        ArrayList<String> languages = new ArrayList<>();
+        pfURL = this.getClass().getResource("resources/pfExample.jpg").toExternalForm();//TODO implement
+        findMatch = new GuiFindMatchConstructor();
+        /*ArrayList<String> languages = new ArrayList<>();
         languages.add("English");
         Double distance = 2500.0;
         String nomatchURL = this.getClass().getResource("resources/nomatch.png").toExternalForm();
         String matchURL = this.getClass().getResource("resources/match.png").toExternalForm();
 
         // Needs to be replaced with details of potential match
-        String pfURL = this.getClass().getResource("resources/pfExample.jpg").toExternalForm();
+
         String name = "Rebecca Black";
         String age = "18";
         String descr = "Seven a.m. waking up in the morning. Gotta be fresh, gotta go downstairs. Gotta have my bowl, gotta have cereal. Seein' everything the time is goin'. Tickin' on and on, everybody's rushin'. Gotta get down to the bus stop. Gotta catch my bus. I see my friends.";
 
-        // Needs to be replaced with user's list of buddy courses
-        ArrayList<String> buddyCourses = new ArrayList<>();
-        buddyCourses.add("Calculus");
-        buddyCourses.add("Redeneren & Logica");
-
-        // Needs to be replaced with user's list of learning courses
-        ArrayList<String> learningCourses = new ArrayList<>();
-        learningCourses.add("Calculus");
-        learningCourses.add("OOProgrammeren");
-        learningCourses.add("Web & Database Technology");
-
-        // Needs to be replaced with user's list of teaching courses
-        ArrayList<String> teachingCourses = new ArrayList<>();
-        teachingCourses.add("Computer Organisation");
-        teachingCourses.add("Redeneren & Logica");
+        AvailableTimes at = new AvailableTimes();
+        TimePeriod tp = new TimePeriod(2,3);
+        at.addTimePeriod(1,tp);*/
 
         GUI = new BorderPane();
         GUIScene = new Scene(GUI);
-
-        findMatch = new GuiFindMatchConstructor(languages, distance, name, age, descr, matchURL, nomatchURL, pfURL);
-        findMatchSideBar  = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
         profile = new GuiProfileConstructor();
         sidebar = new GUISideBarConstructor();
         topbar = new GuiTopBar();
@@ -129,7 +123,8 @@ public class GUILauncher extends Application implements IMessageListener {
 
         String course = sbCourse.getText();
 
-        // TODO: Get all users from database who need study buddy for this course & show the first user on the Match Page
+        Backend.getMatches(Backend.getSelfObject());
+        User self = Backend.getSelfObject();
     }
 
     public static void findMatchLearningCoursesClick(Button lCourse) {
@@ -159,12 +154,12 @@ public class GUILauncher extends Application implements IMessageListener {
     // Events TopBar
 
     public static void findMatchClick(Button fMatch, Button yourMatches, Button chat, Button profile) {
-        //FIXME duplicate code
         fMatch.setId("findMatchActive");
         yourMatches.setId("yourMatches");
         chat.setId("chat");
         profile.setId("profileBtn");
 
+        updateFindMatchSidebar();
         GUI.setCenter(findMatch);
         GUI.setLeft(findMatchSideBar);
     }
@@ -174,6 +169,10 @@ public class GUILauncher extends Application implements IMessageListener {
         findMatch.setId("findMatch");
         chat.setId("chat");
         profile.setId("profileBtn");
+
+        updateFindMatchSidebar();
+        GUI.setCenter(matches);
+        GUI.setLeft(findMatchSideBar);
     }
 
     public static void chatClick(Button findMatch, Button yourMatches, Button chat, Button profile) {
@@ -247,6 +246,13 @@ public class GUILauncher extends Application implements IMessageListener {
         return res;
     }
 
+    private static void updateFindMatchSidebar() {
+        buddyCourses = Backend.getSelfObject().getBuddyList();
+        teachingCourses = Backend.getSelfObject().getCoursesTeachingList();
+        learningCourses = Backend.getSelfObject().getCoursesLearningList();
+        findMatchSideBar = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
+    }
+
     @Override
     public void onIncomingResponse(Response response) {
         System.out.println(response);
@@ -268,6 +274,8 @@ public class GUILauncher extends Application implements IMessageListener {
                         try {
                             Backend.setSelfObject(mapper.readValue(response.getResponseData().get("self").toString(),
                                     User.class));
+
+                            updateFindMatchSidebar();
                             GUI.setLeft(findMatchSideBar);
                             GUI.setTop(topbar);
                             GUI.setCenter(findMatch);
@@ -277,6 +285,11 @@ public class GUILauncher extends Application implements IMessageListener {
                     } else {
                         login.setLoginMessage(response.errorMessage, Color.RED);
                     }
+                    break;
+
+                case "match":
+
+                    break;
             }
         });
     }

@@ -79,7 +79,6 @@ public class Backend {
             return;
         }
         try {
-            // TODO: hash password here
 
             Request request = new Request("login");
             request.putData("email", email);

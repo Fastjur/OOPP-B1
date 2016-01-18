@@ -148,6 +148,7 @@ public class ClientConnectionThread extends Thread {
                     if (client.userId != -1) {
                         response.errorCode = 2;
                         response.errorMessage = "You are already logged in.";
+                        break;
                     } else {
                         String email = requestData.get("email").getTextValue();
                         String pass = requestData.get("pass").getTextValue();
@@ -176,7 +177,6 @@ public class ClientConnectionThread extends Thread {
                         response.errorMessage = "Invalid email/password.";
                         break;
                     }
-                    break;
 
                 case "logout":
 
@@ -184,12 +184,13 @@ public class ClientConnectionThread extends Thread {
                     if (this.client.userId == -1) {
                         response.errorCode = 2;
                         response.errorMessage = "You are not logged in.";
+                        break;
                     } else {
                         this.client.userId = -1;
                         response.errorCode = 0;
                         response.errorMessage = "Logout successful.";
+                        break;
                     }
-                    break;
 
                 case "getMatches":
                     System.out.println("Received getMatches from userid: " + client.userId);
@@ -197,26 +198,29 @@ public class ClientConnectionThread extends Thread {
                     if (client.userId == -1) {
                         response.errorCode = 2;
                         response.errorMessage = "You are not logged in.";
+                        break;
                     } else {
                         try {
                             ArrayList<ArrayList<User>> result = Server.getDb().getMatches(this.client.userId, messageObj);
                             if (result == null) {
                                 response.errorMessage = "No matches found!";
                                 response.errorCode = 4;
+                                break;
                             } else {
                                 response.errorMessage = "Retrieved Matches";
                                 response.errorCode = 0;
                                 response.putData("canTeach", result.get(0));
                                 response.putData("canLearn", result.get(1));
                                 response.putData("canBuddyUp", result.get(2));
+                                break;
                             }
                         } catch (ClassNotFoundException | SQLException e) {
                             e.printStackTrace();
                             response.errorCode = 3;
                             response.errorMessage = "Could not get match users from database";
+                            break;
                         }
                     }
-                    break;
 
                 case "acceptMatch":
                     System.out.println("Received acceptMatch from userid: " + client.userId);
@@ -224,6 +228,7 @@ public class ClientConnectionThread extends Thread {
                     if (client.userId == -1) {
                         response.errorMessage = "You are not logged in";
                         response.errorCode = 2;
+                        break;
                     } else {
                         int matchUserId = requestData.get("matchUser").getIntValue();
                         String matchType = requestData.get("matchType").getTextValue(), course = "";
@@ -234,22 +239,25 @@ public class ClientConnectionThread extends Thread {
                                 ("buddy"))) {
                             response.errorMessage = "Wrong match type received!";
                             response.errorCode = 5;
+                            break;
                         } else if (matchUserId == 0) {
                             response.errorMessage = "Didn't receive matchUserId";
                             response.errorCode = 5;
+                            break;
                         } else {
                             try {
                                 Server.getDb().acceptMatch(client.userId, matchUserId, matchType, course);
                                 response.errorMessage = "Added match to database!";
                                 response.errorCode = 0;
+                                break;
                             } catch (ClassNotFoundException | SQLException e) {
                                 e.printStackTrace();
                                 response.errorCode = 5;
                                 response.errorMessage = "Couldn't add match to database!";
+                                break;
                             }
                         }
                     }
-                    break;
 
                 case "removeMatch":
                     System.out.println("Received removeMatch from userid: " + client.userId);
@@ -257,6 +265,7 @@ public class ClientConnectionThread extends Thread {
                     if (client.userId == -1) {
                         response.errorMessage = "You are not logged in!";
                         response.errorCode = 2;
+                        break;
                     } else {
                         int matchId = requestData.get("matchId").getIntValue(),
                             self = client.userId;
@@ -264,14 +273,14 @@ public class ClientConnectionThread extends Thread {
                             Server.getDb().removeMatch(self, matchId);
                             response.errorCode = 0;
                             response.errorMessage = "Removed match from database!";
+                            break;
                         } catch (ClassNotFoundException | SQLException e) {
                             e.printStackTrace();
                             response.errorCode = 6;
                             response.errorMessage = "Couldn't remove match from database";
+                            break;
                         }
                     }
-
-                    break;
 
                 case "getSelf":
                     System.out.println("Received getSelf from userid: " + client.userId);
@@ -279,6 +288,7 @@ public class ClientConnectionThread extends Thread {
                     if (client.userId == -1) {
                         response.errorMessage = "You are not logged in!";
                         response.errorCode = 2;
+                        break;
                     } else {
                         int self = client.userId;
                         try {
@@ -286,19 +296,20 @@ public class ClientConnectionThread extends Thread {
                             response.putData("self", dbSelf);
                             response.errorMessage = "Retrieved your information!";
                             response.errorCode = 0;
+                            break;
                         } catch (ClassNotFoundException | SQLException e) {
                             e.printStackTrace();
                             response.errorCode = 7;
                             response.errorMessage = "Couldn't retrieve your information!";
+                            break;
                         }
                     }
-
-                    break;
 
                 default:
                     response = new Response(action);
                     response.errorMessage = "Unknown command.";
                     response.errorCode = 1;
+                    break;
             }
 
             client.sendMessage(mapper.writeValueAsString(response));

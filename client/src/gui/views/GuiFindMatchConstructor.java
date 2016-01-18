@@ -3,6 +3,7 @@ package gui.views;
 import javafx.geometry.*;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,7 +29,19 @@ public class GuiFindMatchConstructor extends BorderPane {
     public ArrayList<String> languages;
     public double distance;
 
-    public GuiFindMatchConstructor(ArrayList<String> languages, double distance, String name, String age, String descr, String matchIconUrl, String nomatchIconUrl, String profilePicUrl){
+    public GuiFindMatchConstructor() {
+        super();
+        initial();
+    }
+
+    private void initial() {
+        Label label = new Label("Use the sidebar on the left to get started");
+        center = new HBox();
+        center.getChildren().add((label));
+        super.setCenter(center);
+    }
+
+    public GuiFindMatchConstructor(ArrayList<String> languages, double distance, String name, String age, String descr, String profilePicUrl){
         super();
         this.name = name;
         this.age = age;

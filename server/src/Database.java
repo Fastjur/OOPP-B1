@@ -47,7 +47,7 @@ public class Database {
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name AS nationality," +
                 "studies.name AS study, universities.name AS university, email AS dbemail, passwd, firstname," +
-                "lastname, sex, birthdate, bio, studyYear, availableDates, phonenumber, latitude, longitude " +
+                "lastname, sex, birthdate, bio, studyYear, availableDates, phonenumber, latitude, longitude, maxdist " +
                 "FROM `users` LEFT JOIN nationalities ON users.nationality_id = nationalities.id " +
                 "LEFT JOIN studies ON users.study = studies.id " +
                 "LEFT JOIN universities ON users.university_id = universities.id WHERE users.id = ? LIMIT 1");
@@ -91,7 +91,8 @@ public class Database {
             int id = rs.getInt("id"),
                     studyYear = rs.getInt("studyYear");
             double latitude = rs.getDouble("latitude"),
-                    longitude = rs.getDouble("longitude");
+                    longitude = rs.getDouble("longitude"),
+                    maxdist = rs.getDouble("maxdist");
             String dbemail = rs.getString("dbemail"),
                     password = rs.getString("passwd"),
                     firstname = rs.getString("firstname"),
@@ -199,7 +200,7 @@ public class Database {
 
             usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber, study, university,
                     studyYear, availability, coursesTeaching, coursesLearning, coursesSearchingBuddy, sex, nationality,
-                    languages, bio, latitude, longitude);
+                    languages, bio, latitude, longitude, maxdist);
         } else {
             return null;
         }
@@ -556,19 +557,16 @@ public class Database {
      */
     public ArrayList<ArrayList<User>> getMatches(int self_id, JsonNode node) throws SQLException, IOException, ClassNotFoundException {
         ObjectMapper mapper = new ObjectMapper();
-        double maxDist = node.get("data").get("maxdist").getDoubleValue(),
-                latitude = node.get("data").get("latitude").getDoubleValue(),
-                longitude = node.get("data").get("longitude").getDoubleValue();
-        AvailableTimes aTimes = mapper.readValue(node.get("data").get("availability").getTextValue(),
-                AvailableTimes.class);
-        ArrayList learning = mapper.readValue(node.get("data").get("learning").getTextValue(),
-                ArrayList.class),
-                teaching = mapper.readValue(node.get("data").get("teaching").getTextValue(),
-                        ArrayList.class),
-                buddys = mapper.readValue(node.get("data").get("buddys").getTextValue(),
-                        ArrayList.class),
-                languages = mapper.readValue(node.get("data").get("languages").getTextValue(),
-                        ArrayList.class);
+        JsonNode self = mapper.readTree(node.get("requestData").asText()).get("self");
+        System.out.println(self);
+        double maxDist = self.get("maxDistance").getDoubleValue(),
+                latitude = self.get("latitude").getDoubleValue(),
+                longitude = self.get("longitude").getDoubleValue();
+        AvailableTimes aTimes = mapper.readValue(self.get("availableDates"), AvailableTimes.class);
+        ArrayList learning = mapper.readValue(self.get("coursesLearningList"), ArrayList.class),
+                teaching = mapper.readValue(self.get("coursesTeachingList"), ArrayList.class),
+                buddys = mapper.readValue(self.get("buddyList"), ArrayList.class),
+                languages = mapper.readValue(self.get("languageList"), ArrayList.class);
         String where = "WHERE users.id <> ?",
                 dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * 1.1515 ) as distance",
                 query = "SELECT users.id, nationalities.name AS nationality, universities.name AS university, email, passwd, firstname, lastname, sex, birthdate, studies.name AS study, bio, studyYear, availableDates, phonenumber, latitude, longitude, " +
@@ -616,6 +614,8 @@ public class Database {
         total.add(canTeach);
         total.add(canLearn);
         total.add(canBuddyUp);
+
+        System.out.println(total);
 
         return total;
     }
