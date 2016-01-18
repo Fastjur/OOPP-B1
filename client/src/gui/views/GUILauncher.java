@@ -39,8 +39,6 @@ public class GUILauncher extends Application implements IMessageListener {
         ArrayList<String> languages = new ArrayList<>();
         languages.add("English");
         Double distance = 2500.0;
-        String nomatchURL = this.getClass().getResource("resources/nomatch.png").toExternalForm();
-        String matchURL = this.getClass().getResource("resources/match.png").toExternalForm();
 
         // Needs to be replaced with details of potential match
         String pfURL = this.getClass().getResource("resources/pfExample.jpg").toExternalForm();
@@ -72,7 +70,7 @@ public class GUILauncher extends Application implements IMessageListener {
         GUIScene = new Scene(GUI);
 
         matches = new GuiContacts(name, age, pfURL, descr, "TU Delft", "TI", at, languages, distance);
-        findMatch = new GuiFindMatchConstructor(languages, distance, name, age, descr, matchURL, nomatchURL, pfURL);
+        findMatch = new GuiFindMatchConstructor(languages, distance, name, age, descr, pfURL);
         findMatchSideBar  = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
         profile = new GuiProfileConstructor();
         sidebar = new GUISideBarConstructor();
@@ -80,7 +78,7 @@ public class GUILauncher extends Application implements IMessageListener {
         login = new GuiLoginConstructor();
         chatPage = new GuiChat();
 
-        GUI.setCenter(login);
+        GUI.setCenter(findMatch);
 
         PrimaryStage.setScene(GUIScene);
         GUIScene.getStylesheets().addAll("/gui/views/css/chat.css","/gui/views/css/ContactsStyle.css","/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");

@@ -22,19 +22,15 @@ public class GuiFindMatchConstructor extends BorderPane {
     private String name;
     private String age;
     public static String description;
-    public String matchIconUrl;
-    public String nomatchIconUrl;
     public String profilePicUrl;
     public ArrayList<String> languages;
     public double distance;
 
-    public GuiFindMatchConstructor(ArrayList<String> languages, double distance, String name, String age, String descr, String matchIconUrl, String nomatchIconUrl, String profilePicUrl){
+    public GuiFindMatchConstructor(ArrayList<String> languages, double distance, String name, String age, String descr, String profilePicUrl){
         super();
         this.name = name;
         this.age = age;
         this.description = descr;
-        this.matchIconUrl = matchIconUrl;
-        this.nomatchIconUrl = nomatchIconUrl;
         this.profilePicUrl = profilePicUrl;
         this.languages = languages;
         this.distance = distance;
@@ -47,8 +43,11 @@ public class GuiFindMatchConstructor extends BorderPane {
     }
 
     private void bottomBox(){
-        ImageView nmView = new ImageView(new Image(nomatchIconUrl));
-        ImageView mView = new ImageView(new Image(matchIconUrl));
+        String nomatchURL = this.getClass().getResource("resources/noMatchIcon2.png").toExternalForm();
+        String matchURL = this.getClass().getResource("resources/matchIcon2.png").toExternalForm();
+
+        ImageView nmView = new ImageView(new Image(nomatchURL));
+        ImageView mView = new ImageView(new Image(matchURL));
 
         nmView.setPreserveRatio(true);
         nmView.setFitWidth(100);
