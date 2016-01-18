@@ -15,11 +15,11 @@ import javafx.scene.shape.Circle;
  */
 public class GuiProfileConstructor extends BorderPane {
 
-    protected TextField name, age, email, telephoneNumber, location, tf11, tf12, tf13, tf14, tf15, tf16, tf17, tf18,
-            tf19, tf20, tf21, tf22, tf23;
-    protected ChoiceBox<String> sex, nationality, languages;
+    protected TextField name, age, email, telephoneNumber, location, university, studyYear, monday, tuesday,
+            wednesday, thursday, friday, saturday, sunday;
+    protected ChoiceBox<String> sex, nationality, languages, study, findTutor, becomeTutor, findBuddy;
     protected DatePicker dateOfBirth;
-    protected PasswordField password,repeatPwField1,repeatPwField2;
+    protected PasswordField repeatPwField1,repeatPwField2;
 
     public GuiProfileConstructor() {
         super();
@@ -35,22 +35,20 @@ public class GuiProfileConstructor extends BorderPane {
         Insets profileAvailabilityPaneInsets = new Insets(0, 20, 0, 20);
         Insets editToggleBtnInsets = new Insets(0, 0, 20, 40);
         Insets profileInsets = new Insets(10, 30, 30, 10);
-        Insets repeatPwInsets = new Insets(5, 0, 10 , 30);
 
         //Shape settings
         Circle editToggleBtnShape = new Circle(70);
 
         //Fields for information
         name = new TextField();
-        name.setPromptText("Info goes here");
         name.setEditable(false);
         sex = new ChoiceBox<>();
         sex.setDisable(true);
-        sex.getItems().add("Male");
-        sex.getItems().add("Female");
+        sex.getItems().add("Male"); //TODO: Use this method to add items retrieved from DB
+        sex.getItems().add("Female"); //TODO: Use this method to add items retrieved from DB
         sex.setMaxWidth(815);
         sex.setPrefWidth(815);
-        sex.setId("sexChoiceBox");
+        sex.setId("choiceBox");
         age = new TextField(){
             @Override
             public void replaceText(int start, int end, String text){
@@ -66,27 +64,24 @@ public class GuiProfileConstructor extends BorderPane {
                 }
             }
         };
-        age.setPromptText("Info goes here");
         age.setEditable(false);
         dateOfBirth = new DatePicker();
-        dateOfBirth.setPromptText("Info goes here");
         dateOfBirth.setDisable(true);
         dateOfBirth.setMaxWidth(815);
         dateOfBirth.setPrefWidth(815);
         nationality = new ChoiceBox<>();
         nationality.setDisable(true);
-        nationality.getItems().addAll("Items retrieved from database here");
+        nationality.getItems().addAll(""); //TODO: Use this method to add items retrieved from DB
         nationality.setMaxWidth(815);
         nationality.setPrefWidth(815);
-        nationality.setId("nationalityChoiceBox");
+        nationality.setId("choiceBox");
         languages = new ChoiceBox<>();
         languages.setDisable(true);
-        languages.getItems().addAll("Items retrieved from database here");
+        languages.getItems().addAll(""); //TODO: Use this method to add items retrieved from DB
         languages.setMaxWidth(815);
         languages.setPrefWidth(815);
-        languages.setId("languagesChoiceBox");
+        languages.setId("choiceBox");
         email = new TextField();
-        email.setPromptText("Info goes here");
         email.setEditable(false);
         telephoneNumber = new TextField(){
             @Override
@@ -103,7 +98,6 @@ public class GuiProfileConstructor extends BorderPane {
                 }
             }
         };
-        telephoneNumber.setPromptText("Info goes here");
         telephoneNumber.setEditable(false);
         location = new TextField(){
             //Using a regex that isn't completely correct, trying to figure out why the correct one won't work
@@ -121,50 +115,45 @@ public class GuiProfileConstructor extends BorderPane {
                 }
             }
         };
-        location.setPromptText("Info goes here");
         location.setEditable(false);
-        password = new PasswordField();
-        password.setPromptText("Info goes here");
-        password.setEditable(false);
-        tf11 = new TextField();
-        tf11.setPromptText("Info goes here");
-        tf11.setEditable(false);
-        tf12 = new TextField();
-        tf12.setPromptText("Info goes here");
-        tf12.setEditable(false);
-        tf13 = new TextField();
-        tf13.setPromptText("Info goes here");
-        tf13.setEditable(false);
-        tf14 = new TextField();
-        tf14.setPromptText("Info goes here");
-        tf14.setEditable(false);
-        tf15 = new TextField();
-        tf15.setPromptText("Info goes here");
-        tf15.setEditable(false);
-        tf16 = new TextField();
-        tf16.setPromptText("Info goes here");
-        tf16.setEditable(false);
-        tf17 = new TextField();
-        tf17.setPromptText("Info goes here");
-        tf17.setEditable(false);
-        tf18 = new TextField();
-        tf18.setPromptText("Info goes here");
-        tf18.setEditable(false);
-        tf19 = new TextField();
-        tf19.setPromptText("Info goes here");
-        tf19.setEditable(false);
-        tf20 = new TextField();
-        tf20.setPromptText("Info goes here");
-        tf20.setEditable(false);
-        tf21 = new TextField();
-        tf21.setPromptText("Info goes here");
-        tf21.setEditable(false);
-        tf22 = new TextField();
-        tf22.setPromptText("Info goes here");
-        tf22.setEditable(false);
-        tf23 = new TextField();
-        tf23.setPromptText("Info goes here");
-        tf23.setEditable(false);
+        university = new TextField();
+        university.setEditable(false);
+        study = new ChoiceBox<>();
+        study.setPrefWidth(525);
+        study.setMaxWidth(525);
+        study.setDisable(true);
+        study.setId("choiceBox");
+        studyYear = new TextField();
+        studyYear.setEditable(false);
+        findTutor = new ChoiceBox<>();
+        findTutor.setPrefWidth(525);
+        findTutor.setMaxWidth(525);
+        findTutor.setId("choiceBox");
+        findTutor.setDisable(true);
+        becomeTutor = new ChoiceBox<>();
+        becomeTutor.setPrefWidth(525);
+        becomeTutor.setMaxWidth(525);
+        becomeTutor.setDisable(true);
+        becomeTutor.setId("choiceBox");
+        findBuddy = new ChoiceBox<>();
+        findBuddy.setPrefWidth(525);
+        findBuddy.setMaxWidth(525);
+        findBuddy.setDisable(true);
+        findBuddy.setId("choiceBox");
+        monday = new TextField();
+        monday.setEditable(false);
+        tuesday = new TextField();
+        tuesday.setEditable(false);
+        wednesday = new TextField();
+        wednesday.setEditable(false);
+        thursday = new TextField();
+        thursday.setEditable(false);
+        friday = new TextField();
+        friday.setEditable(false);
+        saturday = new TextField();
+        saturday.setEditable(false);
+        sunday = new TextField();
+        sunday.setEditable(false);
         repeatPwField1 = new PasswordField();
         repeatPwField1.setEditable(false);
         repeatPwField1.setPromptText("Type your new password");
@@ -204,20 +193,19 @@ public class GuiProfileConstructor extends BorderPane {
                 email.setEditable(true);
                 telephoneNumber.setEditable(true);
                 location.setEditable(true);
-                password.setEditable(true);
-                tf11.setEditable(true);
-                tf12.setEditable(true);
-                tf13.setEditable(true);
-                tf14.setEditable(true);
-                tf15.setEditable(true);
-                tf16.setEditable(true);
-                tf17.setEditable(true);
-                tf18.setEditable(true);
-                tf19.setEditable(true);
-                tf20.setEditable(true);
-                tf21.setEditable(true);
-                tf22.setEditable(true);
-                tf23.setEditable(true);
+                university.setEditable(true);
+                study.setDisable(false);
+                studyYear.setEditable(true);
+                findTutor.setDisable(false);
+                becomeTutor.setDisable(false);
+                findBuddy.setDisable(false);
+                monday.setEditable(true);
+                tuesday.setEditable(true);
+                wednesday.setEditable(true);
+                thursday.setEditable(true);
+                friday.setEditable(true);
+                saturday.setEditable(true);
+                sunday.setEditable(true);
                 repeatPwField1.setEditable(true);
                 repeatPwField2.setEditable(true);
                 editToggleBtn.setId("editToggleBtnActive");
@@ -232,20 +220,19 @@ public class GuiProfileConstructor extends BorderPane {
                 email.setEditable(false);
                 telephoneNumber.setEditable(false);
                 location.setEditable(false);
-                password.setEditable(false);
-                tf11.setEditable(false);
-                tf12.setEditable(false);
-                tf13.setEditable(false);
-                tf14.setEditable(false);
-                tf15.setEditable(false);
-                tf16.setEditable(false);
-                tf17.setEditable(false);
-                tf18.setEditable(false);
-                tf19.setEditable(false);
-                tf20.setEditable(false);
-                tf21.setEditable(false);
-                tf22.setEditable(false);
-                tf23.setEditable(false);
+                university.setEditable(false);
+                study.setDisable(true);
+                studyYear.setEditable(false);
+                findTutor.setDisable(true);
+                becomeTutor.setDisable(true);
+                findBuddy.setDisable(true);
+                monday.setEditable(false);
+                tuesday.setEditable(false);
+                wednesday.setEditable(false);
+                thursday.setEditable(false);
+                friday.setEditable(false);
+                saturday.setEditable(false);
+                sunday.setEditable(false);
                 repeatPwField1.setEditable(false);
                 repeatPwField2.setEditable(false);
                 editToggleBtn.setId("editToggleBtn");
@@ -270,7 +257,6 @@ public class GuiProfileConstructor extends BorderPane {
         Label emailLabel = new Label("Email:");
         Label telephoneNumberLabel = new Label("Telephone Number:");
         Label locationLabel = new Label("Location:");
-        Label passwordLabel = new Label("Password:");
         Label university = new Label("University:");
         Label study = new Label("Study:");
         Label studyYear = new Label("Study Year:");
@@ -295,10 +281,10 @@ public class GuiProfileConstructor extends BorderPane {
         sunday.setId("availabilityDateLabel");
         Label repeatPwLabel = new Label("Change your password");
         repeatPwLabel.setAlignment(Pos.BOTTOM_LEFT);
-        repeatPwLabel.setMinSize(675,25);
-        repeatPwLabel.setPrefSize(1350,50);
-        repeatPwLabel.setMaxSize(1350,50);
-        repeatPwLabel.setPadding(repeatPwInsets);
+        repeatPwLabel.setMinSize(675,35);
+        repeatPwLabel.setPrefSize(1350,70);
+        repeatPwLabel.setMaxSize(1350,70);
+        repeatPwLabel.setPadding(labelInsets);
         repeatPwLabel.setId("repeatPwLabel");
 
         //Image settings
@@ -349,13 +335,14 @@ public class GuiProfileConstructor extends BorderPane {
         profileInfoContinuedGridPane.addColumn(0, university, study, studyYear);
         ColumnConstraints continuedInfoCol1Constraints = new ColumnConstraints(83,175,175, Priority.NEVER, HPos.LEFT, false);
         continuedInfoCol1Constraints.setPercentWidth(25);
-        profileInfoContinuedGridPane.addColumn(1, tf11, tf12, tf13);
+        profileInfoContinuedGridPane.addColumn(1, this.university, this.study, this.studyYear);
         ColumnConstraints continuedInfoCol2Constraints = new ColumnConstraints(263,525,525, Priority.ALWAYS, HPos.LEFT, true);
         continuedInfoCol2Constraints.setPercentWidth(75);
         profileInfoContinuedGridPane.getColumnConstraints().addAll(continuedInfoCol1Constraints, continuedInfoCol2Constraints);
         profileInfoContinuedGridPane.setId("profileInfoContinuedGridPane");
 
         HBox profileInfoCoursesLabelPane = new HBox();
+        profileInfoCoursesLabelPane.setPadding(labelInsets);
         profileInfoCoursesLabelPane.setMinSize(350,55);
         profileInfoCoursesLabelPane.setPrefSize(700,110);
         profileInfoCoursesLabelPane.setMaxSize(700,110);
@@ -372,7 +359,7 @@ public class GuiProfileConstructor extends BorderPane {
         profileInfoCoursesGridPane.addColumn(0, findATutor, becomeATutor, findStudyBuddy);
         ColumnConstraints coursesCol1Constraints = new ColumnConstraints(83, 175, 175, Priority.NEVER, HPos.LEFT, false);
         coursesCol1Constraints.setPercentWidth(25);
-        profileInfoCoursesGridPane.addColumn(1, tf14, tf15, tf16);
+        profileInfoCoursesGridPane.addColumn(1, findTutor, becomeTutor, findBuddy);
         ColumnConstraints coursesCol2Constraints = new ColumnConstraints(263, 525, 525, Priority.NEVER, HPos.LEFT, true);
         coursesCol2Constraints.setPercentWidth(75);
         profileInfoCoursesGridPane.getColumnConstraints().addAll(coursesCol1Constraints, coursesCol2Constraints);
@@ -396,7 +383,7 @@ public class GuiProfileConstructor extends BorderPane {
         profileAvailabilityGridPane.addColumn(0, monday, tuesday, wednesday, thursday, friday, saturday, sunday);
         ColumnConstraints availabilityCol1Constraints = new ColumnConstraints(75, 150, 150, Priority.NEVER, HPos.LEFT, false);
         availabilityCol1Constraints.setPercentWidth(25);
-        profileAvailabilityGridPane.addColumn(1, tf17, tf18, tf19, tf20, tf21, tf22, tf23);
+        profileAvailabilityGridPane.addColumn(1, this.monday, this.tuesday, this.wednesday, this.thursday, this.friday, this.saturday, this.sunday);
         ColumnConstraints availabilityCol2Constraints = new ColumnConstraints(265, 530, 530, Priority.ALWAYS, HPos.LEFT, true);
         availabilityCol2Constraints.setPercentWidth(75);
         profileAvailabilityGridPane.getColumnConstraints().addAll(availabilityCol1Constraints, availabilityCol2Constraints);
@@ -405,9 +392,9 @@ public class GuiProfileConstructor extends BorderPane {
         VBox profileAvailabilityPane = new VBox();
         profileAvailabilityPane.setPadding(profileAvailabilityPaneInsets);
         profileAvailabilityPane.setAlignment(Pos.TOP_LEFT);
-        profileAvailabilityPane.setMinWidth(375);
-        profileAvailabilityPane.setPrefWidth(750);
-        profileAvailabilityPane.setMaxWidth(750);
+        profileAvailabilityPane.setMinWidth(380);
+        profileAvailabilityPane.setPrefWidth(760);
+        profileAvailabilityPane.setMaxWidth(760);
         profileAvailabilityPane.setPrefHeight(320);
         profileAvailabilityPane.getChildren().addAll(profileAvailabilityTitlePane, profileAvailabilityGridPane);
         profileAvailabilityPane.setId("profileAvailabilityPane");
@@ -433,13 +420,7 @@ public class GuiProfileConstructor extends BorderPane {
         profileTop.setSpacing(20);
         profileTop.getChildren().addAll(profilePicPane,profileInfoPane);
         profileTop.setId("profileTop");
-        /*
-        HBox profileBot = new HBox();
-        profileBot.setPadding(noPaddingInsets);
-        profileBot.setSpacing(10);
-        profileBot.getChildren().addAll(profileBotContainerPane);
-        profileBot.setId("profileBot");
-        */
+
         HBox repeatPwFieldBot = new HBox();
         repeatPwFieldBot.setPadding(profileInsets);
         repeatPwFieldBot.setSpacing(30);
