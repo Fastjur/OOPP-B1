@@ -70,7 +70,7 @@ public class GUILauncher extends Application implements IMessageListener {
         topbar = new GuiTopBar();
         login = new GuiLoginConstructor();
 
-        GUI.setCenter(profile);
+        GUI.setCenter(login);
 
         PrimaryStage.setScene(GUIScene);
         GUIScene.getStylesheets().addAll("/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");
@@ -196,32 +196,39 @@ public class GUILauncher extends Application implements IMessageListener {
             User self = Backend.getSelfObject();
             profile.name.setText(self.getFirstname() + " " + self.getLastname());
             profile.sex.setValue(self.getGender());
+            profile.sex.getSelectionModel().selectFirst();
             LocalDate now = LocalDate.now(),
                       birthday = self.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             int age = Period.between(birthday, now).getYears();
             profile.age.setText(String.valueOf(age));
             profile.dateOfBirth.setValue(birthday);
             profile.nationality.setValue(self.getNationality());
+            profile.nationality.getSelectionModel().selectFirst();
             profile.languages.setValue(listToString(self.getLanguageList()));
+            profile.languages.getSelectionModel().selectFirst();
             profile.email.setText(self.getMail());
             profile.telephoneNumber.setText(self.getPhonenumber());
             profile.location.setText(self.getLongitude() + "," + self.getLatitude());
-            profile.password.setText("");
             //TODO repeatpass field
-            profile.tf11.setText(self.getUniversity());
-            profile.tf12.setText(self.getStudy());
-            profile.tf13.setText(String.valueOf(self.getStudyYear()));
-            profile.tf14.setText(listToString(self.getCoursesLearningList()));
-            profile.tf15.setText(listToString(self.getCoursesTeachingList()));
-            profile.tf16.setText(listToString(self.getBuddyList()));
+            //TODO: Use this method to add items retrieved from DB: <ChoiceBox>.getItems().addAll(<String>);
+            profile.university.setText(self.getUniversity());
+            profile.study.getItems().addAll(self.getStudy());
+            profile.study.getSelectionModel().selectFirst();
+            profile.studyYear.setText(String.valueOf(self.getStudyYear()));
+            profile.findTutor.getItems().addAll(listToString(self.getCoursesLearningList()));
+            profile.findTutor.getSelectionModel().selectFirst();
+            profile.becomeTutor.getItems().addAll(listToString(self.getCoursesTeachingList()));
+            profile.becomeTutor.getSelectionModel().selectFirst();
+            profile.findBuddy.getItems().addAll(listToString(self.getBuddyList()));
+            profile.findBuddy.getSelectionModel().selectFirst();
 
-            profile.tf17.setText(listToString(self.getAvailableDates().getMonday()));
-            profile.tf18.setText(listToString(self.getAvailableDates().getTuesday()));
-            profile.tf19.setText(listToString(self.getAvailableDates().getWednesday()));
-            profile.tf20.setText(listToString(self.getAvailableDates().getThursday()));
-            profile.tf21.setText(listToString(self.getAvailableDates().getFriday()));
-            profile.tf22.setText(listToString(self.getAvailableDates().getSaturday()));
-            profile.tf23.setText(listToString(self.getAvailableDates().getSunday()));
+            profile.monday.setText(listToString(self.getAvailableDates().getMonday()));
+            profile.tuesday.setText(listToString(self.getAvailableDates().getTuesday()));
+            profile.wednesday.setText(listToString(self.getAvailableDates().getWednesday()));
+            profile.thursday.setText(listToString(self.getAvailableDates().getThursday()));
+            profile.friday.setText(listToString(self.getAvailableDates().getFriday()));
+            profile.saturday.setText(listToString(self.getAvailableDates().getSaturday()));
+            profile.sunday.setText(listToString(self.getAvailableDates().getSunday()));
         }
     }
 
