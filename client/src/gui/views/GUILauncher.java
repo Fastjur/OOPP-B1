@@ -10,6 +10,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.deser.std.TimestampDeserializer;
+import shared.AvailableTimes;
 import shared.Response;
 import shared.TimePeriod;
 import shared.User;
@@ -30,12 +32,12 @@ public class GUILauncher extends Application implements IMessageListener {
     private static GuiSideBarFindMatchConstructor findMatchSideBar;
     private static GUISideBarConstructor sidebar;
     private static GuiContacts matches;
-    //private static GuiChat chatPage;
     private static ArrayList<String> buddyCourses;
     private static ArrayList<String> learningCourses;
     private static ArrayList<String> teachingCourses;
 
     private static String pfURL;//TODO implement
+    private static GuiChat chatPage;
 
     @Override
     public void start(Stage PrimaryStage) throws Exception{
@@ -44,8 +46,6 @@ public class GUILauncher extends Application implements IMessageListener {
         /*ArrayList<String> languages = new ArrayList<>();
         languages.add("English");
         Double distance = 2500.0;
-        String nomatchURL = this.getClass().getResource("resources/nomatch.png").toExternalForm();
-        String matchURL = this.getClass().getResource("resources/match.png").toExternalForm();
 
         // Needs to be replaced with details of potential match
 
@@ -57,17 +57,22 @@ public class GUILauncher extends Application implements IMessageListener {
         TimePeriod tp = new TimePeriod(2,3);
         at.addTimePeriod(1,tp);*/
 
+        AvailableTimes at = new AvailableTimes();
+        TimePeriod tp = new TimePeriod(2,3);
+        at.addTimePeriod(1,tp);
+
         GUI = new BorderPane();
         GUIScene = new Scene(GUI);
         profile = new GuiProfileConstructor();
         sidebar = new GUISideBarConstructor();
         topbar = new GuiTopBar();
         login = new GuiLoginConstructor();
+        chatPage = new GuiChat();
 
-        GUI.setCenter(login);
+        GUI.setCenter(findMatch);
 
         PrimaryStage.setScene(GUIScene);
-        GUIScene.getStylesheets().addAll("/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");
+        GUIScene.getStylesheets().addAll("/gui/views/css/chat.css","/gui/views/css/ContactsStyle.css","/gui/views/css/TopBar.css","/gui/views/css/ProfileStyle.css","/gui/views/css/SideBarStyle.css", "/gui/views/css/MatchPage.css", "/gui/views/css/SideBarMatchPage.css", "/gui/views/css/login.css");
         PrimaryStage.show();
 
         Backend.serverAddress = "::1";
@@ -152,7 +157,6 @@ public class GUILauncher extends Application implements IMessageListener {
     }
 
     // Events TopBar
-
     public static void findMatchClick(Button fMatch, Button yourMatches, Button chat, Button profile) {
         fMatch.setId("findMatchActive");
         yourMatches.setId("yourMatches");
@@ -180,6 +184,13 @@ public class GUILauncher extends Application implements IMessageListener {
         findMatch.setId("findMatch");
         yourMatches.setId("yourMatches");
         profile.setId("profileBtn");
+
+        GUI.setCenter(chatPage);
+    }
+
+    public static void matchesChatButton(){
+        //TODO go to chatconversation with this specific match
+        GUI.setCenter(chatPage);
     }
 
     public static void profileClick(Button findMatch, Button yourMatches, Button chat, Button prof) {
