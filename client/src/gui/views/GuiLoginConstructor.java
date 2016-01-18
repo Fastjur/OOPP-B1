@@ -71,7 +71,7 @@ public class GuiLoginConstructor extends BorderPane {
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(5);
-        gridPane.setMaxWidth(500);
+        gridPane.setMaxWidth(400);
         gridPane.setMaxHeight(300);
         hb.setId("hb");
 
@@ -79,7 +79,7 @@ public class GuiLoginConstructor extends BorderPane {
         GridPane gridPane2 = new GridPane();
         gridPane2.setHgap(10);
         gridPane2.setVgap(5);
-        gridPane2.setMaxWidth(500);
+        gridPane2.setMaxWidth(400);
         gridPane2.setMaxHeight(300);
         hb2.setId("hb2");
 
@@ -87,7 +87,7 @@ public class GuiLoginConstructor extends BorderPane {
         GridPane gridPane3 = new GridPane();
         gridPane3.setHgap(10);
         gridPane3.setVgap(5);
-        gridPane3.setMaxWidth(500);
+        gridPane3.setMaxWidth(400);
         gridPane3.setMaxHeight(300);
         hb3.setId("hb3");
 
@@ -149,6 +149,7 @@ public class GuiLoginConstructor extends BorderPane {
         gridPane2.add(btnRegisterBot, 2, 5, 3, 1);
         gridPane2.add(registerMessage, 2, 6, 3, 1);
 
+
         //Reset Password
         gridPane3.add(btnLoginRes, 2, 0);
         gridPane3.add(btnRegisterRes, 3, 0);
@@ -184,17 +185,17 @@ public class GuiLoginConstructor extends BorderPane {
         //Adding Pic to Vbox
         //Login
         VBox vb = new VBox();
-        ImageView iv = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo.png")));
+        ImageView iv = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo-v2.png")));
         vb.getChildren().add(iv);
 
         //Register
         VBox vb2 = new VBox();
-        ImageView iv2 = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo.png")));
+        ImageView iv2 = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo-v2.png")));
         vb2.getChildren().add(iv2);
 
         //Reset
         VBox vb3 = new VBox();
-        ImageView iv3 = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo.png")));
+        ImageView iv3 = new ImageView(new Image(getClass().getResourceAsStream("/MM Logo-v3.png")));
         vb3.getChildren().add(iv3);
 
         //Add ID's to Nodes
@@ -203,6 +204,7 @@ public class GuiLoginConstructor extends BorderPane {
         bp.setId("bp");
         btnLoginTop.setId("BLT");
         btnRegister.setId("BR");
+        gridPane.setId("root");
         btnLoginBot.setId("btnLogin");
         text.setId("text");
         text2.setId("text2");
