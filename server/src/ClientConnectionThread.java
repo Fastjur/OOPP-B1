@@ -305,6 +305,50 @@ public class ClientConnectionThread extends Thread {
                         }
                     }
 
+                case "getNationalities":
+                    System.out.println("Received getNationalities from userid: " + client.userId);
+                    response = new Response("getNationalities");
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        try {
+                            ArrayList<String> dbNationalities = Server.getDb().getNationalities();
+                            response.putData("nationalities", dbNationalities);
+                            response.errorCode = 0;
+                            response.errorMessage = "Retreived database nationalities!";
+                            break;
+                        } catch (SQLException | ClassNotFoundException e) {
+                            response.errorCode = 8;
+                            response.errorMessage = "Couldn't get database nationalities!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "getLanguages":
+                    System.out.println("Received getLanguages from userid: " + client.userId);
+                    response = new Response("getLanguages");
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        try {
+                            ArrayList<String> dbLanguages = Server.getDb().getLanguages();
+                            response.putData("dbLanguages", dbLanguages);
+                            response.errorCode = 0;
+                            response.errorMessage = "Retreived database languages!";
+                            break;
+                        } catch (SQLException | ClassNotFoundException e) {
+                            response.errorCode = 8;
+                            response.errorMessage = "Couldn't get database languages!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
                 default:
                     response = new Response(action);
                     response.errorMessage = "Unknown command.";

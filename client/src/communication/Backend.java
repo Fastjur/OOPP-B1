@@ -173,6 +173,34 @@ public class Backend {
         }
     }
 
+    public static void getNationalities() {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot get nationalities: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("getNationalities");
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getLanguages() {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot get nationalities: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("getLanguages");
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Sets the User object of Backend, representing the currently logged in user
      * @param self User object

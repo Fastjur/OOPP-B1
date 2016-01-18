@@ -1,5 +1,6 @@
 package gui.views;
 
+import communication.Backend;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,6 +9,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+
+import java.util.ArrayList;
 
 /**
  * Constructor for building the profile page of the GUI
@@ -44,8 +47,8 @@ public class GuiProfileConstructor extends BorderPane {
         name.setEditable(false);
         sex = new ChoiceBox<>();
         sex.setDisable(true);
-        sex.getItems().add("Male"); //TODO: Use this method to add items retrieved from DB
-        sex.getItems().add("Female"); //TODO: Use this method to add items retrieved from DB
+        sex.getItems().add("Male");
+        sex.getItems().add("Female");
         sex.setMaxWidth(815);
         sex.setPrefWidth(815);
         sex.setId("choiceBox");
@@ -71,13 +74,11 @@ public class GuiProfileConstructor extends BorderPane {
         dateOfBirth.setPrefWidth(815);
         nationality = new ChoiceBox<>();
         nationality.setDisable(true);
-        nationality.getItems().addAll(""); //TODO: Use this method to add items retrieved from DB
         nationality.setMaxWidth(815);
         nationality.setPrefWidth(815);
         nationality.setId("choiceBox");
         languages = new ChoiceBox<>();
         languages.setDisable(true);
-        languages.getItems().addAll(""); //TODO: Use this method to add items retrieved from DB
         languages.setMaxWidth(815);
         languages.setPrefWidth(815);
         languages.setId("choiceBox");
@@ -448,6 +449,20 @@ public class GuiProfileConstructor extends BorderPane {
         profile.setId("profile");
 
         super.setCenter(profile);
+    }
+
+    /**
+     * First imports all the nationalities into the choicebox. Then uses the selfobject to select the correct one
+     * @param nationalities Arraylist containing all the nationalities from the DB
+     */
+    public void setNationalities(ArrayList<String> nationalities) {
+        nationality.getItems().addAll(nationalities);
+        nationality.getSelectionModel().select(Backend.getSelfObject().getNationality());
+    }
+
+    public void setLanguages(ArrayList<String> dbLanguages) {
+        languages.getItems().addAll(dbLanguages);
+        //TODO languages.getSelectionModel().select(Backend.getSelfObject().getLanguageList());
     }
 
 }

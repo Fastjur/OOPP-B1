@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.codehaus.jackson.map.ObjectMapper;
-import shared.AvailableTimes;
+import org.codehaus.jackson.map.type.TypeFactory;
 import shared.Response;
 import shared.TimePeriod;
 import shared.User;
@@ -267,12 +267,15 @@ public class GUILauncher extends Application implements IMessageListener {
     public void onIncomingResponse(Response response) {
         System.out.println(response);
         ObjectMapper mapper = new ObjectMapper();
+        TypeFactory typeFactory = mapper.getTypeFactory();
         Platform.runLater(() -> {
             switch (response.responseTo) {
                 case "login":
                     if (response.errorCode == 0) {
                         login.setLoginMessage(response.errorMessage, Color.GREEN);
                         Backend.getSelf();
+                        Backend.getNationalities();
+                        Backend.getLanguages();
                     } else {
                         login.setLoginMessage(response.errorMessage, Color.RED);
                     }
@@ -297,8 +300,30 @@ public class GUILauncher extends Application implements IMessageListener {
                     }
                     break;
 
-                case "match":
+                case "getNationalities":
+                    if (response.errorCode == 0) {
+                        ArrayList<String> nationalities = null;
+                        try {
+                            nationalities = mapper.readValue(response.getResponseData().get("nationalities").toString(),
+                                    typeFactory.constructCollectionType(ArrayList.class, String.class));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        profile.setNationalities(nationalities);
+                    }
+                    break;
 
+                case "getLanguages":
+                    if (response.errorCode == 0) {
+                        ArrayList<String> dbLanguages = null;
+                        try {
+                            dbLanguages = mapper.readValue(response.getResponseData().get("dbLanguages").toString(),
+                                    typeFactory.constructCollectionType(ArrayList.class, String.class));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        profile.setLanguages(dbLanguages);
+                    }
                     break;
             }
         });

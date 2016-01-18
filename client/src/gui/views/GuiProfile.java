@@ -19,6 +19,7 @@ import javafx.stage.Stage;
  *
  * @author Sebastiaan Hester
  */
+@Deprecated
 public class GuiProfile extends Application {
 
     @Override

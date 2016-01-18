@@ -318,7 +318,7 @@ public class Database {
          */
         stmt = connection.prepareStatement("UPDATE `users` SET nationality_id=?, university_id=?, " +
                 "email=?, passwd=?, firstname=?, lastname=?, sex=?, birthdate=?, study=?, bio=?, studyYear=?, " +
-                "availableDates=?, phonenumber=?, latitude=?, longitude=? " +
+                "availableDates=?, phonenumber=?, latitude=?, longitude=?, maxdist=? " +
                 "WHERE id = ?");
         stmt.setInt(1, nationality_id);
         stmt.setInt(2, university_id);
@@ -326,7 +326,7 @@ public class Database {
         stmt.setString(4, user.getPassword());
         stmt.setString(5, user.getFirstname());
         stmt.setString(6, user.getLastname());
-        stmt.setString(7, user.getGender());
+        stmt.setString(7, user.getGender().toLowerCase());
         stmt.setLong(8, user.getBirthday().getTime());
         stmt.setInt(9, study_id);
         stmt.setString(10, user.getDescription());
@@ -335,7 +335,8 @@ public class Database {
         stmt.setString(13, user.getPhonenumber());
         stmt.setDouble(14, user.getLatitude());
         stmt.setDouble(15, user.getLongitude());
-        stmt.setInt(16, user.getUserID());
+        stmt.setDouble(16, user.getMaxDistance());
+        stmt.setInt(17, user.getUserID());
 
         stmt.executeUpdate();
         stmt.close();
@@ -516,6 +517,28 @@ public class Database {
         }
         stmt.close();
         return id;
+    }
+
+    public ArrayList<String> getNationalities() throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT name FROM nationalities");
+        ResultSet rs = stmt.executeQuery();
+        ArrayList<String> res = new ArrayList<>();
+        while (rs.next()) {
+            res.add(rs.getString("name"));
+        }
+        return res;
+    }
+
+    public ArrayList<String> getLanguages() throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT name FROM languages");
+        ResultSet rs = stmt.executeQuery();
+        ArrayList<String> res = new ArrayList<>();
+        while (rs.next()) {
+            res.add(rs.getString("name"));
+        }
+        return res;
     }
 
     /**
