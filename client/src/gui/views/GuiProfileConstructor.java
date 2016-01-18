@@ -55,14 +55,14 @@ public class GuiProfileConstructor extends BorderPane {
         age = new TextField(){
             @Override
             public void replaceText(int start, int end, String text){
-                if(text.matches("\\d+")){
+                if(text.matches("[0-9]*")){
                     super.replaceText(start, end, text);
                 }
             }
 
             @Override
             public void replaceSelection(String text){
-                if(text.matches("\\d+")){
+                if(text.matches("[0-9]*")){
                     super.replaceSelection(text);
                 }
             }
@@ -87,14 +87,14 @@ public class GuiProfileConstructor extends BorderPane {
         telephoneNumber = new TextField(){
             @Override
             public void replaceText(int start, int end, String text){
-                if(text.matches("\\d+")){
+                if(text.matches("[0-9]*|\\+")){
                     super.replaceText(start, end, text);
                 }
             }
 
             @Override
             public void replaceSelection(String text){
-                if(text.matches("\\d+")){
+                if(text.matches("[0-9]*|\\+")){
                     super.replaceSelection(text);
                 }
             }
@@ -104,14 +104,14 @@ public class GuiProfileConstructor extends BorderPane {
             //Using a regex that isn't completely correct, trying to figure out why the correct one won't work
             @Override
             public void replaceText(int start, int end, String text){
-                if(text.matches("[0-9,]+")){
+                if(text.matches("[0-9]*|,|\\.")){
                     super.replaceText(start, end, text);
                 }
             }
 
             @Override
             public void replaceSelection(String text){
-                if(text.matches("[0-9,]+")){
+                if(text.matches("[0-9]*|,|\\.")){
                     super.replaceSelection(text);
                 }
             }
@@ -187,7 +187,6 @@ public class GuiProfileConstructor extends BorderPane {
             if (editToggleBtn.getId().equals("editToggleBtn")) {
                 name.setEditable(true);
                 sex.setDisable(false);
-                age.setEditable(true);
                 dateOfBirth.setDisable(false);
                 nationality.setDisable(false);
                 languages.setDisable(false);
@@ -214,7 +213,6 @@ public class GuiProfileConstructor extends BorderPane {
             else{
                 name.setEditable(false);
                 sex.setDisable(true);
-                age.setEditable(false);
                 dateOfBirth.setDisable(true);
                 nationality.setDisable(true);
                 languages.setDisable(true);

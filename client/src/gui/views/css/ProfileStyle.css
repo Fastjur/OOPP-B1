@@ -20,12 +20,16 @@
     -fx-background-color: #FFFFFF;
 }
 
-.choice-box:disabled, .choice-box:disabled > * {
-    -fx-opacity: 1;
+.choice-box:readonly, .choice-box:readonly > * {
+    -fx-opacity: 1.0;
 }
 
-.date-picker:disabled, .date-picker:disabled > * {
-    -fx-opacity: 1;
+.date-picker:readonly, .date-picker:readonly > * {
+    -fx-opacity: 1.0;
+}
+
+.text-field:readonly {
+    -fx-opacity: 1.0;
 }
 
 #profileInfoPane  {
