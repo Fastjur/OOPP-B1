@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -205,32 +206,42 @@ public class GUILauncher extends Application implements IMessageListener {
             User self = Backend.getSelfObject();
             profile.name.setText(self.getFirstname() + " " + self.getLastname());
             profile.sex.setValue(self.getGender());
-            profile.sex.getSelectionModel().selectFirst();
+            if(self.getGender().equals("MALE")) {
+                profile.sex.getSelectionModel().select(0);
+            }
+            if(self.getGender().equals("FEMALE")){
+                profile.sex.getSelectionModel().select(1);
+            }
             LocalDate now = LocalDate.now(),
                       birthday = self.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             int age = Period.between(birthday, now).getYears();
             profile.age.setText(String.valueOf(age));
             profile.dateOfBirth.setValue(birthday);
-            profile.nationality.setValue(self.getNationality());
-            profile.nationality.getSelectionModel().selectFirst();
-            profile.languages.setValue(listToString(self.getLanguageList()));
-            profile.languages.getSelectionModel().selectFirst();
             profile.email.setText(self.getMail());
             profile.telephoneNumber.setText(self.getPhonenumber());
             profile.location.setText(self.getLongitude() + "," + self.getLatitude());
             //TODO repeatpass field
-            //TODO: Use this method to add items retrieved from DB: <ChoiceBox>.getItems().addAll(<String>);
-            profile.university.setText(self.getUniversity());
-            profile.study.getItems().addAll(self.getStudy());
-            profile.study.getSelectionModel().selectFirst();
+            for(int i=0;i<1;i++){
+                CheckBox cb = new CheckBox(self.getNationality());
+                cb.setSelected(true);
+                profile.studyBox.getChildren().addAll(cb);
+            }
             profile.studyYear.setText(String.valueOf(self.getStudyYear()));
-            profile.findTutor.getItems().addAll(listToString(self.getCoursesLearningList()));
-            profile.findTutor.getSelectionModel().selectFirst();
-            profile.becomeTutor.getItems().addAll(listToString(self.getCoursesTeachingList()));
-            profile.becomeTutor.getSelectionModel().selectFirst();
-            profile.findBuddy.getItems().addAll(listToString(self.getBuddyList()));
-            profile.findBuddy.getSelectionModel().selectFirst();
-
+            for(int i=0;i<listToString(self.getCoursesLearningList()).split(",").length;i++){
+                CheckBox cb = new CheckBox(listToString(self.getCoursesLearningList()).split(",")[i]);
+                cb.setSelected(true);
+                profile.findTutorBox.getChildren().addAll(cb);
+            }
+            for(int i=0;i<listToString(self.getCoursesTeachingList()).split(",").length;i++){
+                CheckBox cb = new CheckBox(listToString(self.getCoursesTeachingList()).split(",")[i]);
+                cb.setSelected(true);
+                profile.becomeTutorBox.getChildren().addAll(cb);
+            }
+            for(int i=0;i<listToString(self.getBuddyList()).split(",").length;i++){
+                CheckBox cb = new CheckBox(listToString(self.getBuddyList()).split(",")[i]);
+                cb.setSelected(true);
+                profile.findBuddyBox.getChildren().addAll(cb);
+            }
             profile.monday.setText(listToString(self.getAvailableDates().getMonday()));
             profile.tuesday.setText(listToString(self.getAvailableDates().getTuesday()));
             profile.wednesday.setText(listToString(self.getAvailableDates().getWednesday()));

@@ -20,8 +20,14 @@
     -fx-background-color: #FFFFFF;
 }
 
-.choice-box:readonly, .choice-box:readonly > * {
-    -fx-opacity: 1.0;
+.accordion .titled-pane, .accordion .titled-pane .title, .accordion .titled-pane .vbox {
+    -fx-border-width: 1px;
+    -fx-border-color: #CDCDCD;
+    -fx-background-color: #FFFFFF;
+    -fx-opacity: 1;
+}
+.choice-box:disabled, .choice-box:disabled > * {
+    -fx-opacity: 1;
 }
 
 .date-picker:readonly, .date-picker:readonly > * {
