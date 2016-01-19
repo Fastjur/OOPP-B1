@@ -24,14 +24,14 @@ import java.util.ArrayList;
 public class GUILauncher extends Application implements IMessageListener {
     static Scene GUIScene;
     static Stage stage;
-    private static BorderPane GUI;
-    private static GuiLoginConstructor login;
-    private static GuiTopBar topbar;
-    private static GuiProfileConstructor profile;
-    private static GuiFindMatchConstructor findMatch;
-    private static GuiSideBarFindMatchConstructor findMatchSideBar;
-    private static GUISideBarConstructor sidebar;
-    private static GuiContacts matches;
+    static BorderPane GUI;
+    static GuiLoginConstructor login;
+    static GuiTopBar topbar;
+    static GuiProfileConstructor profile;
+    static GuiFindMatchConstructor findMatch;
+    static GuiSideBarFindMatchConstructor findMatchSideBar;
+    static GUISideBarConstructor sidebar;
+    static GuiContacts matches;
     private static ArrayList<String> buddyCourses;
     private static ArrayList<String> learningCourses;
     private static ArrayList<String> teachingCourses;
@@ -202,7 +202,7 @@ public class GUILauncher extends Application implements IMessageListener {
                 profile.sex.getSelectionModel().select(1);
             }
             LocalDate now = LocalDate.now(),
-                      birthday = self.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    birthday = self.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             int age = Period.between(birthday, now).getYears();
             profile.age.setText(String.valueOf(age));
             profile.dateOfBirth.setValue(birthday);

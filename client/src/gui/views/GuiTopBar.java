@@ -1,6 +1,8 @@
 package gui.views;
+import communication.Backend;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
+import java.io.IOException;
 
 /**
  * Created by Emma on 16-12-15.
@@ -12,11 +14,12 @@ public class GuiTopBar extends ToolBar {
     private Button yourMatches;
     private Button chat;
     private Button profileBtn;
+    private Button logOut;
 
     public GuiTopBar(){
         super();
         buttons();
-        super.getItems().addAll(findMatch, yourMatches, chat, profileBtn);
+        super.getItems().addAll(findMatch, yourMatches, chat, profileBtn, logOut);
         super.setId("toolbar");
     }
 
@@ -40,5 +43,23 @@ public class GuiTopBar extends ToolBar {
         profileBtn.setText("Profile");
         profileBtn.setId("profileBtn");
         profileBtn.setOnAction(e -> GUILauncher.profileClick(findMatch, yourMatches, chat, profileBtn));
+
+        logOut = new Button();
+        logOut.setText("Log Out");
+        logOut.setId("profileBtn");
+        logOut.setOnAction(e -> {
+            try {
+                Backend.closeConnection();
+                System.out.println("Successfully closed connection to server");
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+            //Server.main(new String[0]);
+            Backend.connectToServer();
+            GUILauncher.GUI.setCenter(GUILauncher.login);
+            GUILauncher.GUI.setLeft(null);
+            GUILauncher.GUI.setTop(null);
+        });
+
     }
 }
