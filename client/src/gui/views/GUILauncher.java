@@ -6,7 +6,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 
 public class GUILauncher extends Application implements IMessageListener {
     static Scene GUIScene;
+    static Stage stage;
     private static BorderPane GUI;
     private static GuiLoginConstructor login;
     private static GuiTopBar topbar;
@@ -41,6 +41,7 @@ public class GUILauncher extends Application implements IMessageListener {
 
     @Override
     public void start(Stage PrimaryStage) throws Exception{
+        stage = PrimaryStage;
         pfURL = this.getClass().getResource("resources/pfExample.jpg").toExternalForm();//TODO implement
         findMatch = new GuiFindMatchConstructor();
         GUI = new BorderPane();

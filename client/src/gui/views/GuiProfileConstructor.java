@@ -3,6 +3,8 @@ package gui.views;
 import communication.Backend;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -11,9 +13,12 @@ import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -89,7 +94,6 @@ public class GuiProfileConstructor extends BorderPane {
         nationality.setMaxWidth(815);
         nationality.setPrefWidth(815);
         nationality.setId("choiceBox");
-
         universityBox = new VBox(10);
         universityBox.getStyleClass().addAll("vbox");
         universityPane = new TitledPane("Select University", universityBox);
@@ -99,7 +103,6 @@ public class GuiProfileConstructor extends BorderPane {
         university.setMaxWidth(815);
         university.setPrefWidth(815);
         university.setId("choiceBox");
-
         languagesBox = new VBox(10);
         languagesBox.getStyleClass().add("vbox");
         languagesPane = new TitledPane("Select Languages", languagesBox);
@@ -217,7 +220,9 @@ public class GuiProfileConstructor extends BorderPane {
         uploadPicBtn.setMaxSize(410, 45);
         uploadPicBtn.setText("Upload picture");
         uploadPicBtn.setOnMouseClicked(event -> {
-
+            FileChooser fileChooser = new FileChooser();
+            File file = fileChooser.showOpenDialog(GUILauncher.stage);
+            //TODO: Upload image to server
         });
         uploadPicBtn.setId("uploadPicBtn");
 
@@ -328,6 +333,7 @@ public class GuiProfileConstructor extends BorderPane {
         repeatPwLabel.setId("repeatPwLabel");
 
         //Image settings
+        //TODO: Retrieve profile picture from DB
         Image profilePic = new Image("/gui/views/resources/ProfilePicTestImage.jpg");
         ImageView profilePicView = new ImageView(profilePic);
         profilePicView.setFitHeight(460);
