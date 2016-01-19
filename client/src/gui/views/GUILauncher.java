@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.TypeFactory;
+import org.codehaus.jackson.type.TypeReference;
 import shared.Response;
 import shared.TimePeriod;
 import shared.User;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GUILauncher extends Application implements IMessageListener {
     static Scene GUIScene;
@@ -260,7 +262,6 @@ public class GUILauncher extends Application implements IMessageListener {
     public void onIncomingResponse(Response response) {
         System.out.println(response);
         ObjectMapper mapper = new ObjectMapper();
-        TypeFactory typeFactory = mapper.getTypeFactory();
         Platform.runLater(() -> {
             switch (response.responseTo) {
                 case "login":
@@ -298,23 +299,27 @@ public class GUILauncher extends Application implements IMessageListener {
 
                 case "getNationalities":
                     if (response.errorCode == 0) {
-                        ArrayList<String> nationalities = null;
+                        HashMap<Integer, String> dbNationalities = new HashMap<>();
                         try {
-                            nationalities = mapper.readValue(response.getResponseData().get("nationalities").toString(),
-                                    typeFactory.constructCollectionType(ArrayList.class, String.class));
+                            TypeReference<HashMap<Integer, String>> typeRef = new TypeReference<HashMap<Integer,
+                                    String>>() {};
+                            dbNationalities = mapper.readValue(response.getResponseData().get("nationalities").toString(),
+                                    typeRef);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        profile.setNationalities(nationalities);
+                        profile.setNationalities(dbNationalities);
                     }
                     break;
 
                 case "getLanguages":
                     if (response.errorCode == 0) {
-                        ArrayList<String> dbLanguages = null;
+                        HashMap<Integer, String> dbLanguages = new HashMap<>();
                         try {
+                            TypeReference<HashMap<Integer, String>> typeRef = new TypeReference<HashMap<Integer,
+                                    String>>() {};
                             dbLanguages = mapper.readValue(response.getResponseData().get("dbLanguages").toString(),
-                                    typeFactory.constructCollectionType(ArrayList.class, String.class));
+                                    typeRef);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -324,10 +329,12 @@ public class GUILauncher extends Application implements IMessageListener {
 
                 case "getStudies":
                     if (response.errorCode == 0) {
-                        ArrayList<String> dbStudies = null;
+                        HashMap<Integer, String> dbStudies = new HashMap<>();
                         try {
+                            TypeReference<HashMap<Integer, String>> typeRef = new TypeReference<HashMap<Integer,
+                                    String>>() {};
                             dbStudies = mapper.readValue(response.getResponseData().get("dbStudies").toString(),
-                                    typeFactory.constructCollectionType(ArrayList.class, String.class));
+                                    typeRef);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -337,10 +344,12 @@ public class GUILauncher extends Application implements IMessageListener {
 
                 case "getUniversities":
                     if (response.errorCode == 0) {
-                        ArrayList<String> dbUniversities = null;
+                        HashMap<Integer, String> dbUniversities = new HashMap<>();
                         try {
-                            dbUniversities = mapper.readValue(response.getResponseData().get("dbUniversities").toString(),
-                                    typeFactory.constructCollectionType(ArrayList.class, String.class));
+                            TypeReference<HashMap<Integer, String>> typeRef = new TypeReference<HashMap<Integer,
+                                    String>>() {};
+                            dbUniversities = mapper.readValue(response.getResponseData().get("dbUniversities")
+                                    .toString(), typeRef);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -350,10 +359,12 @@ public class GUILauncher extends Application implements IMessageListener {
 
                 case "getCourses":
                     if (response.errorCode == 0) {
-                        ArrayList<String> dbCourses = null;
+                        HashMap<Integer, String> dbCourses = new HashMap<>();
                         try {
+                            TypeReference<HashMap<Integer, String>> typeRef = new TypeReference<HashMap<Integer,
+                                    String>>() {};
                             dbCourses = mapper.readValue(response.getResponseData().get("dbCourses").toString(),
-                                    typeFactory.constructCollectionType(ArrayList.class, String.class));
+                                    typeRef);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

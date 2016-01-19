@@ -1,3 +1,4 @@
+import org.codehaus.jackson.type.TypeReference;
 import shared.Response;
 import shared.User;
 import org.codehaus.jackson.JsonNode;
@@ -14,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A thread that handles the connection with a client
@@ -114,7 +116,7 @@ public class ClientConnectionThread extends Thread {
             switch (action) {
                 case "register":
                     System.out.println("Received register from userid: " + client.userId);
-                    response = new Response("register");
+                    response = new Response(action);
                     String regemail = requestData.get("email").asText(),
                             regpassword = requestData.get("password").asText();
                     boolean exists = false;
@@ -144,7 +146,7 @@ public class ClientConnectionThread extends Thread {
 
                 case "login":
                     System.out.print("Received login from: ");
-                    response = new Response("login");
+                    response = new Response(action);
                     if (client.userId != -1) {
                         response.errorCode = 2;
                         response.errorMessage = "You are already logged in.";
@@ -180,7 +182,7 @@ public class ClientConnectionThread extends Thread {
 
                 case "logout":
 
-                    response = new Response("logout");
+                    response = new Response(action);
                     if (this.client.userId == -1) {
                         response.errorCode = 2;
                         response.errorMessage = "You are not logged in.";
@@ -224,7 +226,7 @@ public class ClientConnectionThread extends Thread {
 
                 case "acceptMatch":
                     System.out.println("Received acceptMatch from userid: " + client.userId);
-                    response = new Response("acceptMatch");
+                    response = new Response(action);
                     if (client.userId == -1) {
                         response.errorMessage = "You are not logged in";
                         response.errorCode = 2;
@@ -261,7 +263,7 @@ public class ClientConnectionThread extends Thread {
 
                 case "removeMatch":
                     System.out.println("Received removeMatch from userid: " + client.userId);
-                    response = new Response("removeMatch");
+                    response = new Response(action);
                     if (client.userId == -1) {
                         response.errorMessage = "You are not logged in!";
                         response.errorCode = 2;
@@ -284,7 +286,7 @@ public class ClientConnectionThread extends Thread {
 
                 case "getSelf":
                     System.out.println("Received getSelf from userid: " + client.userId);
-                    response = new Response("getSelf");
+                    response = new Response(action);
                     if (client.userId == -1) {
                         response.errorMessage = "You are not logged in!";
                         response.errorCode = 2;
@@ -307,14 +309,14 @@ public class ClientConnectionThread extends Thread {
 
                 case "getNationalities":
                     System.out.println("Received getNationalities from userid: " + client.userId);
-                    response = new Response("getNationalities");
+                    response = new Response(action);
                     if (client.userId == -1) {
                         response.errorMessage = "You are not logged in!";
                         response.errorCode = 2;
                         break;
                     } else {
                         try {
-                            ArrayList<String> dbNationalities = Server.getDb().getNationalities();
+                            HashMap<Integer, String> dbNationalities = Server.getDb().getNationalities();
                             response.putData("nationalities", dbNationalities);
                             response.errorCode = 0;
                             response.errorMessage = "Retreived database nationalities!";
@@ -329,14 +331,14 @@ public class ClientConnectionThread extends Thread {
 
                 case "getLanguages":
                     System.out.println("Received getLanguages from userid: " + client.userId);
-                    response = new Response("getLanguages");
+                    response = new Response(action);
                     if (client.userId == -1) {
                         response.errorMessage = "You are not logged in!";
                         response.errorCode = 2;
                         break;
                     } else {
                         try {
-                            ArrayList<String> dbLanguages = Server.getDb().getLanguages();
+                            HashMap<Integer, String> dbLanguages = Server.getDb().getLanguages();
                             response.putData("dbLanguages", dbLanguages);
                             response.errorCode = 0;
                             response.errorMessage = "Retreived database languages!";
@@ -351,14 +353,14 @@ public class ClientConnectionThread extends Thread {
 
                 case "getStudies":
                     System.out.println("Received getStudies from userid: " + client.userId);
-                    response = new Response("getStudies");
+                    response = new Response(action);
                     if (client.userId == -1) {
                         response.errorMessage = "You are not logged in!";
                         response.errorCode = 2;
                         break;
                     } else {
                         try {
-                            ArrayList<String> dbStudies = Server.getDb().getStudies();
+                            HashMap<Integer, String> dbStudies = Server.getDb().getStudies();
                             response.putData("dbStudies", dbStudies);
                             response.errorCode = 0;
                             response.errorMessage = "Retreived database studies!";
@@ -373,14 +375,14 @@ public class ClientConnectionThread extends Thread {
 
                 case "getUniversities":
                     System.out.println("Received getUniversities from userid: " + client.userId);
-                    response = new Response("getUniversities");
+                    response = new Response(action);
                     if (client.userId == -1) {
                         response.errorMessage = "You are not logged in!";
                         response.errorCode = 2;
                         break;
                     } else {
                         try {
-                            ArrayList<String> dbUniversities = Server.getDb().getUniversities();
+                            HashMap<Integer, String> dbUniversities = Server.getDb().getUniversities();
                             response.putData("dbUniversities", dbUniversities);
                             response.errorCode = 0;
                             response.errorMessage = "Retreived database universities!";
@@ -394,15 +396,15 @@ public class ClientConnectionThread extends Thread {
                     }
 
                 case "getCourses":
-                    System.out.println("Received getUniversities from userid: " + client.userId);
-                    response = new Response("getCourses");
+                    System.out.println("Received getCourses from userid: " + client.userId);
+                    response = new Response(action);
                     if (client.userId == -1) {
                         response.errorMessage = "You are not logged in!";
                         response.errorCode = 2;
                         break;
                     } else {
                         try {
-                            ArrayList<String> dbCourses = Server.getDb().getCourses();
+                            HashMap<Integer, String> dbCourses = Server.getDb().getCourses();
                             response.putData("dbCourses", dbCourses);
                             response.errorCode = 0;
                             response.errorMessage = "Retreived database courses!";
@@ -410,6 +412,320 @@ public class ClientConnectionThread extends Thread {
                         } catch (SQLException | ClassNotFoundException e) {
                             response.errorCode = 8;
                             response.errorMessage = "Couldn't get database courses!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateNationality":
+                    System.out.println("Received updateNationality from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        int nationalityId = requestData.get("nationality").getIntValue();
+                        try {
+                            Server.getDb().updateNationality(client.userId, nationalityId);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated nationality!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update nationality!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateName":
+                    System.out.println("Received updateName from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        String firstname = requestData.get("firstname").getTextValue(),
+                               lastname = requestData.get("lastname").getTextValue();
+                        try {
+                            Server.getDb().updateName(client.userId, firstname, lastname);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated name!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update name!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateDateOfBirth":
+                    System.out.println("Received updateDateOfBirth from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        Long date = requestData.get("date").getLongValue();
+                        try {
+                            Server.getDb().updateDateOfBirth(client.userId, date);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated dateOfBirth!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update dateOfBirth!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateLanguages":
+                    System.out.println("Received updateLanguages from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>(){};
+                        ArrayList<Integer> languages = mapper.readValue(requestData.get("languages"), typeRef);
+                        try {
+                            Server.getDb().updateLanguages(client.userId, languages);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated languages!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update languages!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateSex":
+                    System.out.println("Received updateSex from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        String sex = requestData.get("sex").getTextValue();
+                        try {
+                            Server.getDb().updateSex(client.userId, sex);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated sex!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update sex!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateEmail":
+                    System.out.println("Received updateEmail from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        String email = requestData.get("email").getTextValue();
+                        try {
+                            Server.getDb().updateEmail(client.userId, email);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated email!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update email!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updatePhoneNumber":
+                    System.out.println("Received updatePhoneNumber from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        String phoneNumber = requestData.get("phoneNumber").getTextValue();
+                        try {
+                            Server.getDb().updatePhoneNumber(client.userId, phoneNumber);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated phoneNumber!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update phoneNumber!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateLocation":
+                    System.out.println("Received updateLocation from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        double longitude = requestData.get("longitude").getDoubleValue(),
+                                latitude = requestData.get("latitude").getDoubleValue();
+                        try {
+                            Server.getDb().updateLocation(client.userId, longitude, latitude);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated location!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update location!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateUniversity":
+                    System.out.println("Received updateUniversity from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        int universityId = requestData.get("university").getIntValue();
+                        try {
+                            Server.getDb().updateUniversity(client.userId, universityId);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated university!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update university!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateStudy":
+                    System.out.println("Received updateStudy from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        int studyId = requestData.get("study").getIntValue();
+                        try {
+                            Server.getDb().updateStudy(client.userId, studyId);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated study!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update study!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateStudyYear":
+                    System.out.println("Received updateStudyYear from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        int studyYear = requestData.get("studyYear").getIntValue();
+                        try {
+                            Server.getDb().updateStudyYear(client.userId, studyYear);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated studyYear!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update studyYear!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateLearning":
+                    System.out.println("Received updateLearning from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>(){};
+                        ArrayList<Integer> learning = mapper.readValue(requestData.get("learning"), typeRef);
+                        try {
+                            Server.getDb().updateLearning(client.userId, learning);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated learning!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update learning!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateTeaching":
+                    System.out.println("Received updateTeaching from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>(){};
+                        ArrayList<Integer> teaching = mapper.readValue(requestData.get("teaching"), typeRef);
+                        try {
+                            Server.getDb().updateTeaching(client.userId, teaching);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated teaching!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update teaching!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateBuddies":
+                    System.out.println("Received updateBuddies from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>(){};
+                        ArrayList<Integer> buddies = mapper.readValue(requestData.get("buddies"), typeRef);
+                        try {
+                            Server.getDb().updateBuddies(client.userId, buddies);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated buddies!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update buddies!";
                             e.printStackTrace();
                             break;
                         }

@@ -4,13 +4,21 @@ import communication.Backend;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+import shared.User;
 
+import java.lang.reflect.Array;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Constructor for building the profile page of the GUI
@@ -27,6 +35,8 @@ public class GuiProfileConstructor extends BorderPane {
     protected VBox nationalityBox, universityBox, languagesBox, studyBox, findTutorBox, becomeTutorBox, findBuddyBox;
     protected TitledPane nationalityPane, universityPane, languagesPane, studyPane, findTutorPane, becomeTutorPane,
             findBuddyPane;
+    private ToggleGroup findBuddyGroup, findTutorGroup, becomeTutorGroup, universitiesGroup, nationalitiesGroup,
+            studiesGroup;
 
     public GuiProfileConstructor() {
         super();
@@ -246,8 +256,8 @@ public class GuiProfileConstructor extends BorderPane {
                 repeatPwField1.setEditable(true);
                 repeatPwField2.setEditable(true);
                 editToggleBtn.setId("editToggleBtnActive");
-            }
-            else{
+            } else {
+                updateUser();
                 name.setEditable(false);
                 sex.setDisable(true);
                 dateOfBirth.setDisable(true);
@@ -488,15 +498,17 @@ public class GuiProfileConstructor extends BorderPane {
 
     /**
      * First imports all the nationalities into the choicebox. Then uses the selfobject to select the correct one
-     * @param dbNationalities Arraylist containing all the nationalities from the DB
+     * @param dbNationalities HashMap containing all the nationalities from the DB
      */
-    public void setNationalities(ArrayList<String> dbNationalities) {
+    public void setNationalities(HashMap<Integer, String> dbNationalities) {
         nationalityBox.getChildren().clear();
-        ToggleGroup nationalitiesGroup = new ToggleGroup();
-        for (String name : dbNationalities){
-            RadioButton cb = new RadioButton(name);
+        nationalitiesGroup = new ToggleGroup();
+        for (Object o : dbNationalities.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            RadioButton cb = new RadioButton(pair.getValue().toString());
+            cb.setUserData(Integer.parseInt(pair.getKey().toString()));
             cb.setToggleGroup(nationalitiesGroup);
-            if (Backend.getSelfObject().getNationality().equals(name)) {
+            if (Backend.getSelfObject().getNationality().equals(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
             nationalityBox.getChildren().addAll(cb);
@@ -505,13 +517,15 @@ public class GuiProfileConstructor extends BorderPane {
 
     /**
      * First imports all the languages into the choicebox. Then uses the selfobject to check the correct ones.
-     * @param dbLanguages ArrayList containing all the languages from the DB
+     * @param dbLanguages HashMap containing all the languages from the DB
      */
-    public void setLanguages(ArrayList<String> dbLanguages) {
+    public void setLanguages(HashMap<Integer, String> dbLanguages) {
         languagesBox.getChildren().clear();
-        for (String name : dbLanguages){
-            CheckBox cb = new CheckBox(name);
-            if (Backend.getSelfObject().getLanguageList().contains(name)) {
+        for (Object o : dbLanguages.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            CheckBox cb = new CheckBox(pair.getValue().toString());
+            cb.setUserData(Integer.parseInt(pair.getKey().toString()));
+            if (Backend.getSelfObject().getLanguageList().contains(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
             languagesBox.getChildren().addAll(cb);
@@ -519,16 +533,18 @@ public class GuiProfileConstructor extends BorderPane {
     }
 
     /**
-     * First imports all the studies into the choicebox. Then uses the selfobject to check the correct ones.
-     * @param dbStudies ArrayList containing all the studies from the DB
+     * First imports all the studies into the choicebox. Then uses the selfobject to select the correct one
+     * @param dbStudies HashMap containing all the studies from the DB
      */
-    public void setStudies(ArrayList<String> dbStudies) {
+    public void setStudies(HashMap<Integer, String> dbStudies) {
         studyBox.getChildren().clear();
-        ToggleGroup studiesGroup = new ToggleGroup();
-        for (String name : dbStudies){
-            RadioButton cb = new RadioButton(name);
+        studiesGroup = new ToggleGroup();
+        for (Object o : dbStudies.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            RadioButton cb = new RadioButton(pair.getValue().toString());
+            cb.setUserData(Integer.parseInt(pair.getKey().toString()));
             cb.setToggleGroup(studiesGroup);
-            if (Backend.getSelfObject().getStudy().equals(name)) {
+            if (Backend.getSelfObject().getStudy().equals(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
             studyBox.getChildren().addAll(cb);
@@ -536,16 +552,18 @@ public class GuiProfileConstructor extends BorderPane {
     }
 
     /**
-     * First imports all the universities into the choicebox. Then uses the selfobject to check the correct ones.
-     * @param dbUniversities ArrayList containing all the universities from the DB
+     * First imports all the universities into the choicebox. Then uses the selfobject to select the correct one
+     * @param dbUniversities HashMap containing all the universities from the DB
      */
-    public void setUniversity(ArrayList<String> dbUniversities) {
+    public void setUniversity(HashMap<Integer, String> dbUniversities) {
         universityBox.getChildren().clear();
-        ToggleGroup universitiesGroup = new ToggleGroup();
-        for (String name : dbUniversities){
-            RadioButton cb = new RadioButton(name);
+        universitiesGroup = new ToggleGroup();
+        for (Object o : dbUniversities.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            RadioButton cb = new RadioButton(pair.getValue().toString());
+            cb.setUserData(Integer.parseInt(pair.getKey().toString()));
             cb.setToggleGroup(universitiesGroup);
-            if (Backend.getSelfObject().getUniversity().equals(name)) {
+            if (Backend.getSelfObject().getUniversity().equals(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
             universityBox.getChildren().addAll(cb);
@@ -556,32 +574,141 @@ public class GuiProfileConstructor extends BorderPane {
      * First imports all the courses into the choicebox. Then uses the selfobject to check the correct ones.
      * @param dbCourses ArrayList containing all the courses from the DB
      */
-    public void setCourses(ArrayList<String> dbCourses) {
+    public void setCourses(HashMap<Integer, String> dbCourses) {
         findBuddyBox.getChildren().clear();
         findTutorBox.getChildren().clear();
         becomeTutorBox.getChildren().clear();
-        for (String name : dbCourses){
-            CheckBox cb = new CheckBox(name);
-            if (Backend.getSelfObject().getBuddyList().contains(name)) {
+        findBuddyGroup = new ToggleGroup();
+        findTutorGroup = new ToggleGroup();
+        becomeTutorGroup = new ToggleGroup();
+        for (Object o : dbCourses.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            CheckBox cb = new CheckBox(pair.getValue().toString());
+            cb.setUserData(Integer.parseInt(pair.getKey().toString()));
+            if (Backend.getSelfObject().getBuddyList().contains(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
             findBuddyBox.getChildren().addAll(cb);
         }
-        for (String name : dbCourses){
-            CheckBox cb = new CheckBox(name);
-            if (Backend.getSelfObject().getCoursesTeachingList().contains(name)) {
-                cb.setSelected(true);
-            }
-            becomeTutorBox.getChildren().addAll(cb);
-        }
-        for (String name : dbCourses){
-            CheckBox cb = new CheckBox(name);
-            if (Backend.getSelfObject().getCoursesLearningList().contains(name)) {
+        for (Object o : dbCourses.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            CheckBox cb = new CheckBox(pair.getValue().toString());
+            cb.setUserData(Integer.parseInt(pair.getKey().toString()));
+            if (Backend.getSelfObject().getCoursesLearningList().contains(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
             findTutorBox.getChildren().addAll(cb);
         }
+        for (Object o : dbCourses.entrySet()) {
+            Map.Entry pair = (Map.Entry) o;
+            CheckBox cb = new CheckBox(pair.getValue().toString());
+            cb.setUserData(Integer.parseInt(pair.getKey().toString()));
+            if (Backend.getSelfObject().getCoursesTeachingList().contains(pair.getValue().toString())) {
+                cb.setSelected(true);
+            }
+            becomeTutorBox.getChildren().addAll(cb);
+        }
+    }
 
+    private void updateUser() {
+        User self = Backend.getSelfObject();
+        if (null != name.getText() && !name.getText().equals("")) {
+            String currName = self.getFirstname() + " " + self.getLastname();
+            if (name.getText().matches("\\w+\\s\\w+")) {
+                if (!currName.equals(name.getText())) {
+                    Backend.updateName(name.getText());
+                }
+            } else {
+                updateUserAlert("Your name is invalid.");
+            }
+        }
+        if (null != sex.getValue() && !self.getGender().toLowerCase().equals(sex.getValue().toLowerCase())) {
+            if (sex.getValue().toLowerCase().equals("male") || sex.getValue().toLowerCase().equals("female")) {
+                Backend.updateSex(sex.getValue().toLowerCase());
+            } else {
+                updateUserAlert("Invalid gender specified!");
+            }
+        }
+        if (null != dateOfBirth.getValue()) {
+            LocalDate currDate = self.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            if (!currDate.equals(dateOfBirth.getValue())) {
+                Backend.updateDateOfBirth(dateOfBirth.getValue());
+            }
+        }
+        if (null != (nationalitiesGroup.getSelectedToggle())) {
+            String newNationality = ((RadioButton) nationalitiesGroup.getSelectedToggle()).getText();
+            if (!newNationality.equals(self.getNationality())) {
+                Backend.updateNationality((int) nationalitiesGroup.getSelectedToggle().getUserData());
+            }
+        }
+        if (null != languagesBox.getChildren()) {
+            ArrayList<Integer> languages = getSelected(languagesBox);
+            if (languages.size() > 0) {
+                Backend.updateLanguages(languages);
+            }
+        }
+        if (null != email.getText() && !email.getText().equals("") && !email.getText().equals(self.getMail())) {
+            Backend.updateEmail(email.getText());
+        }
+        if (null != telephoneNumber.getText() && !telephoneNumber.getText().equals("") && !telephoneNumber.getText()
+                .equals(self.getPhonenumber())) {
+            Backend.updateTelephoneNumber(telephoneNumber.getText());
+        }
+        if (null != location.getText()) {
+            if (location.getText().matches("[0-9]{1,2}.[0-9]*,[0-9]{1,2}.[0-9]*")) {
+                Backend.updateLocation(location.getText());
+            } else {
+                updateUserAlert("Invalid location!");
+            }
+        }
+        if (null != universitiesGroup.getSelectedToggle()) {
+            String newUni = ((RadioButton) universitiesGroup.getSelectedToggle()).getText();
+            if (!newUni.equals(self.getUniversity())) {
+                Backend.updateUniversity((int) universitiesGroup.getSelectedToggle().getUserData());
+            }
+        }
+        if (null != studiesGroup.getSelectedToggle()) {
+            String newStudy = ((RadioButton) studiesGroup.getSelectedToggle()).getText();
+            if (!newStudy.equals(self.getStudy())) {
+                Backend.updateStudy((int) studiesGroup.getSelectedToggle().getUserData());
+            }
+        }
+        if (null != studyYear.getText()) {
+            if (Integer.parseInt(studyYear.getText()) != self.getStudyYear()) {
+                Backend.updateStudyYear(Integer.parseInt(studyYear.getText()));
+            }
+        }
+        if (null != findTutorBox.getChildren()) {
+            ArrayList<Integer> learning = getSelected(findTutorBox);
+            Backend.updateLearning(learning);
+        }
+        if (null != becomeTutorBox.getChildren()) {
+            ArrayList<Integer> teaching = getSelected(becomeTutorBox);
+            Backend.updateTeaching(teaching);
+        }
+        if (null != findBuddyBox.getChildren()) {
+            ArrayList<Integer> buddies = getSelected(findBuddyBox);
+            Backend.updateBuddies(buddies);
+        }
+        Backend.getSelf();
+    }
+
+    private ArrayList<Integer> getSelected (VBox box) {
+        ArrayList<Integer> res = new ArrayList<>();
+        for (Node node : box.getChildren()) {
+            CheckBox cb = (CheckBox) node;
+            if (cb.isSelected()) {
+                res.add(Integer.parseInt(cb.getUserData().toString()));
+            }
+        }
+        return res;
+    }
+
+    private void updateUserAlert(String text) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Cannot update profile");
+        alert.setContentText(text);
+        alert.showAndWait();
     }
 
 }
