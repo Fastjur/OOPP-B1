@@ -188,8 +188,8 @@ public class GUILauncher extends Application implements IMessageListener {
         yourMatches.setId("yourMatches");
         chat.setId("chat");
 
+        GUI.setLeft(null);
         GUI.setCenter(profile);
-        GUI.setLeft(sidebar);
 
         if (Backend.getSelfObject() != null) {
             User self = Backend.getSelfObject();

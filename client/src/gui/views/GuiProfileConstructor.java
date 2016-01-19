@@ -19,6 +19,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -81,7 +82,7 @@ public class GuiProfileConstructor extends BorderPane {
             }
         };
         age.setDisable(true);
-        dateOfBirth = new DatePicker();
+        dateOfBirth = new DatePicker(LocalDate.now());
         dateOfBirth.setDisable(true);
         dateOfBirth.setMaxWidth(815);
         dateOfBirth.setPrefWidth(815);
@@ -491,10 +492,13 @@ public class GuiProfileConstructor extends BorderPane {
         profileMain.setPadding(profileInsets);
         profileMain.setSpacing(30);
         profileMain.getChildren().addAll(profileTop,profileBotContainerPane,profilePwField);
+        profileMain.setAlignment(Pos.CENTER);
         profileMain.setId("profile");
 
         ScrollPane profile = new ScrollPane();
         profile.setContent(profileMain);
+        profile.setFitToHeight(true);
+        profile.setFitToWidth(true);
 
         super.setCenter(profile);
     }
