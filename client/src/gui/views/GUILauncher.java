@@ -6,7 +6,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -26,6 +25,7 @@ import java.util.HashMap;
 
 public class GUILauncher extends Application implements IMessageListener {
     static Scene GUIScene;
+    static Stage stage;
     private static BorderPane GUI;
     private static GuiLoginConstructor login;
     private static GuiTopBar topbar;
@@ -43,22 +43,9 @@ public class GUILauncher extends Application implements IMessageListener {
 
     @Override
     public void start(Stage PrimaryStage) throws Exception{
+        stage = PrimaryStage;
         pfURL = this.getClass().getResource("resources/pfExample.jpg").toExternalForm();//TODO implement
         findMatch = new GuiFindMatchConstructor();
-        /*ArrayList<String> languages = new ArrayList<>();
-        languages.add("English");
-        Double distance = 2500.0;
-
-        // Needs to be replaced with details of potential match
-
-        String name = "Rebecca Black";
-        String age = "18";
-        String descr = "Seven a.m. waking up in the morning. Gotta be fresh, gotta go downstairs. Gotta have my bowl, gotta have cereal. Seein' everything the time is goin'. Tickin' on and on, everybody's rushin'. Gotta get down to the bus stop. Gotta catch my bus. I see my friends.";
-
-        AvailableTimes at = new AvailableTimes();
-        TimePeriod tp = new TimePeriod(2,3);
-        at.addTimePeriod(1,tp);*/
-
         GUI = new BorderPane();
         GUIScene = new Scene(GUI);
         profile = new GuiProfileConstructor();
@@ -203,8 +190,8 @@ public class GUILauncher extends Application implements IMessageListener {
         yourMatches.setId("yourMatches");
         chat.setId("chat");
 
+        GUI.setLeft(null);
         GUI.setCenter(profile);
-        GUI.setLeft(sidebar);
 
         if (Backend.getSelfObject() != null) {
             User self = Backend.getSelfObject();

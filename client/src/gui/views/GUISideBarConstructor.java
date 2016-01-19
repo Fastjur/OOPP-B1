@@ -1,10 +1,13 @@
 package gui.views;
 
+import communication.Backend;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
+
+import java.io.IOException;
 
 public class GUISideBarConstructor extends VBox {
 
@@ -30,7 +33,14 @@ public class GUISideBarConstructor extends VBox {
         logoutBtn.setMaxSize(300, 37);
         logoutBtn.setText("Logout");
         logoutBtn.setAlignment(Pos.CENTER_LEFT);
-        logoutBtn.setOnMouseClicked(e -> System.exit(0));
+        logoutBtn.setOnMouseClicked(e -> {
+            try {
+                Backend.closeConnection();
+                System.out.println("Successfully closed connection to server");
+            } catch (IOException io) {
+                io.printStackTrace();
+            }
+        });
         logoutBtn.getStyleClass().add("sidebarBtn");
 
         super.setPadding(noPaddingInsets);
