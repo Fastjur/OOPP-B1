@@ -1,9 +1,13 @@
 package gui.views;
 
 import communication.Backend;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -48,7 +52,7 @@ public class GuiProfileConstructor extends BorderPane {
 
         //Fields for information
         name = new TextField();
-        name.setEditable(false);
+        name.setDisable(true);
         sex = new ChoiceBox<>();
         sex.setDisable(true);
         sex.getItems().add("Male");
@@ -71,7 +75,7 @@ public class GuiProfileConstructor extends BorderPane {
                 }
             }
         };
-        age.setEditable(false);
+        age.setDisable(true);
         dateOfBirth = new DatePicker();
         dateOfBirth.setDisable(true);
         dateOfBirth.setMaxWidth(815);
@@ -106,7 +110,7 @@ public class GuiProfileConstructor extends BorderPane {
         languages.setPrefWidth(815);
         languages.setId("accordion");
         email = new TextField();
-        email.setEditable(false);
+        email.setDisable(true);
         telephoneNumber = new TextField(){
             @Override
             public void replaceText(int start, int end, String text){
@@ -122,7 +126,7 @@ public class GuiProfileConstructor extends BorderPane {
                 }
             }
         };
-        telephoneNumber.setEditable(false);
+        telephoneNumber.setDisable(true);
         location = new TextField(){
             //Using a regex that isn't completely correct, trying to figure out why the correct one won't work
             @Override
@@ -139,7 +143,7 @@ public class GuiProfileConstructor extends BorderPane {
                 }
             }
         };
-        location.setEditable(false);
+        location.setDisable(true);
         studyBox = new VBox(10);
         studyBox.getStyleClass().addAll("vbox");
         studyPane = new TitledPane("Study", studyBox);
@@ -150,7 +154,7 @@ public class GuiProfileConstructor extends BorderPane {
         study.setDisable(true);
         study.setId("choiceBox");
         studyYear = new TextField();
-        studyYear.setEditable(false);
+        studyYear.setDisable(true);
         findTutorBox = new VBox(10);
         findTutorBox.getStyleClass().add("vbox");
         findTutorPane = new TitledPane("Find tutor for", findTutorBox);
@@ -179,27 +183,27 @@ public class GuiProfileConstructor extends BorderPane {
         findBuddy.setDisable(true);
         findBuddy.setId("choiceBox");
         monday = new TextField();
-        monday.setEditable(false);
+        monday.setDisable(true);
         tuesday = new TextField();
-        tuesday.setEditable(false);
+        tuesday.setDisable(true);
         wednesday = new TextField();
-        wednesday.setEditable(false);
+        wednesday.setDisable(true);
         thursday = new TextField();
-        thursday.setEditable(false);
+        thursday.setDisable(true);
         friday = new TextField();
-        friday.setEditable(false);
+        friday.setDisable(true);
         saturday = new TextField();
-        saturday.setEditable(false);
+        saturday.setDisable(true);
         sunday = new TextField();
-        sunday.setEditable(false);
+        sunday.setDisable(true);
         repeatPwField1 = new PasswordField();
-        repeatPwField1.setEditable(false);
+        repeatPwField1.setDisable(true);
         repeatPwField1.setPromptText("Type your new password");
         repeatPwField1.setMinWidth(200);
         repeatPwField1.setPrefWidth(400);
         repeatPwField1.setMaxWidth(400);
         repeatPwField2 = new PasswordField();
-        repeatPwField2.setEditable(false);
+        repeatPwField2.setDisable(true);
         repeatPwField2.setPromptText("Repeat your new password");
         repeatPwField2.setMinWidth(200);
         repeatPwField2.setPrefWidth(400);
@@ -222,55 +226,55 @@ public class GuiProfileConstructor extends BorderPane {
         editToggleBtn.setPrefSize(70,70);
         editToggleBtn.setOnMouseClicked(event -> {
             if (editToggleBtn.getId().equals("editToggleBtn")) {
-                name.setEditable(true);
+                name.setDisable(false);
                 sex.setDisable(false);
                 dateOfBirth.setDisable(false);
                 nationality.setDisable(false);
-                this.languages.setDisable(false);
-                email.setEditable(true);
-                telephoneNumber.setEditable(true);
-                location.setEditable(true);
+                languages.setDisable(false);
+                email.setDisable(false);
+                telephoneNumber.setDisable(false);
+                location.setDisable(true);
                 university.setDisable(false);
                 study.setDisable(false);
-                studyYear.setEditable(true);
+                studyYear.setDisable(false);
                 findTutor.setDisable(false);
                 becomeTutor.setDisable(false);
                 findBuddy.setDisable(false);
-                monday.setEditable(true);
-                tuesday.setEditable(true);
-                wednesday.setEditable(true);
-                thursday.setEditable(true);
-                friday.setEditable(true);
-                saturday.setEditable(true);
-                sunday.setEditable(true);
-                repeatPwField1.setEditable(true);
-                repeatPwField2.setEditable(true);
+                monday.setDisable(false);
+                tuesday.setDisable(false);
+                wednesday.setDisable(false);
+                thursday.setDisable(false);
+                friday.setDisable(false);
+                saturday.setDisable(false);
+                sunday.setDisable(false);
+                repeatPwField1.setDisable(false);
+                repeatPwField2.setDisable(false);
                 editToggleBtn.setId("editToggleBtnActive");
             }
             else{
-                name.setEditable(false);
+                name.setDisable(true);
                 sex.setDisable(true);
                 dateOfBirth.setDisable(true);
                 nationality.setDisable(true);
-                this.languages.setDisable(true);
-                email.setEditable(false);
-                telephoneNumber.setEditable(false);
-                location.setEditable(false);
+                languages.setDisable(true);
+                email.setDisable(true);
+                telephoneNumber.setDisable(true);
+                location.setDisable(true);
                 university.setDisable(true);
                 study.setDisable(true);
-                studyYear.setEditable(false);
+                studyYear.setDisable(true);
                 findTutor.setDisable(true);
                 becomeTutor.setDisable(true);
                 findBuddy.setDisable(true);
-                monday.setEditable(false);
-                tuesday.setEditable(false);
-                wednesday.setEditable(false);
-                thursday.setEditable(false);
-                friday.setEditable(false);
-                saturday.setEditable(false);
-                sunday.setEditable(false);
-                repeatPwField1.setEditable(false);
-                repeatPwField2.setEditable(false);
+                monday.setDisable(true);
+                tuesday.setDisable(true);
+                wednesday.setDisable(true);
+                thursday.setDisable(true);
+                friday.setDisable(true);
+                saturday.setDisable(true);
+                sunday.setDisable(true);
+                repeatPwField1.setDisable(true);
+                repeatPwField2.setDisable(true);
                 editToggleBtn.setId("editToggleBtn");
             }
         });
@@ -477,11 +481,14 @@ public class GuiProfileConstructor extends BorderPane {
         profilePwField.setSpacing(0);
         profilePwField.getChildren().addAll(repeatPwField,editToggleBtnPane);
 
-        VBox profile = new VBox();
-        profile.setPadding(profileInsets);
-        profile.setSpacing(30);
-        profile.getChildren().addAll(profileTop,profileBotContainerPane,profilePwField);
-        profile.setId("profile");
+        VBox profileMain = new VBox();
+        profileMain.setPadding(profileInsets);
+        profileMain.setSpacing(30);
+        profileMain.getChildren().addAll(profileTop,profileBotContainerPane,profilePwField);
+        profileMain.setId("profile");
+
+        ScrollPane profile = new ScrollPane();
+        profile.setContent(profileMain);
 
         super.setCenter(profile);
     }

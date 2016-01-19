@@ -43,20 +43,6 @@ public class GUILauncher extends Application implements IMessageListener {
     public void start(Stage PrimaryStage) throws Exception{
         pfURL = this.getClass().getResource("resources/pfExample.jpg").toExternalForm();//TODO implement
         findMatch = new GuiFindMatchConstructor();
-        /*ArrayList<String> languages = new ArrayList<>();
-        languages.add("English");
-        Double distance = 2500.0;
-
-        // Needs to be replaced with details of potential match
-
-        String name = "Rebecca Black";
-        String age = "18";
-        String descr = "Seven a.m. waking up in the morning. Gotta be fresh, gotta go downstairs. Gotta have my bowl, gotta have cereal. Seein' everything the time is goin'. Tickin' on and on, everybody's rushin'. Gotta get down to the bus stop. Gotta catch my bus. I see my friends.";
-
-        AvailableTimes at = new AvailableTimes();
-        TimePeriod tp = new TimePeriod(2,3);
-        at.addTimePeriod(1,tp);*/
-
         GUI = new BorderPane();
         GUIScene = new Scene(GUI);
         profile = new GuiProfileConstructor();

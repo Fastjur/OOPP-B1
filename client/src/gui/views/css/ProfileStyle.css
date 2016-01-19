@@ -24,19 +24,22 @@
     -fx-border-width: 1px;
     -fx-border-color: #CDCDCD;
     -fx-background-color: #FFFFFF;
-    -fx-opacity: 1;
+    -fx-opacity: 1.0;
 }
+
+.accordion .titled-pane:disabled, .accordion .titled-pane .title:disabled, .accordion .titled-pane .vbox:disabled, .accordion:disabled,
 .choice-box:disabled, .choice-box:disabled > * {
-    -fx-opacity: 1;
+    -fx-opacity: 0.7;
 }
 
-.date-picker:readonly, .date-picker:readonly > * {
-    -fx-opacity: 1.0;
+.date-picker:disabled, .date-picker:disabled > * {
+    -fx-opacity: 0.7;
 }
 
-.text-field:readonly {
-    -fx-opacity: 1.0;
+.text-field:disabled    {
+    -fx-opacity: 0.7;
 }
+
 
 #profileInfoPane  {
     -fx-background-color: #EEEEEE;
