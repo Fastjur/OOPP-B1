@@ -281,7 +281,7 @@ public class AvailableTimes {
         String res = "";
         if (day.size() > 0) {
             for (TimePeriod p : day) {
-                res += p.toReadable() + ",";
+                res += p.toReadable() + " ";
             }
             res = res.substring(0, res.length() - 1);
         }
