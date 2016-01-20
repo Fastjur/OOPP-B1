@@ -48,9 +48,9 @@ public class GUILauncher extends Application implements IMessageListener {
 
     private static ArrayList<User> courseMatches;
 
-    //TODO send typeOfMatch + course together with match (in MatchClick method)
+    //TODO send typeOfMatch + matchCourse together with match (in MatchClick method)
     private static String typeOfMatch;
-    private static String course;
+    private static String matchCourse;
 
     @Override
     public void start(Stage PrimaryStage) throws Exception{
@@ -128,8 +128,8 @@ public class GUILauncher extends Application implements IMessageListener {
         sbCourse.setId("selectedCourseButton");
 
         typeOfMatch = "buddy";
-        course = sbCourse.getText();
-        Backend.findStudyBuddy(course);
+        matchCourse = sbCourse.getText();
+        Backend.findStudyBuddy(matchCourse);
     }
 
     public static void findMatchLearningCoursesClick(Button lCourse) {
@@ -141,8 +141,8 @@ public class GUILauncher extends Application implements IMessageListener {
         lCourse.setId("selectedCourseButton");
 
         typeOfMatch = "learning";
-        course = lCourse.getText();
-        Backend.findTutorMatch(course);
+        matchCourse = lCourse.getText();
+        Backend.findTutorMatch(matchCourse);
     }
 
     public static void findMatchTeachingCoursesClick(Button tCourse) {
@@ -154,8 +154,8 @@ public class GUILauncher extends Application implements IMessageListener {
         tCourse.setId("selectedCourseButton");
 
         typeOfMatch = "teaching";
-        course = tCourse.getText();
-        Backend.findBecomeTutorMatch(course);
+        matchCourse = tCourse.getText();
+        Backend.findBecomeTutorMatch(matchCourse);
     }
 
     private static void findMatchProcessBuddyMatches(){
@@ -235,7 +235,7 @@ public class GUILauncher extends Application implements IMessageListener {
         User match = courseMatches.get(0);
         int matchId = match.getUserID();
 
-        //TODO add match to database (with typeOfMatch and course static strings)
+        Backend.acceptMatch(matchId, typeOfMatch, matchCourse);
 
         courseMatches.remove(0);
         findMatchProcessBuddyMatches();
@@ -467,7 +467,7 @@ public class GUILauncher extends Application implements IMessageListener {
                             e.printStackTrace();
                         }
                     } else if (response.errorCode == 9){
-                        findMatch.noMatches(course);
+                        findMatch.noMatches(matchCourse);
                     }
                     break;
 
