@@ -143,6 +143,40 @@ public class Backend {
         }
     }
 
+    public static void findTutorMatch(String course) {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot register: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("findMatch");
+
+            request.putData("type", "learning");
+            request.putData("course", course);
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void findBecomeTutorMatch(String course) {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot register: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("findMatch");
+
+            request.putData("type", "teaching");
+            request.putData("course", course);
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void acceptMatch(User self, String matchType) {
         if (!isConnected()) {
             System.out.println("[ERROR] Cannot accept match: Not connected!");

@@ -126,8 +126,7 @@ public class GUILauncher extends Application implements IMessageListener {
         lCourse.setId("selectedCourseButton");
 
         String course = lCourse.getText();
-
-        // TODO: Get all users from database who teach this course & show the first user on the Match Page
+        Backend.findTutorMatch(course);
     }
 
     public static void findMatchTeachingCoursesClick(Button tCourse) {
@@ -138,8 +137,7 @@ public class GUILauncher extends Application implements IMessageListener {
         tCourse.setId("selectedCourseButton");
 
         String course = tCourse.getText();
-
-        // TODO: Get all users from database who need a tutor for this course & show the first user on the Match Page
+        Backend.findBecomeTutorMatch(course);
     }
 
     // Events TopBar
