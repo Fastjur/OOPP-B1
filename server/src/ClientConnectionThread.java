@@ -114,6 +114,7 @@ public class ClientConnectionThread extends Thread {
             requestData = mapper.readTree(messageObj.get("requestData").asText());
             Response response;
 
+            label:
             switch (action) {
                 case "register":
                     System.out.println("Received register from userid: " + client.userId);
@@ -204,68 +205,72 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         String type = requestData.get("type").getTextValue();
-                        if (type.equals("buddy")) {
-                            response = new Response("findBuddy");
-                            String course = requestData.get("course").getTextValue();
-                            try {
-                                ArrayList<User> findBuddyRes = Server.getDb().findStudyBuddy(client.userId, course);
-                                if (findBuddyRes.size() > 0) {
-                                    response.putData("findBuddyRes", findBuddyRes);
-                                    response.errorCode = 0;
-                                    response.errorMessage = "Matched buddies!";
-                                    break;
-                                } else {
-                                    response.errorCode = 9;
-                                    response.errorMessage = "Couldn't match any buddies!";
+                        switch (type) {
+                            case "buddy": {
+                                response = new Response("findBuddy");
+                                String course = requestData.get("course").getTextValue();
+                                try {
+                                    ArrayList<User> findBuddyRes = Server.getDb().findStudyBuddy(client.userId, course);
+                                    if (findBuddyRes.size() > 0) {
+                                        response.putData("findBuddyRes", findBuddyRes);
+                                        response.errorCode = 0;
+                                        response.errorMessage = "Matched buddies!";
+                                        break;
+                                    } else {
+                                        response.errorCode = 9;
+                                        response.errorMessage = "Couldn't match any buddies!";
+                                        break;
+                                    }
+                                } catch (SQLException | ClassNotFoundException e) {
+                                    response.errorCode = 1;
+                                    response.errorMessage = "Couldn't find buddys generic error";
+                                    e.printStackTrace();
                                     break;
                                 }
-                            } catch (SQLException | ClassNotFoundException e) {
-                                response.errorCode = 1;
-                                response.errorMessage = "Couldn't find buddys generic error";
-                                e.printStackTrace();
-                                break;
                             }
-                        } else if (type.equals("learning")) {
-                            response = new Response("findBuddy");
-                            String course = requestData.get("course").getTextValue();
-                            try {
-                                ArrayList<User> findBuddyRes = Server.getDb().findTutor(client.userId, course);
-                                if (findBuddyRes.size() > 0) {
-                                    response.putData("findBuddyRes", findBuddyRes);
-                                    response.errorCode = 0;
-                                    response.errorMessage = "Matched tutor!";
-                                    break;
-                                } else {
-                                    response.errorCode = 9;
-                                    response.errorMessage = "Couldn't match any tutors!";
+                            case "learning": {
+                                response = new Response("findBuddy");
+                                String course = requestData.get("course").getTextValue();
+                                try {
+                                    ArrayList<User> findBuddyRes = Server.getDb().findTutor(client.userId, course);
+                                    if (findBuddyRes.size() > 0) {
+                                        response.putData("findBuddyRes", findBuddyRes);
+                                        response.errorCode = 0;
+                                        response.errorMessage = "Matched tutor!";
+                                        break;
+                                    } else {
+                                        response.errorCode = 9;
+                                        response.errorMessage = "Couldn't match any tutors!";
+                                        break;
+                                    }
+                                } catch (SQLException | ClassNotFoundException e) {
+                                    response.errorCode = 1;
+                                    response.errorMessage = "Couldn't find tutor: generic error";
+                                    e.printStackTrace();
                                     break;
                                 }
-                            } catch (SQLException | ClassNotFoundException e) {
-                                response.errorCode = 1;
-                                response.errorMessage = "Couldn't find tutor: generic error";
-                                e.printStackTrace();
-                                break;
                             }
-                        } else if (type.equals("teaching")) {
-                            response = new Response("findBuddy");
-                            String course = requestData.get("course").getTextValue();
-                            try {
-                                ArrayList<User> findBuddyRes = Server.getDb().findStudent(client.userId, course);
-                                if (findBuddyRes.size() > 0) {
-                                    response.putData("findBuddyRes", findBuddyRes);
-                                    response.errorCode = 0;
-                                    response.errorMessage = "Matched student!";
-                                    break;
-                                } else {
-                                    response.errorCode = 9;
-                                    response.errorMessage = "Couldn't match any students!";
+                            case "teaching": {
+                                response = new Response("findBuddy");
+                                String course = requestData.get("course").getTextValue();
+                                try {
+                                    ArrayList<User> findBuddyRes = Server.getDb().findStudent(client.userId, course);
+                                    if (findBuddyRes.size() > 0) {
+                                        response.putData("findBuddyRes", findBuddyRes);
+                                        response.errorCode = 0;
+                                        response.errorMessage = "Matched student!";
+                                        break;
+                                    } else {
+                                        response.errorCode = 9;
+                                        response.errorMessage = "Couldn't match any students!";
+                                        break;
+                                    }
+                                } catch (SQLException | ClassNotFoundException e) {
+                                    response.errorCode = 1;
+                                    response.errorMessage = "Couldn't find student: generic error";
+                                    e.printStackTrace();
                                     break;
                                 }
-                            } catch (SQLException | ClassNotFoundException e) {
-                                response.errorCode = 1;
-                                response.errorMessage = "Couldn't find student: generic error";
-                                e.printStackTrace();
-                                break;
                             }
                         }
                     }
@@ -316,7 +321,7 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         int matchId = requestData.get("matchId").getIntValue(),
-                            self = client.userId;
+                                self = client.userId;
                         try {
                             Server.getDb().removeMatch(self, matchId);
                             response.errorCode = 0;
@@ -494,7 +499,7 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         String firstname = requestData.get("firstname").getTextValue(),
-                               lastname = requestData.get("lastname").getTextValue();
+                                lastname = requestData.get("lastname").getTextValue();
                         try {
                             Server.getDb().updateName(client.userId, firstname, lastname);
                             response.errorCode = 0;
@@ -538,7 +543,8 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>(){};
+                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>() {
+                        };
                         ArrayList<Integer> languages = mapper.readValue(requestData.get("languages"), typeRef);
                         try {
                             Server.getDb().updateLanguages(client.userId, languages);
@@ -716,7 +722,8 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>(){};
+                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>() {
+                        };
                         ArrayList<Integer> learning = mapper.readValue(requestData.get("learning"), typeRef);
                         try {
                             Server.getDb().updateLearning(client.userId, learning);
@@ -739,7 +746,8 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>(){};
+                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>() {
+                        };
                         ArrayList<Integer> teaching = mapper.readValue(requestData.get("teaching"), typeRef);
                         try {
                             Server.getDb().updateTeaching(client.userId, teaching);
@@ -762,7 +770,8 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>(){};
+                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>() {
+                        };
                         ArrayList<Integer> buddies = mapper.readValue(requestData.get("buddies"), typeRef);
                         try {
                             Server.getDb().updateBuddies(client.userId, buddies);
@@ -785,7 +794,8 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>(){};
+                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>() {
+                        };
                         AvailableTimes aTimes = mapper.readValue(requestData.get("availability"), AvailableTimes
                                 .class);
                         try {
