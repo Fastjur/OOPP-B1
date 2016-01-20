@@ -801,6 +801,69 @@ public class ClientConnectionThread extends Thread {
                         }
                     }
 
+                case "getBuddies":
+                    System.out.println("Received getBuddies from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        try {
+                            ArrayList<User> buddies = Server.getDb().getBuddies(client.userId);
+                            response.putData("buddies", buddies);
+                            response.errorCode = 0;
+                            response.errorMessage = "Retrieved your buddies.";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            e.printStackTrace();
+                            response.errorCode = 1;
+                            response.errorMessage = "Couldn't retrieve your buddies!";
+                        }
+                    }
+
+                case "getStudents":
+                    System.out.println("Received getStudents from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        try {
+                            ArrayList<User> students = Server.getDb().getStudents(client.userId);
+                            response.putData("students", students);
+                            response.errorCode = 0;
+                            response.errorMessage = "Retrieved your students.";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            e.printStackTrace();
+                            response.errorCode = 1;
+                            response.errorMessage = "Couldn't retrieve your students!";
+                        }
+                    }
+
+                case "getTutors":
+                    System.out.println("Received getTutors from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        try {
+                            ArrayList<User> tutors = Server.getDb().getTutors(client.userId);
+                            response.putData("tutors", tutors);
+                            response.errorCode = 0;
+                            response.errorMessage = "Retrieved your tutors.";
+                            break;
+                        } catch (ClassNotFoundException | SQLException e) {
+                            e.printStackTrace();
+                            response.errorCode = 1;
+                            response.errorMessage = "Couldn't retrieve your tutors!";
+                        }
+                    }
+
                 default:
                     response = new Response(action);
                     response.errorMessage = "Unknown command.";

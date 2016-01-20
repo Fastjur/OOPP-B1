@@ -357,6 +357,7 @@ public class GUILauncher extends Application implements IMessageListener {
                     break;
 
                 case "getNationalities":
+                    GUIScene.setCursor(Cursor.DEFAULT);
                     if (response.errorCode == 0) {
                         HashMap<Integer, String> dbNationalities = new HashMap<>();
                         try {
@@ -372,6 +373,7 @@ public class GUILauncher extends Application implements IMessageListener {
                     break;
 
                 case "getLanguages":
+                    GUIScene.setCursor(Cursor.DEFAULT);
                     if (response.errorCode == 0) {
                         HashMap<Integer, String> dbLanguages = new HashMap<>();
                         try {
@@ -387,6 +389,7 @@ public class GUILauncher extends Application implements IMessageListener {
                     break;
 
                 case "getStudies":
+                    GUIScene.setCursor(Cursor.DEFAULT);
                     if (response.errorCode == 0) {
                         HashMap<Integer, String> dbStudies = new HashMap<>();
                         try {
@@ -402,6 +405,7 @@ public class GUILauncher extends Application implements IMessageListener {
                     break;
 
                 case "getUniversities":
+                    GUIScene.setCursor(Cursor.DEFAULT);
                     if (response.errorCode == 0) {
                         HashMap<Integer, String> dbUniversities = new HashMap<>();
                         try {
@@ -417,6 +421,7 @@ public class GUILauncher extends Application implements IMessageListener {
                     break;
 
                 case "getCourses":
+                    GUIScene.setCursor(Cursor.DEFAULT);
                     if (response.errorCode == 0) {
                         HashMap<Integer, String> dbCourses = new HashMap<>();
                         try {
@@ -444,6 +449,48 @@ public class GUILauncher extends Application implements IMessageListener {
                     } else if (response.errorCode == 9){
                         findMatch.noMatches(course);
                     }
+                    break;
+
+                case "getBuddies":
+                    if (response.errorCode == 0) {
+                        TypeReference<ArrayList<User>> typeRef = new TypeReference<ArrayList<User>>() {};
+                        try {
+                            ArrayList<User> buddies = mapper.readValue(response.getResponseData().get("buddies")
+                                    .toString(), typeRef);
+                            //TODO For Zoë: ArrayList<User> with buddies. Method to call when you want them: Backend.getBuddies();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    GUIScene.setCursor(Cursor.DEFAULT);
+                    break;
+
+                case "getStudents":
+                    if (response.errorCode == 0) {
+                        TypeReference<ArrayList<User>> typeRef = new TypeReference<ArrayList<User>>() {};
+                        try {
+                            ArrayList<User> students = mapper.readValue(response.getResponseData().get("students")
+                                    .toString(), typeRef);
+                            //TODO For Zoë: ArrayList<User> with students. Method to call when you want them: Backend.getStudents();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    GUIScene.setCursor(Cursor.DEFAULT);
+                    break;
+
+                case "getTutors":
+                    if (response.errorCode == 0) {
+                        TypeReference<ArrayList<User>> typeRef = new TypeReference<ArrayList<User>>() {};
+                        try {
+                            ArrayList<User> tutors = mapper.readValue(response.getResponseData().get("tutors")
+                                    .toString(), typeRef);
+                            //TODO For Zoë: ArrayList<User> with tutors. Method to call when you want them: Backend.getTutors();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    GUIScene.setCursor(Cursor.DEFAULT);
                     break;
             }
         });
