@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="jackson-all-1.9.01">
+  <library name="junit-4.12">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/shared/lib/jackson-all-1.9.0.jar!/" />
+      <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.12.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
