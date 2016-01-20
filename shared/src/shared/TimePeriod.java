@@ -120,6 +120,24 @@ public class TimePeriod {
                 this.end == that.end;
     }
 
+    public String toReadable() {
+        int start = this.start,
+            end = this.end;
+        String startH = numberWithLeadingZeros(start / 60),
+               startM = numberWithLeadingZeros(start % 60),
+               endH = numberWithLeadingZeros(end / 60),
+               endM = numberWithLeadingZeros(end % 60);
+        return startH + ":" + startM + "-" + endH + ":" + endM;
+    }
+
+    protected String numberWithLeadingZeros(int number) {
+        if (number < 10) {
+            return "0" + String.valueOf(number);
+        } else {
+            return String.valueOf(number);
+        }
+    }
+
     /*
        Start of Getters and Setters block
      */

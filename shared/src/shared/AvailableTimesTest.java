@@ -239,4 +239,12 @@ public class AvailableTimesTest {
         aTimes.setSunday(new ArrayList<>());
         assertEquals(new ArrayList<TimePeriod>(), aTimes.getSunday());
     }
+
+    @Test
+    public void testGetMondayReadable() throws Exception {
+        assertEquals("02:30-04:10,04:10-05:50", aTimes.getReadable(1));
+        assertEquals("00:01-00:02", aTimes.getReadable(2));
+        aTimes.setMonday(new ArrayList<>());
+        assertEquals("", aTimes.getReadable(1));
+    }
 }
