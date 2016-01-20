@@ -126,16 +126,17 @@ public class Backend {
         }
     }
 
-    public static void getMatches(User self) {
+    public static void findStudyBuddy(String course) {
         if (!isConnected()) {
-            System.out.println("[ERROR] Cannot get matches: Not connected!");
+            System.out.println("[ERROR] Cannot register: Not connected!");
             return;
         }
 
         try {
-            Request request = new Request("getMatches");
+            Request request = new Request("findMatch");
 
-            request.putData("self", self);
+            request.putData("type", "buddy");
+            request.putData("course", course);
             listenThread.sendMessage(request.toSendableJSON());
         } catch (IOException e) {
             e.printStackTrace();

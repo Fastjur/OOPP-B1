@@ -115,11 +115,7 @@ public class GUILauncher extends Application implements IMessageListener {
         sbCourse.setId("selectedCourseButton");
 
         String course = sbCourse.getText();
-
-        Backend.getMatches(Backend.getSelfObject());
-        User self = Backend.getSelfObject();
-
-        //TODO
+        Backend.findStudyBuddy(course);
     }
 
     public static void findMatchLearningCoursesClick(Button lCourse) {

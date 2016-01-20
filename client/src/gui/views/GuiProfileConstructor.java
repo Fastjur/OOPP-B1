@@ -700,7 +700,8 @@ public class GuiProfileConstructor extends BorderPane {
                 changed = false;
         if (null != name.getText() && !name.getText().equals("")) {
             String currName = self.getFirstname() + " " + self.getLastname();
-            if (name.getText().matches("\\w+\\s\\w+")) {
+            System.out.println(name.getText());
+            if (name.getText().matches("\\w+\\s\\w+.*")) {
                 if (!currName.equals(name.getText())) {
                     Backend.updateName(name.getText());
                     changed = true;

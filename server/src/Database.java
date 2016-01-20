@@ -528,77 +528,68 @@ public class Database {
         removeUser(id);
     }
 
-    /**
-     * Used to get matching users using given parameters
-     *
-     * @param node JSON node containing the search parameters
-     * @return ArrayList containing 3 ArrayLists, the first is an ArrayList containing users the requesting user can
-     * teach, the second who he can learn from, the third who he can buddy up with.
-     * @throws SQLException
-     */
-    public ArrayList<ArrayList<User>> getMatches(int self_id, JsonNode node) throws SQLException, IOException, ClassNotFoundException {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode self = mapper.readTree(node.get("requestData").asText()).get("self");
-        System.out.println(self);
-        double maxDist = self.get("maxDistance").getDoubleValue(),
-                latitude = self.get("latitude").getDoubleValue(),
-                longitude = self.get("longitude").getDoubleValue();
-        AvailableTimes aTimes = mapper.readValue(self.get("availableDates"), AvailableTimes.class);
-        ArrayList learning = mapper.readValue(self.get("coursesLearningList"), ArrayList.class),
-                teaching = mapper.readValue(self.get("coursesTeachingList"), ArrayList.class),
-                buddys = mapper.readValue(self.get("buddyList"), ArrayList.class),
-                languages = mapper.readValue(self.get("languageList"), ArrayList.class);
-        String where = "WHERE users.id <> ?",
-                dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * 1.1515 ) as distance",
-                query = "SELECT users.id, nationalities.name AS nationality, universities.name AS university, email, passwd, firstname, lastname, sex, birthdate, studies.name AS study, bio, studyYear, availableDates, phonenumber, latitude, longitude, " +
-                        dist + " FROM `users` " +
-                        "LEFT JOIN nationalities ON users.nationality_id = nationalities.id " +
-                        "LEFT JOIN universities ON users.university_id = universities.id " +
-                        "LEFT JOIN studies ON users.study = studies.id " + where + " " +
-                        "HAVING distance <= ?";
+    public ArrayList<User> findStudyBuddy(int self_id, String course) throws SQLException, ClassNotFoundException,
+            IOException {
+        int course_id = getCourseIdByName(course);
+        User self = getUser(self_id);
+        double maxDist = 999999999; //TODO, integrate
+        double latitude = self.getLatitude(),
+                longitude = self.getLongitude();
+        String dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * " +
+                "cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * " +
+                "1.1515 ) AS distance",
+                query = "SELECT `users`.id, " + dist + " FROM `users` " +
+                        "  LEFT JOIN `coursesSearchingBuddy` AS buddy ON `users`.id = buddy.users_id " +
+                        "WHERE id <> ?" +
+                        "  AND courses_id = ?" +
+                        "  HAVING distance < ?";
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setDouble(1, latitude);
-        stmt.setDouble(2, latitude);
+        stmt.setDouble(2, latitude); //No, that is not a typo
         stmt.setDouble(3, longitude);
         stmt.setInt(4, self_id);
-        stmt.setDouble(5, maxDist);
+        stmt.setInt(5, course_id);
+        stmt.setDouble(6, maxDist);
         ResultSet rs = stmt.executeQuery();
-        ArrayList<User> matches = new ArrayList<>(),
-                canTeach = new ArrayList<>(),
-                canLearn = new ArrayList<>(),
-                canBuddyUp = new ArrayList<>();
-        while (rs.next()) {
-            User user = getUser(rs.getInt("id"));
-            user.setPassword("");
-            matches.add(user);
-        }
+
+        ArrayList<User> res = processMatches(stmt, rs, self);
         stmt.close();
         ConnectionManager.close();
-        ListIterator<User> it = matches.listIterator();
-        int index = 0;
+
+        return res;
+    }
+
+    private ArrayList<User> processMatches(PreparedStatement stmt, ResultSet rs, User self) throws SQLException,
+            IOException, ClassNotFoundException {
+        AvailableTimes aTimes = self.getAvailableDates();
+        ArrayList<String> languages = self.getLanguageList();
+        ArrayList<Integer> user_ids = new ArrayList<>();
+        ArrayList<User> res = new ArrayList<>();
+        while (rs.next()) {
+            user_ids.add(rs.getInt("id"));
+        }
+        if (user_ids.size() == 0) {
+            return res;
+        }
+        for (int id : user_ids) {
+            res.add(getUser(id));
+        }
+        ListIterator<User> it = res.listIterator();
         while (it.hasNext()) {
             User user = it.next();
-            if (listIntersection(user.getLanguageList(), languages).size() == 0 || aTimes.intersect(user.getAvailableDates()).size() == 0) {
-                matches.remove(index);
+            if (listIntersection(self.getLanguageList(), user.getLanguageList()).size() == 0) {
+                it.remove();
             }
-            index++;
         }
-        if (matches.size() == 0) {
-            return null;
+        it = res.listIterator();
+        while (it.hasNext()) {
+            User user = it.next();
+            if (self.getAvailableDates().intersect(user.getAvailableDates()).size() == 0) {
+                it.remove();
+            }
         }
-        canTeach.addAll(matches.stream().filter(user -> listIntersection(user.getCoursesLearningList(), teaching).size() > 0).collect(Collectors.toList()));
-        canLearn.addAll(matches.stream().filter(user -> listIntersection(user.getCoursesTeachingList(), learning).size() > 0).collect(Collectors.toList()));
-        canBuddyUp.addAll(matches.stream().filter(user -> listIntersection(user.getBuddyList(), buddys).size() > 0).collect(Collectors.toList()));
-
-        ArrayList<ArrayList<User>> total = new ArrayList<>();
-        total.add(canTeach);
-        total.add(canLearn);
-        total.add(canBuddyUp);
-
-        System.out.println(total);
-
-        return total;
+        return res;
     }
 
     /**
@@ -679,6 +670,7 @@ public class Database {
             temp.add(rs.getInt("matched_course"));
             preMatches.add(temp);
         }
+        //todo finish
     }
 
     /**

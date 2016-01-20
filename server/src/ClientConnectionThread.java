@@ -182,7 +182,7 @@ public class ClientConnectionThread extends Thread {
                     }
 
                 case "logout":
-
+                    System.out.println("Received logout from userid: " + client.userId);
                     response = new Response(action);
                     if (this.client.userId == -1) {
                         response.errorCode = 2;
@@ -195,33 +195,36 @@ public class ClientConnectionThread extends Thread {
                         break;
                     }
 
-                case "getMatches":
-                    System.out.println("Received getMatches from userid: " + client.userId);
-                    response = new Response("match");
-                    if (client.userId == -1) {
+                case "findMatch":
+                    System.out.println("Received findMatch from userid " + client.userId);
+                    response = new Response(action);
+                    if (this.client.userId == -1) {
                         response.errorCode = 2;
                         response.errorMessage = "You are not logged in.";
                         break;
                     } else {
-                        try {
-                            ArrayList<ArrayList<User>> result = Server.getDb().getMatches(this.client.userId, messageObj);
-                            if (result == null) {
-                                response.errorMessage = "No matches found!";
-                                response.errorCode = 4;
-                                break;
-                            } else {
-                                response.errorMessage = "Retrieved Matches";
-                                response.errorCode = 0;
-                                response.putData("canTeach", result.get(0));
-                                response.putData("canLearn", result.get(1));
-                                response.putData("canBuddyUp", result.get(2));
+                        String type = requestData.get("type").getTextValue();
+                        if (type.equals("buddy")) {
+                            response = new Response("findBuddy");
+                            String course = requestData.get("course").getTextValue();
+                            try {
+                                ArrayList<User> findBuddyRes = Server.getDb().findStudyBuddy(client.userId, course);
+                                if (findBuddyRes.size() > 0) {
+                                    response.putData("findBuddyRes", findBuddyRes);
+                                    response.errorCode = 0;
+                                    response.errorMessage = "Matched buddies!";
+                                    break;
+                                } else {
+                                    response.errorCode = 9;
+                                    response.errorMessage = "Couldn't match any buddies!";
+                                    break;
+                                }
+                            } catch (SQLException | ClassNotFoundException e) {
+                                response.errorCode = 1;
+                                response.errorMessage = "Couldn't find buddys generic error";
+                                e.printStackTrace();
                                 break;
                             }
-                        } catch (ClassNotFoundException | SQLException e) {
-                            e.printStackTrace();
-                            response.errorCode = 3;
-                            response.errorMessage = "Could not get match users from database";
-                            break;
                         }
                     }
 
