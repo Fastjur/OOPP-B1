@@ -532,28 +532,31 @@ public class Database {
             IOException {
         int course_id = getCourseIdByName(course);
         User self = getUser(self_id);
-        double maxDist = 999999999; //TODO, integrate
+        /*double maxDist = 999999999; //TODO, integrate
         double latitude = self.getLatitude(),
                 longitude = self.getLongitude();
         String dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * " +
                 "cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * " +
-                "1.1515 ) AS distance",
-                query = "SELECT `users`.id, " + dist + " FROM `users` " +
-                        "  LEFT JOIN `coursesSearchingBuddy` AS buddy ON `users`.id = buddy.users_id " +
-                        "WHERE id <> ?" +
-                        "  AND courses_id = ?" +
-                        "  HAVING distance < ?";
+                "1.1515 ) AS distance",*/
+        String query = "SELECT `users`.id FROM `users` " +
+                       "  JOIN `coursesSearchingBuddy` AS buddy ON `users`.id = buddy.users_id " +
+                       "  JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id " +
+                       "  JOIN `matches` ON matches.id = hasmatches.matches_id " +
+                       "WHERE `users`.id <> ?" +
+                       "  AND buddy.courses_id = ? " +
+                       "  AND matches.match_type = ?" +
+                       "  AND `users`.id <> matches.matched_user_id ";
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setDouble(1, latitude);
+        /*stmt.setDouble(1, latitude);
         stmt.setDouble(2, latitude); //No, that is not a typo
-        stmt.setDouble(3, longitude);
-        stmt.setInt(4, self_id);
-        stmt.setInt(5, course_id);
-        stmt.setDouble(6, maxDist);
+        stmt.setDouble(3, longitude);*/
+        stmt.setInt(1, self_id);
+        stmt.setInt(2, course_id);
+        stmt.setString(3, "buddy");
         ResultSet rs = stmt.executeQuery();
 
-        ArrayList<User> res = processMatches(stmt, rs, self);
+        ArrayList<User> res = processMatches(rs, self);
         stmt.close();
         ConnectionManager.close();
 
@@ -564,28 +567,22 @@ public class Database {
             IOException {
         int course_id = getCourseIdByName(course);
         User self = getUser(self_id);
-        double maxDist = 999999999; //TODO, integrate
-        double latitude = self.getLatitude(),
-                longitude = self.getLongitude();
-        String dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * " +
-                "cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * " +
-                "1.1515 ) AS distance",
-                query = "SELECT `users`.id, " + dist + " FROM `users` " +
-                        "  LEFT JOIN `coursesTeaching` AS buddy ON `users`.id = buddy.users_id " +
-                        "WHERE id <> ?" +
-                        "  AND courses_id = ?" +
-                        "  HAVING distance < ?";
+        String query = "SELECT `users`.id FROM `users` " +
+                       "  JOIN `coursesTeaching` AS buddy ON `users`.id = buddy.users_id " +
+                       "  JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id " +
+                       "  JOIN `matches` ON matches.id = hasmatches.matches_id " +
+                       "WHERE `users`.id <> ?" +
+                       "  AND buddy.courses_id = ? " +
+                       "  AND matches.match_type = ?" +
+                       "  AND `users`.id <> matches.matched_user_id";
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setDouble(1, latitude);
-        stmt.setDouble(2, latitude); //No, that is not a typo
-        stmt.setDouble(3, longitude);
-        stmt.setInt(4, self_id);
-        stmt.setInt(5, course_id);
-        stmt.setDouble(6, maxDist);
+        stmt.setInt(1, self_id);
+        stmt.setInt(2, course_id);
+        stmt.setString(3, "teaching");
         ResultSet rs = stmt.executeQuery();
 
-        ArrayList<User> res = processMatches(stmt, rs, self);
+        ArrayList<User> res = processMatches(rs, self);
         stmt.close();
         ConnectionManager.close();
 
@@ -596,43 +593,30 @@ public class Database {
             IOException {
         int course_id = getCourseIdByName(course);
         User self = getUser(self_id);
-        double maxDist = 999999999; //TODO, integrate
-        double latitude = self.getLatitude(),
-                longitude = self.getLongitude();
-        String dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * " +
-                "cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * " +
-                "1.1515 ) AS distance",
-                query = "SELECT `users`.id, " + dist + " FROM `users` " +
-                        "  JOIN `coursesLearning` AS buddy ON `users`.id = buddy.users_id " +
-                        "  JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id " +
-                        "  JOIN `matches` ON matches.id = hasmatches.matches_id " +
-                        "WHERE `users`.id <> ?" +
-                        "  AND buddy.courses_id = ? " +
-                        "  AND matches.match_type = ?" +
-                        "  AND `users`.id <> matches.matched_user_id " +
-                        "  HAVING distance < ?";
+        String query = "SELECT `users`.id FROM `users` " +
+                       "  JOIN `coursesLearning` AS buddy ON `users`.id = buddy.users_id " +
+                       "  JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id " +
+                       "  JOIN `matches` ON matches.id = hasmatches.matches_id " +
+                       "WHERE `users`.id <> ?" +
+                       "  AND buddy.courses_id = ? " +
+                       "  AND matches.match_type = ?" +
+                       "  AND `users`.id <> matches.matched_user_id";
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setDouble(1, latitude);
-        stmt.setDouble(2, latitude); //No, that is not a typo
-        stmt.setDouble(3, longitude);
-        stmt.setInt(4, self_id);
-        stmt.setInt(5, course_id);
-        stmt.setString(6, "learning");
-        stmt.setDouble(7, maxDist);
+        stmt.setInt(1, self_id);
+        stmt.setInt(2, course_id);
+        stmt.setString(3, "learning");
         ResultSet rs = stmt.executeQuery();
 
-        ArrayList<User> res = processMatches(stmt, rs, self);
+        ArrayList<User> res = processMatches(rs, self);
         stmt.close();
         ConnectionManager.close();
 
         return res;
     }
 
-    private ArrayList<User> processMatches(PreparedStatement stmt, ResultSet rs, User self) throws SQLException,
-            IOException, ClassNotFoundException {
-        AvailableTimes aTimes = self.getAvailableDates();
-        ArrayList<String> languages = self.getLanguageList();
+    private ArrayList<User> processMatches(ResultSet rs, User self) throws SQLException, IOException,
+            ClassNotFoundException {
         ArrayList<Integer> user_ids = new ArrayList<>();
         ArrayList<User> res = new ArrayList<>();
         while (rs.next()) {
