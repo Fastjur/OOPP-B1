@@ -213,13 +213,13 @@ public class GUILauncher extends Application implements IMessageListener {
             profile.location.setText(self.getLongitude() + "," + self.getLatitude());
             //TODO repeatpass field
             profile.studyYear.setText(String.valueOf(self.getStudyYear()));
-            profile.monday.setText(listToString(self.getAvailableDates().getMonday()));
-            profile.tuesday.setText(listToString(self.getAvailableDates().getTuesday()));
-            profile.wednesday.setText(listToString(self.getAvailableDates().getWednesday()));
-            profile.thursday.setText(listToString(self.getAvailableDates().getThursday()));
-            profile.friday.setText(listToString(self.getAvailableDates().getFriday()));
-            profile.saturday.setText(listToString(self.getAvailableDates().getSaturday()));
-            profile.sunday.setText(listToString(self.getAvailableDates().getSunday()));
+            profile.monday.setText(self.getAvailableDates().getReadable(1));
+            profile.tuesday.setText(self.getAvailableDates().getReadable(2));
+            profile.wednesday.setText(self.getAvailableDates().getReadable(3));
+            profile.thursday.setText(self.getAvailableDates().getReadable(4));
+            profile.friday.setText(self.getAvailableDates().getReadable(5));
+            profile.saturday.setText(self.getAvailableDates().getReadable(6));
+            profile.sunday.setText(self.getAvailableDates().getReadable(7));
         }
     }
 

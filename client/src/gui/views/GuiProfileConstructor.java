@@ -26,6 +26,13 @@ import java.util.Map;
  */
 public class GuiProfileConstructor extends BorderPane {
 
+    private boolean languagesUpdated = false,
+                    studiesUpdated = false,
+                    nationalityUpdated = false,
+                    universityUpdated = false,
+                    findBuddyUpdated = false,
+                    findTutorUpdated = false,
+                    becomeTutorUpdated = false;
     protected TextField name, age, email, telephoneNumber, location, studyYear, monday, tuesday,
             wednesday, thursday, friday, saturday, sunday;
     protected ChoiceBox<String> sex;
@@ -520,6 +527,10 @@ public class GuiProfileConstructor extends BorderPane {
             if (Backend.getSelfObject().getNationality().equals(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
+            cb.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                System.out.println("[INFO] Nationality changed, adding to queue for updating to database");
+                this.nationalityUpdated = true;
+            });
             nationalityBox.getChildren().addAll(cb);
         }
     }
@@ -537,6 +548,10 @@ public class GuiProfileConstructor extends BorderPane {
             if (Backend.getSelfObject().getLanguageList().contains(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
+            cb.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                System.out.println("[INFO] Languages changed, adding to queue for updating to database");
+                this.languagesUpdated = true;
+            });
             languagesBox.getChildren().addAll(cb);
         }
     }
@@ -556,6 +571,10 @@ public class GuiProfileConstructor extends BorderPane {
             if (Backend.getSelfObject().getStudy().equals(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
+            cb.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                System.out.println("[INFO] Studies changed, adding to queue for updating to database");
+                this.studiesUpdated = true;
+            });
             studyBox.getChildren().addAll(cb);
         }
     }
@@ -575,6 +594,10 @@ public class GuiProfileConstructor extends BorderPane {
             if (Backend.getSelfObject().getUniversity().equals(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
+            cb.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                System.out.println("[INFO] University changed, adding to queue for updating to database");
+                this.universityUpdated = true;
+            });
             universityBox.getChildren().addAll(cb);
         }
     }
@@ -597,6 +620,10 @@ public class GuiProfileConstructor extends BorderPane {
             if (Backend.getSelfObject().getBuddyList().contains(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
+            cb.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                System.out.println("[INFO] findBuddy changed, adding to queue for updating to database");
+                this.findBuddyUpdated = true;
+            });
             findBuddyBox.getChildren().addAll(cb);
         }
         for (Object o : dbCourses.entrySet()) {
@@ -606,6 +633,10 @@ public class GuiProfileConstructor extends BorderPane {
             if (Backend.getSelfObject().getCoursesLearningList().contains(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
+            cb.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                System.out.println("[INFO] findTutor changed, adding to queue for updating to database");
+                this.findTutorUpdated = true;
+            });
             findTutorBox.getChildren().addAll(cb);
         }
         for (Object o : dbCourses.entrySet()) {
@@ -615,91 +646,107 @@ public class GuiProfileConstructor extends BorderPane {
             if (Backend.getSelfObject().getCoursesTeachingList().contains(pair.getValue().toString())) {
                 cb.setSelected(true);
             }
+            cb.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                System.out.println("[INFO] becomeTutor changed, adding to queue for updating to database");
+                this.becomeTutorUpdated = true;
+            });
             becomeTutorBox.getChildren().addAll(cb);
         }
     }
 
     private void updateUser() {
         User self = Backend.getSelfObject();
+        boolean error = false,
+                changed = false;
         if (null != name.getText() && !name.getText().equals("")) {
             String currName = self.getFirstname() + " " + self.getLastname();
             if (name.getText().matches("\\w+\\s\\w+")) {
                 if (!currName.equals(name.getText())) {
                     Backend.updateName(name.getText());
+                    changed = true;
                 }
             } else {
+                error = true;
                 updateUserAlert("Your name is invalid.");
             }
         }
-        if (null != sex.getValue() && !self.getGender().toLowerCase().equals(sex.getValue().toLowerCase())) {
+        if (null != sex.getValue() && !self.getGender().toLowerCase().equals(sex.getValue().toLowerCase()) && !error) {
             if (sex.getValue().toLowerCase().equals("male") || sex.getValue().toLowerCase().equals("female")) {
                 Backend.updateSex(sex.getValue().toLowerCase());
+                changed = true;
             } else {
+                error = true;
                 updateUserAlert("Invalid gender specified!");
             }
         }
-        if (null != dateOfBirth.getValue()) {
+        if (null != dateOfBirth.getValue() && !error) {
             LocalDate currDate = self.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             if (!currDate.equals(dateOfBirth.getValue())) {
                 Backend.updateDateOfBirth(dateOfBirth.getValue());
+                changed = true;
             }
         }
-        if (null != (nationalitiesGroup.getSelectedToggle())) {
-            String newNationality = ((RadioButton) nationalitiesGroup.getSelectedToggle()).getText();
-            if (!newNationality.equals(self.getNationality())) {
-                Backend.updateNationality((int) nationalitiesGroup.getSelectedToggle().getUserData());
-            }
+        if (null != (nationalitiesGroup.getSelectedToggle()) && this.nationalityUpdated && !error) {
+            Backend.updateNationality((int) nationalitiesGroup.getSelectedToggle().getUserData());
+            changed = true;
         }
-        if (null != languagesBox.getChildren()) {
+        if (null != languagesBox.getChildren() && !error && this.languagesUpdated) {
             ArrayList<Integer> languages = getSelected(languagesBox);
             if (languages.size() > 0) {
                 Backend.updateLanguages(languages);
+                changed = true;
             }
         }
-        if (null != email.getText() && !email.getText().equals("") && !email.getText().equals(self.getMail())) {
+        if (null != email.getText() && !email.getText().equals("") && !email.getText().equals(self.getMail()) && !error) {
             Backend.updateEmail(email.getText());
+            changed = true;
         }
         if (null != telephoneNumber.getText() && !telephoneNumber.getText().equals("") && !telephoneNumber.getText()
-                .equals(self.getPhonenumber())) {
+                .equals(self.getPhonenumber()) && !error) {
             Backend.updateTelephoneNumber(telephoneNumber.getText());
+            changed = true;
         }
-        if (null != location.getText()) {
+        if (null != location.getText() && !error) {
             if (location.getText().matches("[0-9]{1,2}.[0-9]*,[0-9]{1,2}.[0-9]*")) {
                 Backend.updateLocation(location.getText());
+                changed = true;
             } else {
+                error = true;
                 updateUserAlert("Invalid location!");
             }
         }
-        if (null != universitiesGroup.getSelectedToggle()) {
-            String newUni = ((RadioButton) universitiesGroup.getSelectedToggle()).getText();
-            if (!newUni.equals(self.getUniversity())) {
-                Backend.updateUniversity((int) universitiesGroup.getSelectedToggle().getUserData());
-            }
+        if (null != universitiesGroup.getSelectedToggle() && this.universityUpdated && !error) {
+            Backend.updateUniversity((int) universitiesGroup.getSelectedToggle().getUserData());
+            changed = true;
         }
-        if (null != studiesGroup.getSelectedToggle()) {
-            String newStudy = ((RadioButton) studiesGroup.getSelectedToggle()).getText();
-            if (!newStudy.equals(self.getStudy())) {
-                Backend.updateStudy((int) studiesGroup.getSelectedToggle().getUserData());
-            }
+        if (null != studiesGroup.getSelectedToggle() && this.studiesUpdated && !error) {
+            Backend.updateStudy((int) studiesGroup.getSelectedToggle().getUserData());
+            changed = true;
         }
-        if (null != studyYear.getText()) {
+        if (null != studyYear.getText() && !error) {
             if (Integer.parseInt(studyYear.getText()) != self.getStudyYear()) {
                 Backend.updateStudyYear(Integer.parseInt(studyYear.getText()));
+                changed = true;
             }
         }
-        if (null != findTutorBox.getChildren()) {
+        if (null != findTutorBox.getChildren() && this.findTutorUpdated && !error) {
             ArrayList<Integer> learning = getSelected(findTutorBox);
             Backend.updateLearning(learning);
+            changed = true;
         }
-        if (null != becomeTutorBox.getChildren()) {
+        if (null != becomeTutorBox.getChildren() && this.becomeTutorUpdated && !error) {
             ArrayList<Integer> teaching = getSelected(becomeTutorBox);
             Backend.updateTeaching(teaching);
+            changed = true;
         }
-        if (null != findBuddyBox.getChildren()) {
+        if (null != findBuddyBox.getChildren() && this.findBuddyUpdated && !error) {
             ArrayList<Integer> buddies = getSelected(findBuddyBox);
             Backend.updateBuddies(buddies);
+            changed = true;
         }
-        Backend.getSelf();
+        if (!error && changed) {
+            Backend.getSelf();
+        }
     }
 
     private ArrayList<Integer> getSelected (VBox box) {
@@ -716,7 +763,8 @@ public class GuiProfileConstructor extends BorderPane {
     private void updateUserAlert(String text) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Cannot update profile");
-        alert.setContentText(text);
+        alert.setHeaderText(text);
+        alert.setContentText("Aborting save to database");
         alert.showAndWait();
     }
 
