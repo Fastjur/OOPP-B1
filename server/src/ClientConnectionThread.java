@@ -279,10 +279,8 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         int matchUserId = requestData.get("matchUser").getIntValue();
-                        String matchType = requestData.get("matchType").getTextValue(), course = "";
-                        if (matchType.equals("learning") || matchType.equals("teaching")) {
-                            course = requestData.get("matchCourse").getTextValue();
-                        }
+                        String matchType = requestData.get("matchType").getTextValue(),
+                               course = requestData.get("matchCourse").getTextValue();
                         if (!(matchType.equals("learning")) && !(matchType.equals("teaching")) && !(matchType.equals
                                 ("buddy"))) {
                             response.errorMessage = "Wrong match type received!";

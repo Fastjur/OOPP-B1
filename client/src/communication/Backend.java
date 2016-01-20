@@ -222,7 +222,7 @@ public class Backend {
         }
     }
 
-    public static void acceptMatch(User self, String matchType) {
+    public static void acceptMatch(int matchedUserId, String matchType, String matchCourse) {
         if (!isConnected()) {
             System.out.println("[ERROR] Cannot accept match: Not connected!");
             return;
@@ -231,8 +231,9 @@ public class Backend {
         try {
             Request request = new Request("acceptMatch");
 
-            request.putData("matchUser", self.getUserID());
+            request.putData("matchUser", matchedUserId);
             request.putData("matchType", matchType);
+            request.putData("matchCourse", matchCourse);
             listenThread.sendMessage(request.toSendableJSON());
         } catch (IOException e) {
             e.printStackTrace();

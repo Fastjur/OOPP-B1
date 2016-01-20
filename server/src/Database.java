@@ -663,12 +663,12 @@ public class Database {
 
     /**
      * Adds a match to the database when a user accepts it
-     * @param self ID of the user itself
-     * @param matchedUserId ID of the user to whom 'self' matched
+     * @param self_id ID of the user itself
+     * @param matchedUserId ID of the user to whom 'self_id' matched
      * @param type Type of match, should be 'learning', 'teaching' or 'buddy'
      * @throws SQLException
      */
-    public void acceptMatch(int self, int matchedUserId, String type, String course) throws SQLException, ClassNotFoundException {
+    public void acceptMatch(int self_id, int matchedUserId, String type, String course) throws SQLException, ClassNotFoundException {
         int courseId = getCourseIdByName(course);
         if (courseId == -1)
             throw new IllegalArgumentException("[ERROR] Couldn't find course ID by name!");
@@ -678,11 +678,7 @@ public class Database {
         ResultSet rs;
         stmt.setInt(1, matchedUserId);
         stmt.setString(2, type);
-        if (courseId == 0) {
-            stmt.setNull(3, Types.NULL);
-        } else {
-            stmt.setInt(3, courseId);
-        }
+        stmt.setInt(3, courseId);
         stmt.executeUpdate();
         rs = stmt.getGeneratedKeys();
         int matchId;
@@ -695,7 +691,7 @@ public class Database {
         stmt.close();
 
         stmt = connection.prepareStatement("INSERT INTO `users_has_matches`(users_id, matches_id) VALUES(?,?)");
-        stmt.setInt(1, self);
+        stmt.setInt(1, self_id);
         stmt.setInt(2, matchId);
         stmt.executeUpdate();
         stmt.close();
