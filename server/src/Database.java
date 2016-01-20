@@ -539,9 +539,13 @@ public class Database {
                 "cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * " +
                 "1.1515 ) AS distance",
                 query = "SELECT `users`.id, " + dist + " FROM `users` " +
-                        "  LEFT JOIN `coursesSearchingBuddy` AS buddy ON `users`.id = buddy.users_id " +
-                        "WHERE id <> ?" +
-                        "  AND courses_id = ?" +
+                        "  JOIN `coursesSearchingBuddy` AS buddy ON `users`.id = buddy.users_id " +
+                        "  JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id " +
+                        "  JOIN `matches` ON matches.id = hasmatches.matches_id " +
+                        "WHERE `users`.id <> ?" +
+                        "  AND buddy.courses_id = ? " +
+                        "  AND matches.match_type = ?" +
+                        "  AND `users`.id <> matches.matched_user_id " +
                         "  HAVING distance < ?";
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -571,9 +575,13 @@ public class Database {
                 "cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * " +
                 "1.1515 ) AS distance",
                 query = "SELECT `users`.id, " + dist + " FROM `users` " +
-                        "  LEFT JOIN `coursesTeaching` AS buddy ON `users`.id = buddy.users_id " +
-                        "WHERE id <> ?" +
-                        "  AND courses_id = ?" +
+                        "  JOIN `coursesTeaching` AS buddy ON `users`.id = buddy.users_id " +
+                        "  JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id " +
+                        "  JOIN `matches` ON matches.id = hasmatches.matches_id " +
+                        "WHERE `users`.id <> ?" +
+                        "  AND buddy.courses_id = ? " +
+                        "  AND matches.match_type = ?" +
+                        "  AND `users`.id <> matches.matched_user_id " +
                         "  HAVING distance < ?";
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
