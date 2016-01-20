@@ -35,7 +35,8 @@ public class GuiSideBarMatchesConstructor extends VBox{
         for(int i=0; i<buddyMatches.size(); i++){
             Button sbMatch = new Button(buddyMatches.get(i).getFirstname() + " " + buddyMatches.get(i).getLastname());
             sbMatch.setId("courseButton");
-            sbMatch.setOnAction(event -> GUILauncher.myMatchesBuddyClick(sbMatch));
+            User match = buddyMatches.get(i);
+            sbMatch.setOnAction(event -> GUILauncher.myMatchesBuddyClick(sbMatch, match));
             studyBuddySubj.getChildren().add(i, sbMatch);
         }
 
@@ -50,7 +51,8 @@ public class GuiSideBarMatchesConstructor extends VBox{
         for (int i = 0; i < learningMatches.size(); i++) {
             Button lCourse = new Button(learningMatches.get(i).getFirstname() + " " + learningMatches.get(i).getLastname());
             lCourse.setId("courseButton");
-            lCourse.setOnAction(event -> GUILauncher.myMatchesLearningClick(lCourse));
+            User match = learningMatches.get(i);
+            lCourse.setOnAction(event -> GUILauncher.myMatchesLearningClick(lCourse, match));
             learningSubj.getChildren().add(i, lCourse);
         }
 
@@ -65,7 +67,8 @@ public class GuiSideBarMatchesConstructor extends VBox{
         for (int i = 0; i < teachingMatches.size(); i++) {
             Button tCourse = new Button(teachingMatches.get(i).getFirstname() + " " + teachingMatches.get(i).getLastname());
             tCourse.setId("courseButton");
-            tCourse.setOnAction(event -> GUILauncher.myMatchesTeachingClick(tCourse));
+            User match = teachingMatches.get(i);
+            tCourse.setOnAction(event -> GUILauncher.myMatchesTeachingClick(tCourse, match));
             teachingSubj.getChildren().add(i, tCourse);
         }
 

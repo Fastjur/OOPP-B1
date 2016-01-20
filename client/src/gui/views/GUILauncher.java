@@ -171,6 +171,34 @@ public class GUILauncher extends Application implements IMessageListener {
         }
     }
 
+    // Events matchpage (sidebar)
+    public static void myMatchesBuddyClick(Button sbMatch, User match) {
+        GUIScene.setCursor(Cursor.WAIT);
+        if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
+            Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
+            oldCourse.setId("courseButton");
+        }
+        sbMatch.setId("selectedCourseButton");
+    }
+
+    public static void myMatchesLearningClick(Button lMatch, User match) {
+        GUIScene.setCursor(Cursor.WAIT);
+        if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
+            Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
+            oldCourse.setId("courseButton");
+        }
+        lMatch.setId("selectedCourseButton");
+    }
+
+    public static void myMatchesTeachingClick(Button tMatch, User match) {
+        GUIScene.setCursor(Cursor.WAIT);
+        if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
+            Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
+            oldCourse.setId("courseButton");
+        }
+        tMatch.setId("selectedCourseButton");
+    }
+
     // Events TopBar
     public static void findMatchClick(Button fMatch, Button yourMatches, Button chat, Button profile) {
         fMatch.setId("findMatchActive");
