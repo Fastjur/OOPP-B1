@@ -20,7 +20,7 @@ public class User {
             description;
     private Date birthday;
     private int userID, studyYear;
-    private double latitude, longitude;
+    private double latitude, longitude, maxDistance;
     private ArrayList<String> coursesTeachingList;
     private ArrayList<String> coursesLearningList;
     private ArrayList<String> buddyList;
@@ -54,7 +54,7 @@ public class User {
     public User(int userID, String password, String firstname, String lastname, Date birthday, String mail,
                 String phonenumber, String study, String university, int studyYear,
                 AvailableTimes available, ArrayList<String> teaching, ArrayList<String> learning, ArrayList<String> buddys, String gender,
-                String nationality, ArrayList<String> languages, String description, double latitude, double longitude) {
+                String nationality, ArrayList<String> languages, String description, double latitude, double longitude, double maxDistance) {
         this.userID = userID;
         this.password = password;
         this.firstname = firstname;
@@ -75,6 +75,7 @@ public class User {
         this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.maxDistance = maxDistance;
     }
 
     /**
@@ -446,6 +447,14 @@ public class User {
         this.longitude = longitude;
     }
 
+    public double getMaxDistance() {
+        return maxDistance;
+    }
+
+    public void setMaxDistance(double maxDistance) {
+        this.maxDistance = maxDistance;
+    }
+
     /**
      * equals: checks if current object is the same as the other
      *
@@ -476,7 +485,8 @@ public class User {
                     this.languageList.equals(that.getLanguageList()) &&
                     this.availableDates.equals(that.getAvailableDates()) &&
                     this.latitude == that.latitude &&
-                    this.longitude == that.longitude;
+                    this.longitude == that.longitude &&
+                    this.maxDistance == that.maxDistance;
         }
         return false;
     }

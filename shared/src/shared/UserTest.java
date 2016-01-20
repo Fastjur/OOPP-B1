@@ -22,13 +22,13 @@ public class UserTest {
                 "sinterklaas@sintmail.nl", "+316123456789",
                 "study1", "university", 3, new AvailableTimes(), new ArrayList<String>(),
                 new ArrayList<String>(), new ArrayList<String>(), "male", "NLD",
-                new ArrayList<String>(), "It's-a-me", 0, 3);
+                new ArrayList<String>(), "It's-a-me", 0, 3, 5);
 
         testuser2 = new User(1, "Pepernoten01", "Sinter", "Klaas", new Date(1),
                 "sinterklaas@sintmail.nl", "+316123456789",
                 "study1", "university", 3, new AvailableTimes(), new ArrayList<String>(),
                 new ArrayList<String>(), new ArrayList<String>(), "male", "NLD",
-                new ArrayList<String>(), "It's-a-me", 0, 3);
+                new ArrayList<String>(), "It's-a-me", 0, 3, 5);
     }
 
     @Test

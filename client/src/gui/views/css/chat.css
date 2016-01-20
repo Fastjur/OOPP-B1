@@ -1,0 +1,50 @@
+#textBubble{
+    -fx-background-color: #F06292;
+    -fx-background-radius: 10px;
+    -fx-font-size: 12pt;
+}
+
+.scroll-bar, .track {
+    -fx-background-color: lightgrey;
+}
+.scroll-bar .increment-button, .decrement-button{
+    -fx-background-insets: 0em;
+    -fx-background-color: lightgrey;
+}
+
+.scroll-bar .increment-button:hover, .decrement-button:hover{
+    -fx-background-color: grey;
+}
+
+.scroll-bar .thumb{
+    -fx-background-color: grey;
+    -fx-background-radius: 0em;
+    -fx-background-insets: 0em;
+}
+
+.scroll-bar .increment-arrow, .decrement-arrow{
+    -fx-background-color: black;
+}
+
+#gridpane{
+    -fx-background-color: white;
+}
+
+#send-button{
+    -fx-background-color: #F06292;
+    -fx-font-size: 13pt;
+    -fx-font-weight: bold;
+    -fx-pref-width: 60;
+    -fx-text-fill: white;
+}
+
+#send-button:hover{
+    -fx-background-color: #d35780;
+    -fx-cursor: hand;
+}
+
+#scroll{
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0,0,1,2;
+}

@@ -1,46 +1,70 @@
-#root, #root2, #root3 {
-	-fx-background-color:  #26A69A;
-	-fx-border-radius: 20;
-	-fx-padding: 10 10 10 10;
-	-fx-background-radius: 0;
+#bpLogin, #bpRegister, #bpReset {
+    -fx-background-color: #EEEEEE;
 }
 
-#bp, #bp2, #bp3 {
-	-fx-background-color: #FFFFFF;
-}
-
-#btnLogin, #BRB, #BRR3 {
-    -fx-background-color:	#F06292;
-    -fx-text-fill:  #FFFFFF;
-    -fx-postion: relative;
-    -fx-left: -10px;
-}
-
-#BLT, #BR, #BLR, #BRT, #BRR, #BRR2, #BLRES, #resReg, #resLog{
-    -fx-background-color:	#00796B;
-    -fx-text-fill:  #FFFFFF;
-    -fx-font-family: "roboto";
-}
-
-#text, #text2, #text3 {
-	-fx-fill:  #FFFFFF;
-	-fx-font-family: "roboto";
-}
-
-#loginLabel, #registerLabel, #resLabel{
-    -fx-text-fill:  #FFFFFF;
-    -fx-font-weight: bold;
-    -fx-font-size: 20px;
-    -fx-font-family: "roboto";
-}
-
-#info, #info2{
-    -fx-text-fill:  #FFFFFF;
-    -fx-font-family: "roboto";
-}
-
-#hb, #hb2, #hb3 {
+#hbLogin, #hbRegister, #hbReset {
     -fx-background-color: #26A69A;
     -fx-border-color: #00796B transparent transparent transparent;
-    -fx-border-width: 20px 0 0 200px;-fx-padding: 50%, 0, 0, 0;
+    -fx-border-width: 15px 10px 0px 60px;
 }
+
+#mmLog, #mmReg, #mmRes {
+    -fx-padding: 10px;
+}
+
+#gpLogin, #gpRegister, #gpReset {
+    -fx-background-color:  #26A69A;
+    -fx-border-radius: 20;
+    -fx-padding: 0;
+    -fx-background-radius: 0;
+}
+
+#gpLog, #gpReg, #gpRes {
+    -fx-padding: 0 0 0 20;
+}
+
+#picLog, #picReg, #picRes {
+    -fx-border-width: 0 200px 0 0;
+    -fx-border-color: #EEEEEE;
+}
+
+#hbLog, #hbReg, #hbRes {
+    -fx-padding: 50%;
+}
+
+#lbLogin, #lbRegister, #lbReset {
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-padding: 10px 0px 10px 0px;
+}
+
+#btnLogLogin, #btnRegRegister, #btnResReset {
+    -fx-background-color: #26A69A;
+    -fx-border-width: 5px 10px 5px 10px;
+    -fx-border-color: #26A69A;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+}
+
+#btnLogRegister, #btnLogReset, #btnRegLogin, #btnRegReset, #btnResLogin, #btnResRegister {
+    -fx-background-color: #00796B;
+    -fx-border-width: 5px 10px 5px 10px;
+    -fx-border-color: #00796B;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+}
+
+#logSubmit, #regSubmit, #resSubmit {
+    -fx-background-color: #F06292;
+    -fx-border-width: 2px 5px 2px 5px;
+    -fx-border-color: #F06292;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+}
+

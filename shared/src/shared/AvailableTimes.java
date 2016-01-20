@@ -251,6 +251,53 @@ public class AvailableTimes {
                 this.friday.size() + this.saturday.size() + this.sunday.size();
     }
 
+    public String toReadable(int dayNr) throws IllegalArgumentException {
+        ArrayList<TimePeriod> day;
+        switch (dayNr){
+            case 1:
+                day = this.monday;
+                break;
+            case 2:
+                day = this.tuesday;
+                break;
+            case 3:
+                day = this.wednesday;
+                break;
+            case 4:
+                day = this.thursday;
+                break;
+            case 5:
+                day = this.friday;
+                break;
+            case 6:
+                day = this.saturday;
+                break;
+            case 7:
+                day = this.sunday;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid day number given!");
+        }
+        String res = "";
+        if (day.size() > 0) {
+            for (TimePeriod p : day) {
+                res += p.toReadable() + " ";
+            }
+            res = res.substring(0, res.length() - 1);
+        }
+        return res;
+    }
+
+    public static ArrayList<TimePeriod> fromReadable(String readable) throws IllegalArgumentException {
+        String arr[] = readable.split(" ");
+        ArrayList<TimePeriod> res = new ArrayList<>();
+        for (String s : arr) {
+            TimePeriod p = TimePeriod.fromReadable(s);
+            res.add(p);
+        }
+        return res;
+    }
+
     public boolean equals(Object other) {
         if (other instanceof AvailableTimes) {
             AvailableTimes that = (AvailableTimes) other;

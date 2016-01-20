@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,7 @@ public class Database {
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT users.id, nationalities.name AS nationality," +
                 "studies.name AS study, universities.name AS university, email AS dbemail, passwd, firstname," +
-                "lastname, sex, birthdate, bio, studyYear, availableDates, phonenumber, latitude, longitude " +
+                "lastname, sex, birthdate, bio, studyYear, availableDates, phonenumber, latitude, longitude, maxdist " +
                 "FROM `users` LEFT JOIN nationalities ON users.nationality_id = nationalities.id " +
                 "LEFT JOIN studies ON users.study = studies.id " +
                 "LEFT JOIN universities ON users.university_id = universities.id WHERE users.id = ? LIMIT 1");
@@ -91,7 +92,8 @@ public class Database {
             int id = rs.getInt("id"),
                     studyYear = rs.getInt("studyYear");
             double latitude = rs.getDouble("latitude"),
-                    longitude = rs.getDouble("longitude");
+                    longitude = rs.getDouble("longitude"),
+                    maxdist = rs.getDouble("maxdist");
             String dbemail = rs.getString("dbemail"),
                     password = rs.getString("passwd"),
                     firstname = rs.getString("firstname"),
@@ -199,7 +201,7 @@ public class Database {
 
             usr = new User(id, password, firstname, lastname, birthdate, dbemail, phonenumber, study, university,
                     studyYear, availability, coursesTeaching, coursesLearning, coursesSearchingBuddy, sex, nationality,
-                    languages, bio, latitude, longitude);
+                    languages, bio, latitude, longitude, maxdist);
         } else {
             return null;
         }
@@ -243,6 +245,8 @@ public class Database {
         stmt.executeUpdate();
         rs = stmt.getGeneratedKeys();
         if (!rs.next()) {
+            stmt.close();
+            ConnectionManager.close();
             throw new IllegalArgumentException("[ERROR] Couldn't retrieve newly added users ID.\n" +
                     "    Presume database invalid");
         }
@@ -250,257 +254,190 @@ public class Database {
         ConnectionManager.close();
     }
 
-    /**
-     * Update a user in the database. According to the ID in the given user object
-     *
-     * @param user shared.User object
-     * @throws IllegalArgumentException
-     * @throws SQLException
-     * @throws IOException
-     */
-    public void updateUser(User user) throws IllegalArgumentException, SQLException, IOException, ClassNotFoundException {
-        if (user == null) {
-            throw new IllegalArgumentException("[ERROR] User object was null, cannot add to database");
-        }
-
-        PreparedStatement stmt;
-        ResultSet rs;
-
-        /**
-         * Get nationality id
-         */
+    public void updateNationality(int userid, int nationalityId) throws SQLException, ClassNotFoundException {
         connection = ConnectionManager.getConnection();
-        stmt = connection.prepareStatement("SELECT id FROM nationalities WHERE name = ? LIMIT 1");
-        stmt.setString(1, user.getNationality());
-        rs = stmt.executeQuery();
-        int nationality_id;
-        if (rs.next()) {
-            nationality_id = rs.getInt("id");
-        } else {
-            throw new IllegalArgumentException("[ERROR] Could not get nationality id, aborting update to database\n    " +
-                    "Argument: (name:\"" + user.getNationality() + "\")");
-        }
-        stmt.close();
-
-        /**
-         * Get university id
-         */
-        stmt = connection.prepareStatement("SELECT id FROM universities WHERE name = ? LIMIT 1");
-        stmt.setString(1, user.getUniversity());
-        rs = stmt.executeQuery();
-        int university_id;
-        if (rs.next()) {
-            university_id = rs.getInt("id");
-        } else {
-            throw new IllegalArgumentException("[ERROR] Could not get university id, aborting update to database\n    " +
-                    "Argument: (name:\"" + user.getUniversity() + "\")");
-        }
-        stmt.close();
-
-        /**
-         * Get study id
-         */
-        stmt = connection.prepareStatement("SELECT id FROM studies WHERE name = ? LIMIT 1");
-        stmt.setString(1, user.getStudy());
-        rs = stmt.executeQuery();
-        int study_id;
-        if (rs.next()) {
-            study_id = rs.getInt("id");
-        } else {
-            throw new IllegalArgumentException("[ERROR] Could not get study id, aborting update to database\n    " +
-                    "Argument: (name:\"" + user.getStudy() + "\")");
-        }
-        stmt.close();
-
-        /**
-         * Finally fucking update the user
-         */
-        stmt = connection.prepareStatement("UPDATE `users` SET nationality_id=?, university_id=?, " +
-                "email=?, passwd=?, firstname=?, lastname=?, sex=?, birthdate=?, study=?, bio=?, studyYear=?, " +
-                "availableDates=?, phonenumber=?, latitude=?, longitude=? " +
-                "WHERE id = ?");
-        stmt.setInt(1, nationality_id);
-        stmt.setInt(2, university_id);
-        stmt.setString(3, user.getMail());
-        stmt.setString(4, user.getPassword());
-        stmt.setString(5, user.getFirstname());
-        stmt.setString(6, user.getLastname());
-        stmt.setString(7, user.getGender());
-        stmt.setLong(8, user.getBirthday().getTime());
-        stmt.setInt(9, study_id);
-        stmt.setString(10, user.getDescription());
-        stmt.setInt(11, user.getStudyYear());
-        stmt.setString(12, user.getAvailableDates().toJson());
-        stmt.setString(13, user.getPhonenumber());
-        stmt.setDouble(14, user.getLatitude());
-        stmt.setDouble(15, user.getLongitude());
-        stmt.setInt(16, user.getUserID());
-
+        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET nationality_id = ? WHERE id = ?");
+        stmt.setInt(1, nationalityId);
+        stmt.setInt(2, userid);
         stmt.executeUpdate();
         stmt.close();
         ConnectionManager.close();
-
-        /**
-         * Update languages and courses
-         */
-        updateDbLanguages(user);
-        updateDbCourses(user);
-
     }
 
-    private void updateDbLanguages(User user) throws SQLException, ClassNotFoundException {
-        PreparedStatement stmt;
-        ResultSet rs;
-
+    public void updateName(int userid, String firstname, String lastname) throws SQLException, ClassNotFoundException {
         connection = ConnectionManager.getConnection();
-        stmt = connection.prepareStatement("DELETE FROM `users_has_languages` WHERE users_id = ?");
-        stmt.setInt(1, user.getUserID());
+        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET firstname = ?, lastname = ? WHERE id = ?");
+        stmt.setString(1, firstname);
+        stmt.setString(2, lastname);
+        stmt.setInt(3, userid);
         stmt.executeUpdate();
         stmt.close();
+        ConnectionManager.close();
+    }
 
-        if (user.getLanguageList().size() > 0) {
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < user.getLanguageList().size(); i++) {
-                builder.append("name = ? OR ");
-            }
-            builder.setLength(builder.length() - 4);
-            String query = "SELECT languages.id FROM languages WHERE " + builder.toString();
-            stmt = connection.prepareStatement(query);
-            int index = 1;
-            for (String lang : user.getLanguageList()) {
-                stmt.setString(index, lang);
-                index++;
-            }
-            rs = stmt.executeQuery();
-            ArrayList<Integer> languageIds = new ArrayList<>();
-            while (rs.next()) {
-                languageIds.add(rs.getInt("id"));
-            }
-            stmt.close();
+    public void updateSex(int userid, String sex) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET sex = ? WHERE id = ?");
+        stmt.setString(1, sex);
+        stmt.setInt(2, userid);
+        stmt.executeUpdate();
+        stmt.close();
+        ConnectionManager.close();
+    }
 
-            stmt = connection.prepareStatement("INSERT INTO `users_has_languages`(users_id, languages_id) " +
-                    "VALUES(?,?)");
-            stmt.setInt(1, user.getUserID());
-            for (int lang : languageIds) {
-                stmt.setInt(2, lang);
+    public void updateDateOfBirth(int userid, Long date) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET birthdate = ? WHERE id = ?");
+        stmt.setLong(1, date);
+        stmt.setInt(2, userid);
+        stmt.executeUpdate();
+        stmt.close();
+        ConnectionManager.close();
+    }
+
+    public void updateLanguages(int userid, ArrayList<Integer> languages) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM users_has_languages WHERE users_id = ?");
+        stmt.setInt(1, userid);
+        stmt.executeUpdate();
+
+        stmt = connection.prepareStatement("INSERT INTO users_has_languages (users_id, languages_id) VALUES (?,?)");
+        stmt.setInt(1, userid);
+        for (Integer language : languages) {
+            stmt.setInt(2, language);
+            stmt.executeUpdate();
+        }
+        stmt.close();
+        ConnectionManager.close();
+    }
+
+    public void updateEmail(int userid, String email) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET email = ? WHERE id = ?");
+        stmt.setString(1, email);
+        stmt.setInt(2, userid);
+        stmt.executeUpdate();
+        stmt.close();
+        ConnectionManager.close();
+    }
+
+    public void updatePhoneNumber(int userid, String phoneNumber) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET phonenumber = ? WHERE id = ?");
+        stmt.setString(1, phoneNumber);
+        stmt.setInt(2, userid);
+        stmt.executeUpdate();
+        stmt.close();
+        ConnectionManager.close();
+    }
+
+    public void updateLocation(int userid, double longitude, double latitude) throws SQLException,
+            ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET longitude = ?, latitude = ? WHERE id = ?");
+        stmt.setDouble(1, longitude);
+        stmt.setDouble(2, latitude);
+        stmt.setInt(3, userid);
+        stmt.executeUpdate();
+        stmt.close();
+        ConnectionManager.close();
+    }
+
+    public void updateUniversity(int userid, int universityId) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET university_id = ? WHERE id = ?");
+        stmt.setInt(1, universityId);
+        stmt.setInt(2, userid);
+        stmt.executeUpdate();
+        stmt.close();
+        ConnectionManager.close();
+    }
+
+    public void updateStudy(int userid, int studyId) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET study = ? WHERE id = ?");
+        stmt.setInt(1, studyId);
+        stmt.setInt(2, userid);
+        stmt.executeUpdate();
+        stmt.close();
+        ConnectionManager.close();
+    }
+
+    public void updateStudyYear(int userid, int studyYear) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET studyYear = ? WHERE id = ?");
+        stmt.setInt(1, studyYear);
+        stmt.setInt(2, userid);
+        stmt.executeUpdate();
+        stmt.close();
+        ConnectionManager.close();
+    }
+
+    public void updateLearning(int userid, ArrayList<Integer> learning) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM coursesLearning WHERE users_id = ?");
+        stmt.setInt(1, userid);
+        stmt.executeUpdate();
+
+        if (learning.size() > 0) {
+            stmt = connection.prepareStatement("INSERT INTO coursesLearning(users_id, courses_id) VALUES(?,?)");
+            stmt.setInt(1, userid);
+            for (int id : learning) {
+                stmt.setInt(2, id);
                 stmt.executeUpdate();
             }
-            stmt.close();
         }
+        stmt.close();
         ConnectionManager.close();
     }
 
-    private void updateDbCourses(User user) throws SQLException, ClassNotFoundException {
-        PreparedStatement stmt;
-        ResultSet rs;
-        StringBuilder builder;
-        String query;
-
-        /**
-         * Delete all residual course entries
-         */
+    public void updateTeaching(int userid, ArrayList<Integer> teaching) throws SQLException, ClassNotFoundException {
         connection = ConnectionManager.getConnection();
-        stmt = connection.prepareStatement("DELETE FROM `coursesLearning` WHERE users_id = ?;");
-        stmt.setInt(1, user.getUserID());
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM coursesTeaching WHERE users_id = ?");
+        stmt.setInt(1, userid);
         stmt.executeUpdate();
-        stmt.close();
-        stmt = connection.prepareStatement("DELETE FROM `coursesTeaching` WHERE users_id = ?;");
-        stmt.setInt(1, user.getUserID());
-        stmt.executeUpdate();
-        stmt.close();
-        stmt = connection.prepareStatement("DELETE FROM `coursesSearchingBuddy` WHERE users_id = ?;");
-        stmt.setInt(1, user.getUserID());
-        stmt.executeUpdate();
-        stmt.close();
 
-        /**
-         * Get the course id's the user is learning and add them to the database
-         */
-        builder = new StringBuilder();
-        for (int i = 0; i < user.getCoursesLearningList().size(); i++) {
-            builder.append("name = ? OR ");
-        }
-        builder.setLength(builder.length() - 4);
-        query = "SELECT id FROM courses WHERE " + builder.toString();
-        stmt = connection.prepareStatement(query);
-        int index = 1;
-        for (String learning : user.getCoursesLearningList()) {
-            stmt.setString(index, learning);
-            index++;
-        }
-        rs = stmt.executeQuery();
-        ArrayList<Integer> learningIds = new ArrayList<>();
-        while (rs.next()) {
-            learningIds.add(rs.getInt("id"));
-        }
-        stmt.close();
-        stmt = connection.prepareStatement("INSERT INTO `coursesLearning`(users_id, courses_id) VALUES(?,?)");
-        stmt.setInt(1, user.getUserID());
-        for (int id : learningIds) {
-            stmt.setInt(2, id);
-            stmt.executeUpdate();
-        }
-        stmt.close();
-
-        /**
-         * Get the course id's the user is teaching and add them to the database
-         */
-        builder = new StringBuilder();
-        for (int i = 0; i < user.getCoursesTeachingList().size(); i++) {
-            builder.append("name = ? OR ");
-        }
-        builder.setLength(builder.length() - 4);
-        query = "SELECT id FROM courses WHERE " + builder.toString();
-        stmt = connection.prepareStatement(query);
-        index = 1;
-        for (String teaching : user.getCoursesTeachingList()) {
-            stmt.setString(index, teaching);
-            index++;
-        }
-        rs = stmt.executeQuery();
-        ArrayList<Integer> teachingIds = new ArrayList<>();
-        while (rs.next()) {
-            teachingIds.add(rs.getInt("id"));
-        }
-        stmt.close();
-        stmt = connection.prepareStatement("INSERT INTO `coursesTeaching`(users_id, courses_id) VALUES(?,?)");
-        stmt.setInt(1, user.getUserID());
-        for (int id : teachingIds) {
-            stmt.setInt(2, id);
-            stmt.executeUpdate();
-        }
-        stmt.close();
-
-        /**
-         * Get the course id's the user is searching a buddy for and add them to the database
-         */
-        builder = new StringBuilder();
-        for (int i = 0; i < user.getBuddyList().size(); i++) {
-            builder.append("name = ? OR ");
-        }
-        builder.setLength(builder.length() - 4);
-        query = "SELECT id FROM courses WHERE " + builder.toString();
-        stmt = connection.prepareStatement(query);
-        index = 1;
-        for (String buddy : user.getBuddyList()) {
-            stmt.setString(index, buddy);
-            index++;
-        }
-        rs = stmt.executeQuery();
-        ArrayList<Integer> buddyIds = new ArrayList<>();
-        while (rs.next()) {
-            buddyIds.add(rs.getInt("id"));
-        }
-        stmt.close();
-        stmt = connection.prepareStatement("INSERT INTO `coursesSearchingBuddy`(users_id, courses_id) VALUES(?,?)");
-        stmt.setInt(1, user.getUserID());
-        for (int id : buddyIds) {
-            stmt.setInt(2, id);
-            stmt.executeUpdate();
+        if (teaching.size() > 0) {
+            stmt = connection.prepareStatement("INSERT INTO coursesTeaching(users_id, courses_id) VALUES(?,?)");
+            stmt.setInt(1, userid);
+            for (int id : teaching) {
+                stmt.setInt(2, id);
+                stmt.executeUpdate();
+            }
         }
         stmt.close();
         ConnectionManager.close();
     }
+
+    public void updateBuddies(int userid, ArrayList<Integer> buddies) throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("DELETE FROM coursesSearchingBuddy WHERE users_id = ?");
+        stmt.setInt(1, userid);
+        stmt.executeUpdate();
+
+        if (buddies.size() > 0) {
+            stmt = connection.prepareStatement("INSERT INTO coursesSearchingBuddy(users_id, courses_id) VALUES(?,?)");
+            stmt.setInt(1, userid);
+            for (int id : buddies) {
+                stmt.setInt(2, id);
+                stmt.executeUpdate();
+            }
+        }
+        stmt.close();
+        ConnectionManager.close();
+    }
+
+    public void updateAvailability(int userid, AvailableTimes aTimes) throws SQLException, ClassNotFoundException, IOException {
+        String aTimesJSON = aTimes.toJson();
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET availableDates = ? WHERE id = ?");
+        stmt.setString(1, aTimesJSON);
+        stmt.setInt(2, userid);
+        stmt.executeUpdate();
+        stmt.close();
+        ConnectionManager.close();
+    }
+
 
     public int getCourseIdByName(String name) throws SQLException, ClassNotFoundException {
         connection = ConnectionManager.getConnection();
@@ -515,6 +452,51 @@ public class Database {
         }
         stmt.close();
         return id;
+    }
+
+    public HashMap<Integer, String> getNationalities() throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT id, name FROM nationalities");
+        ResultSet rs = stmt.executeQuery();
+        return rsToHashMap(rs);
+    }
+
+    public HashMap<Integer, String> getLanguages() throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT id, name FROM languages");
+        ResultSet rs = stmt.executeQuery();
+        return rsToHashMap(rs);
+    }
+
+    public HashMap<Integer, String> getStudies() throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT id, name FROM studies");
+        ResultSet rs = stmt.executeQuery();
+        return rsToHashMap(rs);
+    }
+
+    public HashMap<Integer, String> getUniversities() throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT id, name FROM universities");
+        ResultSet rs = stmt.executeQuery();
+        return rsToHashMap(rs);
+    }
+
+    public HashMap<Integer, String> getCourses() throws SQLException, ClassNotFoundException {
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("SELECT id, name FROM courses");
+        ResultSet rs = stmt.executeQuery();
+        return rsToHashMap(rs);
+    }
+
+    private HashMap<Integer, String> rsToHashMap(ResultSet rs) throws SQLException {
+        HashMap<Integer, String> res = new HashMap<>();
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            res.put(id, name);
+        }
+        return res;
     }
 
     /**
@@ -546,78 +528,68 @@ public class Database {
         removeUser(id);
     }
 
-    /**
-     * Used to get matching users using given parameters
-     *
-     * @param node JSON node containing the search parameters
-     * @return ArrayList containing 3 ArrayLists, the first is an ArrayList containing users the requesting user can
-     * teach, the second who he can learn from, the third who he can buddy up with.
-     * @throws SQLException
-     */
-    public ArrayList<ArrayList<User>> getMatches(int self_id, JsonNode node) throws SQLException, IOException, ClassNotFoundException {
-        ObjectMapper mapper = new ObjectMapper();
-        double maxDist = node.get("data").get("maxdist").getDoubleValue(),
-                latitude = node.get("data").get("latitude").getDoubleValue(),
-                longitude = node.get("data").get("longitude").getDoubleValue();
-        AvailableTimes aTimes = mapper.readValue(node.get("data").get("availability").getTextValue(),
-                AvailableTimes.class);
-        ArrayList learning = mapper.readValue(node.get("data").get("learning").getTextValue(),
-                ArrayList.class),
-                teaching = mapper.readValue(node.get("data").get("teaching").getTextValue(),
-                        ArrayList.class),
-                buddys = mapper.readValue(node.get("data").get("buddys").getTextValue(),
-                        ArrayList.class),
-                languages = mapper.readValue(node.get("data").get("languages").getTextValue(),
-                        ArrayList.class);
-        String where = "WHERE users.id <> ?",
-                dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * 1.1515 ) as distance",
-                query = "SELECT users.id, nationalities.name AS nationality, universities.name AS university, email, passwd, firstname, lastname, sex, birthdate, studies.name AS study, bio, studyYear, availableDates, phonenumber, latitude, longitude, " +
-                        dist + " FROM `users` " +
-                        "LEFT JOIN nationalities ON users.nationality_id = nationalities.id " +
-                        "LEFT JOIN universities ON users.university_id = universities.id " +
-                        "LEFT JOIN studies ON users.study = studies.id " + where + " " +
-                        "HAVING distance <= ?";
+    public ArrayList<User> findStudyBuddy(int self_id, String course) throws SQLException, ClassNotFoundException,
+            IOException {
+        int course_id = getCourseIdByName(course);
+        User self = getUser(self_id);
+        double maxDist = 999999999; //TODO, integrate
+        double latitude = self.getLatitude(),
+                longitude = self.getLongitude();
+        String dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * " +
+                "cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * " +
+                "1.1515 ) AS distance",
+                query = "SELECT `users`.id, " + dist + " FROM `users` " +
+                        "  LEFT JOIN `coursesSearchingBuddy` AS buddy ON `users`.id = buddy.users_id " +
+                        "WHERE id <> ?" +
+                        "  AND courses_id = ?" +
+                        "  HAVING distance < ?";
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setDouble(1, latitude);
-        stmt.setDouble(2, latitude);
+        stmt.setDouble(2, latitude); //No, that is not a typo
         stmt.setDouble(3, longitude);
         stmt.setInt(4, self_id);
-        stmt.setDouble(5, maxDist);
+        stmt.setInt(5, course_id);
+        stmt.setDouble(6, maxDist);
         ResultSet rs = stmt.executeQuery();
-        ArrayList<User> matches = new ArrayList<>(),
-                canTeach = new ArrayList<>(),
-                canLearn = new ArrayList<>(),
-                canBuddyUp = new ArrayList<>();
-        while (rs.next()) {
-            User user = getUser(rs.getInt("id"));
-            user.setPassword("");
-            matches.add(user);
-        }
+
+        ArrayList<User> res = processMatches(stmt, rs, self);
         stmt.close();
         ConnectionManager.close();
-        ListIterator<User> it = matches.listIterator();
-        int index = 0;
+
+        return res;
+    }
+
+    private ArrayList<User> processMatches(PreparedStatement stmt, ResultSet rs, User self) throws SQLException,
+            IOException, ClassNotFoundException {
+        AvailableTimes aTimes = self.getAvailableDates();
+        ArrayList<String> languages = self.getLanguageList();
+        ArrayList<Integer> user_ids = new ArrayList<>();
+        ArrayList<User> res = new ArrayList<>();
+        while (rs.next()) {
+            user_ids.add(rs.getInt("id"));
+        }
+        if (user_ids.size() == 0) {
+            return res;
+        }
+        for (int id : user_ids) {
+            res.add(getUser(id));
+        }
+        ListIterator<User> it = res.listIterator();
         while (it.hasNext()) {
             User user = it.next();
-            if (listIntersection(user.getLanguageList(), languages).size() == 0 || aTimes.intersect(user.getAvailableDates()).size() == 0) {
-                matches.remove(index);
+            if (listIntersection(self.getLanguageList(), user.getLanguageList()).size() == 0) {
+                it.remove();
             }
-            index++;
         }
-        if (matches.size() == 0) {
-            return null;
+        it = res.listIterator();
+        while (it.hasNext()) {
+            User user = it.next();
+            if (self.getAvailableDates().intersect(user.getAvailableDates()).size() == 0) {
+                it.remove();
+            }
         }
-        canTeach.addAll(matches.stream().filter(user -> listIntersection(user.getCoursesLearningList(), teaching).size() > 0).collect(Collectors.toList()));
-        canLearn.addAll(matches.stream().filter(user -> listIntersection(user.getCoursesTeachingList(), learning).size() > 0).collect(Collectors.toList()));
-        canBuddyUp.addAll(matches.stream().filter(user -> listIntersection(user.getBuddyList(), buddys).size() > 0).collect(Collectors.toList()));
-
-        ArrayList<ArrayList<User>> total = new ArrayList<>();
-        total.add(canTeach);
-        total.add(canLearn);
-        total.add(canBuddyUp);
-
-        return total;
+        return res;
     }
 
     /**
@@ -628,9 +600,6 @@ public class Database {
      * @throws SQLException
      */
     public void acceptMatch(int self, int matchedUserId, String type, String course) throws SQLException, ClassNotFoundException {
-        if (course.equals("")) {
-            course = "NONE";
-        }
         int courseId = getCourseIdByName(course);
         if (courseId == -1)
             throw new IllegalArgumentException("[ERROR] Couldn't find course ID by name!");
@@ -701,6 +670,7 @@ public class Database {
             temp.add(rs.getInt("matched_course"));
             preMatches.add(temp);
         }
+        //todo finish
     }
 
     /**

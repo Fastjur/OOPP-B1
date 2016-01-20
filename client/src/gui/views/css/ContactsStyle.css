@@ -1,4 +1,4 @@
-#center, #background {
+#center, #background, #pane {
     -fx-background-color: #FFFFFF;
 }
 
@@ -19,12 +19,13 @@
 }
 
 #description, #university, #study, #language, #distance {
-    -fx-font-size: 17;
+    -fx-font-size: 17pt;
     -fx-font-family: roboto;
 }
 
 #descriptionInfo, #universityInfo, #studyInfo, #languageInfo, #distanceInfo {
-    -fx-font-size: 13;
+    -fx-font-size: 12pt;
+    -fx-font-weight: 300;
     -fx-font-family: roboto;
 }
 
@@ -72,6 +73,10 @@
     -fx-padding: 50 20 0 0;
     -fx-background-color: #FFFFFF;
 
+}
+
+.bottom {
+    -fx-background-color: yellow;
 }
 
 scroll-bar, .track {

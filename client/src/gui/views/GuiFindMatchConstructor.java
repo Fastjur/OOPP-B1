@@ -3,6 +3,7 @@ package gui.views;
 import javafx.geometry.*;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,19 +23,27 @@ public class GuiFindMatchConstructor extends BorderPane {
     private String name;
     private String age;
     public static String description;
-    public String matchIconUrl;
-    public String nomatchIconUrl;
     public String profilePicUrl;
     public ArrayList<String> languages;
     public double distance;
 
-    public GuiFindMatchConstructor(ArrayList<String> languages, double distance, String name, String age, String descr, String matchIconUrl, String nomatchIconUrl, String profilePicUrl){
+    public GuiFindMatchConstructor() {
+        super();
+        initial();
+    }
+
+    private void initial() {
+        Label label = new Label("Use the sidebar on the left to get started");
+        center = new HBox();
+        center.getChildren().add((label));
+        super.setCenter(center);
+    }
+
+    public GuiFindMatchConstructor(ArrayList<String> languages, double distance, String name, String age, String descr, String profilePicUrl){
         super();
         this.name = name;
         this.age = age;
         this.description = descr;
-        this.matchIconUrl = matchIconUrl;
-        this.nomatchIconUrl = nomatchIconUrl;
         this.profilePicUrl = profilePicUrl;
         this.languages = languages;
         this.distance = distance;
@@ -47,8 +56,11 @@ public class GuiFindMatchConstructor extends BorderPane {
     }
 
     private void bottomBox(){
-        ImageView nmView = new ImageView(new Image(nomatchIconUrl));
-        ImageView mView = new ImageView(new Image(matchIconUrl));
+        String nomatchURL = this.getClass().getResource("resources/noMatchIcon2.png").toExternalForm();
+        String matchURL = this.getClass().getResource("resources/matchIcon2.png").toExternalForm();
+
+        ImageView nmView = new ImageView(new Image(nomatchURL));
+        ImageView mView = new ImageView(new Image(matchURL));
 
         nmView.setPreserveRatio(true);
         nmView.setFitWidth(100);

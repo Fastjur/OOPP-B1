@@ -44,9 +44,6 @@ public class TimePeriod {
         if (start == null || end == null) {
             throw new IllegalArgumentException("Start or end time is null");
         }
-        if (start.equals(end)) {
-            throw new IllegalArgumentException("Start and end time are the same");
-        }
         Pattern p = Pattern.compile("[0-9]{2}:[0-9]{2}");
         Matcher mStart = p.matcher(start),
                 mEnd = p.matcher(end);
@@ -55,7 +52,7 @@ public class TimePeriod {
         }
         int startInt = parseToMinutes(start),
                 endInt = parseToMinutes(end);
-        if (endInt - startInt <= 0) {
+        if (endInt - startInt < 0) {
             throw new IllegalArgumentException("Start time is after end time");
         }
         this.start = startInt;
@@ -118,6 +115,36 @@ public class TimePeriod {
         TimePeriod that = (TimePeriod) other;
         return this.start == that.start &&
                 this.end == that.end;
+    }
+
+    public String toReadable() {
+        int start = this.start,
+            end = this.end;
+        String startH = numberWithLeadingZeros(start / 60),
+               startM = numberWithLeadingZeros(start % 60),
+               endH = numberWithLeadingZeros(end / 60),
+               endM = numberWithLeadingZeros(end % 60);
+        return startH + ":" + startM + "-" + endH + ":" + endM;
+    }
+
+    public static TimePeriod fromReadable(String readable) throws IllegalArgumentException {
+        TimePeriod p = new TimePeriod();
+        if (readable.equals(""))
+            return p;
+        if (readable.matches("[0-9]{2,2}:[0-9]{2,2}-[0-9]{2,2}:[0-9]{2,2}")) {
+            p = new TimePeriod(readable.split("-")[0], readable.split("-")[1]);
+        } else {
+            throw new IllegalArgumentException("Illegal argument given: " + readable);
+        }
+        return p;
+    }
+
+    protected String numberWithLeadingZeros(int number) {
+        if (number < 10) {
+            return "0" + String.valueOf(number);
+        } else {
+            return String.valueOf(number);
+        }
     }
 
     /*
