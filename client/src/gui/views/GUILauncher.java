@@ -34,6 +34,7 @@ public class GUILauncher extends Application implements IMessageListener {
     static GuiSideBarFindMatchConstructor findMatchSideBar;
     static GUISideBarConstructor sidebar;
     static GuiContacts myMatches;
+    static GuiSideBarFindMatchConstructor matchSidebar;
     private static ArrayList<String> buddyCourses;
     private static ArrayList<String> learningCourses;
     private static ArrayList<String> teachingCourses;
@@ -203,9 +204,9 @@ public class GUILauncher extends Application implements IMessageListener {
         chat.setId("chat");
         profile.setId("profileBtn");
 
-        updateFindMatchSidebar();
+        updateMatchSidebar();
         GUI.setCenter(myMatches);
-        GUI.setLeft(findMatchSideBar);
+        GUI.setLeft(matchSidebar);
     }
 
     public static void chatClick(Button findMatch, Button yourMatches, Button chat, Button profile) {
@@ -281,6 +282,11 @@ public class GUILauncher extends Application implements IMessageListener {
         teachingCourses = Backend.getSelfObject().getCoursesTeachingList();
         learningCourses = Backend.getSelfObject().getCoursesLearningList();
         findMatchSideBar = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
+    }
+
+    private static void updateMatchSidebar() {
+        //get arraylist containing user's buddy-matches, teaching-matches & learning-matches
+        //matchSidebar = new GuiSideBarMatchesConstructor(...);
     }
 
     @Override
