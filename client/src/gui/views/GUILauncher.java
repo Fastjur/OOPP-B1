@@ -40,6 +40,12 @@ public class GUILauncher extends Application implements IMessageListener {
     private static String pfURL;//TODO implement
     private static GuiChat chatPage;
 
+    private static ArrayList<User> courseMatches;
+
+    //TODO send typeOfMatch + course together with match (in MatchClick method)
+    private static String typeOfMatch;
+    private static String course;
+
     @Override
     public void start(Stage PrimaryStage) throws Exception{
         stage = PrimaryStage;
@@ -114,7 +120,8 @@ public class GUILauncher extends Application implements IMessageListener {
         }
         sbCourse.setId("selectedCourseButton");
 
-        String course = sbCourse.getText();
+        typeOfMatch = "buddy";
+        course = sbCourse.getText();
         Backend.findStudyBuddy(course);
     }
 
@@ -125,7 +132,8 @@ public class GUILauncher extends Application implements IMessageListener {
         }
         lCourse.setId("selectedCourseButton");
 
-        String course = lCourse.getText();
+        typeOfMatch = "learning";
+        course = lCourse.getText();
 
         // TODO: Get all users from database who teach this course & show the first user on the Match Page
     }
@@ -137,9 +145,26 @@ public class GUILauncher extends Application implements IMessageListener {
         }
         tCourse.setId("selectedCourseButton");
 
-        String course = tCourse.getText();
+        typeOfMatch = "teaching";
+        course = tCourse.getText();
 
         // TODO: Get all users from database who need a tutor for this course & show the first user on the Match Page
+    }
+
+    private static void findMatchProcessBuddyMatches(){
+        if(!courseMatches.isEmpty()) {
+            User match = courseMatches.get(0);
+            LocalDate now = LocalDate.now();
+            int age = Period.between(match.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), now).getYears();
+
+            //TODO profile pic + distance
+
+            findMatch = new GuiFindMatchConstructor(match.getLanguageList(), match.getFirstname() + " " + match.getLastname(), age, match.getDescription(), pfURL);
+            GUI.setCenter(findMatch);
+        }
+        else{
+            GUI.setCenter(new GuiFindMatchConstructor());
+        }
     }
 
     // Events TopBar
@@ -152,6 +177,21 @@ public class GUILauncher extends Application implements IMessageListener {
         updateFindMatchSidebar();
         GUI.setCenter(findMatch);
         GUI.setLeft(findMatchSideBar);
+    }
+
+    public static void noMatchClick() {
+        courseMatches.remove(0);
+        findMatchProcessBuddyMatches();
+    }
+
+    public static void matchClick(){
+        User match = courseMatches.get(0);
+        int matchId = match.getUserID();
+
+        //TODO add match to database (with typeOfMatch and course static strings)
+
+        courseMatches.remove(0);
+        findMatchProcessBuddyMatches();
     }
 
     public static void yourMatchesClick(Button findMatch, Button yourMatches, Button chat, Button profile) {
@@ -358,11 +398,13 @@ public class GUILauncher extends Application implements IMessageListener {
                     if (response.errorCode == 0) {
                         TypeReference<ArrayList<User>> typeRef = new TypeReference<ArrayList<User>>() {};
                         try {
-                            ArrayList<User> matches = mapper.readValue(response.getResponseData().get("findBuddyRes").toString(), typeRef);
-                            System.out.println(matches);
+                            courseMatches = mapper.readValue(response.getResponseData().get("findBuddyRes").toString(), typeRef);
+                            findMatchProcessBuddyMatches();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                    } else if (response.errorCode == 9){
+                        //todo let user know no match
                     }
                     break;
             }

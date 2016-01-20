@@ -1,5 +1,6 @@
 package gui.views;
 
+import javafx.event.EventHandler;
 import javafx.geometry.*;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -7,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -20,12 +22,11 @@ public class GuiFindMatchConstructor extends BorderPane {
     private HBox bottom;
     private HBox center;
     private ScrollPane right;
-    private String name;
-    private String age;
-    public static String description;
-    public String profilePicUrl;
-    public ArrayList<String> languages;
-    public double distance;
+    String name;
+    int age;
+    static String description;
+    String profilePicUrl;
+    ArrayList<String> languages;
 
     public GuiFindMatchConstructor() {
         super();
@@ -39,14 +40,13 @@ public class GuiFindMatchConstructor extends BorderPane {
         super.setCenter(center);
     }
 
-    public GuiFindMatchConstructor(ArrayList<String> languages, double distance, String name, String age, String descr, String profilePicUrl){
+    public GuiFindMatchConstructor(ArrayList<String> languages, String name, int age, String descr, String profilePicUrl){
         super();
         this.name = name;
         this.age = age;
         this.description = descr;
         this.profilePicUrl = profilePicUrl;
         this.languages = languages;
-        this.distance = distance;
         bottomBox();
         rightBox();
         pfBox();
@@ -60,7 +60,19 @@ public class GuiFindMatchConstructor extends BorderPane {
         String matchURL = this.getClass().getResource("resources/matchIcon2.png").toExternalForm();
 
         ImageView nmView = new ImageView(new Image(nomatchURL));
+        nmView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                GUILauncher.noMatchClick();
+            }
+        });
         ImageView mView = new ImageView(new Image(matchURL));
+        mView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                GUILauncher.matchClick();
+            }
+        });
 
         nmView.setPreserveRatio(true);
         nmView.setFitWidth(100);
@@ -111,15 +123,7 @@ public class GuiFindMatchConstructor extends BorderPane {
         languagesBox.getChildren().addAll(lang, languagesUser);
         languagesBox.setPadding(new Insets(30,0,0,0));
 
-        //distance
-        Text dist = new Text("Distance\n");
-        dist.setStyle("-fx-font-size: 150%");
-        Text distanceUser = new Text(Double.toString(distance) + " km");
-        TextFlow distance = new TextFlow();
-        distance.getChildren().addAll(dist, distanceUser);
-        distance.setPadding(new Insets(30,0,0,0));
-
-        vbox.getChildren().addAll(name, age, description, languagesBox, distance);
+        vbox.getChildren().addAll(name, age, description, languagesBox);
         vbox.setAlignment(Pos.TOP_LEFT);
 
         vbox.setPadding(new Insets(30, 30, 30, 30));
