@@ -29,12 +29,16 @@
 #courseButton {
     -fx-background-color: transparent;
     -fx-pref-width: 300px;
+    -fx-max-width: 300px;
+    -fx-min-width: 300px;
     -fx-alignment: center-left;
     -fx-background-radius: 0;
 }
 
 #courseButton:hover, #selectedCourseButton {
     -fx-pref-width: 300px;
+    -fx-max-width: 300px;
+    -fx-min-width: 300px;
     -fx-alignment: center-left;
     -fx-background-color: #BDBDBD;
 }

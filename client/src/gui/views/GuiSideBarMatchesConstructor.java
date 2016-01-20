@@ -14,9 +14,9 @@ public class GuiSideBarMatchesConstructor extends VBox{
     private TitledPane studyBuddyDropDown;
     private TitledPane learningDropDown;
     private TitledPane teachingDropDown;
-    private ArrayList<User> buddyMatches;
-    private ArrayList<User> learningMatches;
-    private ArrayList<User> teachingMatches;
+    ArrayList<User> buddyMatches;
+    ArrayList<User> learningMatches;
+    ArrayList<User> teachingMatches;
 
     public GuiSideBarMatchesConstructor(ArrayList<User> buddyMatches, ArrayList<User> learningMatches, ArrayList<User> teachingMatches){
         super();
@@ -32,12 +32,14 @@ public class GuiSideBarMatchesConstructor extends VBox{
         // Create Study Buddy drop-down menu
         VBox studyBuddySubj = new VBox();
         studyBuddySubj.setId("dropDownCourses");
-        for(int i=0; i<buddyMatches.size(); i++){
-            Button sbMatch = new Button(buddyMatches.get(i).getFirstname() + " " + buddyMatches.get(i).getLastname());
-            sbMatch.setId("courseButton");
-            User match = buddyMatches.get(i);
-            sbMatch.setOnAction(event -> GUILauncher.myMatchesBuddyClick(sbMatch, match));
-            studyBuddySubj.getChildren().add(i, sbMatch);
+        if(buddyMatches != null && !buddyMatches.isEmpty()) {
+            for (int i = 0; i < buddyMatches.size(); i++) {
+                Button sbMatch = new Button(buddyMatches.get(i).getFirstname() + " " + buddyMatches.get(i).getLastname());
+                sbMatch.setId("courseButton");
+                User match = buddyMatches.get(i);
+                sbMatch.setOnAction(event -> GUILauncher.myMatchesBuddyClick(sbMatch, match));
+                studyBuddySubj.getChildren().add(i, sbMatch);
+            }
         }
 
         studyBuddyDropDown = new TitledPane("My Study Buddies", studyBuddySubj);
@@ -48,12 +50,14 @@ public class GuiSideBarMatchesConstructor extends VBox{
         // Create Learning Courses drop-down menu
         VBox learningSubj = new VBox();
         learningSubj.setId("dropDownCourses");
-        for (int i = 0; i < learningMatches.size(); i++) {
-            Button lCourse = new Button(learningMatches.get(i).getFirstname() + " " + learningMatches.get(i).getLastname());
-            lCourse.setId("courseButton");
-            User match = learningMatches.get(i);
-            lCourse.setOnAction(event -> GUILauncher.myMatchesLearningClick(lCourse, match));
-            learningSubj.getChildren().add(i, lCourse);
+        if(learningMatches != null && !learningMatches.isEmpty()) {
+            for (int i = 0; i < learningMatches.size(); i++) {
+                Button lCourse = new Button(learningMatches.get(i).getFirstname() + " " + learningMatches.get(i).getLastname());
+                lCourse.setId("courseButton");
+                User match = learningMatches.get(i);
+                lCourse.setOnAction(event -> GUILauncher.myMatchesLearningClick(lCourse, match));
+                learningSubj.getChildren().add(i, lCourse);
+            }
         }
 
         learningDropDown = new TitledPane("My Tutors", learningSubj);
@@ -64,12 +68,14 @@ public class GuiSideBarMatchesConstructor extends VBox{
         // Create Teaching Courses drop-down menu
         VBox teachingSubj = new VBox();
         teachingSubj.setId("dropDownCourses");
-        for (int i = 0; i < teachingMatches.size(); i++) {
-            Button tCourse = new Button(teachingMatches.get(i).getFirstname() + " " + teachingMatches.get(i).getLastname());
-            tCourse.setId("courseButton");
-            User match = teachingMatches.get(i);
-            tCourse.setOnAction(event -> GUILauncher.myMatchesTeachingClick(tCourse, match));
-            teachingSubj.getChildren().add(i, tCourse);
+        if(teachingMatches != null && !teachingMatches.isEmpty()) {
+            for (int i = 0; i < teachingMatches.size(); i++) {
+                Button tCourse = new Button(teachingMatches.get(i).getFirstname() + " " + teachingMatches.get(i).getLastname());
+                tCourse.setId("courseButton");
+                User match = teachingMatches.get(i);
+                tCourse.setOnAction(event -> GUILauncher.myMatchesTeachingClick(tCourse, match));
+                teachingSubj.getChildren().add(i, tCourse);
+            }
         }
 
         teachingDropDown = new TitledPane("My Students", teachingSubj);

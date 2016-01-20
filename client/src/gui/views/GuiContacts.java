@@ -23,7 +23,7 @@ public class GuiContacts extends BorderPane{
     private VBox center;
     private Button bottom;
     private String name;
-    private String age;
+    private int age;
     private String img;
     private String description;
     private String university;
@@ -33,7 +33,7 @@ public class GuiContacts extends BorderPane{
     private String languages = "";
 
 
-    public GuiContacts(String name, String age, String img, String description,
+    public GuiContacts(String name, int age, String img, String description,
                        String university, String study, AvailableTimes availabletimes, ArrayList<String> language) {
         super();
         this.name = name;
@@ -108,7 +108,7 @@ public class GuiContacts extends BorderPane{
     }
 
     // name and age
-    public VBox headText(String _name, String _age) {
+    public VBox headText(String _name, int _age) {
         VBox vbox = new VBox(5);
         Text name = new Text(_name);
         Text age = new Text("Age: " + _age);
