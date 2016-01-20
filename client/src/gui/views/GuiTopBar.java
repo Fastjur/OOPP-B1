@@ -26,7 +26,8 @@ public class GuiTopBar extends ToolBar {
     public void buttons() {
         findMatch = new Button();
         findMatch.setText("Find Match");
-        findMatch.setId("findMatch");
+        findMatch.setId("findMatchActive");
+
         findMatch.setOnAction(e -> GUILauncher.findMatchClick(findMatch, yourMatches, chat, profileBtn));
 
         yourMatches = new Button();

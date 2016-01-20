@@ -32,7 +32,7 @@ public class GUILauncher extends Application implements IMessageListener {
     static GuiFindMatchConstructor findMatch;
     static GuiSideBarFindMatchConstructor findMatchSideBar;
     static GUISideBarConstructor sidebar;
-    static GuiContacts matches;
+    static GuiContacts myMatches;
     private static ArrayList<String> buddyCourses;
     private static ArrayList<String> learningCourses;
     private static ArrayList<String> teachingCourses;
@@ -199,7 +199,7 @@ public class GUILauncher extends Application implements IMessageListener {
         profile.setId("profileBtn");
 
         updateFindMatchSidebar();
-        GUI.setCenter(matches);
+        GUI.setCenter(myMatches);
         GUI.setLeft(findMatchSideBar);
     }
 
