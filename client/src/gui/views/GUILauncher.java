@@ -353,6 +353,18 @@ public class GUILauncher extends Application implements IMessageListener {
                         profile.setCourses(dbCourses);
                     }
                     break;
+
+                case "findBuddy":
+                    if (response.errorCode == 0) {
+                        TypeReference<ArrayList<User>> typeRef = new TypeReference<ArrayList<User>>() {};
+                        try {
+                            ArrayList<User> matches = mapper.readValue(response.getResponseData().get("findBuddyRes").toString(), typeRef);
+                            System.out.println(matches);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
             }
         });
     }
