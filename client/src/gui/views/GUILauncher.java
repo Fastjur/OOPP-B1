@@ -4,6 +4,7 @@ import communication.Backend;
 import communication.IMessageListener;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -114,6 +115,7 @@ public class GUILauncher extends Application implements IMessageListener {
 
     //Events Find Match Page
     public static void findMatchBuddyCoursesClick(Button sbCourse) {
+        GUIScene.setCursor(Cursor.WAIT);
         if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
             Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
             oldCourse.setId("courseButton");
@@ -126,6 +128,7 @@ public class GUILauncher extends Application implements IMessageListener {
     }
 
     public static void findMatchLearningCoursesClick(Button lCourse) {
+        GUIScene.setCursor(Cursor.WAIT);
         if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
             Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
             oldCourse.setId("courseButton");
@@ -138,6 +141,7 @@ public class GUILauncher extends Application implements IMessageListener {
     }
 
     public static void findMatchTeachingCoursesClick(Button tCourse) {
+        GUIScene.setCursor(Cursor.WAIT);
         if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
             Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
             oldCourse.setId("courseButton");
@@ -161,7 +165,8 @@ public class GUILauncher extends Application implements IMessageListener {
             GUI.setCenter(findMatch);
         }
         else{
-            GUI.setCenter(new GuiFindMatchConstructor());
+            findMatch = new GuiFindMatchConstructor();
+            GUI.setCenter(findMatch);
         }
     }
 
@@ -393,6 +398,7 @@ public class GUILauncher extends Application implements IMessageListener {
                     break;
 
                 case "findBuddy":
+                    GUIScene.setCursor(Cursor.DEFAULT);
                     if (response.errorCode == 0) {
                         TypeReference<ArrayList<User>> typeRef = new TypeReference<ArrayList<User>>() {};
                         try {
@@ -402,7 +408,7 @@ public class GUILauncher extends Application implements IMessageListener {
                             e.printStackTrace();
                         }
                     } else if (response.errorCode == 9){
-                        //todo let user know no match
+                        findMatch.noMatches(course);
                     }
                     break;
             }

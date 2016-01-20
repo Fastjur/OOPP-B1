@@ -35,9 +35,8 @@ public class GuiFindMatchConstructor extends BorderPane {
 
     private void initial() {
         Label label = new Label("Use the sidebar on the left to get started");
-        center = new HBox();
-        center.getChildren().add((label));
-        super.setCenter(center);
+        label.setStyle("-fx-font-size: 16pt");
+        super.setCenter(label);
     }
 
     public GuiFindMatchConstructor(ArrayList<String> languages, String name, int age, String descr, String profilePicUrl){
@@ -142,4 +141,13 @@ public class GuiFindMatchConstructor extends BorderPane {
         center = new HBox();
         center.setBackground(new Background(pfView));
     }
+
+    public void noMatches(String course){
+        Label message = new Label("Unfortunately no matches were found for the course \"" + course + "\"");
+        message.setStyle("-fx-font-size: 16pt");
+        super.setCenter(message);
+        super.setRight(null);
+        super.setBottom(null);
+    }
+
 }
