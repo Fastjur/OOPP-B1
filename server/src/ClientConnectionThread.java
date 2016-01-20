@@ -225,6 +225,48 @@ public class ClientConnectionThread extends Thread {
                                 e.printStackTrace();
                                 break;
                             }
+                        } else if (type.equals("learning")) {
+                            response = new Response("findBuddy");
+                            String course = requestData.get("course").getTextValue();
+                            try {
+                                ArrayList<User> findBuddyRes = Server.getDb().findTutor(client.userId, course);
+                                if (findBuddyRes.size() > 0) {
+                                    response.putData("findBuddyRes", findBuddyRes);
+                                    response.errorCode = 0;
+                                    response.errorMessage = "Matched tutor!";
+                                    break;
+                                } else {
+                                    response.errorCode = 9;
+                                    response.errorMessage = "Couldn't match any tutors!";
+                                    break;
+                                }
+                            } catch (SQLException | ClassNotFoundException e) {
+                                response.errorCode = 1;
+                                response.errorMessage = "Couldn't find tutor: generic error";
+                                e.printStackTrace();
+                                break;
+                            }
+                        } else if (type.equals("teaching")) {
+                            response = new Response("findBuddy");
+                            String course = requestData.get("course").getTextValue();
+                            try {
+                                ArrayList<User> findBuddyRes = Server.getDb().findStudent(client.userId, course);
+                                if (findBuddyRes.size() > 0) {
+                                    response.putData("findBuddyRes", findBuddyRes);
+                                    response.errorCode = 0;
+                                    response.errorMessage = "Matched student!";
+                                    break;
+                                } else {
+                                    response.errorCode = 9;
+                                    response.errorMessage = "Couldn't match any students!";
+                                    break;
+                                }
+                            } catch (SQLException | ClassNotFoundException e) {
+                                response.errorCode = 1;
+                                response.errorMessage = "Couldn't find student: generic error";
+                                e.printStackTrace();
+                                break;
+                            }
                         }
                     }
 

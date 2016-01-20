@@ -134,8 +134,7 @@ public class GUILauncher extends Application implements IMessageListener {
 
         typeOfMatch = "learning";
         course = lCourse.getText();
-
-        // TODO: Get all users from database who teach this course & show the first user on the Match Page
+        Backend.findTutorMatch(course);
     }
 
     public static void findMatchTeachingCoursesClick(Button tCourse) {
@@ -147,8 +146,7 @@ public class GUILauncher extends Application implements IMessageListener {
 
         typeOfMatch = "teaching";
         course = tCourse.getText();
-
-        // TODO: Get all users from database who need a tutor for this course & show the first user on the Match Page
+        Backend.findBecomeTutorMatch(course);
     }
 
     private static void findMatchProcessBuddyMatches(){

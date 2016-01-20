@@ -560,6 +560,70 @@ public class Database {
         return res;
     }
 
+    public ArrayList<User> findTutor(int self_id, String course) throws SQLException, ClassNotFoundException,
+            IOException {
+        int course_id = getCourseIdByName(course);
+        User self = getUser(self_id);
+        double maxDist = 999999999; //TODO, integrate
+        double latitude = self.getLatitude(),
+                longitude = self.getLongitude();
+        String dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * " +
+                "cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * " +
+                "1.1515 ) AS distance",
+                query = "SELECT `users`.id, " + dist + " FROM `users` " +
+                        "  LEFT JOIN `coursesTeaching` AS buddy ON `users`.id = buddy.users_id " +
+                        "WHERE id <> ?" +
+                        "  AND courses_id = ?" +
+                        "  HAVING distance < ?";
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setDouble(1, latitude);
+        stmt.setDouble(2, latitude); //No, that is not a typo
+        stmt.setDouble(3, longitude);
+        stmt.setInt(4, self_id);
+        stmt.setInt(5, course_id);
+        stmt.setDouble(6, maxDist);
+        ResultSet rs = stmt.executeQuery();
+
+        ArrayList<User> res = processMatches(stmt, rs, self);
+        stmt.close();
+        ConnectionManager.close();
+
+        return res;
+    }
+
+    public ArrayList<User> findStudent(int self_id, String course) throws SQLException, ClassNotFoundException,
+            IOException {
+        int course_id = getCourseIdByName(course);
+        User self = getUser(self_id);
+        double maxDist = 999999999; //TODO, integrate
+        double latitude = self.getLatitude(),
+                longitude = self.getLongitude();
+        String dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * " +
+                "cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * " +
+                "1.1515 ) AS distance",
+                query = "SELECT `users`.id, " + dist + " FROM `users` " +
+                        "  LEFT JOIN `coursesLearning` AS buddy ON `users`.id = buddy.users_id " +
+                        "WHERE id <> ?" +
+                        "  AND courses_id = ?" +
+                        "  HAVING distance < ?";
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setDouble(1, latitude);
+        stmt.setDouble(2, latitude); //No, that is not a typo
+        stmt.setDouble(3, longitude);
+        stmt.setInt(4, self_id);
+        stmt.setInt(5, course_id);
+        stmt.setDouble(6, maxDist);
+        ResultSet rs = stmt.executeQuery();
+
+        ArrayList<User> res = processMatches(stmt, rs, self);
+        stmt.close();
+        ConnectionManager.close();
+
+        return res;
+    }
+
     private ArrayList<User> processMatches(PreparedStatement stmt, ResultSet rs, User self) throws SQLException,
             IOException, ClassNotFoundException {
         AvailableTimes aTimes = self.getAvailableDates();
