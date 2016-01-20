@@ -427,6 +427,17 @@ public class Database {
         ConnectionManager.close();
     }
 
+    public void updateAvailability(int userid, AvailableTimes aTimes) throws SQLException, ClassNotFoundException, IOException {
+        String aTimesJSON = aTimes.toJson();
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET availableDates = ? WHERE id = ?");
+        stmt.setString(1, aTimesJSON);
+        stmt.setInt(2, userid);
+        stmt.executeUpdate();
+        stmt.close();
+        ConnectionManager.close();
+    }
+
 
     public int getCourseIdByName(String name) throws SQLException, ClassNotFoundException {
         connection = ConnectionManager.getConnection();

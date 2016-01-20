@@ -79,4 +79,10 @@ public class TimePeriodTest {
         assertEquals("10", p.numberWithLeadingZeros(10));
     }
 
+    @Test
+    public void testFromReadable() throws Exception {
+        TimePeriod p = new TimePeriod(1,2);
+        assertEquals(p, TimePeriod.fromReadable("00:01-00:02"));
+    }
+
 }

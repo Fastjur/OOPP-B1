@@ -1,4 +1,5 @@
 import org.codehaus.jackson.type.TypeReference;
+import shared.AvailableTimes;
 import shared.Response;
 import shared.User;
 import org.codehaus.jackson.JsonNode;
@@ -726,6 +727,30 @@ public class ClientConnectionThread extends Thread {
                         } catch (ClassNotFoundException | SQLException e) {
                             response.errorCode = 9;
                             response.errorMessage = "Couldn't update buddies!";
+                            e.printStackTrace();
+                            break;
+                        }
+                    }
+
+                case "updateAvailability":
+                    System.out.println("Received updateAvailability from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else {
+                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>(){};
+                        AvailableTimes aTimes = mapper.readValue(requestData.get("availability"), AvailableTimes
+                                .class);
+                        try {
+                            Server.getDb().updateAvailability(client.userId, aTimes);
+                            response.errorCode = 0;
+                            response.errorMessage = "Updated availability!";
+                            break;
+                        } catch (ClassNotFoundException | SQLException | IOException e) {
+                            response.errorCode = 9;
+                            response.errorMessage = "Couldn't update availability!";
                             e.printStackTrace();
                             break;
                         }

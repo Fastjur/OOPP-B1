@@ -10,7 +10,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.type.TypeFactory;
 import org.codehaus.jackson.type.TypeReference;
 import shared.Response;
 import shared.TimePeriod;
@@ -213,13 +212,13 @@ public class GUILauncher extends Application implements IMessageListener {
             profile.location.setText(self.getLongitude() + "," + self.getLatitude());
             //TODO repeatpass field
             profile.studyYear.setText(String.valueOf(self.getStudyYear()));
-            profile.monday.setText(self.getAvailableDates().getReadable(1));
-            profile.tuesday.setText(self.getAvailableDates().getReadable(2));
-            profile.wednesday.setText(self.getAvailableDates().getReadable(3));
-            profile.thursday.setText(self.getAvailableDates().getReadable(4));
-            profile.friday.setText(self.getAvailableDates().getReadable(5));
-            profile.saturday.setText(self.getAvailableDates().getReadable(6));
-            profile.sunday.setText(self.getAvailableDates().getReadable(7));
+            profile.monday.setText(self.getAvailableDates().toReadable(1));
+            profile.tuesday.setText(self.getAvailableDates().toReadable(2));
+            profile.wednesday.setText(self.getAvailableDates().toReadable(3));
+            profile.thursday.setText(self.getAvailableDates().toReadable(4));
+            profile.friday.setText(self.getAvailableDates().toReadable(5));
+            profile.saturday.setText(self.getAvailableDates().toReadable(6));
+            profile.sunday.setText(self.getAvailableDates().toReadable(7));
         }
     }
 

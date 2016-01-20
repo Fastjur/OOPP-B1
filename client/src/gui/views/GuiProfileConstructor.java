@@ -1,6 +1,7 @@
 package gui.views;
 
 import communication.Backend;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,9 +9,12 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import shared.AvailableTimes;
+import shared.TimePeriod;
 import shared.User;
 
 import java.io.File;
@@ -32,7 +36,8 @@ public class GuiProfileConstructor extends BorderPane {
                     universityUpdated = false,
                     findBuddyUpdated = false,
                     findTutorUpdated = false,
-                    becomeTutorUpdated = false;
+                    becomeTutorUpdated = false,
+                    availabilityUpdated = false;
     protected TextField name, age, email, telephoneNumber, location, studyYear, monday, tuesday,
             wednesday, thursday, friday, saturday, sunday;
     protected ChoiceBox<String> sex;
@@ -294,6 +299,41 @@ public class GuiProfileConstructor extends BorderPane {
             }
         });
         editToggleBtn.setId("editToggleBtn");
+
+        this.monday.setOnKeyPressed(event -> {
+            System.out.println("Availability updated, adding to update queue");
+            this.availabilityUpdated = true;
+        });
+
+        this.tuesday.setOnKeyPressed(event -> {
+            System.out.println("Availability updated, adding to update queue");
+            this.availabilityUpdated = true;
+        });
+
+        this.wednesday.setOnKeyPressed(event -> {
+            System.out.println("Availability updated, adding to update queue");
+            this.availabilityUpdated = true;
+        });
+
+        this.thursday.setOnKeyPressed(event -> {
+            System.out.println("Availability updated, adding to update queue");
+            this.availabilityUpdated = true;
+        });
+
+        this.friday.setOnKeyPressed(event -> {
+            System.out.println("Availability updated, adding to update queue");
+            this.availabilityUpdated = true;
+        });
+
+        this.saturday.setOnKeyPressed(event -> {
+            System.out.println("Availability updated, adding to update queue");
+            this.availabilityUpdated = true;
+        });
+
+        this.sunday.setOnKeyPressed(event -> {
+            System.out.println("Availability updated, adding to update queue");
+            this.availabilityUpdated = true;
+        });
 
         //Labels
         Label profileInfoLabel = new Label("Personal");
@@ -743,6 +783,31 @@ public class GuiProfileConstructor extends BorderPane {
             ArrayList<Integer> buddies = getSelected(findBuddyBox);
             Backend.updateBuddies(buddies);
             changed = true;
+        }
+        if (this.availabilityUpdated && !error) {
+            try {
+                System.out.println(this.monday.getText());
+                ArrayList<TimePeriod> monday = AvailableTimes.fromReadable(this.monday.getText());
+                ArrayList<TimePeriod> tuesday = AvailableTimes.fromReadable(this.tuesday.getText());
+                ArrayList<TimePeriod> wednesday = AvailableTimes.fromReadable(this.wednesday.getText());
+                ArrayList<TimePeriod> thursday = AvailableTimes.fromReadable(this.thursday.getText());
+                ArrayList<TimePeriod> friday = AvailableTimes.fromReadable(this.friday.getText());
+                ArrayList<TimePeriod> saturday = AvailableTimes.fromReadable(this.saturday.getText());
+                ArrayList<TimePeriod> sunday = AvailableTimes.fromReadable(this.sunday.getText());
+                AvailableTimes aTimes = new AvailableTimes();
+                aTimes.setMonday(monday);
+                aTimes.setTuesday(tuesday);
+                aTimes.setWednesday(wednesday);
+                aTimes.setThursday(thursday);
+                aTimes.setFriday(friday);
+                aTimes.setSaturday(saturday);
+                aTimes.setSunday(sunday);
+                Backend.updateAvailability(aTimes);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                updateUserAlert("Invalid availability given!");
+                error = true;
+            }
         }
         if (!error && changed) {
             Backend.getSelf();

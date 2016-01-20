@@ -1,6 +1,8 @@
 package communication;
 
+import shared.AvailableTimes;
 import shared.Response;
+import shared.TimePeriod;
 import shared.User;
 
 import java.io.IOException;
@@ -462,6 +464,21 @@ public class Backend {
         try {
             Request request = new Request("updateBuddies");
             request.putData("buddies", buddies);
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateAvailability(AvailableTimes aTimes) {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot update buddies: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("updateAvailability");
+            request.putData("availability", aTimes);
             listenThread.sendMessage(request.toSendableJSON());
         } catch (IOException e) {
             e.printStackTrace();

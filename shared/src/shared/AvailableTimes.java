@@ -251,7 +251,7 @@ public class AvailableTimes {
                 this.friday.size() + this.saturday.size() + this.sunday.size();
     }
 
-    public String getReadable(int dayNr) throws IllegalArgumentException {
+    public String toReadable(int dayNr) throws IllegalArgumentException {
         ArrayList<TimePeriod> day;
         switch (dayNr){
             case 1:
@@ -284,6 +284,16 @@ public class AvailableTimes {
                 res += p.toReadable() + " ";
             }
             res = res.substring(0, res.length() - 1);
+        }
+        return res;
+    }
+
+    public static ArrayList<TimePeriod> fromReadable(String readable) throws IllegalArgumentException {
+        String arr[] = readable.split(" ");
+        ArrayList<TimePeriod> res = new ArrayList<>();
+        for (String s : arr) {
+            TimePeriod p = TimePeriod.fromReadable(s);
+            res.add(p);
         }
         return res;
     }
