@@ -532,38 +532,91 @@ public class Database {
             IOException {
         int course_id = getCourseIdByName(course);
         User self = getUser(self_id);
-        double maxDist = 999999999; //TODO, integrate
+        /*double maxDist = 999999999; //TODO, integrate
         double latitude = self.getLatitude(),
                 longitude = self.getLongitude();
         String dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * " +
                 "cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * " +
-                "1.1515 ) AS distance",
-                query = "SELECT `users`.id, " + dist + " FROM `users` " +
-                        "  LEFT JOIN `coursesSearchingBuddy` AS buddy ON `users`.id = buddy.users_id " +
-                        "WHERE id <> ?" +
-                        "  AND courses_id = ?" +
-                        "  HAVING distance < ?";
+                "1.1515 ) AS distance",*/
+        String query = "SELECT `users`.id FROM `users` " +
+                       "  JOIN `coursesSearchingBuddy` AS buddy ON `users`.id = buddy.users_id " +
+                       "  JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id " +
+                       "  JOIN `matches` ON matches.id = hasmatches.matches_id " +
+                       "WHERE `users`.id <> ?" +
+                       "  AND buddy.courses_id = ? " +
+                       "  AND matches.match_type = ?" +
+                       "  AND `users`.id <> matches.matched_user_id ";
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setDouble(1, latitude);
+        /*stmt.setDouble(1, latitude);
         stmt.setDouble(2, latitude); //No, that is not a typo
-        stmt.setDouble(3, longitude);
-        stmt.setInt(4, self_id);
-        stmt.setInt(5, course_id);
-        stmt.setDouble(6, maxDist);
+        stmt.setDouble(3, longitude);*/
+        stmt.setInt(1, self_id);
+        stmt.setInt(2, course_id);
+        stmt.setString(3, "buddy");
         ResultSet rs = stmt.executeQuery();
 
-        ArrayList<User> res = processMatches(stmt, rs, self);
+        ArrayList<User> res = processMatches(rs, self);
         stmt.close();
         ConnectionManager.close();
 
         return res;
     }
 
-    private ArrayList<User> processMatches(PreparedStatement stmt, ResultSet rs, User self) throws SQLException,
-            IOException, ClassNotFoundException {
-        AvailableTimes aTimes = self.getAvailableDates();
-        ArrayList<String> languages = self.getLanguageList();
+    public ArrayList<User> findTutor(int self_id, String course) throws SQLException, ClassNotFoundException,
+            IOException {
+        int course_id = getCourseIdByName(course);
+        User self = getUser(self_id);
+        String query = "SELECT `users`.id FROM `users` " +
+                       "  JOIN `coursesTeaching` AS buddy ON `users`.id = buddy.users_id " +
+                       "  JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id " +
+                       "  JOIN `matches` ON matches.id = hasmatches.matches_id " +
+                       "WHERE `users`.id <> ?" +
+                       "  AND buddy.courses_id = ? " +
+                       "  AND matches.match_type = ?" +
+                       "  AND `users`.id <> matches.matched_user_id";
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, self_id);
+        stmt.setInt(2, course_id);
+        stmt.setString(3, "teaching");
+        ResultSet rs = stmt.executeQuery();
+
+        ArrayList<User> res = processMatches(rs, self);
+        stmt.close();
+        ConnectionManager.close();
+
+        return res;
+    }
+
+    public ArrayList<User> findStudent(int self_id, String course) throws SQLException, ClassNotFoundException,
+            IOException {
+        int course_id = getCourseIdByName(course);
+        User self = getUser(self_id);
+        String query = "SELECT `users`.id FROM `users` " +
+                       "  JOIN `coursesLearning` AS buddy ON `users`.id = buddy.users_id " +
+                       "  JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id " +
+                       "  JOIN `matches` ON matches.id = hasmatches.matches_id " +
+                       "WHERE `users`.id <> ?" +
+                       "  AND buddy.courses_id = ? " +
+                       "  AND matches.match_type = ?" +
+                       "  AND `users`.id <> matches.matched_user_id";
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, self_id);
+        stmt.setInt(2, course_id);
+        stmt.setString(3, "learning");
+        ResultSet rs = stmt.executeQuery();
+
+        ArrayList<User> res = processMatches(rs, self);
+        stmt.close();
+        ConnectionManager.close();
+
+        return res;
+    }
+
+    private ArrayList<User> processMatches(ResultSet rs, User self) throws SQLException, IOException,
+            ClassNotFoundException {
         ArrayList<Integer> user_ids = new ArrayList<>();
         ArrayList<User> res = new ArrayList<>();
         while (rs.next()) {
@@ -594,12 +647,12 @@ public class Database {
 
     /**
      * Adds a match to the database when a user accepts it
-     * @param self ID of the user itself
-     * @param matchedUserId ID of the user to whom 'self' matched
+     * @param self_id ID of the user itself
+     * @param matchedUserId ID of the user to whom 'self_id' matched
      * @param type Type of match, should be 'learning', 'teaching' or 'buddy'
      * @throws SQLException
      */
-    public void acceptMatch(int self, int matchedUserId, String type, String course) throws SQLException, ClassNotFoundException {
+    public void acceptMatch(int self_id, int matchedUserId, String type, String course) throws SQLException, ClassNotFoundException {
         int courseId = getCourseIdByName(course);
         if (courseId == -1)
             throw new IllegalArgumentException("[ERROR] Couldn't find course ID by name!");
@@ -609,11 +662,7 @@ public class Database {
         ResultSet rs;
         stmt.setInt(1, matchedUserId);
         stmt.setString(2, type);
-        if (courseId == 0) {
-            stmt.setNull(3, Types.NULL);
-        } else {
-            stmt.setInt(3, courseId);
-        }
+        stmt.setInt(3, courseId);
         stmt.executeUpdate();
         rs = stmt.getGeneratedKeys();
         int matchId;
@@ -626,7 +675,7 @@ public class Database {
         stmt.close();
 
         stmt = connection.prepareStatement("INSERT INTO `users_has_matches`(users_id, matches_id) VALUES(?,?)");
-        stmt.setInt(1, self);
+        stmt.setInt(1, self_id);
         stmt.setInt(2, matchId);
         stmt.executeUpdate();
         stmt.close();
@@ -698,5 +747,73 @@ public class Database {
      */
     public void close() {
         ConnectionManager.close();
+    }
+
+    public ArrayList<User> getBuddies(int userId) throws SQLException, ClassNotFoundException, IOException {
+        ArrayList<User> res;
+        connection = ConnectionManager.getConnection();
+        String query = "SELECT m.matched_user_id FROM " +
+                       "  matches AS m " +
+                       "JOIN users_has_matches AS hm " +
+                       "  ON hm.matches_id = m.id " +
+                       "JOIN courses AS c " +
+                       "  ON c.id = m.courses_id " +
+                       "WHERE users_id = ? " +
+                       "AND match_type = ? ";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, userId);
+        stmt.setString(2, "buddy");
+        ResultSet rs = stmt.executeQuery();
+        res = processGetMatches(rs);
+        return res;
+    }
+
+    public ArrayList<User> getStudents(int userId) throws SQLException, ClassNotFoundException, IOException {
+        ArrayList<User> res;
+        connection = ConnectionManager.getConnection();
+        String query = "SELECT m.matched_user_id FROM " +
+                       "  matches AS m " +
+                       "JOIN users_has_matches AS hm " +
+                       "  ON hm.matches_id = m.id " +
+                       "JOIN courses AS c " +
+                       "  ON c.id = m.courses_id " +
+                       "WHERE users_id = ? " +
+                       "AND match_type = ? ";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, userId);
+        stmt.setString(2, "teaching");
+        ResultSet rs = stmt.executeQuery();
+        res = processGetMatches(rs);
+        return res;
+    }
+
+    public ArrayList<User> getTutors(int userId) throws SQLException, ClassNotFoundException, IOException {
+        ArrayList<User> res;
+        connection = ConnectionManager.getConnection();
+        String query = "SELECT m.matched_user_id FROM " +
+                       "  matches AS m " +
+                       "JOIN users_has_matches AS hm " +
+                       "  ON hm.matches_id = m.id " +
+                       "JOIN courses AS c " +
+                       "  ON c.id = m.courses_id " +
+                       "WHERE users_id = ? " +
+                       "AND match_type = ? ";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, userId);
+        stmt.setString(2, "learning");
+        ResultSet rs = stmt.executeQuery();
+        res = processGetMatches(rs);
+        return res;
+    }
+
+    private ArrayList<User> processGetMatches(ResultSet rs) throws SQLException, IOException, ClassNotFoundException {
+        ArrayList<User> res = new ArrayList<>();
+        while (rs.next()) {
+            User temp = this.getUser(rs.getInt("matched_user_id"));
+            if (temp != null) {
+                res.add(temp);
+            }
+        }
+        return res;
     }
 }

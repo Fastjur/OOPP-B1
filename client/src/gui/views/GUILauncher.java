@@ -4,6 +4,7 @@ import communication.Backend;
 import communication.IMessageListener;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -32,13 +33,24 @@ public class GUILauncher extends Application implements IMessageListener {
     static GuiFindMatchConstructor findMatch;
     static GuiSideBarFindMatchConstructor findMatchSideBar;
     static GUISideBarConstructor sidebar;
-    static GuiContacts matches;
+    static GuiContacts myMatches;
+    static GuiSideBarMatchesConstructor matchSidebar;
     private static ArrayList<String> buddyCourses;
     private static ArrayList<String> learningCourses;
     private static ArrayList<String> teachingCourses;
+    private static ArrayList<User> buddies;
+    private static ArrayList<User> students;
+    private static ArrayList<User> tutors;
 
     private static String pfURL;//TODO implement
     private static GuiChat chatPage;
+    private static boolean matchpagecheck;
+
+    private static ArrayList<User> courseMatches;
+
+    //TODO send typeOfMatch + matchCourse together with match (in MatchClick method)
+    private static String typeOfMatch;
+    private static String matchCourse;
 
     @Override
     public void start(Stage PrimaryStage) throws Exception{
@@ -108,38 +120,98 @@ public class GUILauncher extends Application implements IMessageListener {
 
     //Events Find Match Page
     public static void findMatchBuddyCoursesClick(Button sbCourse) {
+        GUIScene.setCursor(Cursor.WAIT);
         if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
             Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
             oldCourse.setId("courseButton");
         }
         sbCourse.setId("selectedCourseButton");
 
-        String course = sbCourse.getText();
-        Backend.findStudyBuddy(course);
+        typeOfMatch = "buddy";
+        matchCourse = sbCourse.getText();
+        Backend.findStudyBuddy(matchCourse);
     }
 
     public static void findMatchLearningCoursesClick(Button lCourse) {
+        GUIScene.setCursor(Cursor.WAIT);
         if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
             Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
             oldCourse.setId("courseButton");
         }
         lCourse.setId("selectedCourseButton");
 
-        String course = lCourse.getText();
-
-        // TODO: Get all users from database who teach this course & show the first user on the Match Page
+        typeOfMatch = "learning";
+        matchCourse = lCourse.getText();
+        Backend.findTutorMatch(matchCourse);
     }
 
     public static void findMatchTeachingCoursesClick(Button tCourse) {
+        GUIScene.setCursor(Cursor.WAIT);
         if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
             Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
             oldCourse.setId("courseButton");
         }
         tCourse.setId("selectedCourseButton");
 
-        String course = tCourse.getText();
+        typeOfMatch = "teaching";
+        matchCourse = tCourse.getText();
+        Backend.findBecomeTutorMatch(matchCourse);
+    }
 
-        // TODO: Get all users from database who need a tutor for this course & show the first user on the Match Page
+    private static void findMatchProcessBuddyMatches(){
+        if(!courseMatches.isEmpty()) {
+            User match = courseMatches.get(0);
+            LocalDate now = LocalDate.now();
+            int age = Period.between(match.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), now).getYears();
+
+            //TODO profile pic + distance
+
+            findMatch = new GuiFindMatchConstructor(match.getLanguageList(), match.getFirstname() + " " + match.getLastname(), age, match.getDescription(), pfURL);
+            GUI.setCenter(findMatch);
+        }
+        else{
+            findMatch = new GuiFindMatchConstructor();
+            GUI.setCenter(findMatch);
+        }
+    }
+
+    // Events matchpage (sidebar)
+    public static void myMatchesBuddyClick(Button sbMatch, User match) {
+        if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
+            Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
+            oldCourse.setId("courseButton");
+        }
+        sbMatch.setId("selectedCourseButton");
+
+        displayMyMatch(match);
+    }
+
+    public static void myMatchesLearningClick(Button lMatch, User match) {
+        if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
+            Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
+            oldCourse.setId("courseButton");
+        }
+        lMatch.setId("selectedCourseButton");
+
+        displayMyMatch(match);
+    }
+
+    public static void myMatchesTeachingClick(Button tMatch, User match) {
+        if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
+            Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
+            oldCourse.setId("courseButton");
+        }
+        tMatch.setId("selectedCourseButton");
+
+        displayMyMatch(match);
+    }
+
+    public static void displayMyMatch(User match){
+        LocalDate now = LocalDate.now();
+        int age = Period.between(match.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), now).getYears();
+
+        myMatches = new GuiContacts(match.getFirstname() + " " + match.getLastname(), age, pfURL, match.getDescription(), match.getUniversity(), match.getStudy(), match.getAvailableDates(), match.getLanguageList());
+        GUI.setCenter(myMatches);
     }
 
     // Events TopBar
@@ -149,9 +221,24 @@ public class GUILauncher extends Application implements IMessageListener {
         chat.setId("chat");
         profile.setId("profileBtn");
 
+        GUI.setCenter(new GuiFindMatchConstructor());
         updateFindMatchSidebar();
-        GUI.setCenter(findMatch);
         GUI.setLeft(findMatchSideBar);
+    }
+
+    public static void noMatchClick() {
+        courseMatches.remove(0);
+        findMatchProcessBuddyMatches();
+    }
+
+    public static void matchClick(){
+        User match = courseMatches.get(0);
+        int matchId = match.getUserID();
+
+        Backend.acceptMatch(matchId, typeOfMatch, matchCourse);
+
+        courseMatches.remove(0);
+        findMatchProcessBuddyMatches();
     }
 
     public static void yourMatchesClick(Button findMatch, Button yourMatches, Button chat, Button profile) {
@@ -159,10 +246,12 @@ public class GUILauncher extends Application implements IMessageListener {
         findMatch.setId("findMatch");
         chat.setId("chat");
         profile.setId("profileBtn");
-
-        updateFindMatchSidebar();
-        GUI.setCenter(matches);
-        GUI.setLeft(findMatchSideBar);
+        GUI.setCenter(new GuiFindMatchConstructor());
+        GUIScene.setCursor(Cursor.WAIT);
+        matchpagecheck = true;
+        Backend.getBuddies();
+        Backend.getTutors();
+        Backend.getStudents();
     }
 
     public static void chatClick(Button findMatch, Button yourMatches, Button chat, Button profile) {
@@ -172,11 +261,11 @@ public class GUILauncher extends Application implements IMessageListener {
         profile.setId("profileBtn");
 
         GUI.setCenter(chatPage);
+        GUI.setLeft(null);
     }
 
     public static void matchesChatButton(){
         //TODO go to chatconversation with this specific match
-        GUI.setCenter(chatPage);
     }
 
     public static void profileClick(Button findMatch, Button yourMatches, Button chat, Button prof) {
@@ -240,6 +329,11 @@ public class GUILauncher extends Application implements IMessageListener {
         findMatchSideBar = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
     }
 
+    private static void updateMatchSidebar() {
+        matchSidebar = new GuiSideBarMatchesConstructor(buddies, tutors, students);
+        GUI.setLeft(matchSidebar);
+    }
+
     @Override
     public void onIncomingResponse(Response response) {
         System.out.println(response);
@@ -255,6 +349,9 @@ public class GUILauncher extends Application implements IMessageListener {
                         Backend.getStudies();
                         Backend.getUniversities();
                         Backend.getCourses();
+                        Backend.getBuddies();
+                        Backend.getStudents();
+                        Backend.getTutors();
                     } else {
                         login.setLoginMessage(response.errorMessage, Color.RED);
                     }
@@ -280,6 +377,7 @@ public class GUILauncher extends Application implements IMessageListener {
                     break;
 
                 case "getNationalities":
+                    GUIScene.setCursor(Cursor.DEFAULT);
                     if (response.errorCode == 0) {
                         HashMap<Integer, String> dbNationalities = new HashMap<>();
                         try {
@@ -295,6 +393,7 @@ public class GUILauncher extends Application implements IMessageListener {
                     break;
 
                 case "getLanguages":
+                    GUIScene.setCursor(Cursor.DEFAULT);
                     if (response.errorCode == 0) {
                         HashMap<Integer, String> dbLanguages = new HashMap<>();
                         try {
@@ -310,6 +409,7 @@ public class GUILauncher extends Application implements IMessageListener {
                     break;
 
                 case "getStudies":
+                    GUIScene.setCursor(Cursor.DEFAULT);
                     if (response.errorCode == 0) {
                         HashMap<Integer, String> dbStudies = new HashMap<>();
                         try {
@@ -325,6 +425,7 @@ public class GUILauncher extends Application implements IMessageListener {
                     break;
 
                 case "getUniversities":
+                    GUIScene.setCursor(Cursor.DEFAULT);
                     if (response.errorCode == 0) {
                         HashMap<Integer, String> dbUniversities = new HashMap<>();
                         try {
@@ -340,6 +441,7 @@ public class GUILauncher extends Application implements IMessageListener {
                     break;
 
                 case "getCourses":
+                    GUIScene.setCursor(Cursor.DEFAULT);
                     if (response.errorCode == 0) {
                         HashMap<Integer, String> dbCourses = new HashMap<>();
                         try {
@@ -351,6 +453,62 @@ public class GUILauncher extends Application implements IMessageListener {
                             e.printStackTrace();
                         }
                         profile.setCourses(dbCourses);
+                    }
+                    break;
+
+                case "findBuddy":
+                    GUIScene.setCursor(Cursor.DEFAULT);
+                    if (response.errorCode == 0) {
+                        TypeReference<ArrayList<User>> typeRef = new TypeReference<ArrayList<User>>() {};
+                        try {
+                            courseMatches = mapper.readValue(response.getResponseData().get("findBuddyRes").toString(), typeRef);
+                            findMatchProcessBuddyMatches();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else if (response.errorCode == 9){
+                        findMatch.noMatches(matchCourse);
+                    }
+                    break;
+
+                case "getBuddies":
+                    if (response.errorCode == 0) {
+                        TypeReference<ArrayList<User>> typeRef = new TypeReference<ArrayList<User>>() {};
+                        try {
+                            buddies = mapper.readValue(response.getResponseData().get("buddies")
+                                    .toString(), typeRef);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+
+                case "getStudents":
+                    if (response.errorCode == 0) {
+                        TypeReference<ArrayList<User>> typeRef = new TypeReference<ArrayList<User>>() {};
+                        try {
+                            students = mapper.readValue(response.getResponseData().get("students")
+                                    .toString(), typeRef);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+
+                case "getTutors":
+                    if (response.errorCode == 0) {
+                        TypeReference<ArrayList<User>> typeRef = new TypeReference<ArrayList<User>>() {};
+                        try {
+                            tutors = mapper.readValue(response.getResponseData().get("tutors")
+                                    .toString(), typeRef);
+                            if(matchpagecheck) {
+                                updateMatchSidebar();
+                                matchpagecheck = false;
+                                GUIScene.setCursor(Cursor.DEFAULT);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                     break;
             }

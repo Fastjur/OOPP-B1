@@ -23,20 +23,18 @@ public class GuiContacts extends BorderPane{
     private VBox center;
     private Button bottom;
     private String name;
-    private String age;
+    private int age;
     private String img;
     private String description;
     private String university;
     private String study;
     private AvailableTimes availabletimes;
     private ArrayList<String> language;
-    private Double distance;
     private String languages = "";
 
 
-    public GuiContacts(String name, String age, String img, String description,
-                       String university, String study, AvailableTimes availabletimes, ArrayList<String> language,
-                       Double distance) {
+    public GuiContacts(String name, int age, String img, String description,
+                       String university, String study, AvailableTimes availabletimes, ArrayList<String> language) {
         super();
         this.name = name;
         this.age = age;
@@ -46,7 +44,6 @@ public class GuiContacts extends BorderPane{
         this.study = study;
         this.availabletimes = availabletimes;
         this.language =language;
-        this.distance = distance;
         chatButton();
         center();
         super.setAlignment(bottom, Pos.BOTTOM_RIGHT);
@@ -111,7 +108,7 @@ public class GuiContacts extends BorderPane{
     }
 
     // name and age
-    public VBox headText(String _name, String _age) {
+    public VBox headText(String _name, int _age) {
         VBox vbox = new VBox(5);
         Text name = new Text(_name);
         Text age = new Text("Age: " + _age);
@@ -124,7 +121,7 @@ public class GuiContacts extends BorderPane{
 
     // info
     public VBox centerLeft(String _description, String _university, String _study,
-                           ArrayList<String> _language, Double _distance) {
+                           ArrayList<String> _language) {
         VBox vbox = new VBox(20);
 
         VBox descr = new VBox(2);
@@ -164,14 +161,7 @@ public class GuiContacts extends BorderPane{
         language.setId("language");
         languageInfo.setId("languageInfo");
 
-        VBox dis = new VBox(2);
-        Text distance = new Text("Distance");
-        Text distanceInfo = new Text(_distance.toString() + " km");
-        dis.getChildren().addAll(distance, distanceInfo);
-        distance.setId("distance");
-        distanceInfo.setId("distanceInfo");
-
-        vbox.getChildren().addAll(descr, uni, stu, la, dis);
+        vbox.getChildren().addAll(descr, uni, stu, la);
         vbox.setPadding(new Insets(0, 0, 0, 100));
         vbox.setMaxWidth(750);
         vbox.setId("centerLeft");
@@ -279,7 +269,7 @@ public class GuiContacts extends BorderPane{
 
     // center
     public void center() {
-        center = content(left(head(img, headText(name, age)), centerLeft(description, university, study, language, distance)));
+        center = content(left(head(img, headText(name, age)), centerLeft(description, university, study, language)));
         center.setId("screen");
     }
 

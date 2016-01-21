@@ -128,7 +128,7 @@ public class Backend {
 
     public static void findStudyBuddy(String course) {
         if (!isConnected()) {
-            System.out.println("[ERROR] Cannot register: Not connected!");
+            System.out.println("[ERROR] Cannot find buddy matches: Not connected!");
             return;
         }
 
@@ -143,7 +143,86 @@ public class Backend {
         }
     }
 
-    public static void acceptMatch(User self, String matchType) {
+    public static void findTutorMatch(String course) {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot find tutor matches: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("findMatch");
+
+            request.putData("type", "learning");
+            request.putData("course", course);
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void findBecomeTutorMatch(String course) {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot find become tutor matches: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("findMatch");
+
+            request.putData("type", "teaching");
+            request.putData("course", course);
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getBuddies() {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot getBuddies: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("getBuddies");
+
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getStudents() {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot get Students: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("getStudents");
+
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getTutors() {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot get Tutors: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("getTutors");
+
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void acceptMatch(int matchedUserId, String matchType, String matchCourse) {
         if (!isConnected()) {
             System.out.println("[ERROR] Cannot accept match: Not connected!");
             return;
@@ -152,8 +231,9 @@ public class Backend {
         try {
             Request request = new Request("acceptMatch");
 
-            request.putData("matchUser", self.getUserID());
+            request.putData("matchUser", matchedUserId);
             request.putData("matchType", matchType);
+            request.putData("matchCourse", matchCourse);
             listenThread.sendMessage(request.toSendableJSON());
         } catch (IOException e) {
             e.printStackTrace();
