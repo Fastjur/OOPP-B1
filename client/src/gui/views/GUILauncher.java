@@ -38,6 +38,7 @@ public class GUILauncher extends Application implements IMessageListener {
     private static ArrayList<String> buddyCourses;
     private static ArrayList<String> learningCourses;
     private static ArrayList<String> teachingCourses;
+    private static ArrayList<String> emergencyCourses;
     private static ArrayList<User> buddies;
     private static ArrayList<User> students;
     private static ArrayList<User> tutors;
@@ -158,13 +159,27 @@ public class GUILauncher extends Application implements IMessageListener {
         Backend.findBecomeTutorMatch(matchCourse);
     }
 
+    public static void findMatchEmergencyCoursesClick(Button eCourse) {
+        GUIScene.setCursor(Cursor.WAIT);
+        if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
+            Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
+            oldCourse.setId("courseButton");
+        }
+        eCourse.setId("selectedCourseButton");
+
+        typeOfMatch = "emergency";
+        matchCourse = eCourse.getText();
+
+        //TODO JURRIAAN emergency
+    }
+
     private static void findMatchProcessBuddyMatches(){
         if(!courseMatches.isEmpty()) {
             User match = courseMatches.get(0);
             LocalDate now = LocalDate.now();
             int age = Period.between(match.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), now).getYears();
 
-            //TODO profile pic + distance
+            //TODO profile pic
 
             findMatch = new GuiFindMatchConstructor(match.getLanguageList(), match.getFirstname() + " " + match.getLastname(), age, match.getDescription(), pfURL);
             GUI.setCenter(findMatch);
@@ -326,7 +341,9 @@ public class GUILauncher extends Application implements IMessageListener {
         buddyCourses = Backend.getSelfObject().getBuddyList();
         teachingCourses = Backend.getSelfObject().getCoursesTeachingList();
         learningCourses = Backend.getSelfObject().getCoursesLearningList();
-        findMatchSideBar = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
+        //TODO JURRIAAN emergency
+        //emergencyCourses =
+        //findMatchSideBar = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses, emergencyCourses);
     }
 
     private static void updateMatchSidebar() {

@@ -13,17 +13,20 @@ public class GuiSideBarFindMatchConstructor extends VBox{
     private TitledPane studyBuddyDropDown;
     private TitledPane learningDropDown;
     private TitledPane teachingDropDown;
+    private TitledPane emergencyDropDown;
     private ArrayList<String> buddyCourses;
     private ArrayList<String> learningCourses;
     private ArrayList<String> teachingCourses;
+    private ArrayList<String> emergencyCourses;
 
-    public GuiSideBarFindMatchConstructor(ArrayList<String> buddyCourses, ArrayList<String> learningCourses, ArrayList<String> teachingCourses){
+    public GuiSideBarFindMatchConstructor(ArrayList<String> buddyCourses, ArrayList<String> learningCourses, ArrayList<String> teachingCourses, ArrayList<String> emergencyCourses){
         super();
         this.buddyCourses = buddyCourses;
         this.learningCourses = learningCourses;
         this.teachingCourses = teachingCourses;
+        this.emergencyCourses = emergencyCourses;
         content();
-        super.getChildren().addAll(studyBuddyDropDown, learningDropDown, teachingDropDown);
+        super.getChildren().addAll(studyBuddyDropDown, learningDropDown, teachingDropDown, emergencyDropDown);
         super.setId("sideBarMatch");
     }
 
@@ -72,5 +75,20 @@ public class GuiSideBarFindMatchConstructor extends VBox{
         teachingDropDown.setId("sideBarTitledPanes");
         teachingDropDown.setExpanded(false);
         teachingDropDown.setMaxWidth(400);
+
+        // Create Emergency Courses drop-down menu
+        VBox emergencySubj = new VBox();
+        emergencySubj.setId("dropDownCourses");
+        for (int i = 0; i < emergencyCourses.size(); i++) {
+            Button eCourse = new Button(emergencyCourses.get(i));
+            eCourse.setId("courseButton");
+            eCourse.setOnAction(event -> GUILauncher.findMatchEmergencyCoursesClick(eCourse));
+            emergencySubj.getChildren().add(i, eCourse);
+        }
+
+        emergencyDropDown = new TitledPane("Emergency", emergencySubj);
+        emergencyDropDown.setId("sideBarTitledPanes");
+        emergencyDropDown.setExpanded(false);
+        emergencyDropDown.setMaxWidth(400);
     }
 }
