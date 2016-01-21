@@ -349,9 +349,6 @@ public class GUILauncher extends Application implements IMessageListener {
                         Backend.getStudies();
                         Backend.getUniversities();
                         Backend.getCourses();
-                        Backend.getBuddies();
-                        Backend.getStudents();
-                        Backend.getTutors();
                     } else {
                         login.setLoginMessage(response.errorMessage, Color.RED);
                     }

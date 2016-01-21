@@ -117,25 +117,32 @@ public class AvailableTimes {
     public void removeTime(int day, int index) {
         switch (day) {
             case 1:
-                this.monday.remove(index);
+                if (this.monday.size() > index)
+                    this.monday.remove(index);
                 break;
             case 2:
-                this.tuesday.remove(index);
+                if (this.tuesday.size() > index)
+                    this.tuesday.remove(index);
                 break;
             case 3:
-                this.wednesday.remove(index);
+                if (this.wednesday.size() > index)
+                    this.wednesday.remove(index);
                 break;
             case 4:
-                this.thursday.remove(index);
+                if (this.thursday.size() > index)
+                    this.thursday.remove(index);
                 break;
             case 5:
-                this.friday.remove(index);
+                if (this.friday.size() > index)
+                    this.friday.remove(index);
                 break;
             case 6:
-                this.saturday.remove(index);
+                if (this.saturday.size() > index)
+                    this.saturday.remove(index);
                 break;
             case 7:
-                this.sunday.remove(index);
+                if (this.sunday.size() > index)
+                    this.sunday.remove(index);
                 break;
         }
     }

@@ -105,6 +105,31 @@ public class AvailableTimesTest {
 
         bTimes.removeTime(1, 0);
         assertEquals(bTimes, cTimes);
+
+        bTimes = new AvailableTimes();
+        bTimes.removeTime(1, 0);
+        bTimes.removeTime(2, 0);
+        bTimes.removeTime(3, 0);
+        bTimes.removeTime(4, 0);
+        bTimes.removeTime(5, 0);
+        bTimes.removeTime(6, 0);
+        bTimes.removeTime(7, 0);
+
+        bTimes.addTimePeriod(1, new TimePeriod(1, 2));
+        bTimes.addTimePeriod(2, new TimePeriod(1, 2));
+        bTimes.addTimePeriod(3, new TimePeriod(1, 2));
+        bTimes.addTimePeriod(4, new TimePeriod(1, 2));
+        bTimes.addTimePeriod(5, new TimePeriod(1, 2));
+        bTimes.addTimePeriod(6, new TimePeriod(1, 2));
+        bTimes.addTimePeriod(7, new TimePeriod(1, 2));
+
+        bTimes.removeTime(1, 0);
+        bTimes.removeTime(2, 0);
+        bTimes.removeTime(3, 0);
+        bTimes.removeTime(4, 0);
+        bTimes.removeTime(5, 0);
+        bTimes.removeTime(6, 0);
+        bTimes.removeTime(7, 0);
     }
 
     @Test
