@@ -752,11 +752,14 @@ public class Database {
     public ArrayList<User> getBuddies(int userId) throws SQLException, ClassNotFoundException, IOException {
         ArrayList<User> res;
         connection = ConnectionManager.getConnection();
-        String query = "SELECT u.id FROM `users` AS u" +
-                       "  JOIN users_has_matches AS hm ON hm.users_id = u.id" +
-                       "  JOIN matches AS m ON m.id = hm.matches_id " +
-                       "WHERE u.id = ?" +
-                       "  AND m.match_type = ?";
+        String query = "SELECT m.matched_user_id FROM " +
+                       "  matches AS m " +
+                       "JOIN users_has_matches AS hm " +
+                       "  ON hm.matches_id = m.id " +
+                       "JOIN courses AS c " +
+                       "  ON c.id = m.courses_id " +
+                       "WHERE users_id = ? " +
+                       "AND match_type = ? ";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, userId);
         stmt.setString(2, "buddy");
@@ -769,11 +772,14 @@ public class Database {
     public ArrayList<User> getStudents(int userId) throws SQLException, ClassNotFoundException, IOException {
         ArrayList<User> res;
         connection = ConnectionManager.getConnection();
-        String query = "SELECT u.id FROM `users` AS u" +
-                "  JOIN users_has_matches AS hm ON hm.users_id = u.id" +
-                "  JOIN matches AS m ON m.id = hm.matches_id " +
-                "WHERE u.id = ?" +
-                "  AND m.match_type = ?";
+        String query = "SELECT m.matched_user_id FROM " +
+                       "  matches AS m " +
+                       "JOIN users_has_matches AS hm " +
+                       "  ON hm.matches_id = m.id " +
+                       "JOIN courses AS c " +
+                       "  ON c.id = m.courses_id " +
+                       "WHERE users_id = ? " +
+                       "AND match_type = ? ";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, userId);
         stmt.setString(2, "teaching");
@@ -786,11 +792,14 @@ public class Database {
     public ArrayList<User> getTutors(int userId) throws SQLException, ClassNotFoundException, IOException {
         ArrayList<User> res;
         connection = ConnectionManager.getConnection();
-        String query = "SELECT u.id FROM `users` AS u" +
-                "  JOIN users_has_matches AS hm ON hm.users_id = u.id" +
-                "  JOIN matches AS m ON m.id = hm.matches_id " +
-                "WHERE u.id = ?" +
-                "  AND m.match_type = ?";
+        String query = "SELECT m.matched_user_id FROM " +
+                       "  matches AS m " +
+                       "JOIN users_has_matches AS hm " +
+                       "  ON hm.matches_id = m.id " +
+                       "JOIN courses AS c " +
+                       "  ON c.id = m.courses_id " +
+                       "WHERE users_id = ? " +
+                       "AND match_type = ? ";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, userId);
         stmt.setString(2, "learning");
