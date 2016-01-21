@@ -220,8 +220,8 @@ public class GUILauncher extends Application implements IMessageListener {
         yourMatches.setId("yourMatches");
         chat.setId("chat");
         profile.setId("profileBtn");
-
-        GUI.setCenter(new GuiFindMatchConstructor());
+        findMatch = new GuiFindMatchConstructor();
+        GUI.setCenter(findMatch);
         updateFindMatchSidebar();
         GUI.setLeft(findMatchSideBar);
     }
@@ -241,9 +241,9 @@ public class GUILauncher extends Application implements IMessageListener {
         findMatchProcessBuddyMatches();
     }
 
-    public static void yourMatchesClick(Button findMatch, Button yourMatches, Button chat, Button profile) {
+    public static void yourMatchesClick(Button findMatchButton, Button yourMatches, Button chat, Button profile) {
         yourMatches.setId("yourMatchesActive");
-        findMatch.setId("findMatch");
+        findMatchButton.setId("findMatch");
         chat.setId("chat");
         profile.setId("profileBtn");
         GUI.setCenter(new GuiFindMatchConstructor());
