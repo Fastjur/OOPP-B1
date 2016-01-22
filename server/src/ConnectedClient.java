@@ -56,4 +56,12 @@ public class ConnectedClient {
             System.out.println("Err: could not send the message\n" + ex.getLocalizedMessage());
         }
     }
+
+    public void sendChatMessage(String message, int receiverClientId) {
+        for(int i = 0; i<clientList.size(); i++){
+            if(clientList.get(i).userId == receiverClientId){
+                clientList.get(i).sendMessage(message);
+            }
+        }
+    }
 }

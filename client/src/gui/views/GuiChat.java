@@ -14,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import shared.User;
 
 public class GuiChat extends BorderPane {
 
@@ -22,9 +23,18 @@ public class GuiChat extends BorderPane {
     private ScrollPane chatfield;
     private HBox bottombox;
     private boolean scrollToBottom = false;
+    private User match;
 
-    public GuiChat(){
+    public GuiChat() {
         super();
+        Label label = new Label("Use the sidebar on the left to get started");
+        label.setStyle("-fx-font-size: 16pt");
+        super.setCenter(label);
+    }
+
+    public GuiChat(User match){
+        super();
+        this.match = match;
         userChat();
         chatScreen();
         bottomBar();
@@ -103,6 +113,7 @@ public class GuiChat extends BorderPane {
             TextFlow textBubble = new TextFlow(text);
             textBubble.setStyle("-fx-background-color: #F06292");
             messageOnScreen(bubble, textBubble, textbox);
+            GUILauncher.sendMessage(textbox, match);
         }
     }
 
@@ -115,5 +126,9 @@ public class GuiChat extends BorderPane {
         userChat.getChildren().add(bubble);
         bottom.setText("");
         scrollToBottom = true;
+    }
+
+    public User getMatch() {
+        return this.match;
     }
 }
