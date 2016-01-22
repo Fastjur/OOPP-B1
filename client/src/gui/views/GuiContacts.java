@@ -63,7 +63,7 @@ public class GuiContacts extends BorderPane{
         bottom.setText("Chat");
         chatButtonNormal();
 
-        bottom.setOnAction(e -> GUILauncher.matchesChatButton(name));
+        bottom.setOnAction(e -> GUILauncher.matchesChatButton());
         bottom.setOnMouseEntered(e -> chatButtonHover());
         bottom.setOnMouseExited(e -> chatButtonNormal());
     }

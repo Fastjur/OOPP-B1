@@ -278,8 +278,13 @@ public class GUILauncher extends Application implements IMessageListener {
         Backend.getStudents();
     }
 
-    public static void matchesChatButton(String name){
-        //TODO go to chatconversation with this specific match
+    public static void matchesChatButton(){
+        topbar.setChatButtonActive();
+        GUI.setCenter(chatPage);
+        matchpagecheck = true;
+        Backend.getBuddies();
+        Backend.getTutors();
+        Backend.getStudents();
     }
 
     public static void chatConversation(User match) {
