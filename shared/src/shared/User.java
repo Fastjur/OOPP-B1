@@ -145,7 +145,9 @@ public class User {
 
         text += "longitude: " + longitude + "\n";
 
-        text += "latitude: " + latitude;
+        text += "latitude: " + latitude + "\n";
+
+        text += "Max distance: " + maxDistance;
 
         return text;
     }
@@ -466,6 +468,7 @@ public class User {
     public boolean equals(Object other) {
         if (other instanceof User) {
             User that = (User) other;
+
             return this.userID == that.getUserID() &&
                     this.password.equals(that.getPassword()) &&
                     this.firstname.equals(that.getFirstname()) &&
