@@ -1,10 +1,11 @@
+import org.junit.Before;
+import org.junit.Test;
 import shared.AvailableTimes;
 import shared.TimePeriod;
 import shared.User;
-import org.junit.Before;
-import org.junit.Test;
 
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -36,27 +37,31 @@ public class DatabaseTest {
         languages = new ArrayList<>();
 
         aTimes.addTimePeriod(1, new TimePeriod(450, 900));
-        aTimes.addTimePeriod(1, new TimePeriod(1110, 1260));
-        aTimes.addTimePeriod(3, new TimePeriod(630, 720));
-        aTimes.addTimePeriod(4, new TimePeriod(450, 900));
-        aTimes.addTimePeriod(5, new TimePeriod(450, 900));
-        aTimes.addTimePeriod(5, new TimePeriod(990, 1080));
-        aTimes.addTimePeriod(7, new TimePeriod(570, 900));
+        aTimes.addTimePeriod(1, new TimePeriod(1110, 1200));
+        aTimes.addTimePeriod(2, new TimePeriod(0, 0));
+        aTimes.addTimePeriod(3, new TimePeriod(0, 0));
+        aTimes.addTimePeriod(4, new TimePeriod(0, 0));
+        aTimes.addTimePeriod(5, new TimePeriod(0, 0));
+        aTimes.addTimePeriod(6, new TimePeriod(0, 0));
+        aTimes.addTimePeriod(7, new TimePeriod(0, 0));
         bTimes.addTimePeriod(1, new TimePeriod(1, 2));
 
-        teaching.add("wiskunde");
-        learning.add("wiskunde");
-        buddy.add("poepen");
-        buddy.add("plassen");
-        buddy.add("wiskunde");
+        teaching.add("Web en Database technologie");
+        learning.add("Calculus");
+        buddy.add("Calculus");
+        buddy.add("Web en Database technologie");
+        buddy.add("Object Oriënted Programming");
 
         languages.add("Nederlands");
-        languages.add("Duits");
+        languages.add("Engels");
+        languages.add("C++");
+        languages.add("Java");
 
-        user = new User(1, "Pepernoten01", "Sinter", "Klaas", new Date(-35659808), "sinterklaas@sintmail.nl",
-                "+316123456789", "Technische Natuurkunde", "Universiteit of Pepernoten bakken", 3, aTimes, teaching,
+        user = new User(1, "1000:0f6d32f8bbb343a9d6de15366fdb1d6f622fee3d5aee928d:bb8fbbf00ba255e7a9dd63cf4a015582dbf4bf16bea23c40",
+                "Sinter", "Klaas", new SimpleDateFormat("yyyy-MM-dd").parse("1976-12-05"), "sinterklaas@sintmail.nl",
+                "+31612345678", "Computer Sciences and Engineering", "Technische Universiteit Delft", 1, aTimes, teaching,
                 learning, buddy, "male", "Nederlands", languages, "SINTERKAAL\r\nWIE KENT HEM NIET\r\n\r\n-Kut",
-                51.2065, 26.5098, 5);
+                51.9827, 4.34825, 0);
 
         addUser = new User(-1, "a", "b", "c", new Date(1234), "d", "e", "Technische Poepen", "Universiteit of Plassen",
                 1, bTimes, teaching, learning, buddy, "l", "Frans", languages, "o", 1.5, 2.5, 5);
@@ -71,13 +76,13 @@ public class DatabaseTest {
     }
 
     @Test
-    public void testGetUser() throws Exception {
+    public void testGetUserByID() throws Exception {
         assertEquals(user, db.getUser(1));
         assertNull(db.getUser(-1));
     }
 
     @Test
-    public void testGetUser1() throws Exception {
+    public void testGetUserByMail() throws Exception {
         assertEquals(user, db.getUser("sinterklaas@sintmail.nl"));
         assertNull(db.getUser("DKLFJSDKLFJSDKLFJSDKLFJSDKLFJSDFKL"));
     }
@@ -102,7 +107,7 @@ public class DatabaseTest {
         db.removeUser(temp);*/
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testRemoveUser() throws Exception {
         /*db.addUser(addUser);
         User temp = db.getUser("d");

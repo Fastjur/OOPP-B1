@@ -30,7 +30,6 @@ public class ConnectedClient {
      */
     public void closeConnection() throws IOException {
         this.connectionThread.end();
-        this.socket.shutdownInput();
         this.socket.close();
         clientList.remove(this); // I guess this checks for memory address equality, but that's what we want.
     }

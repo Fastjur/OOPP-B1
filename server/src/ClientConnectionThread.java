@@ -1,3 +1,4 @@
+import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.type.TypeReference;
 import shared.AvailableTimes;
 import shared.Response;
@@ -65,12 +66,16 @@ public class ClientConnectionThread extends Thread {
                     this.client.closeConnection();
                 }
             } catch (SocketException SEx) {
-                System.out.println("Remote socket closed, closing connection.");
-                try {
-                    this.client.closeConnection();
-                } catch (IOException e) {
-                    System.out.println("Could not close the connection");
-                    e.printStackTrace();
+                if (shouldStop) {
+                    System.out.println("Closing connection.");
+                } else {
+                    System.out.println("Remote socket closed, closing connection.");
+                    try {
+                        this.client.closeConnection();
+                    } catch (IOException e) {
+                        System.out.println("Could not close the connection");
+                        e.printStackTrace();
+                    }
                 }
             } catch (IOException IOEx) {
                 System.out.println("Something went wrong while reading a message from the network.\n" + IOEx.getLocalizedMessage());
@@ -111,7 +116,7 @@ public class ClientConnectionThread extends Thread {
         try {
             messageObj = mapper.readTree(message);
             String action = messageObj.get("action").asText();
-            requestData = mapper.readTree(messageObj.get("requestData").asText());
+            requestData = messageObj.get("requestData");
             Response response;
 
             label:
@@ -286,7 +291,7 @@ public class ClientConnectionThread extends Thread {
                     } else {
                         int matchUserId = requestData.get("matchUser").getIntValue();
                         String matchType = requestData.get("matchType").getTextValue(),
-                               course = requestData.get("matchCourse").getTextValue();
+                                course = requestData.get("matchCourse").getTextValue();
                         if (!(matchType.equals("learning")) && !(matchType.equals("teaching")) && !(matchType.equals
                                 ("buddy"))) {
                             response.errorMessage = "Wrong match type received!";
@@ -882,9 +887,14 @@ public class ClientConnectionThread extends Thread {
 
             client.sendMessage(mapper.writeValueAsString(response));
 
+        } catch (JsonParseException e) {
+            System.out.println("A client sent an invalid request (Could not parse JSON).");
+            System.out.println(e.getLocalizedMessage());
+        } catch (NullPointerException e) {
+            System.out.println("A client sent a malformed request.");
+            e.printStackTrace();
         } catch (IOException ex) {
-            System.out.println("Something went wrong while reading a message from the network.\n" +
-                    ex.getLocalizedMessage());
+            System.out.println("Something went wrong while reading a message from the network.");
             ex.printStackTrace();
         } //TODO catch all other exceptions and add to logfile
     }
