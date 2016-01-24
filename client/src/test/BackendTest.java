@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 
 /**
  * Created by Govert on 15-12-2015.
+ * Dependencies: Hamcrest (http://hamcrest.org/JavaHamcrest/)
  */
 public class BackendTest implements IMessageListener, IDisconnectListener {
 
@@ -42,7 +43,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
         Backend.serverAddress = "::1";
         Backend.serverPort = 3334;
 
-        Thread.sleep(100);
+        Thread.sleep(500);
     }
 
     @After
@@ -199,18 +200,20 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     @Test
     public void testAcceptMatch() throws Exception {
     	Backend.connectToServer();
-    	Backend.acceptMatch(new User(1, "Pepernoten01", "Sinter", "Klaas", new Date(1),
+    	/*Backend.acceptMatch(new User(1, "Pepernoten01", "Sinter", "Klaas", new Date(1),
                 "sinterklaas@sintmail.nl", "+316123456789",
                 "study1", "university", 3, new AvailableTimes(), new ArrayList<String>(),
                 new ArrayList<String>(), new ArrayList<String>(), "male", "NLD",
-                new ArrayList<String>(), "It's-a-me", 0, 3, 5), "myMatchType");
+                new ArrayList<String>(), "It's-a-me", 0, 3, 5), "myMatchType");*/
+        Backend.acceptMatch(1, "myMatchType", "Blargh");
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"acceptMatch\",\"requestData\":\"{\\\"matchType\\\":\\\"myMatchType\\\",\\\"matchUser\\\":1}\"}", result);
+    	assertEquals("{\"action\":\"acceptMatch\",\"requestData\":\"{\\\"matchType\\\":\\\"myMatchType\\\"," +
+                "\\\"matchUser\\\":1,\\\"matchCourse\\\":\\\"Blargh\\\"}\"}", result);
     }
     
     @Test
     public void testNotConnectedAcceptMatch() {
-    	Backend.acceptMatch(new User(), "");
+    	Backend.acceptMatch(1, "", "");
     	assertNull(this.response);    	
     }
     
