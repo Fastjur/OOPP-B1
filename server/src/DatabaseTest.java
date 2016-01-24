@@ -21,9 +21,11 @@ public class DatabaseTest {
 
     private Connection conn;
     private Database db;
-    private User user, addUser;
+    private User addUser;
     private AvailableTimes aTimes, bTimes;
     private ArrayList<String> teaching, learning, buddy, languages;
+
+    public static User user;
 
     @Before
     public void setUp() throws Exception {
@@ -50,7 +52,7 @@ public class DatabaseTest {
         learning.add("Calculus");
         buddy.add("Calculus");
         buddy.add("Web en Database technologie");
-        buddy.add("Object Oriënted Programming");
+        buddy.add("Object OriÃ«nted Programming");
 
         languages.add("Nederlands");
         languages.add("Engels");
@@ -58,7 +60,7 @@ public class DatabaseTest {
         languages.add("Java");
 
         user = new User(1, "1000:0f6d32f8bbb343a9d6de15366fdb1d6f622fee3d5aee928d:bb8fbbf00ba255e7a9dd63cf4a015582dbf4bf16bea23c40",
-                "Sinter", "Klaas", new SimpleDateFormat("yyyy-MM-dd").parse("1976-12-05"), "sinterklaas@sintmail.nl",
+                "Sinter", "Klaas", new SimpleDateFormat("yyyy-MM-dd HH").parse("1976-12-05 01"), "sinterklaas@sintmail.nl",
                 "+31612345678", "Computer Sciences and Engineering", "Technische Universiteit Delft", 1, aTimes, teaching,
                 learning, buddy, "male", "Nederlands", languages, "SINTERKAAL\r\nWIE KENT HEM NIET\r\n\r\n-Kut",
                 51.9827, 4.34825, 0);

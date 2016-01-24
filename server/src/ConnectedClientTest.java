@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import shared.Response;
+import shared.User;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,6 +67,20 @@ public class ConnectedClientTest {
         readResponse(socket.getInputStream());
     }
 
+    public Response getX(Socket socket, String whatToGet) throws Exception {
+        Map<String, Object> request = new HashMap<>();
+        request.put("action", "get" + whatToGet);
+        SendRequest(socket, request);
+        return readResponse(socket.getInputStream());
+    }
+
+    public String getXAsString(Socket socket, String whatToGet) throws Exception {
+        Map<String, Object> request = new HashMap<>();
+        request.put("action", "get" + whatToGet);
+        SendRequest(socket, request);
+        return readResponseAsString(socket.getInputStream());
+    }
+
     @Test
     public void testCloseConnection() throws Exception {
         Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
@@ -125,6 +140,15 @@ public class ConnectedClientTest {
         byte[] responsebuf = new byte[len];
         inputStream.read(responsebuf);
         return mapper.readValue(new String(responsebuf, StandardCharsets.UTF_8), Response.class);
+    }
+
+    String readResponseAsString(InputStream inputStream) throws Exception {
+        byte[] lenbuf = new byte[4];
+        inputStream.read(lenbuf);
+        int len = ByteBuffer.wrap(lenbuf).getInt();
+        byte[] responsebuf = new byte[len];
+        inputStream.read(responsebuf);
+        return new String(responsebuf, StandardCharsets.UTF_8);
     }
 
     @Test
@@ -503,5 +527,162 @@ public class ConnectedClientTest {
 
         assertEquals(9, response.errorCode);
         assertEquals("Couldn't match any students!", response.errorMessage);
+    }
+
+    @Test
+    public void testAcceptMatchNotLoggedIn() throws Exception {
+        Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
+
+        Thread.sleep(100);
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("action", "acceptMatch");
+
+        SendRequest(socket, request);
+
+        Response response = readResponse(socket.getInputStream());
+
+        assertEquals(2, response.errorCode);
+        assertEquals("You are not logged in", response.errorMessage);
+    }
+
+    @Test
+    public void testAcceptMatchInvalidMatchType() throws Exception {
+        Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
+
+        Thread.sleep(100);
+
+        LoginWithTestAccount(socket);
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("action", "acceptMatch");
+        Map<String, Object> requestData = new HashMap<>();
+        requestData.put("matchUser", 5);
+        requestData.put("matchType", "drinking");
+        requestData.put("matchCourse", "Beer");
+        request.put("requestData", requestData);
+
+        SendRequest(socket, request);
+
+        Response response = readResponse(socket.getInputStream());
+
+        assertEquals(5, response.errorCode);
+        assertEquals("Wrong match type received!", response.errorMessage);
+    }
+
+    @Test
+    public void testAcceptMatchInvalidUserID() throws Exception {
+        Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
+
+        Thread.sleep(100);
+
+        LoginWithTestAccount(socket);
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("action", "acceptMatch");
+        Map<String, Object> requestData = new HashMap<>();
+        requestData.put("matchUser", 0);
+        requestData.put("matchType", "teaching");
+        requestData.put("matchCourse", "Calculus");
+        request.put("requestData", requestData);
+
+        SendRequest(socket, request);
+
+        Response response = readResponse(socket.getInputStream());
+
+        assertEquals(5, response.errorCode);
+        assertEquals("Didn't receive matchUserId", response.errorMessage);
+    }
+
+    @Test
+    public void testAcceptMatch() throws Exception {
+        Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
+
+        Thread.sleep(100);
+
+        LoginWithTestAccount(socket);
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("action", "acceptMatch");
+        Map<String, Object> requestData = new HashMap<>();
+        requestData.put("matchUser", 80000);
+        requestData.put("matchType", "teaching");
+        requestData.put("matchCourse", "Calculus");
+        request.put("requestData", requestData);
+
+        SendRequest(socket, request);
+
+        Response response = readResponse(socket.getInputStream());
+
+        assertEquals(0, response.errorCode);
+        assertEquals("Added match to database!", response.errorMessage);
+    }
+
+    @Test
+    public void testRemoveMatchNotLoggedIn() throws Exception {
+        Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
+
+        Thread.sleep(100);
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("action", "removeMatch");
+
+        SendRequest(socket, request);
+
+        Response response = readResponse(socket.getInputStream());
+
+        assertEquals(2, response.errorCode);
+        assertEquals("You are not logged in!", response.errorMessage);
+    }
+
+    @Test
+    public void testRemoveMatch() throws Exception {
+        Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
+
+        Thread.sleep(100);
+
+        LoginWithTestAccount(socket);
+
+        Map<String, Object> request = new HashMap<>();
+        request.put("action", "removeMatch");
+        Map<String, Object> requestData = new HashMap<>();
+        requestData.put("matchId", 80000);
+        request.put("requestData", requestData);
+        SendRequest(socket, request);
+
+        Response response = readResponse(socket.getInputStream());
+
+        assertEquals(0, response.errorCode);
+        assertEquals("Removed match from database!", response.errorMessage);
+    }
+
+    @Test
+    public void testGetSelfNotLoggedIn() throws Exception {
+        Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
+
+        Thread.sleep(100);
+
+        Response response = getX(socket, "Self");
+
+        assertEquals(2, response.errorCode);
+        assertEquals("You are not logged in!", response.errorMessage);
+    }
+
+    @Test
+    public void testGetSelf() throws Exception {
+        Socket socket = new Socket(InetAddress.getLocalHost(), 9999);
+        new DatabaseTest().setUp();
+
+        Thread.sleep(100);
+
+        LoginWithTestAccount(socket);
+
+        String responsestr = getXAsString(socket, "Self");
+        Response response = mapper.readValue(responsestr, Response.class);
+
+        assertEquals(0, response.errorCode);
+        assertEquals("Retrieved your information!", response.errorMessage);
+        User dbself = mapper.treeToValue(mapper.readTree(responsestr).get("responseData").get("self"), User.class);
+        assertEquals(DatabaseTest.user, dbself);
     }
 }
