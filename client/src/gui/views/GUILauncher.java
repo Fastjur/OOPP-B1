@@ -83,14 +83,16 @@ public class GUILauncher extends Application implements IMessageListener {
         Backend.addMessageListener(this);
 
         if (!Backend.isConnected()) {
-            login.setLoginMessage("Could not connect to server!", Color.RED);
+            login.setLoginMessage(" Could not connect to server!", Color.RED);
+            login.setRegisterMessage(" Could not connect to server!", Color.RED);
+            login.setResetMessage(" Could not connect to server!", Color.RED);
         }
 
         if (!Backend.isConnected()) {
             System.out.println("Could not establish connection to server (" + Backend.serverAddress + " using port "
                     + Backend.serverPort + ")");
-        } else {
-            login.setLoginMessage("Connected to server!", Color.GREEN);
+        //} else {
+        //    login.setLoginMessage("Connected to server!", Color.GREEN);
         }
     }
 
@@ -119,6 +121,7 @@ public class GUILauncher extends Application implements IMessageListener {
     public static void switchToReset(){
         GUI.setCenter(login.bpReset);
     }
+
 
     //Events Find Match Page
     public static void findMatchBuddyCoursesClick(Button sbCourse) {
@@ -572,6 +575,18 @@ public class GUILauncher extends Application implements IMessageListener {
                             e.printStackTrace();
                         }
                     }
+                case "register":
+                    if (response.errorCode == 0){
+                        switchToLogin();
+                        login.setLoginMessage(" Registration succesful", Color.GREEN);
+                        login.userNameLogin.setText(login.userNameReg.getText());
+                        login.pswLogin.setText("");
+                        login.userNameReg.setText("");
+                        login.pswReg.setText("");
+                    } else {
+                        login.setRegisterMessage(response.errorMessage, Color.RED);
+                    }
+                    break;
             }
         });
     }
