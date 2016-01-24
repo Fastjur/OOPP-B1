@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import shared.Response;
-import shared.TimePeriod;
 import shared.User;
 
 import java.io.IOException;
@@ -170,7 +169,6 @@ public class GUILauncher extends Application implements IMessageListener {
         typeOfMatch = "learning";
         matchCourse = eCourse.getText();
         Backend.findEmergency(matchCourse);
-        //TODO JURRIAAN emergency
     }
 
     private static void findMatchProcessBuddyMatches(){
@@ -310,7 +308,6 @@ public class GUILauncher extends Application implements IMessageListener {
             profile.email.setText(self.getMail());
             profile.telephoneNumber.setText(self.getPhonenumber());
             profile.location.setText(self.getLongitude() + "," + self.getLatitude());
-            //TODO repeatpass field
             profile.studyYear.setText(String.valueOf(self.getStudyYear()));
             profile.monday.setText(self.getAvailableDates().toReadable(1));
             profile.tuesday.setText(self.getAvailableDates().toReadable(2));
@@ -322,28 +319,12 @@ public class GUILauncher extends Application implements IMessageListener {
         }
     }
 
-    private static String listToString (ArrayList list) {
-        String res = "";
-        if (list.size() == 0)
-            return res;
-        for (Object o : list) {
-            if (o instanceof String) {
-                res += o + ",";
-            } else if (o instanceof TimePeriod) {
-                res += o.toString() + ",";
-            }
-        }
-        res = res.substring(0, res.length() - 1);
-        return res;
-    }
-
     private static void updateFindMatchSidebar() {
         buddyCourses = Backend.getSelfObject().getBuddyList();
         teachingCourses = Backend.getSelfObject().getCoursesTeachingList();
         learningCourses = Backend.getSelfObject().getCoursesLearningList();
-        //TODO JURRIAAN emergency
-        //emergencyCourses =
-        //findMatchSideBar = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses, emergencyCourses);
+        emergencyCourses = Backend.getSelfObject().getCoursesLearningList();
+        findMatchSideBar = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses, emergencyCourses);
     }
 
     private static void updateMatchSidebar() {

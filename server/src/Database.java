@@ -598,7 +598,6 @@ public class Database {
     public ArrayList<User> findEmergency(int self_id, String course) throws SQLException, ClassNotFoundException,
             IOException {
         int course_id = getCourseIdByName(course);
-        User self = getUser(self_id);
         String query = "SELECT `users`.id FROM `users`" +
                 "  JOIN `coursesTeaching` AS buddy ON `users`.id = buddy.users_id" +
                 "  LEFT JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id" +
