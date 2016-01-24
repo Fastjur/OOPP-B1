@@ -119,7 +119,6 @@ public class ClientConnectionThread extends Thread {
             requestData = messageObj.get("requestData");
             Response response;
 
-            label:
             switch (action) {
                 case "register":
                     System.out.println("Received register from userid: " + client.userId);
