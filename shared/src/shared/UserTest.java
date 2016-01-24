@@ -43,7 +43,7 @@ public class UserTest {
                 "\"availableDates\":{\"monday\":[],\"tuesday\":[],\"wednesday\":[]," +
                 "\"thursday\":[],\"friday\":[],\"saturday\":[],\"sunday\":[]}}");
 
-        assertEquals(testuser1, fromjson);
+        assertEquals(testuser1.toString(), fromjson.toString());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class UserTest {
                 "\"phonenumber\":\"+316123456789\",\"study\":\"study1\"," +
                 "\"university\":\"university\",\"gender\":\"male\",\"nationality\":\"NLD\"," +
                 "\"description\":\"It's-a-me\",\"birthday\":1,\"userID\":1,\"studyYear\":3," +
-                "\"latitude\":0.0,\"longitude\":3.0,\"coursesTeachingList\":[]," +
+                "\"latitude\":0.0,\"longitude\":3.0,\"maxDistance\":5.0,\"coursesTeachingList\":[]," +
                 "\"coursesLearningList\":[],\"buddyList\":[],\"languageList\":[]," +
                 "\"availableDates\":{\"monday\":[],\"tuesday\":[],\"wednesday\":[]," +
                 "\"thursday\":[],\"friday\":[],\"saturday\":[],\"sunday\":[]}}", testuser1.toJson());

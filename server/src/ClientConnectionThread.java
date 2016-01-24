@@ -277,6 +277,28 @@ public class ClientConnectionThread extends Thread {
                                     break;
                                 }
                             }
+                            case "emergency": {
+                                response = new Response("findBuddy");
+                                String course = requestData.get("course").getTextValue();
+                                try {
+                                    ArrayList<User> findBuddyRes = Server.getDb().findEmergency(client.userId, course);
+                                    if (findBuddyRes.size() > 0) {
+                                        response.putData("findBuddyRes", findBuddyRes);
+                                        response.errorCode = 0;
+                                        response.errorMessage = "Matched emergency tutor!";
+                                        break;
+                                    } else {
+                                        response.errorCode = 9;
+                                        response.errorMessage = "Couldn't match any emergency tutors!";
+                                        break;
+                                    }
+                                } catch (SQLException | ClassNotFoundException e) {
+                                    response.errorCode = 1;
+                                    response.errorMessage = "Couldn't find emergency tutor: generic error";
+                                    e.printStackTrace();
+                                    break;
+                                }
+                            }
                         }
                     }
                     break;

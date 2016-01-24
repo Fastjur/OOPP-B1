@@ -23,6 +23,7 @@ import java.util.ArrayList;
  * @author Jurriaan Den Toonder
  */
 @SuppressWarnings("Duplicates")
+@Deprecated
 public class TestClient {
 
     private static Socket socket;

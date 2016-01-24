@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Created by Govert on 15-12-2015.
  */
+@Deprecated
 public class TestServer extends Thread {
     private ServerSocket serverSocket;
     private Socket socket;
