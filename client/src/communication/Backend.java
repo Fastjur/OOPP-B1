@@ -162,6 +162,23 @@ public class Backend {
         }
     }
 
+    public static void findEmergency(String course) {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot find tutor matches: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("findMatch");
+
+            request.putData("type", "emergency");
+            request.putData("course", course);
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void findBecomeTutorMatch(String course) {
         if (!isConnected()) {
             System.out.println("[ERROR] Cannot find become tutor matches: Not connected!");
