@@ -14,7 +14,6 @@ public class Server {
     private static Database db;
     private static ArrayList<ConnectedClient> clients = new ArrayList<>();
     private static ListenThread listenthread;
-    private static ArrayList<Session> sessions = new ArrayList<>();
 
     public static void SetupDudDatabaseForTesting() {
         db = new DudDatabase();
