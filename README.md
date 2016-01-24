@@ -24,3 +24,5 @@ Computer Sciences and Engineering Bachelor 2015-2016, Group **B1-1**
       Do this by right clicking on the respective Module in IntelliJ and click `Compile Module ...`
     * Double click the batch file, the server will now open inside a Command Prompt window
     * **NOTE:** Whenever changes are made to files in `server` or `shared` they should be recompiled! Otherwise the batch file will be running old files.
+
+Link to database file: https://drive.google.com/file/d/0Bwrri4JoN_aIVC01OWF2U054TVU/view?usp=sharing
