@@ -269,6 +269,11 @@ public class AvailableTimesTest {
     public void testGetReadable() throws Exception {
         assertEquals("02:30-04:10 04:10-05:50", aTimes.toReadable(1));
         assertEquals("00:01-00:02", aTimes.toReadable(2));
+        assertEquals("00:02-00:03", aTimes.toReadable(3));
+        assertEquals("00:03-00:04", aTimes.toReadable(4));
+        assertEquals("00:04-00:05", aTimes.toReadable(5));
+        assertEquals("00:05-00:06", aTimes.toReadable(6));
+        assertEquals("00:06-00:07", aTimes.toReadable(7));
         aTimes.setMonday(new ArrayList<>());
         assertEquals("", aTimes.toReadable(1));
     }
