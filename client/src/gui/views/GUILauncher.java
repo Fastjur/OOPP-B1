@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import shared.Response;
-import shared.TimePeriod;
 import shared.User;
 
 import java.io.IOException;
@@ -38,6 +37,7 @@ public class GUILauncher extends Application implements IMessageListener {
     private static ArrayList<String> buddyCourses;
     private static ArrayList<String> learningCourses;
     private static ArrayList<String> teachingCourses;
+    private static ArrayList<String> emergencyCourses;
     private static ArrayList<User> buddies;
     private static ArrayList<User> students;
     private static ArrayList<User> tutors;
@@ -47,6 +47,7 @@ public class GUILauncher extends Application implements IMessageListener {
     private static boolean matchpagecheck;
 
     private static ArrayList<User> courseMatches;
+    private static ArrayList<GuiChat> chatConversations;
 
     //TODO send typeOfMatch + matchCourse together with match (in MatchClick method)
     private static String typeOfMatch;
@@ -63,6 +64,7 @@ public class GUILauncher extends Application implements IMessageListener {
         sidebar = new GUISideBarConstructor();
         topbar = new GuiTopBar();
         login = new GuiLoginConstructor();
+        chatConversations = new ArrayList<>();
         chatPage = new GuiChat();
 
         /**
@@ -81,14 +83,16 @@ public class GUILauncher extends Application implements IMessageListener {
         Backend.addMessageListener(this);
 
         if (!Backend.isConnected()) {
-            login.setLoginMessage("Could not connect to server!", Color.RED);
+            login.setLoginMessage(" Could not connect to server!", Color.RED);
+            login.setRegisterMessage(" Could not connect to server!", Color.RED);
+            login.setResetMessage(" Could not connect to server!", Color.RED);
         }
 
         if (!Backend.isConnected()) {
             System.out.println("Could not establish connection to server (" + Backend.serverAddress + " using port "
                     + Backend.serverPort + ")");
-        } else {
-            login.setLoginMessage("Connected to server!", Color.GREEN);
+        //} else {
+        //    login.setLoginMessage("Connected to server!", Color.GREEN);
         }
     }
 
@@ -117,6 +121,7 @@ public class GUILauncher extends Application implements IMessageListener {
     public static void switchToReset(){
         GUI.setCenter(login.bpReset);
     }
+
 
     //Events Find Match Page
     public static void findMatchBuddyCoursesClick(Button sbCourse) {
@@ -158,13 +163,26 @@ public class GUILauncher extends Application implements IMessageListener {
         Backend.findBecomeTutorMatch(matchCourse);
     }
 
+    public static void findMatchEmergencyCoursesClick(Button eCourse) {
+        GUIScene.setCursor(Cursor.WAIT);
+        if(GUIScene.lookup("#selectedCourseButton") instanceof Button) {
+            Button oldCourse = (Button) GUIScene.lookup("#selectedCourseButton");
+            oldCourse.setId("courseButton");
+        }
+        eCourse.setId("selectedCourseButton");
+
+        typeOfMatch = "learning";
+        matchCourse = eCourse.getText();
+        Backend.findEmergency(matchCourse);
+    }
+
     private static void findMatchProcessBuddyMatches(){
         if(!courseMatches.isEmpty()) {
             User match = courseMatches.get(0);
             LocalDate now = LocalDate.now();
             int age = Period.between(match.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), now).getYears();
 
-            //TODO profile pic + distance
+            //TODO profile pic
 
             findMatch = new GuiFindMatchConstructor(match.getLanguageList(), match.getFirstname() + " " + match.getLastname(), age, match.getDescription(), pfURL);
             GUI.setCenter(findMatch);
@@ -182,8 +200,11 @@ public class GUILauncher extends Application implements IMessageListener {
             oldCourse.setId("courseButton");
         }
         sbMatch.setId("selectedCourseButton");
-
-        displayMyMatch(match);
+        if (GUI.getCenter() instanceof GuiChat) {
+            chatConversation(match);
+        } else{
+            displayMyMatch(match);
+        }
     }
 
     public static void myMatchesLearningClick(Button lMatch, User match) {
@@ -192,8 +213,11 @@ public class GUILauncher extends Application implements IMessageListener {
             oldCourse.setId("courseButton");
         }
         lMatch.setId("selectedCourseButton");
-
-        displayMyMatch(match);
+        if (GUI.getCenter() instanceof GuiChat) {
+            chatConversation(match);
+        } else{
+            displayMyMatch(match);
+        }
     }
 
     public static void myMatchesTeachingClick(Button tMatch, User match) {
@@ -202,8 +226,11 @@ public class GUILauncher extends Application implements IMessageListener {
             oldCourse.setId("courseButton");
         }
         tMatch.setId("selectedCourseButton");
-
-        displayMyMatch(match);
+        if (GUI.getCenter() instanceof GuiChat) {
+            chatConversation(match);
+        } else{
+            displayMyMatch(match);
+        }
     }
 
     public static void displayMyMatch(User match){
@@ -220,8 +247,8 @@ public class GUILauncher extends Application implements IMessageListener {
         yourMatches.setId("yourMatches");
         chat.setId("chat");
         profile.setId("profileBtn");
-
-        GUI.setCenter(new GuiFindMatchConstructor());
+        findMatch = new GuiFindMatchConstructor();
+        GUI.setCenter(findMatch);
         updateFindMatchSidebar();
         GUI.setLeft(findMatchSideBar);
     }
@@ -241,9 +268,9 @@ public class GUILauncher extends Application implements IMessageListener {
         findMatchProcessBuddyMatches();
     }
 
-    public static void yourMatchesClick(Button findMatch, Button yourMatches, Button chat, Button profile) {
+    public static void yourMatchesClick(Button findMatchButton, Button yourMatches, Button chat, Button profile) {
         yourMatches.setId("yourMatchesActive");
-        findMatch.setId("findMatch");
+        findMatchButton.setId("findMatch");
         chat.setId("chat");
         profile.setId("profileBtn");
         GUI.setCenter(new GuiFindMatchConstructor());
@@ -261,11 +288,51 @@ public class GUILauncher extends Application implements IMessageListener {
         profile.setId("profileBtn");
 
         GUI.setCenter(chatPage);
-        GUI.setLeft(null);
+        matchpagecheck = true;
+        Backend.getBuddies();
+        Backend.getTutors();
+        Backend.getStudents();
     }
 
     public static void matchesChatButton(){
-        //TODO go to chatconversation with this specific match
+        topbar.setChatButtonActive();
+        GUI.setCenter(chatPage);
+        matchpagecheck = true;
+        Backend.getBuddies();
+        Backend.getTutors();
+        Backend.getStudents();
+    }
+
+    public static void chatConversation(User match) {
+        boolean exists = false;
+        if(chatConversations.size() != 0) {
+            for (int i = 0; i < chatConversations.size(); i++) {
+                if (chatConversations.get(i).getMatch().equals(match)) {
+                    exists = true;
+                    GUI.setCenter(chatConversations.get(i));
+                }
+            }
+        }
+
+        if(!exists) {
+            GuiChat conversation = new GuiChat(match);
+            chatConversations.add(conversation);
+            GUI.setCenter(conversation);
+        }
+    }
+
+    public static void sendMessage(String message, User receiver){
+        Backend.sendChatMessage(message, receiver.getUserID());
+    }
+
+    public static void getMessage(int senderId, String message) {
+        if(chatConversations.size() != 0) {
+            for (int i = 0; i < chatConversations.size(); i++) {
+                if (chatConversations.get(i).getMatch().getUserID() == senderId){
+                    chatConversations.get(i).receiveMessage(message);
+                }
+            }
+        }
     }
 
     public static void profileClick(Button findMatch, Button yourMatches, Button chat, Button prof) {
@@ -295,7 +362,6 @@ public class GUILauncher extends Application implements IMessageListener {
             profile.email.setText(self.getMail());
             profile.telephoneNumber.setText(self.getPhonenumber());
             profile.location.setText(self.getLongitude() + "," + self.getLatitude());
-            //TODO repeatpass field
             profile.studyYear.setText(String.valueOf(self.getStudyYear()));
             profile.monday.setText(self.getAvailableDates().toReadable(1));
             profile.tuesday.setText(self.getAvailableDates().toReadable(2));
@@ -307,26 +373,12 @@ public class GUILauncher extends Application implements IMessageListener {
         }
     }
 
-    private static String listToString (ArrayList list) {
-        String res = "";
-        if (list.size() == 0)
-            return res;
-        for (Object o : list) {
-            if (o instanceof String) {
-                res += o + ",";
-            } else if (o instanceof TimePeriod) {
-                res += o.toString() + ",";
-            }
-        }
-        res = res.substring(0, res.length() - 1);
-        return res;
-    }
-
     private static void updateFindMatchSidebar() {
         buddyCourses = Backend.getSelfObject().getBuddyList();
         teachingCourses = Backend.getSelfObject().getCoursesTeachingList();
         learningCourses = Backend.getSelfObject().getCoursesLearningList();
-        findMatchSideBar = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses);
+        emergencyCourses = Backend.getSelfObject().getCoursesLearningList();
+        findMatchSideBar = new GuiSideBarFindMatchConstructor(buddyCourses, learningCourses, teachingCourses, emergencyCourses);
     }
 
     private static void updateMatchSidebar() {
@@ -349,9 +401,6 @@ public class GUILauncher extends Application implements IMessageListener {
                         Backend.getStudies();
                         Backend.getUniversities();
                         Backend.getCourses();
-                        Backend.getBuddies();
-                        Backend.getStudents();
-                        Backend.getTutors();
                     } else {
                         login.setLoginMessage(response.errorMessage, Color.RED);
                     }
@@ -509,6 +558,31 @@ public class GUILauncher extends Application implements IMessageListener {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                    }
+                    break;
+
+                case "getChatMessage":
+                    if (response.errorCode == 0) {
+                        try {
+                            String chatMessage = mapper.readValue(response.getResponseData().get("chatMessage")
+                                    .toString(), String.class);
+                            String sender = mapper.readValue(response.getResponseData().get("senderId").toString(), String.class);
+                            int senderId = Integer.parseInt(sender);
+                            getMessage(senderId, chatMessage);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                case "register":
+                    if (response.errorCode == 0){
+                        switchToLogin();
+                        login.setLoginMessage(" Registration succesful", Color.GREEN);
+                        login.userNameLogin.setText(login.userNameReg.getText());
+                        login.pswLogin.setText("");
+                        login.userNameReg.setText("");
+                        login.pswReg.setText("");
+                    } else {
+                        login.setRegisterMessage(response.errorMessage, Color.RED);
                     }
                     break;
             }

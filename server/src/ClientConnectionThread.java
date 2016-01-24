@@ -1,3 +1,4 @@
+import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.type.TypeReference;
 import shared.AvailableTimes;
 import shared.Response;
@@ -65,12 +66,16 @@ public class ClientConnectionThread extends Thread {
                     this.client.closeConnection();
                 }
             } catch (SocketException SEx) {
-                System.out.println("Remote socket closed, closing connection.");
-                try {
-                    this.client.closeConnection();
-                } catch (IOException e) {
-                    System.out.println("Could not close the connection");
-                    e.printStackTrace();
+                if (shouldStop) {
+                    System.out.println("Closing connection.");
+                } else {
+                    System.out.println("Remote socket closed, closing connection.");
+                    try {
+                        this.client.closeConnection();
+                    } catch (IOException e) {
+                        System.out.println("Could not close the connection");
+                        e.printStackTrace();
+                    }
                 }
             } catch (IOException IOEx) {
                 System.out.println("Something went wrong while reading a message from the network.\n" + IOEx.getLocalizedMessage());
@@ -111,7 +116,7 @@ public class ClientConnectionThread extends Thread {
         try {
             messageObj = mapper.readTree(message);
             String action = messageObj.get("action").asText();
-            requestData = mapper.readTree(messageObj.get("requestData").asText());
+            requestData = messageObj.get("requestData");
             Response response;
 
             label:
@@ -272,6 +277,28 @@ public class ClientConnectionThread extends Thread {
                                     break;
                                 }
                             }
+                            case "emergency": {
+                                response = new Response("findBuddy");
+                                String course = requestData.get("course").getTextValue();
+                                try {
+                                    ArrayList<User> findBuddyRes = Server.getDb().findEmergency(client.userId, course);
+                                    if (findBuddyRes.size() > 0) {
+                                        response.putData("findBuddyRes", findBuddyRes);
+                                        response.errorCode = 0;
+                                        response.errorMessage = "Matched emergency tutor!";
+                                        break;
+                                    } else {
+                                        response.errorCode = 9;
+                                        response.errorMessage = "Couldn't match any emergency tutors!";
+                                        break;
+                                    }
+                                } catch (SQLException | ClassNotFoundException e) {
+                                    response.errorCode = 1;
+                                    response.errorMessage = "Couldn't find emergency tutor: generic error";
+                                    e.printStackTrace();
+                                    break;
+                                }
+                            }
                         }
                     }
                     break;
@@ -286,7 +313,7 @@ public class ClientConnectionThread extends Thread {
                     } else {
                         int matchUserId = requestData.get("matchUser").getIntValue();
                         String matchType = requestData.get("matchType").getTextValue(),
-                               course = requestData.get("matchCourse").getTextValue();
+                                course = requestData.get("matchCourse").getTextValue();
                         if (!(matchType.equals("learning")) && !(matchType.equals("teaching")) && !(matchType.equals
                                 ("buddy"))) {
                             response.errorMessage = "Wrong match type received!";
@@ -873,6 +900,25 @@ public class ClientConnectionThread extends Thread {
                         }
                     }
 
+                case "getChatMessage":
+                    System.out.println("Received sendChatMessage from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else{
+                        String chatmessage = mapper.readValue(requestData.get("chatMessage"), String.class);
+                        int receiverId = mapper.readValue(requestData.get("receiverId"), Integer.class);
+                        response.errorCode = 0;
+                        response.errorMessage = "Retrieved your message.";
+                        response.putData("chatMessage", chatmessage);
+                        response.putData("senderId", client.userId);
+                        client.sendChatMessage(mapper.writeValueAsString(response), receiverId);
+
+                        break;
+                    }
+
                 default:
                     response = new Response(action);
                     response.errorMessage = "Unknown command.";
@@ -880,11 +926,18 @@ public class ClientConnectionThread extends Thread {
                     break;
             }
 
-            client.sendMessage(mapper.writeValueAsString(response));
+            if(!action.equals("sendChatMessage")) {
+                client.sendMessage(mapper.writeValueAsString(response));
+            }
 
+        } catch (JsonParseException e) {
+            System.out.println("A client sent an invalid request (Could not parse JSON).");
+            System.out.println(e.getLocalizedMessage());
+        } catch (NullPointerException e) {
+            System.out.println("A client sent a malformed request.");
+            e.printStackTrace();
         } catch (IOException ex) {
-            System.out.println("Something went wrong while reading a message from the network.\n" +
-                    ex.getLocalizedMessage());
+            System.out.println("Something went wrong while reading a message from the network.");
             ex.printStackTrace();
         } //TODO catch all other exceptions and add to logfile
     }

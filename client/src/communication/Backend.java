@@ -4,6 +4,7 @@ import shared.AvailableTimes;
 import shared.Response;
 import shared.TimePeriod;
 import shared.User;
+import test.TestServer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +25,7 @@ public class Backend {
     private static ArrayList<IMessageListener> messageListeners = new ArrayList<>();
     private static ArrayList<IDisconnectListener> disconnectListeners = new ArrayList<>();
     private static User selfUserObj;
+    
 
     public static void addMessageListener(IMessageListener listener) {
         messageListeners.add(listener);
@@ -53,7 +55,7 @@ public class Backend {
     public static boolean connectToServer() {
         if (isConnected())
             return true;
-        if (serverPort < 1 || serverAddress.equals(null))
+        if (serverPort < 1 || serverAddress == null)
             return false;
         try {
             socket = new Socket(serverAddress, serverPort);
@@ -125,7 +127,7 @@ public class Backend {
             e.printStackTrace();
         }
     }
-
+//NOG te testen hierbeneden
     public static void findStudyBuddy(String course) {
         if (!isConnected()) {
             System.out.println("[ERROR] Cannot find buddy matches: Not connected!");
@@ -153,6 +155,23 @@ public class Backend {
             Request request = new Request("findMatch");
 
             request.putData("type", "learning");
+            request.putData("course", course);
+            listenThread.sendMessage(request.toSendableJSON());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void findEmergency(String course) {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot find tutor matches: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("findMatch");
+
+            request.putData("type", "emergency");
             request.putData("course", course);
             listenThread.sendMessage(request.toSendableJSON());
         } catch (IOException e) {
@@ -562,6 +581,23 @@ public class Backend {
             request.putData("availability", aTimes);
             listenThread.sendMessage(request.toSendableJSON());
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void sendChatMessage(String message, int receiverId) {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot get message: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("getChatMessage");
+            request.putData("chatMessage", message);
+            request.putData("receiverId", receiverId);
+            listenThread.sendMessage(request.toSendableJSON());
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

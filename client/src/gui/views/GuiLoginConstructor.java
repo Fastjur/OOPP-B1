@@ -11,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -29,6 +31,10 @@ public class GuiLoginConstructor extends BorderPane {
     protected BorderPane bpLogin;
     protected BorderPane bpRegister;
     protected BorderPane bpReset;
+    static TextField userNameLogin;
+    static PasswordField pswLogin;
+    static TextField userNameReg;
+    static PasswordField pswReg;
 
     public GuiLoginConstructor() {
         super();
@@ -52,8 +58,8 @@ public class GuiLoginConstructor extends BorderPane {
         gpLogin.setVgap(5);
         gpLogin.setMaxWidth(260);
         gpLogin.setMinWidth(260);
-        gpLogin.setMaxHeight(250);
-        gpLogin.setMinHeight(250);
+        gpLogin.setMaxHeight(270);
+        gpLogin.setMinHeight(270);
         gpLogin.setId("gpLogin");
 
         GridPane gpRegister = new GridPane();
@@ -61,8 +67,8 @@ public class GuiLoginConstructor extends BorderPane {
         gpRegister.setVgap(5);
         gpRegister.setMaxWidth(260);
         gpRegister.setMinWidth(260);
-        gpRegister.setMaxHeight(250);
-        gpRegister.setMinHeight(250);
+        gpRegister.setMaxHeight(270);
+        gpRegister.setMinHeight(270);
         gpRegister.setId("gpRegister");
 
         GridPane gpReset = new GridPane();
@@ -70,8 +76,8 @@ public class GuiLoginConstructor extends BorderPane {
         gpReset.setVgap(5);
         gpReset.setMaxWidth(260);
         gpReset.setMinWidth(260);
-        gpReset.setMaxHeight(250);
-        gpReset.setMinHeight(250);
+        gpReset.setMaxHeight(270);
+        gpReset.setMinHeight(270);
         gpReset.setId("gpReset");
 
         GridPane gpLog = new GridPane();
@@ -90,10 +96,10 @@ public class GuiLoginConstructor extends BorderPane {
         gpRes.setId("gpRes");
 
         //Implementing Nodes for GridPane
-        final TextField userNameLogin = new TextField();
+        userNameLogin = new TextField();
         userNameLogin.setMaxWidth(220);
         userNameLogin.setMinWidth(220);
-        final PasswordField pswLogin = new PasswordField();
+        pswLogin = new PasswordField();
         pswLogin.setMaxWidth(220);
         pswLogin.setMinWidth(220);
 
@@ -101,10 +107,10 @@ public class GuiLoginConstructor extends BorderPane {
         userNameLogin.setText("sinterklaas@sintmail.nl");
         pswLogin.setText("Pepernoten01");
 
-        final TextField userNameReg = new TextField();
+        userNameReg = new TextField();
         userNameReg.setMaxWidth(220);
         userNameReg.setMinWidth(220);
-        final PasswordField pswReg = new PasswordField();
+        pswReg = new PasswordField();
         pswReg.setMaxWidth(220);
         pswReg.setMinWidth(220);
         final PasswordField pswConfirmReg = new PasswordField();
@@ -161,9 +167,9 @@ public class GuiLoginConstructor extends BorderPane {
         gpLogin.add(gpLog, 0, 1, 3, 1);
         gpLog.add(lbLogin, 0, 0, 3, 1);
         gpLog.add(userNameLogin, 0, 1, 3, 1);
-        gpLog.add(pswLogin, 0, 3, 3, 1);
-        gpLog.add(btnLogSubmit, 0, 4, 3, 1);
-        gpLog.add(loginMessage, 0, 5, 3, 1);
+        gpLog.add(pswLogin, 0, 2, 3, 1);
+        gpLog.add(btnLogSubmit, 0, 3, 3, 1);
+        gpLog.add(loginMessage, 0, 4, 3, 1);
 
         gpRegister.add(btnRegLogin, 0, 0, 1, 1);
         gpRegister.add(btnRegRegister, 1, 0, 1, 1);
@@ -185,7 +191,6 @@ public class GuiLoginConstructor extends BorderPane {
         gpRes.add(userNameRes2, 0, 2, 3, 1);
         gpRes.add(btnResSubmit, 0, 3, 3, 1);
         gpRes.add(resetMessage, 0, 4, 3, 1);
-        gpRes.add(resetMessage2, 0, 5, 3, 1);
 
         //Adding text
         Text mmLog = new Text("MindMatch");
@@ -279,7 +284,7 @@ public class GuiLoginConstructor extends BorderPane {
 
         btnLogSubmit.setOnMouseClicked(event -> {
             if (!Backend.isConnected()) {
-                setLoginMessage("Could not connect to server!", Color.RED);
+                setLoginMessage(" Could not connect to server!", Color.RED);
             } else {
                 GUILauncher.GUIScene.setCursor(Cursor.WAIT);
                 String checkUser = userNameLogin.getText(),
@@ -288,25 +293,29 @@ public class GuiLoginConstructor extends BorderPane {
                 System.out.println("Trying to login: " + checkUser + " " + checkPw);
                 userNameLogin.setText("");
                 pswLogin.setText("");
-                setLoginMessage("Logging in...", Color.ORANGE);
+                setLoginMessage(" Logging in...", Color.ORANGE);
             }
         });
 
         btnRegSubmit.setOnMouseClicked(event -> {
-            GUILauncher.GUIScene.setCursor(Cursor.WAIT);
-            String regMail = userNameReg.getText(),
-                    regPass = pswReg.getText(),
-                    repeatPass = pswConfirmReg.getText();
-            if (regMail.equals("") || regPass.equals("") || repeatPass.equals("")) {
-                setLoginMessage("Please fill in all the fields!", Color.RED);
-            } else if (!regPass.equals(repeatPass)) {
-                setLoginMessage("Passwords don't match!", Color.RED);
-            } else if (regPass.length() < 8) {
-                setLoginMessage("Password must be atleast 8 characters long", Color.RED);
-            } else {
-                Backend.register(regMail, regPass);
+            if (!Backend.isConnected()) {
+                setRegisterMessage(" Could not connect to server!", Color.RED);
             }
-        });
+            else {
+                GUILauncher.GUIScene.setCursor(Cursor.WAIT);
+                String regMail = userNameReg.getText(),
+                        regPass = pswReg.getText(),
+                        repeatPass = pswConfirmReg.getText();
+                if (regMail.equals("") || regPass.equals("") || repeatPass.equals("")) {
+                    setRegisterMessage(" Please fill in all the fields!", Color.RED);
+                } else if (!regPass.equals(repeatPass)) {
+                    setRegisterMessage(" Passwords don't match!", Color.RED);
+                } else if (regPass.length() < 8) {
+                    setRegisterMessage(" Password must be atleast 8 characters long", Color.RED);
+                } else {
+                    Backend.register(regMail, regPass);
+                }
+            }});
 
         userNameLogin.setPromptText("Email Adress");
         pswLogin.setPromptText("Password");
@@ -322,26 +331,25 @@ public class GuiLoginConstructor extends BorderPane {
         btnRegReset.setOnAction(e -> GUILauncher.switchToReset());
         btnRegLogin.setOnAction(e -> GUILauncher.switchToLogin());
         btnLogRegister.setOnAction(e -> GUILauncher.switchToRegister());
-        btnLogSubmit.setDefaultButton(true);
-        btnRegSubmit.setDefaultButton(true);
-        btnResSubmit.setDefaultButton(true);
 
-        btnRegSubmit.setOnAction(event -> {
+
+        // btnLogSubmit.setDefaultButton(true);
+        //btnRegSubmit.setDefaultButton(true);
+        //btnResSubmit.setDefaultButton(true);
+
+      /*  btnRegSubmit.setOnAction(event -> {
             if (!Backend.isConnected()) {
                 setRegisterMessage("Could not connect to server!", Color.RED);
             }
-            //TODO response listeners in GUILauncher
         });
+        */
 
         btnResSubmit.setOnAction(event -> {
             if (!Backend.isConnected()) {
-                setResetMessage("Could not connect to server", "", Color.RED);
+                setResetMessage(" Could not connect to server", Color.RED);
             }
             //TODO response listeners in GUILauncher
         });
-
-
-
 
     }
 
@@ -359,10 +367,10 @@ public class GuiLoginConstructor extends BorderPane {
         });
     }
 
-    protected void setResetMessage(String textTop, String textBottom, Color color) {
+    protected void setResetMessage(String textTop, Color color) {
         Platform.runLater(() -> {
             resetMessage.setText(textTop);
-            resetMessage2.setText(textBottom);
+           // resetMessage2.setText(textBottom);
             resetMessage.setTextFill(color);
             resetMessage2.setTextFill(color);
         });
@@ -374,5 +382,6 @@ public class GuiLoginConstructor extends BorderPane {
             scene.setCursor(Cursor.DEFAULT); //Change cursor to crosshair
         });
     }
+
 
 }

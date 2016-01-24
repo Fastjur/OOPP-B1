@@ -30,7 +30,6 @@ public class ConnectedClient {
      */
     public void closeConnection() throws IOException {
         this.connectionThread.end();
-        this.socket.shutdownInput();
         this.socket.close();
         clientList.remove(this); // I guess this checks for memory address equality, but that's what we want.
     }
@@ -54,6 +53,14 @@ public class ConnectedClient {
             connectionThread.sendMessage(message);
         } catch (java.io.IOException ex) {
             System.out.println("Err: could not send the message\n" + ex.getLocalizedMessage());
+        }
+    }
+
+    public void sendChatMessage(String message, int receiverClientId) {
+        for(int i = 0; i<clientList.size(); i++){
+            if(clientList.get(i).userId == receiverClientId){
+                clientList.get(i).sendMessage(message);
+            }
         }
     }
 }

@@ -538,14 +538,17 @@ public class Database {
         String dist = "(((acos(sin((? * pi()/180)) * sin((users.latitude * pi()/180))+cos((? * pi()/180)) * " +
                 "cos((users.latitude * pi()/180)) * cos(((?-users.longitude) * pi()/180)))) * 180/pi()) * 60 * " +
                 "1.1515 ) AS distance",*/
-        String query = "SELECT `users`.id FROM `users` " +
-                       "  JOIN `coursesSearchingBuddy` AS buddy ON `users`.id = buddy.users_id " +
-                       "  JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id " +
-                       "  JOIN `matches` ON matches.id = hasmatches.matches_id " +
+        String query = "SELECT `users`.id FROM `users`" +
+                       "  JOIN `coursesSearchingBuddy` AS buddy ON `users`.id = buddy.users_id" +
+                       "  LEFT JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id" +
+                       "  LEFT JOIN `matches` ON matches.id = hasmatches.matches_id " +
                        "WHERE `users`.id <> ?" +
-                       "  AND buddy.courses_id = ? " +
-                       "  AND matches.match_type = ?" +
-                       "  AND `users`.id <> matches.matched_user_id ";
+                       "      AND buddy.courses_id = ?" +
+                       "      AND `users`.id NOT IN (" +
+                       "        SELECT `matches`.matched_user_id FROM `users_has_matches`" +
+                       "          JOIN `matches` ON `matches`.id = `users_has_matches`.matches_id" +
+                       "          WHERE `matches`.match_type = ?" +
+                       "          )";
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
         /*stmt.setDouble(1, latitude);
@@ -567,14 +570,17 @@ public class Database {
             IOException {
         int course_id = getCourseIdByName(course);
         User self = getUser(self_id);
-        String query = "SELECT `users`.id FROM `users` " +
-                       "  JOIN `coursesTeaching` AS buddy ON `users`.id = buddy.users_id " +
-                       "  JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id " +
-                       "  JOIN `matches` ON matches.id = hasmatches.matches_id " +
+        String query = "SELECT `users`.id FROM `users`" +
+                       "  JOIN `coursesTeaching` AS buddy ON `users`.id = buddy.users_id" +
+                       "  LEFT JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id" +
+                       "  LEFT JOIN `matches` ON matches.id = hasmatches.matches_id " +
                        "WHERE `users`.id <> ?" +
-                       "  AND buddy.courses_id = ? " +
-                       "  AND matches.match_type = ?" +
-                       "  AND `users`.id <> matches.matched_user_id";
+                       "      AND buddy.courses_id = ?" +
+                       "      AND `users`.id NOT IN (" +
+                       "        SELECT `matches`.matched_user_id FROM `users_has_matches`" +
+                       "          JOIN `matches` ON `matches`.id = `users_has_matches`.matches_id" +
+                       "          WHERE `matches`.match_type = ?" +
+                       "          )";
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, self_id);
@@ -589,18 +595,59 @@ public class Database {
         return res;
     }
 
+    public ArrayList<User> findEmergency(int self_id, String course) throws SQLException, ClassNotFoundException,
+            IOException {
+        int course_id = getCourseIdByName(course);
+        String query = "SELECT `users`.id FROM `users`" +
+                "  JOIN `coursesTeaching` AS buddy ON `users`.id = buddy.users_id" +
+                "  LEFT JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id" +
+                "  LEFT JOIN `matches` ON matches.id = hasmatches.matches_id " +
+                "WHERE `users`.id <> ?" +
+                "      AND buddy.courses_id = ?" +
+                "      AND `users`.id NOT IN (" +
+                "        SELECT `matches`.matched_user_id FROM `users_has_matches`" +
+                "          JOIN `matches` ON `matches`.id = `users_has_matches`.matches_id" +
+                "          WHERE `matches`.match_type = ?" +
+                "          )";
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, self_id);
+        stmt.setInt(2, course_id);
+        stmt.setString(3, "teaching");
+        ResultSet rs = stmt.executeQuery();
+
+        ArrayList<Integer> user_ids = new ArrayList<>();
+        ArrayList<User> res = new ArrayList<>();
+        while (rs.next()) {
+            user_ids.add(rs.getInt("id"));
+        }
+        if (user_ids.size() == 0) {
+            return res;
+        }
+        for (int id : user_ids) {
+            res.add(getUser(id));
+        }
+        stmt.close();
+        ConnectionManager.close();
+
+        return res;
+    }
+
     public ArrayList<User> findStudent(int self_id, String course) throws SQLException, ClassNotFoundException,
             IOException {
         int course_id = getCourseIdByName(course);
         User self = getUser(self_id);
-        String query = "SELECT `users`.id FROM `users` " +
-                       "  JOIN `coursesLearning` AS buddy ON `users`.id = buddy.users_id " +
-                       "  JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id " +
-                       "  JOIN `matches` ON matches.id = hasmatches.matches_id " +
+        String query = "SELECT `users`.id FROM `users`" +
+                       "  JOIN `coursesLearning` AS buddy ON `users`.id = buddy.users_id" +
+                       "  LEFT JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id" +
+                       "  LEFT JOIN `matches` ON matches.id = hasmatches.matches_id " +
                        "WHERE `users`.id <> ?" +
-                       "  AND buddy.courses_id = ? " +
-                       "  AND matches.match_type = ?" +
-                       "  AND `users`.id <> matches.matched_user_id";
+                       "      AND buddy.courses_id = ?" +
+                       "      AND `users`.id NOT IN (" +
+                       "        SELECT `matches`.matched_user_id FROM `users_has_matches`" +
+                       "          JOIN `matches` ON `matches`.id = `users_has_matches`.matches_id" +
+                       "          WHERE `matches`.match_type = ?" +
+                       "          )";
         connection = ConnectionManager.getConnection();
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, self_id);
@@ -697,29 +744,6 @@ public class Database {
         stmt.executeUpdate();
         stmt.close();
         ConnectionManager.close();
-    }
-
-    public void getCompleteMatches(int self) throws SQLException, ClassNotFoundException {
-        connection = ConnectionManager.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT\n" +
-                "  matches.matched_user_id AS matched_user,\n" +
-                "  matches.courses_id      AS matched_course\n" +
-                "FROM users u2\n" +
-                "  JOIN users_has_matches ON u2.id = users_has_matches.users_id\n" +
-                "  JOIN matches ON users_has_matches.matches_id = matches.id\n" +
-                "WHERE u2.id = ?\n" +
-                "      AND matches.match_type = 'buddy'");
-        stmt.setInt(1, self);
-
-        ResultSet rs = stmt.executeQuery();
-        ArrayList<ArrayList<Integer>> preMatches = new ArrayList<>();
-        while (rs.next()) {
-            ArrayList<Integer> temp = new ArrayList<>();
-            temp.add(rs.getInt("matched_user"));
-            temp.add(rs.getInt("matched_course"));
-            preMatches.add(temp);
-        }
-        //todo finish
     }
 
     /**

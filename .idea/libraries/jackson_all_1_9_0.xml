@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="jackson-all-1.9.01">
+  <library name="jackson-all-1.9.0">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/shared/lib/jackson-all-1.9.0.jar!/" />
     </CLASSES>
