@@ -167,9 +167,9 @@ public class GUILauncher extends Application implements IMessageListener {
         }
         eCourse.setId("selectedCourseButton");
 
-        typeOfMatch = "emergency";
+        typeOfMatch = "learning";
         matchCourse = eCourse.getText();
-
+        Backend.findEmergency(matchCourse);
         //TODO JURRIAAN emergency
     }
 

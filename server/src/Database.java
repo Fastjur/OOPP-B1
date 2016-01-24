@@ -595,6 +595,45 @@ public class Database {
         return res;
     }
 
+    public ArrayList<User> findEmergency(int self_id, String course) throws SQLException, ClassNotFoundException,
+            IOException {
+        int course_id = getCourseIdByName(course);
+        User self = getUser(self_id);
+        String query = "SELECT `users`.id FROM `users`" +
+                "  JOIN `coursesTeaching` AS buddy ON `users`.id = buddy.users_id" +
+                "  LEFT JOIN `users_has_matches` AS hasmatches ON `users`.id = hasmatches.users_id" +
+                "  LEFT JOIN `matches` ON matches.id = hasmatches.matches_id " +
+                "WHERE `users`.id <> ?" +
+                "      AND buddy.courses_id = ?" +
+                "      AND `users`.id NOT IN (" +
+                "        SELECT `matches`.matched_user_id FROM `users_has_matches`" +
+                "          JOIN `matches` ON `matches`.id = `users_has_matches`.matches_id" +
+                "          WHERE `matches`.match_type = ?" +
+                "          )";
+        connection = ConnectionManager.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, self_id);
+        stmt.setInt(2, course_id);
+        stmt.setString(3, "teaching");
+        ResultSet rs = stmt.executeQuery();
+
+        ArrayList<Integer> user_ids = new ArrayList<>();
+        ArrayList<User> res = new ArrayList<>();
+        while (rs.next()) {
+            user_ids.add(rs.getInt("id"));
+        }
+        if (user_ids.size() == 0) {
+            return res;
+        }
+        for (int id : user_ids) {
+            res.add(getUser(id));
+        }
+        stmt.close();
+        ConnectionManager.close();
+
+        return res;
+    }
+
     public ArrayList<User> findStudent(int self_id, String course) throws SQLException, ClassNotFoundException,
             IOException {
         int course_id = getCourseIdByName(course);
