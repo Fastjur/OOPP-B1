@@ -47,6 +47,7 @@ public class GUILauncher extends Application implements IMessageListener {
     private static boolean matchpagecheck;
 
     private static ArrayList<User> courseMatches;
+    private static ArrayList<GuiChat> chatConversations;
 
     //TODO send typeOfMatch + matchCourse together with match (in MatchClick method)
     private static String typeOfMatch;
@@ -63,6 +64,7 @@ public class GUILauncher extends Application implements IMessageListener {
         sidebar = new GUISideBarConstructor();
         topbar = new GuiTopBar();
         login = new GuiLoginConstructor();
+        chatConversations = new ArrayList<>();
         chatPage = new GuiChat();
 
         /**
@@ -182,8 +184,11 @@ public class GUILauncher extends Application implements IMessageListener {
             oldCourse.setId("courseButton");
         }
         sbMatch.setId("selectedCourseButton");
-
-        displayMyMatch(match);
+        if (GUI.getCenter() instanceof GuiChat) {
+            chatConversation(match);
+        } else{
+            displayMyMatch(match);
+        }
     }
 
     public static void myMatchesLearningClick(Button lMatch, User match) {
@@ -192,8 +197,11 @@ public class GUILauncher extends Application implements IMessageListener {
             oldCourse.setId("courseButton");
         }
         lMatch.setId("selectedCourseButton");
-
-        displayMyMatch(match);
+        if (GUI.getCenter() instanceof GuiChat) {
+            chatConversation(match);
+        } else{
+            displayMyMatch(match);
+        }
     }
 
     public static void myMatchesTeachingClick(Button tMatch, User match) {
@@ -202,8 +210,11 @@ public class GUILauncher extends Application implements IMessageListener {
             oldCourse.setId("courseButton");
         }
         tMatch.setId("selectedCourseButton");
-
-        displayMyMatch(match);
+        if (GUI.getCenter() instanceof GuiChat) {
+            chatConversation(match);
+        } else{
+            displayMyMatch(match);
+        }
     }
 
     public static void displayMyMatch(User match){
@@ -261,11 +272,51 @@ public class GUILauncher extends Application implements IMessageListener {
         profile.setId("profileBtn");
 
         GUI.setCenter(chatPage);
-        GUI.setLeft(null);
+        matchpagecheck = true;
+        Backend.getBuddies();
+        Backend.getTutors();
+        Backend.getStudents();
     }
 
     public static void matchesChatButton(){
-        //TODO go to chatconversation with this specific match
+        topbar.setChatButtonActive();
+        GUI.setCenter(chatPage);
+        matchpagecheck = true;
+        Backend.getBuddies();
+        Backend.getTutors();
+        Backend.getStudents();
+    }
+
+    public static void chatConversation(User match) {
+        boolean exists = false;
+        if(chatConversations.size() != 0) {
+            for (int i = 0; i < chatConversations.size(); i++) {
+                if (chatConversations.get(i).getMatch().equals(match)) {
+                    exists = true;
+                    GUI.setCenter(chatConversations.get(i));
+                }
+            }
+        }
+
+        if(!exists) {
+            GuiChat conversation = new GuiChat(match);
+            chatConversations.add(conversation);
+            GUI.setCenter(conversation);
+        }
+    }
+
+    public static void sendMessage(String message, User receiver){
+        Backend.sendChatMessage(message, receiver.getUserID());
+    }
+
+    public static void getMessage(int senderId, String message) {
+        if(chatConversations.size() != 0) {
+            for (int i = 0; i < chatConversations.size(); i++) {
+                if (chatConversations.get(i).getMatch().getUserID() == senderId){
+                    chatConversations.get(i).receiveMessage(message);
+                }
+            }
+        }
     }
 
     public static void profileClick(Button findMatch, Button yourMatches, Button chat, Button prof) {
@@ -508,6 +559,19 @@ public class GUILauncher extends Application implements IMessageListener {
                         }
                     }
                     break;
+
+                case "getChatMessage":
+                    if (response.errorCode == 0) {
+                        try {
+                            String chatMessage = mapper.readValue(response.getResponseData().get("chatMessage")
+                                    .toString(), String.class);
+                            String sender = mapper.readValue(response.getResponseData().get("senderId").toString(), String.class);
+                            int senderId = Integer.parseInt(sender);
+                            getMessage(senderId, chatMessage);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
             }
         });
     }

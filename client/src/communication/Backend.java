@@ -566,6 +566,23 @@ public class Backend {
         }
     }
 
+    public static void sendChatMessage(String message, int receiverId) {
+        if (!isConnected()) {
+            System.out.println("[ERROR] Cannot get message: Not connected!");
+            return;
+        }
+
+        try {
+            Request request = new Request("getChatMessage");
+            request.putData("chatMessage", message);
+            request.putData("receiverId", receiverId);
+            listenThread.sendMessage(request.toSendableJSON());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Sets the User object of Backend, representing the currently logged in user
      * @param self User object

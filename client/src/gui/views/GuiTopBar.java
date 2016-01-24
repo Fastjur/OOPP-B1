@@ -63,4 +63,11 @@ public class GuiTopBar extends ToolBar {
         });
 
     }
+
+    public void setChatButtonActive(){
+        chat.setId("chatActive");
+        findMatch.setId("findMatch");
+        yourMatches.setId("yourMatches");
+        profileBtn.setId("profileBtn");
+    }
 }

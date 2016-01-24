@@ -873,6 +873,25 @@ public class ClientConnectionThread extends Thread {
                         }
                     }
 
+                case "getChatMessage":
+                    System.out.println("Received sendChatMessage from userid: " + client.userId);
+                    response = new Response(action);
+                    if (client.userId == -1) {
+                        response.errorMessage = "You are not logged in!";
+                        response.errorCode = 2;
+                        break;
+                    } else{
+                        String chatmessage = mapper.readValue(requestData.get("chatMessage"), String.class);
+                        int receiverId = mapper.readValue(requestData.get("receiverId"), Integer.class);
+                        response.errorCode = 0;
+                        response.errorMessage = "Retrieved your message.";
+                        response.putData("chatMessage", chatmessage);
+                        response.putData("senderId", client.userId);
+                        client.sendChatMessage(mapper.writeValueAsString(response), receiverId);
+
+                        break;
+                    }
+
                 default:
                     response = new Response(action);
                     response.errorMessage = "Unknown command.";
@@ -880,7 +899,9 @@ public class ClientConnectionThread extends Thread {
                     break;
             }
 
-            client.sendMessage(mapper.writeValueAsString(response));
+            if(!action.equals("sendChatMessage")) {
+                client.sendMessage(mapper.writeValueAsString(response));
+            }
 
         } catch (IOException ex) {
             System.out.println("Something went wrong while reading a message from the network.\n" +
