@@ -10,5 +10,6 @@
     <orderEntry type="library" name="jackson-all-1.9.0" level="project" />
     <orderEntry type="module" module-name="shared" />
     <orderEntry type="library" name="junit-4.12" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-5.1.37-bin" level="project" />
   </component>
 </module>
