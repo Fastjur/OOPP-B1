@@ -126,13 +126,8 @@ public class ClientConnectionThread extends Thread {
                     response = new Response(action);
                     String regemail = requestData.get("email").asText(),
                             regpassword = requestData.get("password").asText();
-                    boolean exists = false;
-                    try {
-                        User u = Server.getDb().getUser(regemail);
-                        exists = u != null;
-                    } catch (SQLException | ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    User u = Server.getDb().getUser(regemail);
+                    boolean exists = u != null;
 
                     if (exists) {
                         response.errorCode = 2;
@@ -140,13 +135,8 @@ public class ClientConnectionThread extends Thread {
                         break;
                     }
 
-                    try {
-                        Server.getDb().addUser(regemail, regpassword);
-                    } catch (ClassNotFoundException | SQLException e) {
-                        response.errorCode = 1;
-                        response.errorMessage = "Generic error.";
-                        break;
-                    }
+                    Server.getDb().addUser(regemail, regpassword);
+
                     response.errorCode = 0;
                     response.errorMessage = "Registration successful.";
                     break;
@@ -214,88 +204,60 @@ public class ClientConnectionThread extends Thread {
                             case "buddy": {
                                 response = new Response("findBuddy");
                                 String course = requestData.get("course").getTextValue();
-                                try {
-                                    ArrayList<User> findBuddyRes = Server.getDb().findStudyBuddy(client.userId, course);
-                                    if (findBuddyRes.size() > 0) {
-                                        response.putData("findBuddyRes", findBuddyRes);
-                                        response.errorCode = 0;
-                                        response.errorMessage = "Matched buddies!";
-                                        break;
-                                    } else {
-                                        response.errorCode = 9;
-                                        response.errorMessage = "Couldn't match any buddies!";
-                                        break;
-                                    }
-                                } catch (SQLException | ClassNotFoundException e) {
-                                    response.errorCode = 1;
-                                    response.errorMessage = "Couldn't find buddys generic error";
-                                    e.printStackTrace();
+                                ArrayList<User> findBuddyRes = Server.getDb().findStudyBuddy(client.userId, course);
+                                if (findBuddyRes.size() > 0) {
+                                    response.putData("findBuddyRes", findBuddyRes);
+                                    response.errorCode = 0;
+                                    response.errorMessage = "Matched buddies!";
+                                    break;
+                                } else {
+                                    response.errorCode = 9;
+                                    response.errorMessage = "Couldn't match any buddies!";
                                     break;
                                 }
                             }
                             case "learning": {
                                 response = new Response("findBuddy");
                                 String course = requestData.get("course").getTextValue();
-                                try {
-                                    ArrayList<User> findBuddyRes = Server.getDb().findTutor(client.userId, course);
-                                    if (findBuddyRes.size() > 0) {
-                                        response.putData("findBuddyRes", findBuddyRes);
-                                        response.errorCode = 0;
-                                        response.errorMessage = "Matched tutor!";
-                                        break;
-                                    } else {
-                                        response.errorCode = 9;
-                                        response.errorMessage = "Couldn't match any tutors!";
-                                        break;
-                                    }
-                                } catch (SQLException | ClassNotFoundException e) {
-                                    response.errorCode = 1;
-                                    response.errorMessage = "Couldn't find tutor: generic error";
-                                    e.printStackTrace();
+                                ArrayList<User> findBuddyRes = Server.getDb().findTutor(client.userId, course);
+                                if (findBuddyRes.size() > 0) {
+                                    response.putData("findBuddyRes", findBuddyRes);
+                                    response.errorCode = 0;
+                                    response.errorMessage = "Matched tutor!";
+                                    break;
+                                } else {
+                                    response.errorCode = 9;
+                                    response.errorMessage = "Couldn't match any tutors!";
                                     break;
                                 }
                             }
                             case "teaching": {
                                 response = new Response("findBuddy");
                                 String course = requestData.get("course").getTextValue();
-                                try {
-                                    ArrayList<User> findBuddyRes = Server.getDb().findStudent(client.userId, course);
-                                    if (findBuddyRes.size() > 0) {
-                                        response.putData("findBuddyRes", findBuddyRes);
-                                        response.errorCode = 0;
-                                        response.errorMessage = "Matched student!";
-                                        break;
-                                    } else {
-                                        response.errorCode = 9;
-                                        response.errorMessage = "Couldn't match any students!";
-                                        break;
-                                    }
-                                } catch (SQLException | ClassNotFoundException e) {
-                                    response.errorCode = 1;
-                                    response.errorMessage = "Couldn't find student: generic error";
-                                    e.printStackTrace();
+                                ArrayList<User> findBuddyRes = Server.getDb().findStudent(client.userId, course);
+                                if (findBuddyRes.size() > 0) {
+                                    response.putData("findBuddyRes", findBuddyRes);
+                                    response.errorCode = 0;
+                                    response.errorMessage = "Matched student!";
+                                    break;
+                                } else {
+                                    response.errorCode = 9;
+                                    response.errorMessage = "Couldn't match any students!";
                                     break;
                                 }
                             }
                             case "emergency": {
                                 response = new Response("findBuddy");
                                 String course = requestData.get("course").getTextValue();
-                                try {
-                                    ArrayList<User> findBuddyRes = Server.getDb().findEmergency(client.userId, course);
-                                    if (findBuddyRes.size() > 0) {
-                                        response.putData("findBuddyRes", findBuddyRes);
-                                        response.errorCode = 0;
-                                        response.errorMessage = "Matched emergency tutor!";
-                                        break;
-                                    } else {
-                                        response.errorCode = 9;
-                                        response.errorMessage = "Couldn't match any emergency tutors!";
-                                        break;
-                                    }
-                                } catch (SQLException | ClassNotFoundException e) {
-                                    response.errorCode = 1;
-                                    response.errorMessage = "Couldn't find emergency tutor: generic error";
-                                    e.printStackTrace();
+                                ArrayList<User> findBuddyRes = Server.getDb().findEmergency(client.userId, course);
+                                if (findBuddyRes.size() > 0) {
+                                    response.putData("findBuddyRes", findBuddyRes);
+                                    response.errorCode = 0;
+                                    response.errorMessage = "Matched emergency tutor!";
+                                    break;
+                                } else {
+                                    response.errorCode = 9;
+                                    response.errorMessage = "Couldn't match any emergency tutors!";
                                     break;
                                 }
                             }
@@ -324,17 +286,10 @@ public class ClientConnectionThread extends Thread {
                             response.errorCode = 5;
                             break;
                         } else {
-                            try {
-                                Server.getDb().acceptMatch(client.userId, matchUserId, matchType, course);
-                                response.errorMessage = "Added match to database!";
-                                response.errorCode = 0;
-                                break;
-                            } catch (ClassNotFoundException | SQLException e) {
-                                e.printStackTrace();
-                                response.errorCode = 5;
-                                response.errorMessage = "Couldn't add match to database!";
-                                break;
-                            }
+                            Server.getDb().acceptMatch(client.userId, matchUserId, matchType, course);
+                            response.errorMessage = "Added match to database!";
+                            response.errorCode = 0;
+                            break;
                         }
                     }
 
@@ -348,17 +303,10 @@ public class ClientConnectionThread extends Thread {
                     } else {
                         int matchId = requestData.get("matchId").getIntValue(),
                                 self = client.userId;
-                        try {
-                            Server.getDb().removeMatch(self, matchId);
-                            response.errorCode = 0;
-                            response.errorMessage = "Removed match from database!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            e.printStackTrace();
-                            response.errorCode = 6;
-                            response.errorMessage = "Couldn't remove match from database";
-                            break;
-                        }
+                        Server.getDb().removeMatch(self, matchId);
+                        response.errorCode = 0;
+                        response.errorMessage = "Removed match from database!";
+                        break;
                     }
 
                 case "getSelf":
@@ -370,18 +318,11 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         int self = client.userId;
-                        try {
-                            User dbSelf = Server.getDb().getUser(self);
-                            response.putData("self", dbSelf);
-                            response.errorMessage = "Retrieved your information!";
-                            response.errorCode = 0;
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            e.printStackTrace();
-                            response.errorCode = 7;
-                            response.errorMessage = "Couldn't retrieve your information!";
-                            break;
-                        }
+                        User dbSelf = Server.getDb().getUser(self);
+                        response.putData("self", dbSelf);
+                        response.errorMessage = "Retrieved your information!";
+                        response.errorCode = 0;
+                        break;
                     }
 
                 case "getNationalities":
@@ -392,18 +333,11 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        try {
-                            HashMap<Integer, String> dbNationalities = Server.getDb().getNationalities();
-                            response.putData("nationalities", dbNationalities);
-                            response.errorCode = 0;
-                            response.errorMessage = "Retreived database nationalities!";
-                            break;
-                        } catch (SQLException | ClassNotFoundException e) {
-                            response.errorCode = 8;
-                            response.errorMessage = "Couldn't get database nationalities!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        HashMap<Integer, String> dbNationalities = Server.getDb().getNationalities();
+                        response.putData("nationalities", dbNationalities);
+                        response.errorCode = 0;
+                        response.errorMessage = "Retreived database nationalities!";
+                        break;
                     }
 
                 case "getLanguages":
@@ -414,18 +348,11 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        try {
-                            HashMap<Integer, String> dbLanguages = Server.getDb().getLanguages();
-                            response.putData("dbLanguages", dbLanguages);
-                            response.errorCode = 0;
-                            response.errorMessage = "Retreived database languages!";
-                            break;
-                        } catch (SQLException | ClassNotFoundException e) {
-                            response.errorCode = 8;
-                            response.errorMessage = "Couldn't get database languages!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        HashMap<Integer, String> dbLanguages = Server.getDb().getLanguages();
+                        response.putData("dbLanguages", dbLanguages);
+                        response.errorCode = 0;
+                        response.errorMessage = "Retreived database languages!";
+                        break;
                     }
 
                 case "getStudies":
@@ -436,18 +363,11 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        try {
-                            HashMap<Integer, String> dbStudies = Server.getDb().getStudies();
-                            response.putData("dbStudies", dbStudies);
-                            response.errorCode = 0;
-                            response.errorMessage = "Retreived database studies!";
-                            break;
-                        } catch (SQLException | ClassNotFoundException e) {
-                            response.errorCode = 8;
-                            response.errorMessage = "Couldn't get database studies!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        HashMap<Integer, String> dbStudies = Server.getDb().getStudies();
+                        response.putData("dbStudies", dbStudies);
+                        response.errorCode = 0;
+                        response.errorMessage = "Retreived database studies!";
+                        break;
                     }
 
                 case "getUniversities":
@@ -458,18 +378,11 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        try {
-                            HashMap<Integer, String> dbUniversities = Server.getDb().getUniversities();
-                            response.putData("dbUniversities", dbUniversities);
-                            response.errorCode = 0;
-                            response.errorMessage = "Retreived database universities!";
-                            break;
-                        } catch (SQLException | ClassNotFoundException e) {
-                            response.errorCode = 8;
-                            response.errorMessage = "Couldn't get database universities!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        HashMap<Integer, String> dbUniversities = Server.getDb().getUniversities();
+                        response.putData("dbUniversities", dbUniversities);
+                        response.errorCode = 0;
+                        response.errorMessage = "Retreived database universities!";
+                        break;
                     }
 
                 case "getCourses":
@@ -480,18 +393,11 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        try {
-                            HashMap<Integer, String> dbCourses = Server.getDb().getCourses();
-                            response.putData("dbCourses", dbCourses);
-                            response.errorCode = 0;
-                            response.errorMessage = "Retreived database courses!";
-                            break;
-                        } catch (SQLException | ClassNotFoundException e) {
-                            response.errorCode = 8;
-                            response.errorMessage = "Couldn't get database courses!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        HashMap<Integer, String> dbCourses = Server.getDb().getCourses();
+                        response.putData("dbCourses", dbCourses);
+                        response.errorCode = 0;
+                        response.errorMessage = "Retreived database courses!";
+                        break;
                     }
 
                 case "updateNationality":
@@ -503,17 +409,10 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         int nationalityId = requestData.get("nationality").getIntValue();
-                        try {
-                            Server.getDb().updateNationality(client.userId, nationalityId);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated nationality!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update nationality!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateNationality(client.userId, nationalityId);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated nationality!";
+                        break;
                     }
 
                 case "updateName":
@@ -526,17 +425,10 @@ public class ClientConnectionThread extends Thread {
                     } else {
                         String firstname = requestData.get("firstname").getTextValue(),
                                 lastname = requestData.get("lastname").getTextValue();
-                        try {
-                            Server.getDb().updateName(client.userId, firstname, lastname);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated name!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update name!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateName(client.userId, firstname, lastname);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated name!";
+                        break;
                     }
 
                 case "updateDateOfBirth":
@@ -548,17 +440,10 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         Long date = requestData.get("date").getLongValue();
-                        try {
-                            Server.getDb().updateDateOfBirth(client.userId, date);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated dateOfBirth!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update dateOfBirth!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateDateOfBirth(client.userId, date);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated dateOfBirth!";
+                        break;
                     }
 
                 case "updateLanguages":
@@ -572,17 +457,10 @@ public class ClientConnectionThread extends Thread {
                         TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>() {
                         };
                         ArrayList<Integer> languages = mapper.readValue(requestData.get("languages"), typeRef);
-                        try {
-                            Server.getDb().updateLanguages(client.userId, languages);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated languages!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update languages!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateLanguages(client.userId, languages);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated languages!";
+                        break;
                     }
 
                 case "updateSex":
@@ -594,17 +472,10 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         String sex = requestData.get("sex").getTextValue();
-                        try {
-                            Server.getDb().updateSex(client.userId, sex);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated sex!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update sex!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateSex(client.userId, sex);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated sex!";
+                        break;
                     }
 
                 case "updateEmail":
@@ -616,17 +487,10 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         String email = requestData.get("email").getTextValue();
-                        try {
-                            Server.getDb().updateEmail(client.userId, email);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated email!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update email!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateEmail(client.userId, email);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated email!";
+                        break;
                     }
 
                 case "updatePhoneNumber":
@@ -638,17 +502,10 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         String phoneNumber = requestData.get("phoneNumber").getTextValue();
-                        try {
-                            Server.getDb().updatePhoneNumber(client.userId, phoneNumber);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated phoneNumber!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update phoneNumber!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updatePhoneNumber(client.userId, phoneNumber);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated phoneNumber!";
+                        break;
                     }
 
                 case "updateLocation":
@@ -661,17 +518,10 @@ public class ClientConnectionThread extends Thread {
                     } else {
                         double longitude = requestData.get("longitude").getDoubleValue(),
                                 latitude = requestData.get("latitude").getDoubleValue();
-                        try {
-                            Server.getDb().updateLocation(client.userId, longitude, latitude);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated location!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update location!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateLocation(client.userId, longitude, latitude);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated location!";
+                        break;
                     }
 
                 case "updateUniversity":
@@ -683,17 +533,10 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         int universityId = requestData.get("university").getIntValue();
-                        try {
-                            Server.getDb().updateUniversity(client.userId, universityId);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated university!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update university!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateUniversity(client.userId, universityId);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated university!";
+                        break;
                     }
 
                 case "updateStudy":
@@ -705,17 +548,10 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         int studyId = requestData.get("study").getIntValue();
-                        try {
-                            Server.getDb().updateStudy(client.userId, studyId);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated study!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update study!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateStudy(client.userId, studyId);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated study!";
+                        break;
                     }
 
                 case "updateStudyYear":
@@ -727,17 +563,10 @@ public class ClientConnectionThread extends Thread {
                         break;
                     } else {
                         int studyYear = requestData.get("studyYear").getIntValue();
-                        try {
-                            Server.getDb().updateStudyYear(client.userId, studyYear);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated studyYear!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update studyYear!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateStudyYear(client.userId, studyYear);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated studyYear!";
+                        break;
                     }
 
                 case "updateLearning":
@@ -751,17 +580,10 @@ public class ClientConnectionThread extends Thread {
                         TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>() {
                         };
                         ArrayList<Integer> learning = mapper.readValue(requestData.get("learning"), typeRef);
-                        try {
-                            Server.getDb().updateLearning(client.userId, learning);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated learning!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update learning!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateLearning(client.userId, learning);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated learning!";
+                        break;
                     }
 
                 case "updateTeaching":
@@ -775,17 +597,10 @@ public class ClientConnectionThread extends Thread {
                         TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>() {
                         };
                         ArrayList<Integer> teaching = mapper.readValue(requestData.get("teaching"), typeRef);
-                        try {
-                            Server.getDb().updateTeaching(client.userId, teaching);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated teaching!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update teaching!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateTeaching(client.userId, teaching);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated teaching!";
+                        break;
                     }
 
                 case "updateBuddies":
@@ -799,17 +614,10 @@ public class ClientConnectionThread extends Thread {
                         TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>() {
                         };
                         ArrayList<Integer> buddies = mapper.readValue(requestData.get("buddies"), typeRef);
-                        try {
-                            Server.getDb().updateBuddies(client.userId, buddies);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated buddies!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update buddies!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateBuddies(client.userId, buddies);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated buddies!";
+                        break;
                     }
 
                 case "updateAvailability":
@@ -820,21 +628,12 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        TypeReference<ArrayList<Integer>> typeRef = new TypeReference<ArrayList<Integer>>() {
-                        };
                         AvailableTimes aTimes = mapper.readValue(requestData.get("availability"), AvailableTimes
                                 .class);
-                        try {
-                            Server.getDb().updateAvailability(client.userId, aTimes);
-                            response.errorCode = 0;
-                            response.errorMessage = "Updated availability!";
-                            break;
-                        } catch (ClassNotFoundException | SQLException | IOException e) {
-                            response.errorCode = 9;
-                            response.errorMessage = "Couldn't update availability!";
-                            e.printStackTrace();
-                            break;
-                        }
+                        Server.getDb().updateAvailability(client.userId, aTimes);
+                        response.errorCode = 0;
+                        response.errorMessage = "Updated availability!";
+                        break;
                     }
 
                 case "getBuddies":
@@ -845,17 +644,11 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        try {
-                            ArrayList<User> buddies = Server.getDb().getBuddies(client.userId);
-                            response.putData("buddies", buddies);
-                            response.errorCode = 0;
-                            response.errorMessage = "Retrieved your buddies.";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            e.printStackTrace();
-                            response.errorCode = 1;
-                            response.errorMessage = "Couldn't retrieve your buddies!";
-                        }
+                        ArrayList<User> buddies = Server.getDb().getBuddies(client.userId);
+                        response.putData("buddies", buddies);
+                        response.errorCode = 0;
+                        response.errorMessage = "Retrieved your buddies.";
+                        break;
                     }
 
                 case "getStudents":
@@ -866,17 +659,11 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        try {
-                            ArrayList<User> students = Server.getDb().getStudents(client.userId);
-                            response.putData("students", students);
-                            response.errorCode = 0;
-                            response.errorMessage = "Retrieved your students.";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            e.printStackTrace();
-                            response.errorCode = 1;
-                            response.errorMessage = "Couldn't retrieve your students!";
-                        }
+                        ArrayList<User> students = Server.getDb().getStudents(client.userId);
+                        response.putData("students", students);
+                        response.errorCode = 0;
+                        response.errorMessage = "Retrieved your students.";
+                        break;
                     }
 
                 case "getTutors":
@@ -887,17 +674,11 @@ public class ClientConnectionThread extends Thread {
                         response.errorCode = 2;
                         break;
                     } else {
-                        try {
-                            ArrayList<User> tutors = Server.getDb().getTutors(client.userId);
-                            response.putData("tutors", tutors);
-                            response.errorCode = 0;
-                            response.errorMessage = "Retrieved your tutors.";
-                            break;
-                        } catch (ClassNotFoundException | SQLException e) {
-                            e.printStackTrace();
-                            response.errorCode = 1;
-                            response.errorMessage = "Couldn't retrieve your tutors!";
-                        }
+                        ArrayList<User> tutors = Server.getDb().getTutors(client.userId);
+                        response.putData("tutors", tutors);
+                        response.errorCode = 0;
+                        response.errorMessage = "Retrieved your tutors.";
+                        break;
                     }
 
                 case "getChatMessage":
@@ -935,6 +716,9 @@ public class ClientConnectionThread extends Thread {
             System.out.println(e.getLocalizedMessage());
         } catch (NullPointerException e) {
             System.out.println("A client sent a malformed request.");
+            e.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Something went wrong with a database operation.");
             e.printStackTrace();
         } catch (IOException ex) {
             System.out.println("Something went wrong while reading a message from the network.");
