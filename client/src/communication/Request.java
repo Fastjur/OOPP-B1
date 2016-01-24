@@ -2,7 +2,6 @@ package communication;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -45,10 +44,6 @@ public class Request {
     public String toSendableJSON() throws IOException {
         //TODO escape characters that are illegal/special
         ObjectMapper mapper = new ObjectMapper();
-        ObjectNode request = mapper.createObjectNode(),
-                requestData = mapper.createObjectNode();
-        request.put("action", this.action);
-        request.put("requestData", mapper.writeValueAsString(this.requestData));
-        return mapper.writeValueAsString(request);
+        return mapper.writeValueAsString(this);
     }
 }
