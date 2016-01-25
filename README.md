@@ -26,3 +26,6 @@ Computer Sciences and Engineering Bachelor 2015-2016, Group **B1-1**
     * **NOTE:** Whenever changes are made to files in `server` or `shared` they should be recompiled! Otherwise the batch file will be running old files.
 
 Link to database file: https://drive.google.com/file/d/0Bwrri4JoN_aIVC01OWF2U054TVU/view?usp=sharing
+
+###Test coverage:
+[Screenshot](https://drive.google.com/file/d/0Bzk6zwLH134cNm1LS3FPMXMxU1k/view?usp=sharing)
