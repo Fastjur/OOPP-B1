@@ -133,6 +133,7 @@ public class ConnectedClientTest {
         byte[] responsebuf = new byte[len];
         inputStream.read(responsebuf);
         String str = new String(responsebuf, StandardCharsets.UTF_8);
+        System.out.println(str);
         return mapper.readValue(str, Response.class);
     }
 
