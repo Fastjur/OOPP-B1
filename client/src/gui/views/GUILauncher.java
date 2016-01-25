@@ -573,6 +573,8 @@ public class GUILauncher extends Application implements IMessageListener {
                             e.printStackTrace();
                         }
                     }
+                    break;
+
                 case "register":
                     if (response.errorCode == 0){
                         switchToLogin();
@@ -584,7 +586,6 @@ public class GUILauncher extends Application implements IMessageListener {
                     } else {
                         login.setRegisterMessage(response.errorMessage, Color.RED);
                     }
-                    break;
             }
         });
     }
