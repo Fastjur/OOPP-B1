@@ -2,6 +2,7 @@ package test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -48,7 +49,22 @@ public class TestServer extends Thread {
         return decodeMessage(buffer);
     }
 
+    public void sendMessage(String message) throws Exception {
+        OutputStream outputStream = socket.getOutputStream();
+        byte[] msg = encodeMessage(message);
+        outputStream.write(ByteBuffer.allocate(4).putInt(msg.length).array());
+        outputStream.write(msg);
+    }
+
+    public void sendBytes(byte[] bytesToSend) throws Exception {
+        socket.getOutputStream().write(bytesToSend);
+    }
+
     private String decodeMessage(byte[] buf) {
         return new String(buf, StandardCharsets.UTF_8);
+    }
+
+    private byte[] encodeMessage(String input) {
+        return input.getBytes(StandardCharsets.UTF_8);
     }
 }

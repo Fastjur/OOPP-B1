@@ -3,13 +3,10 @@ package test;
 import communication.Backend;
 import communication.IDisconnectListener;
 import communication.IMessageListener;
-import communication.Request;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import shared.AvailableTimes;
 import shared.Response;
 import shared.User;
@@ -130,7 +127,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
         Backend.connectToServer();
         Backend.login("my_email", "my_pass");
         String result = testServer.receiveMessage();
-        assertEquals("{\"action\":\"login\",\"requestData\":\"{\\\"pass\\\":\\\"my_pass\\\",\\\"email\\\":\\\"my_email\\\"}\"}", result);
+        assertEquals("{\"action\":\"login\",\"requestData\":{\"pass\":\"my_pass\",\"email\":\"my_email\"}}", result);
     }
 
     @Test
@@ -138,7 +135,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
         Backend.connectToServer();
         Backend.logout();
         String result = testServer.receiveMessage();
-        assertEquals("{\"action\":\"logout\",\"requestData\":\"{}\"}", result);
+        assertEquals("{\"action\":\"logout\",\"requestData\":{}}", result);
     }
 
     @Test
@@ -146,7 +143,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
         Backend.connectToServer();
         Backend.register("TestUser", "TestPass");
         String result = testServer.receiveMessage();
-        assertEquals("{\"action\":\"register\",\"requestData\":\"{\\\"password\\\":\\\"TestPass\\\",\\\"email\\\":\\\"TestUser\\\"}\"}", result);
+        assertEquals("{\"action\":\"register\",\"requestData\":{\"password\":\"TestPass\",\"email\":\"TestUser\"}}", result);
     }
 
     @Test
@@ -188,7 +185,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.findStudyBuddy("myCourse");
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"findMatch\",\"requestData\":\"{\\\"course\\\":\\\"myCourse\\\",\\\"type\\\":\\\"buddy\\\"}\"}", result);
+    	assertEquals("{\"action\":\"findMatch\",\"requestData\":{\"course\":\"myCourse\",\"type\":\"buddy\"}}", result);
     }
     
     @Test
@@ -207,8 +204,8 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
                 new ArrayList<String>(), "It's-a-me", 0, 3, 5), "myMatchType");*/
         Backend.acceptMatch(1, "myMatchType", "Blargh");
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"acceptMatch\",\"requestData\":\"{\\\"matchType\\\":\\\"myMatchType\\\"," +
-                "\\\"matchUser\\\":1,\\\"matchCourse\\\":\\\"Blargh\\\"}\"}", result);
+    	assertEquals("{\"action\":\"acceptMatch\",\"requestData\":{\"matchType\":\"myMatchType\"," +
+                "\"matchUser\":1,\"matchCourse\":\"Blargh\"}}", result);
     }
     
     @Test
@@ -222,7 +219,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.getSelf();
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"getSelf\",\"requestData\":\"{}\"}", result);
+    	assertEquals("{\"action\":\"getSelf\",\"requestData\":{}}", result);
     }
     
     @Test
@@ -236,7 +233,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.getNationalities();
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"getNationalities\",\"requestData\":\"{}\"}", result);
+    	assertEquals("{\"action\":\"getNationalities\",\"requestData\":{}}", result);
     }
     
     @Test
@@ -250,7 +247,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.getLanguages();
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"getLanguages\",\"requestData\":\"{}\"}", result);
+    	assertEquals("{\"action\":\"getLanguages\",\"requestData\":{}}", result);
     }
     
     @Test
@@ -264,7 +261,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.getStudies();
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"getStudies\",\"requestData\":\"{}\"}", result);
+    	assertEquals("{\"action\":\"getStudies\",\"requestData\":{}}", result);
     }
     
     @Test
@@ -278,7 +275,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.getUniversities();
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"getUniversities\",\"requestData\":\"{}\"}", result);
+    	assertEquals("{\"action\":\"getUniversities\",\"requestData\":{}}", result);
     }
     
     @Test
@@ -292,7 +289,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.getCourses();
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"getCourses\",\"requestData\":\"{}\"}", result);
+    	assertEquals("{\"action\":\"getCourses\",\"requestData\":{}}", result);
     }
     
     @Test
@@ -306,7 +303,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.updateNationality(2);
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateNationality\",\"requestData\":\"{\\\"nationality\\\":2}\"}", result);
+    	assertEquals("{\"action\":\"updateNationality\",\"requestData\":{\"nationality\":2}}", result);
     }
     
     @Test
@@ -320,7 +317,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.updateName("first last");
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateName\",\"requestData\":\"{\\\"firstname\\\":\\\"first\\\",\\\"lastname\\\":\\\"last\\\"}\"}", result);
+    	assertEquals("{\"action\":\"updateName\",\"requestData\":{\"firstname\":\"first\",\"lastname\":\"last\"}}", result);
     }
     
     @Test
@@ -334,7 +331,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.updateSex("female");
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateSex\",\"requestData\":\"{\\\"sex\\\":\\\"female\\\"}\"}", result);
+    	assertEquals("{\"action\":\"updateSex\",\"requestData\":{\"sex\":\"female\"}}", result);
     }
     
     @Test
@@ -348,7 +345,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.updateDateOfBirth(LocalDate.of(2012, 12, 12));
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateDateOfBirth\",\"requestData\":\"{\\\"date\\\":1355266800000}\"}", result);
+    	assertEquals("{\"action\":\"updateDateOfBirth\",\"requestData\":{\"date\":1355266800000}}", result);
     }
     
     @Test
@@ -364,7 +361,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	languages.add(1);
     	Backend.updateLanguages(languages);
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateLanguages\",\"requestData\":\"{\\\"languages\\\":[1]}\"}", result);
+    	assertEquals("{\"action\":\"updateLanguages\",\"requestData\":{\"languages\":[1]}}", result);
     }
     
     @Test
@@ -380,7 +377,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.updateEmail("email@live.com");
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateEmail\",\"requestData\":\"{\\\"email\\\":\\\"email@live.com\\\"}\"}", result);
+    	assertEquals("{\"action\":\"updateEmail\",\"requestData\":{\"email\":\"email@live.com\"}}", result);
     }
     
     @Test
@@ -394,7 +391,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.updateTelephoneNumber("+31612345678");
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updatePhoneNumber\",\"requestData\":\"{\\\"phoneNumber\\\":\\\"+31612345678\\\"}\"}", result);
+    	assertEquals("{\"action\":\"updatePhoneNumber\",\"requestData\":{\"phoneNumber\":\"+31612345678\"}}", result);
     }
     
     @Test
@@ -426,7 +423,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.updateUniversity(5);
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateUniversity\",\"requestData\":\"{\\\"university\\\":5}\"}", result);
+    	assertEquals("{\"action\":\"updateUniversity\",\"requestData\":{\"university\":5}}", result);
     }
  
     @Test
@@ -440,7 +437,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.updateStudy(5);
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateStudy\",\"requestData\":\"{\\\"study\\\":5}\"}", result);
+    	assertEquals("{\"action\":\"updateStudy\",\"requestData\":{\"study\":5}}", result);
     }
  
     @Test
@@ -454,7 +451,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.updateStudyYear(5);
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateStudyYear\",\"requestData\":\"{\\\"studyYear\\\":5}\"}", result);
+    	assertEquals("{\"action\":\"updateStudyYear\",\"requestData\":{\"studyYear\":5}}", result);
     }
  
     @Test
@@ -470,7 +467,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	learn.add(1);
     	Backend.updateLearning(learn);
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateLearning\",\"requestData\":\"{\\\"learning\\\":[1]}\"}", result);
+    	assertEquals("{\"action\":\"updateLearning\",\"requestData\":{\"learning\":[1]}}", result);
     }
  
     @Test
@@ -488,7 +485,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	teach.add(1);
     	Backend.updateTeaching(teach);
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateTeaching\",\"requestData\":\"{\\\"teaching\\\":[1]}\"}", result);
+    	assertEquals("{\"action\":\"updateTeaching\",\"requestData\":{\"teaching\":[1]}}", result);
     }
  
     @Test
@@ -506,7 +503,7 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	buddy.add(1);
     	Backend.updateBuddies(buddy);
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateBuddies\",\"requestData\":\"{\\\"buddies\\\":[1]}\"}", result);
+    	assertEquals("{\"action\":\"updateBuddies\",\"requestData\":{\"buddies\":[1]}}", result);
     }
  
     @Test
@@ -522,7 +519,8 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
     	Backend.connectToServer();
     	Backend.updateAvailability(new AvailableTimes());
     	String result = testServer.receiveMessage();
-    	assertEquals("{\"action\":\"updateAvailability\",\"requestData\":\"{\\\"availability\\\":{\\\"monday\\\":[],\\\"tuesday\\\":[],\\\"wednesday\\\":[],\\\"thursday\\\":[],\\\"friday\\\":[],\\\"saturday\\\":[],\\\"sunday\\\":[]}}\"}", result);
+    	assertEquals("{\"action\":\"updateAvailability\",\"requestData\":{\"availability\":{\"monday\":[],\"tuesday\"" +
+                ":[],\"wednesday\":[],\"thursday\":[],\"friday\":[],\"saturday\":[],\"sunday\":[]}}}", result);
     }
     
     @Test
@@ -546,5 +544,16 @@ public class BackendTest implements IMessageListener, IDisconnectListener {
         User testuser2 = Backend.getSelfObject();
         assertEquals(testuser, testuser2);
     }
-    
+
+    @Test
+    public void testNotConnectedFindTutorEmercencyBecomeTutorGetBuddiesStudentsTutors() {
+        Backend.findTutorMatch("");
+        Backend.findEmergency("");
+        Backend.findBecomeTutorMatch("");
+        Backend.getBuddies();
+        Backend.getStudents();
+        Backend.getTutors();
+        Backend.sendChatMessage("", 0);
+        assertNull(this.response);
+    }
 }
