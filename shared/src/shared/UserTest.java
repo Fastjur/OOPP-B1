@@ -38,7 +38,7 @@ public class UserTest {
                 "\"phonenumber\":\"+316123456789\",\"study\":\"study1\"," +
                 "\"university\":\"university\",\"gender\":\"male\",\"nationality\":\"NLD\"," +
                 "\"description\":\"It's-a-me\",\"birthday\":1,\"userID\":1,\"studyYear\":3," +
-                "\"latitude\":0.0,\"longitude\":3.0,\"coursesTeachingList\":[]," +
+                "\"latitude\":0.0,\"longitude\":3.0,\"maxDistance\":5.0,\"coursesTeachingList\":[]," +
                 "\"coursesLearningList\":[],\"buddyList\":[],\"languageList\":[]," +
                 "\"availableDates\":{\"monday\":[],\"tuesday\":[],\"wednesday\":[]," +
                 "\"thursday\":[],\"friday\":[],\"saturday\":[],\"sunday\":[]}}");
@@ -80,7 +80,8 @@ public class UserTest {
                 "languages: []\n" +
                 "description: It's-a-me\n" +
                 "longitude: 3.0\n" +
-                "latitude: 0.0", testuser1.toString());
+                "latitude: 0.0\n" +
+                "Max distance: 5.0", testuser1.toString());
     }
 
     @Test

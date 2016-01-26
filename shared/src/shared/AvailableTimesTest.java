@@ -152,6 +152,7 @@ public class AvailableTimesTest {
 
         assertEquals(intersect, aTimes.intersect(bTimes));
         assertEquals(aTimes, aTimes.intersect(aTimes));
+        assertEquals(intersect, bTimes.intersect(intersect));
         assertNotEquals(aTimes, new AvailableTimes());
     }
 
@@ -276,5 +277,57 @@ public class AvailableTimesTest {
         assertEquals("00:06-00:07", aTimes.toReadable(7));
         aTimes.setMonday(new ArrayList<>());
         assertEquals("", aTimes.toReadable(1));
+    }
+
+    @Test
+    public void testNotEqualsThursday() {
+        AvailableTimes bTimes = new AvailableTimes();
+        bTimes.addTimePeriod(1, new TimePeriod(150, 250));
+        bTimes.addTimePeriod(1, new TimePeriod(250, 350));
+        bTimes.addTimePeriod(2, new TimePeriod(1, 2));
+        bTimes.addTimePeriod(3, new TimePeriod(2, 3));
+        bTimes.addTimePeriod(5, new TimePeriod(4, 5));
+        bTimes.addTimePeriod(6, new TimePeriod(5, 6));
+        bTimes.addTimePeriod(7, new TimePeriod(6, 7));
+        assertNotEquals(aTimes, bTimes);
+    }
+
+    @Test
+    public void testNotEqualsFriday() {
+        AvailableTimes bTimes = new AvailableTimes();
+        bTimes.addTimePeriod(1, new TimePeriod(150, 250));
+        bTimes.addTimePeriod(1, new TimePeriod(250, 350));
+        bTimes.addTimePeriod(2, new TimePeriod(1, 2));
+        bTimes.addTimePeriod(3, new TimePeriod(2, 3));
+        bTimes.addTimePeriod(4, new TimePeriod(3, 4));
+        bTimes.addTimePeriod(6, new TimePeriod(5, 6));
+        bTimes.addTimePeriod(7, new TimePeriod(6, 7));
+        assertNotEquals(aTimes, bTimes);
+    }
+
+    @Test
+    public void testNotEqualsSaturday() {
+        AvailableTimes bTimes = new AvailableTimes();
+        bTimes.addTimePeriod(1, new TimePeriod(150, 250));
+        bTimes.addTimePeriod(1, new TimePeriod(250, 350));
+        bTimes.addTimePeriod(2, new TimePeriod(1, 2));
+        bTimes.addTimePeriod(3, new TimePeriod(2, 3));
+        bTimes.addTimePeriod(4, new TimePeriod(3, 4));
+        bTimes.addTimePeriod(5, new TimePeriod(4, 5));
+        bTimes.addTimePeriod(7, new TimePeriod(6, 7));
+        assertNotEquals(aTimes, bTimes);
+    }
+
+    @Test
+    public void testNotEqualsSunday() {
+        AvailableTimes bTimes = new AvailableTimes();
+        bTimes.addTimePeriod(1, new TimePeriod(150, 250));
+        bTimes.addTimePeriod(1, new TimePeriod(250, 350));
+        bTimes.addTimePeriod(2, new TimePeriod(1, 2));
+        bTimes.addTimePeriod(3, new TimePeriod(2, 3));
+        bTimes.addTimePeriod(4, new TimePeriod(3, 4));
+        bTimes.addTimePeriod(5, new TimePeriod(4, 5));
+        bTimes.addTimePeriod(6, new TimePeriod(5, 6));
+        assertNotEquals(aTimes, bTimes);
     }
 }
